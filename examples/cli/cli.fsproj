@@ -10,4 +10,8 @@
     <Compile Include="CLI.fs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\uhppoted-lib-dotnet.fsproj" />
+  </ItemGroup>
+
 </Project>

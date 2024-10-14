@@ -1,4 +1,5 @@
 ﻿namespace uhppoted_lib_dotnet
 
-module Say =
-    printfn "uhppoted-lib v0.8.10"
+module Uhppoted =
+    let get_controllers () =
+        printfn "uhppoted::get all ze controllers, ja\n"

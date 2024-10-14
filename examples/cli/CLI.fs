@@ -14,6 +14,7 @@ let main args =
 
     match arglist with
     | "get-controllers" :: [] -> get_controllers ()
+
     | _ -> usage ()
 
     0
