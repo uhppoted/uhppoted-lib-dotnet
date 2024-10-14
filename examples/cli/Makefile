@@ -8,3 +8,7 @@ build: format
 
 run: build
 	dotnet run
+
+get-controllers: build
+	dotnet run get-controllers
+
