@@ -1,6 +1,6 @@
 using static System.Console;
 
-using static uhppoted_lib_dotnet.Uhppoted;
+using static uhppoted.Uhppoted;
 
 class Commands
 {

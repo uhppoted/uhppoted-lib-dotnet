@@ -1,10 +1,7 @@
 .PHONY: format
 
-format:
-	dotnet fantomas .
+build-all:
+	cd uhppoted && make build
 
-build: format
-	dotnet build
-
-get-controllers: build
-	dotnet run --project examples/cli get-controllers
+get-controllers:
+	dotnet run --project examples/fs/cli get-controllers

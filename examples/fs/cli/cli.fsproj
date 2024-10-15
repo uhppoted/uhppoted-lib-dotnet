@@ -11,7 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="../../../uhppoted-lib-dotnet.fsproj" />
+    <ProjectReference Include="../../../uhppoted/uhppoted/uhppoted.fsproj" />
   </ItemGroup>
 
 </Project>

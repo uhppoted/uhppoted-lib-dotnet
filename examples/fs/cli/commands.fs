@@ -1,5 +1,5 @@
 module Commands
 
-open uhppoted_lib_dotnet
+open uhppoted
 
 let get_controllers () = Uhppoted.get_controllers ()

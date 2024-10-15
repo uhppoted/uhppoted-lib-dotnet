@@ -8,8 +8,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Reference Include="uhppoted-lib-dotnet">
-      <HintPath>../../../bin/Debug/net7.0/uhppoted-lib-dotnet.dll</HintPath>
+    <Reference Include="uhppoted">
+      <HintPath>../../../uhppoted/uhppoted/bin/Debug/net7.0/uhppoted.dll</HintPath>
     </Reference>
   </ItemGroup>
 

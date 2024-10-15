@@ -24,4 +24,4 @@ jobs:
 
     - name: Build
       run: |
-        dotnet --version
+        build-all
