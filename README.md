@@ -7,3 +7,11 @@
 ** IN DEVELOPMENT **
 
 
+## Notes
+
+### C# Interop
+
+1. The FSharp.Core package needs to be installed:
+```
+dotnet add package FSharp.Core
+```

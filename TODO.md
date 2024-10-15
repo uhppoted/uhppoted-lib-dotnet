@@ -1,5 +1,12 @@
 # TODO
 
+## C#
+- [ ] Add .NET 8 as a target framework
+```
+    <TargetFrameworks>net7.0;net8.0</TargetFrameworks>
+```
+
+## Notes
 - https://stackoverflow.com/questions/10110174/best-approach-for-designing-f-libraries-for-use-from-both-f-and-c-sharp
 - https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/component-design-guidelines
 - https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/

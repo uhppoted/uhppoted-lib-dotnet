@@ -8,7 +8,7 @@ let usage () =
 
 [<EntryPoint>]
 let main args =
-    printfn "** uhppoted-lib-dotnet CLI v0.8.10\n"
+    printfn "** uhppoted-lib-dotnet F# CLI v0.8.10\n"
 
     let arglist = args |> List.ofSeq
 
