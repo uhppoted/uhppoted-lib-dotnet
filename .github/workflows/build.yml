@@ -22,6 +22,10 @@ jobs:
     - name: Check out code
       uses: actions/checkout@v4
 
+    - name: Install fantomas
+      run: |
+        dotnet tool install fantomas
+
     - name: Build
       run: |
         make build-all
