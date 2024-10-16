@@ -6,6 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="encode.fs" />
     <Compile Include="uhppoted.fs" />
   </ItemGroup>
 
