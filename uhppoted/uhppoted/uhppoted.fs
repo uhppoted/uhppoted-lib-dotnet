@@ -1,15 +1,17 @@
 ﻿namespace uhppoted
 
+open System
+
 module Uhppoted =
     let dump (packet: byte array) =
-        printf "    %s" (packet[0..7] |> Array.fold (fun state x -> state + sprintf "%02x " x) "")
-        printf "%s\n" (packet[8..15] |> Array.fold (fun state x -> state + sprintf " %02x" x) "")
-        printf "    %s" (packet[16..23] |> Array.fold (fun state x -> state + sprintf "%02x " x) "")
-        printf "%s\n" (packet[24..31] |> Array.fold (fun state x -> state + sprintf " %02x" x) "")
-        printf "    %s" (packet[32..39] |> Array.fold (fun state x -> state + sprintf "%02x " x) "")
-        printf "%s\n" (packet[40..47] |> Array.fold (fun state x -> state + sprintf " %02x" x) "")
-        printf "    %s" (packet[48..55] |> Array.fold (fun state x -> state + sprintf "%02x " x) "")
-        printf "%s\n" (packet[56..] |> Array.fold (fun state x -> state + sprintf " %02x" x) "")
+        let hex = packet |> Array.map (fun (x: byte) -> String.Format("{0:X2}", x))
+
+        for ix in 0..4 do
+            let p = 16 * ix
+            let q = 16 * ix + 7
+            let left = String.Join(" ", hex.[p..q])
+            let right = String.Join(" ", hex.[p + 8 .. q + 8])
+            printfn "    %s  %s" left right
 
     let get_controllers () =
         printfn "uhppoted::get-controllers"
