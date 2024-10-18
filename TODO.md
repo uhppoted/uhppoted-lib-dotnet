@@ -2,7 +2,9 @@
 
 - [ ] get-controllers
       - [x] encode request packet
-      - [ ] UDP broadcast
+      - [x] UDP broadcast
+      - [ ] decode packet
+      - [ ] error handling
 
 - [x] dump
 - [ ] Add .NET 8 as a target framework on github
