@@ -9,7 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="encode_tests.fs" />
+    <Compile Include="encode_test.fs" />
+    <Compile Include="decode_test.fs" />
     <Compile Include="uhppoted_test.fs" />
     <Compile Include="UnitTests.fs" />
   </ItemGroup>

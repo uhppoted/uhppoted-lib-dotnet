@@ -3,7 +3,7 @@
 - [ ] get-controllers
       - [x] encode request packet
       - [x] UDP broadcast
-      - [ ] decode packet
+      - [ ] decode packets
       - [ ] error handling
 
 - [x] dump
