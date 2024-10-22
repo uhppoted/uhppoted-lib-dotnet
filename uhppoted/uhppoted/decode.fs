@@ -2,6 +2,7 @@ namespace uhppoted
 
 open System
 open System.Net
+open System.Net.NetworkInformation
 
 module Decode =
     let unpackU16 (slice: byte array) =
@@ -18,37 +19,25 @@ module Decode =
         let u32 = u32 + (uint32 slice[3] <<< 24)
         u32
 
-    let unpackIPv4 (slice: byte array) =
-        IPAddress(slice[0..3])
+    let unpackIPv4 (slice: byte array) = IPAddress(slice[0..3])
 
-    let unpack_version (slice: byte array) =
-        $"v%x{slice[0]}.%02x{slice[1]}"
+    let unpack_version (slice: byte array) = $"v%x{slice[0]}.%02x{slice[1]}"
 
-    let unpackMAC (slice: byte array) =
-        let MAC: byte array = Array.zeroCreate 6
-        MAC[0] <- slice[0]
-        MAC[1] <- slice[1]
-        MAC[2] <- slice[2]
-        MAC[3] <- slice[3]
-        MAC[4] <- slice[4]
-        MAC[5] <- slice[5]
-        MAC
-        
+    let unpackMAC (slice: byte array) = PhysicalAddress(slice[0..5])
+
     let unpack_date (slice: byte array) =
         try
-          let bcd = $"%02x{slice[0]}%02x{slice[1]}-%02x{slice[2]}-%02x{slice[3]}"
-          let date = DateOnly.ParseExact(bcd, "yyyy-MM-dd")
-          Some(date)
+            let bcd = $"%02x{slice[0]}%02x{slice[1]}-%02x{slice[2]}-%02x{slice[3]}"
+            let date = DateOnly.ParseExact(bcd, "yyyy-MM-dd")
+            Some(date)
         with _ ->
-           None
+            None
 
-    let get_controller_response (packet: byte array) : GetControllerResponse  = 
-        { 
-          controller = unpackU32 packet[4..7]
+    let get_controller_response (packet: byte array) : GetControllerResponse =
+        { controller = unpackU32 packet[4..7]
           address = unpackIPv4 packet[8..11]
           netmask = unpackIPv4 packet[12..15]
           gateway = unpackIPv4 packet[16..19]
           MAC = unpackMAC packet[20..25]
           version = unpack_version packet[26..27]
-          date = unpack_date(packet[28..31])
-        }
+          date = unpack_date (packet[28..31]) }

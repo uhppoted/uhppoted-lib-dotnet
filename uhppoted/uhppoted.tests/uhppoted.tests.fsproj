@@ -9,6 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="requests.fs" />
+    <Compile Include="responses.fs" />
     <Compile Include="encode_test.fs" />
     <Compile Include="decode_test.fs" />
     <Compile Include="uhppoted_test.fs" />
