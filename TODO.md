@@ -5,14 +5,19 @@
       - [x] UDP broadcast
       - [x] decode packets
       - [ ] pprint Option<DateOnly>
+            - [x] F#
+            - [ ] C#
+            - [ ] VB
       - [ ] error handling
       - [ ] integration test
 
 - [ ] get-controller
-      - [ ] UDP send
+      - [x] UDP broadcastto
+      - [x] return Result
+      - [ ] timeout OR receive
+      - [ ] UDP sendto
       - [ ] TCP send
-      - [ ] Result
-      - [ ] Controller struct
+      - [ ] Controller struct parameter
 
 - [x] dump
 - [ ] Add .NET 8 as a target framework on github
