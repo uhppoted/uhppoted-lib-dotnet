@@ -9,11 +9,11 @@ type TestEncoder() =
     [<Test>]
     member this.TestEncodeGetControllerWithZeroControllerID() =
         let expected = TestRequests.get_all_controllers
-        let packet = Encode.get_controller_request 0
+        let packet = Encode.get_controller_request 0u
         Assert.That(packet, Is.EqualTo(expected))
 
     [<Test>]
     member this.TestEncodeGetControllerWithValidControllerID() =
         let expected = TestRequests.get_controller
-        let packet = Encode.get_controller_request 405419896
+        let packet = Encode.get_controller_request 405419896u
         Assert.That(packet, Is.EqualTo(expected))
