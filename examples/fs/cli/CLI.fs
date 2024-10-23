@@ -3,7 +3,8 @@
 let usage () =
     printfn "Usage: dotnet run <command>\n"
     printfn "  Supported commands:\n"
-    printfn "  - get-controllers  Retrieves a list of controllers accessible on the local LAN"
+    printfn "  - get-all-controllers  Retrieves a list of controllers accessible on the local LAN"
+    printfn "  - get-controller       Retrieves the controller information for a specific controller"
     printfn "\n"
 
 [<EntryPoint>]
@@ -13,7 +14,8 @@ let main args =
     let arglist = args |> List.ofSeq
 
     match arglist with
-    | "get-controllers" :: [] -> get_controllers ()
+    | "get-all-controllers" :: [] -> get_controllers ()
+    | "get-controller" :: [] -> get_controller ()
 
     | _ -> usage ()
 

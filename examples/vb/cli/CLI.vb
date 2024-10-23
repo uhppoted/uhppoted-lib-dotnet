@@ -7,7 +7,7 @@ Module Program
         WriteLIne()
 
         For Each arg In args
-            If arg.Equals("get-controllers")
+            If arg.Equals("get-all-controllers")
                 Commands.GetControllers()
                 Environment.Exit(0)
             End If
@@ -21,7 +21,7 @@ Module Program
         WriteLine("Usage: dotnet run <command>")
         WriteLine()
         WriteLine("  Supported commands:")
-        WriteLine("  - get-controllers  Retrieves a list of controllers accessible on the local LAN")
+        WriteLine("  - get-all-controllers  Retrieves a list of controllers accessible on the local LAN")
         WriteLine()
     End Sub
 End Module

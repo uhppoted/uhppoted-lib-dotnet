@@ -1,11 +1,18 @@
 # TODO
 
-- [ ] get-controllers
+- [ ] get-all-controllers
       - [x] encode request packet
       - [x] UDP broadcast
       - [x] decode packets
-      - [ ] pprint
+      - [ ] pprint Option<DateOnly>
       - [ ] error handling
+      - [ ] integration test
+
+- [ ] get-controller
+      - [ ] UDP send
+      - [ ] TCP send
+      - [ ] Result
+      - [ ] Controller struct
 
 - [x] dump
 - [ ] Add .NET 8 as a target framework on github

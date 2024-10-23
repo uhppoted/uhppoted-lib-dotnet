@@ -9,7 +9,7 @@ class CLI
 
         foreach (string arg in args)
         {
-            if (arg == "get-controllers")
+            if (arg == "get-all-controllers")
             {
                 Commands.GetControllers();
                 Environment.Exit(0);
@@ -25,7 +25,7 @@ class CLI
         WriteLine("Usage: dotnet run <command>");
         WriteLine();
         WriteLine("  Supported commands:");
-        WriteLine("  - get-controllers  Retrieves a list of controllers accessible on the local LAN");
+        WriteLine("  - get-all-controllers  Retrieves a list of controllers accessible on the local LAN");
         WriteLine();
     }
 }

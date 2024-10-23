@@ -1,14 +1,26 @@
 ﻿namespace uhppoted
 
 module Uhppoted =
-    let get_controllers () : GetControllerResponse list =
-        printfn "uhppoted::get-controllers"
+    let get_all_controllers () : GetControllerResponse list =
         let addr = "192.168.1.255"
         let port = 60000
         let timeout = 1000
         let debug = true
 
-        let request = Encode.get_controller_request 0
+        let request = Encode.get_controller_request 0u
         let replies = UDP.broadcast (request, addr, port, timeout, debug)
 
         replies |> List.map (fun v -> Decode.get_controller_response v)
+
+    let get_controller (controller: uint32) =
+        let addr = "192.168.1.255"
+        let port = 60000
+        let timeout = 1000
+        let debug = true
+
+        let request = Encode.get_controller_request controller
+        let result = UDP.broadcast_to (request, addr, port, timeout, debug)
+
+        match result with
+        | Ok packet -> Ok(Decode.get_controller_response packet)
+        | Error err -> Error err

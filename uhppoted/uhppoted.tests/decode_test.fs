@@ -12,6 +12,7 @@ type TestDecoder() =
     [<Test>]
     member this.TestDecodeGetControllerResponse() =
         let packet = TestResponses.get_controller
+
         let expected =
             { controller = 405419896u
               address = IPAddress([| 0xc0uy; 0xa8uy; 0x01uy; 0x64uy |])

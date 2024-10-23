@@ -11,5 +11,5 @@ build: format
 test:
 	dotnet test
 
-get-controllers: build
-	$(CLI) get-controllers
+get-all-controllers: build
+	$(CLI) get-all-controllers

@@ -10,7 +10,7 @@ class Commands
     {
         try
         {
-            FSharpList<uhppoted.GetControllerResponse> controllers = get_controllers();
+            FSharpList<uhppoted.GetControllerResponse> controllers = get_all_controllers();
 
             WriteLine("get-controllers: {0}", controllers.Length);
             foreach (var controller in controllers)

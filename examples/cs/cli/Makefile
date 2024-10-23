@@ -10,6 +10,6 @@ build: format
 run: build
 	dotnet run
 
-get-controllers: build
-	dotnet run get-controllers
+get-all-controllers: build
+	dotnet run get-all-controllers
 

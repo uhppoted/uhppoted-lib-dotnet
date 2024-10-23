@@ -3,5 +3,5 @@
 build-all:
 	cd uhppoted && make build && make test
 
-get-controllers:
-	dotnet run --project examples/fs/cli get-controllers
+get-all-ontrollers:
+	dotnet run --project examples/fs/cli get-all-controllers

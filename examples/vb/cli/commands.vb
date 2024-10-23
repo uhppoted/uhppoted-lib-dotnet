@@ -5,7 +5,7 @@ Imports uhppoted.Uhppoted
 Module Commands
     Sub GetControllers()
         Try
-            Dim controllers As FSharpList(Of uhppoted.GetControllerResponse) = get_controllers()
+            Dim controllers As FSharpList(Of uhppoted.GetControllerResponse) = get_all_controllers()
 
             WriteLine("get-controllers: {0}", controllers.Length)
             For Each controller In controllers
