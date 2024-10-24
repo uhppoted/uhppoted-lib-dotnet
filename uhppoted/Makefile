@@ -13,3 +13,6 @@ test:
 
 get-all-controllers: build
 	$(CLI) get-all-controllers
+
+get-controller: build
+	$(CLI) get-controller

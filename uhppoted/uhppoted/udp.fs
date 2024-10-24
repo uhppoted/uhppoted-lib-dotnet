@@ -4,6 +4,7 @@ open System
 open System.Net
 open System.Net.Sockets
 open System.Threading
+open System.Threading.Tasks
 
 module UDP =
     let dump (packet: byte array) =
@@ -86,10 +87,16 @@ module UDP =
             []
 
     let broadcast_to (request: byte array, addr: string, port: int, timeout: int, debug: bool) =
-        let socket = new UdpClient()
+        let timer (timeout: int) : Async<Result<byte array * IPEndPoint, string>> =
+            async {
+                do! Async.Sleep timeout
+                return Error "timeout"
+            }
 
         try
+            let socket = new UdpClient()
             let rx = receive socket |> Async.StartAsTask
+            let rx_timeout = timer timeout |> Async.StartAsTask
 
             socket.EnableBroadcast <- true
             socket.Send(request, request.Length, addr, port) |> ignore
@@ -98,19 +105,23 @@ module UDP =
                 printfn "    ... sent %d bytes to %s" request.Length addr
                 dump request
 
-            Thread.Sleep timeout
+            let completed =
+                Task.WhenAny(rx, rx_timeout) |> Async.AwaitTask |> Async.RunSynchronously
+
             socket.Close()
 
-            match rx.Result with
-            | Ok(packet, addr) when packet.Length = 64 ->
-                if debug then
-                    printfn "    ... received %d bytes from %A" packet.Length addr
-                    dump packet
+            if completed = rx then
+                match rx.Result with
+                | Ok(packet, addr) when packet.Length = 64 ->
+                    if debug then
+                        printfn "    ... received %d bytes from %A" packet.Length addr
+                        dump packet
 
-                Ok packet
-
-            | Ok(_, _) -> Error "invalid packet"
-            | Error err -> Error err
+                    Ok packet
+                | Ok(_, _) -> Error "invalid packet"
+                | Error err -> Error err
+            else
+                Error "timeout waiting for reply from controller"
 
         with error ->
             Error error.Message

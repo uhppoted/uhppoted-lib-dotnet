@@ -12,9 +12,10 @@
       - [ ] integration test
 
 - [ ] get-controller
-      - [x] UDP broadcastto
+      - [x] UDP broadcast_to
+            - [x] timeout OR receive
+            - [ ] recurse if packet is not 64 bytes
       - [x] return Result
-      - [ ] timeout OR receive
       - [ ] UDP sendto
       - [ ] TCP send
       - [ ] Controller struct parameter
