@@ -38,7 +38,7 @@ module UDP =
                 return List.rev packets
         }
 
-    let receive (socket: UdpClient) : Async<Result<byte array * IPEndPoint, string>> =
+    let rec receive (socket: UdpClient) : Async<Result<byte array * IPEndPoint, string>> =
         async {
             try
                 let! (packet, remote) =
@@ -50,7 +50,11 @@ module UDP =
                             (packet, !addr))
                     )
 
-                return Ok((packet, remote))
+                if packet.Length = 63 then
+                    return Ok((packet, remote))
+                else
+                    return! receive socket
+
             with err ->
                 return Error err.Message
         }
