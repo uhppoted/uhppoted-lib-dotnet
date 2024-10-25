@@ -6,10 +6,8 @@ open uhppoted
 
 let YYYYMMDD date =
     match date with
-      | Some (v: DateOnly) ->
-          v.ToString("yyyy-MM-dd")
-      | None ->
-          "---"
+    | Some(v: DateOnly) -> v.ToString("yyyy-MM-dd")
+    | None -> "---"
 
 let TIMEOUT = 1000
 let DEBUG = true
@@ -31,11 +29,10 @@ let get_controllers () =
         printf "\n")
 
 let get_controller () =
-    let controller = {
-        controller = 405419896u
-        address = Some(IPEndPoint(IPAddress.Parse("192.168.1.100"), 60000))
-        protocol = None
-    }
+    let controller =
+        { controller = 405419896u
+          address = Some(IPEndPoint(IPAddress.Parse("192.168.1.100"), 60000))
+          protocol = None }
 
     match Uhppoted.get_controller (controller, TIMEOUT, DEBUG) with
     | Ok response ->
@@ -49,6 +46,4 @@ let get_controller () =
         printf "    date     %s\n" (YYYYMMDD response.date)
         printf "\n"
 
-    | Error err ->
-        printf "  ** ERROR %A\n" err
-
+    | Error err -> printf "  ** ERROR %A\n" err

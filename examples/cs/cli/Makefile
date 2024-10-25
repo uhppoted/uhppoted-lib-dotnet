@@ -13,3 +13,6 @@ run: build
 get-all-controllers: build
 	dotnet run get-all-controllers
 
+get-controller: build
+	dotnet run get-controller
+

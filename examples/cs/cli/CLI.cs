@@ -7,12 +7,24 @@ class CLI
         WriteLine("**uhppoted-Lib-dotnet C# CLI v0.8.10");
         WriteLine();
 
-        foreach (string arg in args)
+        if (args.Length > 0)
         {
-            if (arg == "get-all-controllers")
+            switch (args[0])
             {
-                Commands.GetControllers();
-                Environment.Exit(0);
+                case "get-all-controllers":
+                    Commands.GetControllers();
+                    Environment.Exit(0);
+                    break;
+
+                case "get-controller":
+                    Commands.GetController();
+                    Environment.Exit(0);
+                    break;
+
+                default:
+                    WriteLine("** ERROR invalid command {0}", args[0]);
+                    WriteLine();
+                    break;
             }
         }
 
@@ -26,6 +38,7 @@ class CLI
         WriteLine();
         WriteLine("  Supported commands:");
         WriteLine("  - get-all-controllers  Retrieves a list of controllers accessible on the local LAN");
+        WriteLine("  - get-controller       Retrieves the controller information for a specific controller");
         WriteLine();
     }
 }
