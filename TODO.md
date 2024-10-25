@@ -16,7 +16,7 @@
             - [x] timeout OR receive
             - [x] recurse if packet is not 64 bytes
       - [x] return Result
-      - [ ] UDP sendto
+      - [x] UDP sendto
       - [ ] TCP send
       - [ ] Controller struct parameter
 
