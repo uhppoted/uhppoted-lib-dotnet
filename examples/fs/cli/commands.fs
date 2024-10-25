@@ -1,6 +1,7 @@
 module Commands
 
 open System
+open System.Net
 open uhppoted
 
 let YYYYMMDD date =
@@ -10,8 +11,11 @@ let YYYYMMDD date =
       | None ->
           "---"
 
+let TIMEOUT = 1000
+let DEBUG = true
+
 let get_controllers () =
-    let controllers = Uhppoted.get_all_controllers ()
+    let controllers = Uhppoted.get_all_controllers (TIMEOUT, DEBUG)
 
     printf "get-all-controllers: %d\n" controllers.Length
 
@@ -27,7 +31,13 @@ let get_controllers () =
         printf "\n")
 
 let get_controller () =
-    match Uhppoted.get_controller 405419896u with
+    let controller = {
+        controller = 405419896u
+        address = Some(IPEndPoint(IPAddress.Parse("192.168.1.100"), 60000))
+        protocol = None
+    }
+
+    match Uhppoted.get_controller (controller, TIMEOUT, DEBUG) with
     | Ok response ->
         printf "get-controller\n"
         printf "  controller %u\n" response.controller

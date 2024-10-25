@@ -18,7 +18,7 @@
       - [x] return Result
       - [x] UDP sendto
       - [ ] TCP send
-      - [ ] Controller struct parameter
+      - [x] Controller struct parameter
 
 - [x] dump
 - [ ] Add .NET 8 as a target framework on github
