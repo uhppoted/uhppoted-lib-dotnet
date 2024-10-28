@@ -13,13 +13,13 @@
 
 - [ ] get-controller
       - [x] UDP broadcast_to
-            - [x] timeout OR receive
-            - [x] recurse if packet is not 64 bytes
       - [x] return Result
-      - [x] UDP sendto
-      - [ ] TCP send
+      - [x] UDP send-to
+      - [x] TCP send-to
       - [x] Controller struct parameter
+      - [ ] integration test
 
+- [ ] Config struct parameter
 - [x] dump
 - [ ] Add .NET 8 as a target framework on github
 ```

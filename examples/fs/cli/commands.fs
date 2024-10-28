@@ -32,7 +32,7 @@ let get_controller () =
     let controller =
         { controller = 405419896u
           address = Some(IPEndPoint(IPAddress.Parse("192.168.1.100"), 60000))
-          protocol = None }
+          protocol = Some("tcp") }
 
     match Uhppoted.get_controller (controller, TIMEOUT, DEBUG) with
     | Ok response ->

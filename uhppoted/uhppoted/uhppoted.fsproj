@@ -10,6 +10,7 @@
     <Compile Include="encode.fs" />
     <Compile Include="decode.fs" />
     <Compile Include="udp.fs" />
+    <Compile Include="tcp.fs" />
     <Compile Include="uhppoted.fs" />
   </ItemGroup>
 
