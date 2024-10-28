@@ -6,6 +6,6 @@ format:
 build: format
 	dotnet build
 
-test:
-	dotnet test
+test: build
+	dotnet test --logger:console;verbosity=detailed
 

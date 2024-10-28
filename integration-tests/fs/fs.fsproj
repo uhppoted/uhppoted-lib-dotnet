@@ -22,7 +22,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\stub\stub.fsproj" />
+    <ProjectReference Include="../stub/stub.fsproj" />
+    <ProjectReference Include="../../uhppoted/uhppoted/uhppoted.fsproj" />
   </ItemGroup>
 
 </Project>

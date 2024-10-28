@@ -6,6 +6,9 @@ build-all:
 	cd examples/cs/cli && make build
 	cd examples/vb/cli && make build
 
+integration-tests:
+	cd integration-tests && make test
+
 get-all-controllers:
 	dotnet run --project examples/fs/cli get-all-controllers
 
