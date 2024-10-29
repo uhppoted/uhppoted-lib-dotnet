@@ -15,4 +15,6 @@ get-all-controllers: build
 get-controller: build
 	dotnet run get-controller
 
+set-ip: build
+	dotnet run set-IPv4
 

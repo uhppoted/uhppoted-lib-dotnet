@@ -10,9 +10,11 @@ build: format
 run: build
 	dotnet run
 
-get-all-controllers: build
+get-controllers: build
 	dotnet run get-all-controllers
 
 get-controller: build
 	dotnet run get-controller
 
+set-ip: build
+	dotnet run set-IPv4

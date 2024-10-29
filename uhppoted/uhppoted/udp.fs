@@ -59,17 +59,17 @@ module UDP =
                 return Error err.Message
         }
 
-    let broadcast (request: byte array, addr: string, port: int, timeout: int, debug: bool) : byte array list =
+    let broadcast (request: byte array, addrPort: IPEndPoint, timeout: int, debug: bool) : byte array list =
         let socket = new UdpClient()
 
         try
             let rx = receive_all socket [] |> Async.StartAsTask
 
             socket.EnableBroadcast <- true
-            socket.Send(request, request.Length, addr, port) |> ignore
+            socket.Send(request, request.Length, addrPort) |> ignore
 
             if debug then
-                printfn "    ... sent %d bytes to %s" request.Length addr
+                printfn "    ... sent %d bytes to %A" request.Length addrPort.Address
                 dump request
 
             Thread.Sleep timeout
@@ -91,6 +91,8 @@ module UDP =
             []
 
     let broadcast_to (request: byte array, addrPort: IPEndPoint, timeout: int, debug: bool) =
+        let socket = new UdpClient()
+
         let timer (timeout: int) : Async<Result<byte array * IPEndPoint, string>> =
             async {
                 do! Async.Sleep timeout
@@ -98,39 +100,45 @@ module UDP =
             }
 
         try
-            let socket = new UdpClient()
-            let rx = receive socket |> Async.StartAsTask
-            let rx_timeout = timer timeout |> Async.StartAsTask
+            try
+                let rx = receive socket |> Async.StartAsTask
+                let rx_timeout = timer timeout |> Async.StartAsTask
 
-            socket.EnableBroadcast <- true
-            socket.Send(request, request.Length, addrPort) |> ignore
+                socket.EnableBroadcast <- true
+                socket.Send(request, request.Length, addrPort) |> ignore
 
-            if debug then
-                printfn "    ... sent %d bytes to %A" request.Length addrPort.Address
-                dump request
+                if debug then
+                    printfn "    ... sent %d bytes to %A" request.Length addrPort.Address
+                    dump request
 
-            let completed =
-                Task.WhenAny(rx, rx_timeout) |> Async.AwaitTask |> Async.RunSynchronously
+                // set-IPv4 does not return a reply
+                if request[1] = 0x96uy then
+                    Ok([||])
+                else
+                    let completed =
+                        Task.WhenAny(rx, rx_timeout) |> Async.AwaitTask |> Async.RunSynchronously
 
+                    if completed = rx then
+                        match rx.Result with
+                        | Ok(packet, addr) when packet.Length = 64 ->
+                            if debug then
+                                printfn "    ... received %d bytes from %A" packet.Length addr.Address
+                                dump packet
+
+                            Ok packet
+                        | Ok(_, _) -> Error "invalid packet"
+                        | Error err -> Error err
+                    else
+                        Error "timeout waiting for reply from controller"
+
+            with error ->
+                Error error.Message
+        finally
             socket.Close()
-
-            if completed = rx then
-                match rx.Result with
-                | Ok(packet, addr) when packet.Length = 64 ->
-                    if debug then
-                        printfn "    ... received %d bytes from %A" packet.Length addr.Address
-                        dump packet
-
-                    Ok packet
-                | Ok(_, _) -> Error "invalid packet"
-                | Error err -> Error err
-            else
-                Error "timeout waiting for reply from controller"
-
-        with error ->
-            Error error.Message
 
     let send_to (request: byte array, addrPort: IPEndPoint, timeout: int, debug: bool) =
+        let socket = new UdpClient()
+
         let timer (timeout: int) : Async<Result<byte array * IPEndPoint, string>> =
             async {
                 do! Async.Sleep timeout
@@ -138,36 +146,39 @@ module UDP =
             }
 
         try
-            let socket = new UdpClient()
+            try
+                socket.Connect(addrPort)
 
-            socket.Connect(addrPort)
+                let rx = receive socket |> Async.StartAsTask
+                let rx_timeout = timer timeout |> Async.StartAsTask
 
-            let rx = receive socket |> Async.StartAsTask
-            let rx_timeout = timer timeout |> Async.StartAsTask
+                socket.Send(request, request.Length) |> ignore
 
-            socket.Send(request, request.Length) |> ignore
+                if debug then
+                    printfn "    ... sent %d bytes to %A" request.Length addrPort.Address
+                    dump request
 
-            if debug then
-                printfn "    ... sent %d bytes to %A" request.Length addrPort.Address
-                dump request
+                // set-IPv4 does not return a reply
+                if request[1] = 0x96uy then
+                    Ok([||])
+                else
+                    let completed =
+                        Task.WhenAny(rx, rx_timeout) |> Async.AwaitTask |> Async.RunSynchronously
 
-            let completed =
-                Task.WhenAny(rx, rx_timeout) |> Async.AwaitTask |> Async.RunSynchronously
+                    if completed = rx then
+                        match rx.Result with
+                        | Ok(packet, addr) when packet.Length = 64 ->
+                            if debug then
+                                printfn "    ... received %d bytes from %A" packet.Length addr.Address
+                                dump packet
 
+                            Ok packet
+                        | Ok(_, _) -> Error "invalid packet"
+                        | Error err -> Error err
+                    else
+                        Error "timeout waiting for reply from controller"
+
+            with error ->
+                Error error.Message
+        finally
             socket.Close()
-
-            if completed = rx then
-                match rx.Result with
-                | Ok(packet, addr) when packet.Length = 64 ->
-                    if debug then
-                        printfn "    ... received %d bytes from %A" packet.Length addr.Address
-                        dump packet
-
-                    Ok packet
-                | Ok(_, _) -> Error "invalid packet"
-                | Error err -> Error err
-            else
-                Error "timeout waiting for reply from controller"
-
-        with error ->
-            Error error.Message

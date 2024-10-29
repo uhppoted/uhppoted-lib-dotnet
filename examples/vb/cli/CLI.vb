@@ -16,6 +16,10 @@ Module Program
                     Commands.GetController()
                     Environment.Exit(0)
 
+                case "set-IPv4" :
+                    Commands.SetIPv4()
+                    Environment.Exit(0)
+
                 Case Else
                     WriteLine("** ERROR invalid command {0}", args(0))
                     WriteLine()
@@ -33,6 +37,7 @@ Module Program
         WriteLine("  Supported commands:")
         WriteLine("  - get-all-controllers  Retrieves a list of controllers accessible on the local LAN")
         WriteLine("  - get-controller       Retrieves the controller information for a specific controller")
+        WriteLine("  - set-IPv4             Sets the controller IPv4 address, netmask and gateway")
         WriteLine()
     End Sub
 End Module

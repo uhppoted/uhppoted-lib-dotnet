@@ -47,3 +47,21 @@ let get_controller () =
         printf "\n"
 
     | Error err -> printf "  ** ERROR %A\n" err
+
+let set_IPv4 () =
+    let controller =
+        { controller = 405419896u
+          address = Some(IPEndPoint(IPAddress.Parse("192.168.1.100"), 60000))
+          protocol = Some("udp") }
+
+    let address = IPAddress.Parse("192.168.1.100")
+    let netmask = IPAddress.Parse("255.255.255.0")
+    let gateway = IPAddress.Parse("192.168.1.1")
+
+    match Uhppoted.set_IPv4 (controller, address, netmask, gateway, TIMEOUT, DEBUG) with
+    | Ok response ->
+        printf "set-IPv4\n"
+        printf "  ok\n"
+        printf "\n"
+
+    | Error err -> printf "  ** ERROR %A\n" err

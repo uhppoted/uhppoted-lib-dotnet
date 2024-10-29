@@ -11,8 +11,11 @@ build: format
 test:
 	dotnet test
 
-get-all-controllers: build
+get-controllers: build
 	$(CLI) get-all-controllers
 
 get-controller: build
 	$(CLI) get-controller
+
+set-ip: build
+	$(CLI) set-IPv4

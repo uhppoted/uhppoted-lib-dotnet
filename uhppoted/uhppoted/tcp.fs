@@ -40,6 +40,8 @@ module TCP =
         }
 
     let send_to (request: byte array, addrPort: IPEndPoint, timeout: int, debug: bool) =
+        let socket = new TcpClient()
+
         let timer (timeout: int) : Async<Result<byte array * IPEndPoint, string>> =
             async {
                 do! Async.Sleep timeout
@@ -47,37 +49,41 @@ module TCP =
             }
 
         try
-            let socket = new TcpClient()
+            try
+                socket.Connect(addrPort)
 
-            socket.Connect(addrPort)
+                let stream = socket.GetStream()
+                let rx = receive stream |> Async.StartAsTask
+                let rx_timeout = timer timeout |> Async.StartAsTask
 
-            let stream = socket.GetStream()
-            let rx = receive stream |> Async.StartAsTask
-            let rx_timeout = timer timeout |> Async.StartAsTask
+                stream.Write(request) |> ignore
 
-            stream.Write(request) |> ignore
+                if debug then
+                    printfn "    ... sent %d bytes to %A" request.Length addrPort.Address
+                    dump request
 
-            if debug then
-                printfn "    ... sent %d bytes to %A" request.Length addrPort.Address
-                dump request
+                // set-IPv4 does not return a reply
+                if request[1] = 0x96uy then
+                    Ok([||])
+                else
+                    let completed =
+                        Task.WhenAny(rx, rx_timeout) |> Async.AwaitTask |> Async.RunSynchronously
 
-            let completed =
-                Task.WhenAny(rx, rx_timeout) |> Async.AwaitTask |> Async.RunSynchronously
+                    if completed = rx then
+                        match rx.Result with
+                        | Ok(packet) when packet.Length = 64 ->
+                            if debug then
+                                printfn "    ... received %d bytes from %A" packet.Length addrPort.Address
+                                dump packet
 
+                            Ok packet
+                        | Ok(_) -> Error "invalid packet"
+                        | Error err -> Error err
+                    else
+                        Error "timeout waiting for reply from controller"
+
+            with error ->
+                Error error.Message
+
+        finally
             socket.Close()
-
-            if completed = rx then
-                match rx.Result with
-                | Ok(packet) when packet.Length = 64 ->
-                    if debug then
-                        printfn "    ... received %d bytes from %A" packet.Length addrPort.Address
-                        dump packet
-
-                    Ok packet
-                | Ok(_) -> Error "invalid packet"
-                | Error err -> Error err
-            else
-                Error "timeout waiting for reply from controller"
-
-        with error ->
-            Error error.Message

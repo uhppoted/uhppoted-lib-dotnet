@@ -10,6 +10,14 @@ Module Commands
     Private Const TIMEOUT = 1000
     Private Const DEBUG = True
 
+    Private Function YYYYMMDD(v As Nullable(Of DateOnly)) As String
+        If v.HasValue Then
+            Return v.Value.ToString("yyyy-MM-dd")
+        Else
+            Return "---"
+        End If
+    End Function
+
     Sub GetControllers()
         Try
             Dim controllers As FSharpList(Of uhppoted.GetControllerResponse) = get_all_controllers(TIMEOUT, DEBUG)
@@ -33,9 +41,9 @@ Module Commands
 
     Sub GetController()
         Try
-            Dim address = new IPEndPoint(IPAddress.Parse("192.168.1.100"), 60000)
+            Dim addr = new IPEndPoint(IPAddress.Parse("192.168.1.100"), 60000)
             Dim protocol = FSharpOption(Of String).None
-            Dim controller = new uhppoted.Controller(405419896, address, protocol)
+            Dim controller = new uhppoted.Controller(405419896, addr, protocol)
             Dim result = get_controller(controller, TIMEOUT, DEBUG)
 
             If (result.IsOk)
@@ -55,7 +63,28 @@ Module Commands
 
         Catch Err As Exception
             WriteLine("Exception  {0}", err.Message)
-            WriteLine("StackTrace {0}", err.StackTrace)
+        End Try
+    End Sub
+
+    Sub SetIPv4()
+        Try
+            Dim addr = new IPEndPoint(IPAddress.Parse("192.168.1.100"), 60000)
+            Dim protocol = FSharpOption(Of String).None
+            Dim controller = new uhppoted.Controller(405419896, addr, protocol)
+            Dim address = IPAddress.Parse("192.168.1.100")
+            Dim netmask = IPAddress.Parse("255.255.255.0")
+            Dim gateway = IPAddress.Parse("192.168.1.1")
+            Dim result = set_IPv4(controller, address, netmask, gateway, TIMEOUT, DEBUG)
+
+            If (result.IsOk)
+                WriteLine("set-IPv4")
+                WriteLine("  ok")
+            Else If (result.IsError)
+                Throw New Exception(result.ErrorValue)
+            End If
+
+        Catch Err As Exception
+            WriteLine("Exception  {0}", err.Message)
         End Try
     End Sub
 

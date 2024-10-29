@@ -8,3 +8,6 @@ get-all-controllers: build
 get-controller: build
 	# dotnet run --project ../../examples/fs/cli get-controller --controller 405419896
 	dotnet run --project ../../examples/fs/cli get-controller
+
+set-ip: build
+	dotnet run --project ../../examples/fs/cli set-IPv4

@@ -21,6 +21,11 @@ class CLI
                     Environment.Exit(0);
                     break;
 
+                case "set-IPv4":
+                    Commands.SetIPv4();
+                    Environment.Exit(0);
+                    break;
+
                 default:
                     WriteLine("** ERROR invalid command {0}", args[0]);
                     WriteLine();
@@ -39,6 +44,7 @@ class CLI
         WriteLine("  Supported commands:");
         WriteLine("  - get-all-controllers  Retrieves a list of controllers accessible on the local LAN");
         WriteLine("  - get-controller       Retrieves the controller information for a specific controller");
+        WriteLine("  - set-IPv4             Sets the controller IPv4 address, netmask and gateway");
         WriteLine();
     }
 }

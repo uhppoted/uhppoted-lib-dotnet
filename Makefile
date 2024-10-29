@@ -1,3 +1,5 @@
+CLI = dotnet run --project ./examples/fs/cli
+
 .PHONY: format
 
 build-all:
@@ -9,8 +11,11 @@ build-all:
 integration-tests:
 	cd integration-tests && make test
 
-get-all-controllers:
-	dotnet run --project examples/fs/cli get-all-controllers
+get-controllers:
+	$(CLI) get-all-controllers
 
 get-controller:
-	dotnet run --project examples/fs/cli get-controller
+	$(CLI) get-controller
+
+set-ipv4:
+	$(CLI) set-IPv4
