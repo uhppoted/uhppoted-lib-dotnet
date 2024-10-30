@@ -19,3 +19,6 @@ get-controller:
 
 set-ipv4:
 	$(CLI) set-IPv4
+
+get-listener:
+	$(CLI) get-listener

@@ -4,15 +4,20 @@ open System
 open System.Net
 open uhppoted
 
+let CONTROLLER = 405419896u
+let ADDRESS = Some(IPEndPoint(IPAddress.Parse("192.168.1.100"), 60000))
+let PROTOCOL = Some("udp")
+let TIMEOUT = 1000
+let DEBUG = true
+
 let YYYYMMDD date =
     match date with
     | Some(v: DateOnly) -> v.ToString("yyyy-MM-dd")
     | None -> "---"
 
-let TIMEOUT = 1000
-let DEBUG = true
+let argparse args flag defval = defval
 
-let get_controllers () =
+let get_controllers args =
     let controllers = Uhppoted.get_all_controllers (TIMEOUT, DEBUG)
 
     printf "get-all-controllers: %d\n" controllers.Length
@@ -28,11 +33,11 @@ let get_controllers () =
         printf "    date     %s\n" (YYYYMMDD response.date)
         printf "\n")
 
-let get_controller () =
+let get_controller args =
     let controller =
-        { controller = 405419896u
-          address = Some(IPEndPoint(IPAddress.Parse("192.168.1.100"), 60000))
-          protocol = Some("tcp") }
+        { controller = argparse args "--controller" CONTROLLER
+          address = ADDRESS
+          protocol = PROTOCOL }
 
     match Uhppoted.get_controller (controller, TIMEOUT, DEBUG) with
     | Ok response ->
@@ -48,11 +53,11 @@ let get_controller () =
 
     | Error err -> printf "  ** ERROR %A\n" err
 
-let set_IPv4 () =
+let set_IPv4 args =
     let controller =
-        { controller = 405419896u
-          address = Some(IPEndPoint(IPAddress.Parse("192.168.1.100"), 60000))
-          protocol = Some("udp") }
+        { controller = argparse args "--controller" CONTROLLER
+          address = ADDRESS
+          protocol = PROTOCOL }
 
     let address = IPAddress.Parse("192.168.1.100")
     let netmask = IPAddress.Parse("255.255.255.0")
@@ -62,6 +67,22 @@ let set_IPv4 () =
     | Ok response ->
         printf "set-IPv4\n"
         printf "  ok\n"
+        printf "\n"
+
+    | Error err -> printf "  ** ERROR %A\n" err
+
+let get_listener args =
+    let controller =
+        { controller = argparse args "--controller" CONTROLLER
+          address = ADDRESS
+          protocol = PROTOCOL }
+
+    match Uhppoted.get_listener (controller, TIMEOUT, DEBUG) with
+    | Ok response ->
+        printf "get-listener\n"
+        printf "  controller %u\n" response.controller
+        printf "    endpoint %A\n" response.endpoint
+        printf "    interval %ds\n" response.interval
         printf "\n"
 
     | Error err -> printf "  ** ERROR %A\n" err

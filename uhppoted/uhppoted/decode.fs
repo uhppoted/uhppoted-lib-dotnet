@@ -5,6 +5,8 @@ open System.Net
 open System.Net.NetworkInformation
 
 module Decode =
+    let unpackU8 (slice: byte array) = slice[0]
+
     let unpackU16 (slice: byte array) =
         let u16 = uint16 0
         let u16 = u16 + uint16 slice[0]
@@ -34,10 +36,20 @@ module Decode =
             None
 
     let get_controller_response (packet: byte array) : GetControllerResponse =
-        { controller = unpackU32 packet[4..7]
-          address = unpackIPv4 packet[8..11]
-          netmask = unpackIPv4 packet[12..15]
-          gateway = unpackIPv4 packet[16..19]
+        { controller = unpackU32 packet[4..]
+          address = unpackIPv4 packet[8..]
+          netmask = unpackIPv4 packet[12..]
+          gateway = unpackIPv4 packet[16..]
           MAC = unpackMAC packet[20..25]
-          version = unpack_version packet[26..27]
-          date = unpack_date (packet[28..31]) }
+          version = unpack_version packet[26..]
+          date = unpack_date (packet[28..]) }
+
+    let get_listener_response (packet: byte array) : GetListenerResponse =
+        let controller = unpackU32 packet[4..]
+        let address = unpackIPv4 packet[8..]
+        let port = unpackU16 packet[12..]
+        let interval = unpackU8 packet[14..]
+
+        { controller = controller
+          endpoint = IPEndPoint(address, int port)
+          interval = interval }

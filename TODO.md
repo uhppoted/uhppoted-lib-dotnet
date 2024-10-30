@@ -1,29 +1,42 @@
 # TODO
 
-- https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/component-design-guidelines#use-the-trygetvalue-pattern-instead-of-returning-f-option-values-and-prefer-method-overloading-to-taking-f-option-values-as-arguments
+- [ ] `Controller` struct
+      - [ ] constructor for C# and VB.NET
 
+- [ ] Options
+      - [ ] bind
+      - [ ] broadcast
+      - [ ] listen
+      - [ ] debug
+
+- [ ] decode
+      - [ ] validate message type
 
 - [ ] get-all-controllers
-      - [x] encode request packet
-      - [x] UDP broadcast
-      - [x] decode packets
       - [ ] pprint Option<DateOnly>
             - [x] F#
             - [ ] C#
             - [ ] VB
             - https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/values/null-values
+            - https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/component-design-guidelines#use-the-trygetvalue-pattern-instead-of-returning-f-option-values-and-prefer-method-overloading-to-taking-f-option-values-as-arguments
       - [ ] error handling
       - [ ] integration test
 
-- [ ] get-controller
-      - [x] UDP broadcast_to
-      - [x] return Result
+- [ ] integration tests
+      - [ ] UDP broadcast
+      - [ ] UDP broadcast-to
       - [x] UDP send-to
-      - [x] TCP send-to
-      - [x] Controller struct parameter
-      - [ ] integration test
+      - [ ] TCP send-to
+      - [ ] get-all-controllers
+      - [ ] get-controller
+      - [ ] set-IPv4
+      - [ ] get-listener
 
-- [ ] set-IPv4
+- [x] get-all-controllers
+- [x] get-controller
+- [x] set-IPv4
+
+- [x] get-listener
       - [x] UDP broadcast_to
       - [x] UDP send-to
       - [x] TCP send-to
@@ -31,7 +44,39 @@
             - [x] F#
             - [x] C#
             - [x] VB.NET
-      - [ ] integration test
+
+- [ ] set-listener
+- [ ] get-time
+- [ ] set-time
+- [ ] get-door-delay
+- [ ] set-door-delay
+- [ ] get-door-control
+- [ ] set-door-control
+- [ ] set-door-passcodes
+- [ ] record-special-events
+- [ ] get-status
+- [ ] get-cards
+- [ ] get-card
+- [ ] put-card
+- [ ] delete-card
+- [ ] delete-cards
+- [ ] get-time-profile
+- [ ] set-time-profile
+- [ ] clear-time-profiles
+- [ ] clear-task-list
+- [ ] add-task
+- [ ] refresh-task-list
+- [ ] set-task-list
+- [ ] get-events
+- [ ] get-event
+- [ ] get-event-index
+- [ ] set-event-index
+- [ ] open-door
+- [ ] set-pc-control
+- [ ] set-interlock
+- [ ] activate-keypads
+- [ ] restore-default-parameters
+- [ ] listen
 
 - [ ] Config struct parameter
 - [x] dump

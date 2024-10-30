@@ -12,17 +12,22 @@ class CLI
             switch (args[0])
             {
                 case "get-all-controllers":
-                    Commands.GetControllers();
+                    Commands.GetControllers(args[1..]);
                     Environment.Exit(0);
                     break;
 
                 case "get-controller":
-                    Commands.GetController();
+                    Commands.GetController(args[1..]);
                     Environment.Exit(0);
                     break;
 
                 case "set-IPv4":
-                    Commands.SetIPv4();
+                    Commands.SetIPv4(args[1..]);
+                    Environment.Exit(0);
+                    break;
+
+                case "get-listener":
+                    Commands.GetListener(args[1..]);
                     Environment.Exit(0);
                     break;
 
@@ -45,6 +50,7 @@ class CLI
         WriteLine("  - get-all-controllers  Retrieves a list of controllers accessible on the local LAN");
         WriteLine("  - get-controller       Retrieves the controller information for a specific controller");
         WriteLine("  - set-IPv4             Sets the controller IPv4 address, netmask and gateway");
+        WriteLine("  - get-listener         Retrieves the controller event listener address:port and auto-send interval");
         WriteLine();
     }
 }

@@ -18,3 +18,5 @@ get-controller: build
 set-ip: build
 	dotnet run set-IPv4
 
+get-listener: build
+	dotnet run get-listener --controller 405419896

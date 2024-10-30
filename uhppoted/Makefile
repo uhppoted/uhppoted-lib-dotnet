@@ -19,3 +19,6 @@ get-controller: build
 
 set-ip: build
 	$(CLI) set-IPv4
+
+get-listener: build
+	$(CLI) get-listener

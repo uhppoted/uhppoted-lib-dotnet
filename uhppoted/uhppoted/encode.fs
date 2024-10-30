@@ -37,3 +37,13 @@ module Encode =
         Array.blit (packU32 MAGIC_WORD) 0 packet 20 4
 
         packet
+
+    let get_listener_request (controller: uint32) =
+        let packet: byte array = Array.zeroCreate 64
+
+        Array.set packet 0 (byte 0x17)
+        Array.set packet 1 (byte 0x92)
+
+        Array.blit (packU32 controller) 0 packet 4 4
+
+        packet

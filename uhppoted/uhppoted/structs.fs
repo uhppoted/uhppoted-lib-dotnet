@@ -12,3 +12,8 @@ type GetControllerResponse =
       MAC: PhysicalAddress
       version: string
       date: Option<DateOnly> }
+
+type GetListenerResponse =
+    { controller: uint32
+      endpoint: IPEndPoint
+      interval: uint8 }

@@ -1,23 +1,30 @@
 Imports System.Console
-
+Imports System.Linq
 
 Module Program
     Sub Main(args As String())
         WriteLine("**uhppoted-Lib-dotnet VB.NET CLI v0.8.10")
-        WriteLIne()
+        WriteLine()
 
         If args.Length > 0
-            Select args(0)
+            Dim cmd = args(0)
+            Dim slice = args.Skip(1).ToArray()
+
+            Select cmd
                 Case "get-all-controllers"
-                    Commands.GetControllers()
+                    Commands.GetControllers(slice)
                     Environment.Exit(0)
 
                 Case "get-controller"
-                    Commands.GetController()
+                    Commands.GetController(slice)
                     Environment.Exit(0)
 
                 case "set-IPv4" :
-                    Commands.SetIPv4()
+                    Commands.SetIPv4(slice)
+                    Environment.Exit(0)
+
+                Case "get-listener"
+                    Commands.GetListener(slice)
                     Environment.Exit(0)
 
                 Case Else
@@ -38,6 +45,7 @@ Module Program
         WriteLine("  - get-all-controllers  Retrieves a list of controllers accessible on the local LAN")
         WriteLine("  - get-controller       Retrieves the controller information for a specific controller")
         WriteLine("  - set-IPv4             Sets the controller IPv4 address, netmask and gateway")
+        WriteLine("  - get-listener         Retrieves the controller event listener address:port and auto-send interval")
         WriteLine()
     End Sub
 End Module

@@ -18,7 +18,7 @@ Module Commands
         End If
     End Function
 
-    Sub GetControllers()
+    Sub GetControllers(args As String())
         Try
             Dim controllers As FSharpList(Of uhppoted.GetControllerResponse) = get_all_controllers(TIMEOUT, DEBUG)
 
@@ -39,7 +39,7 @@ Module Commands
         End Try
     End Sub
 
-    Sub GetController()
+    Sub GetController(args As String())
         Try
             Dim addr = new IPEndPoint(IPAddress.Parse("192.168.1.100"), 60000)
             Dim protocol = FSharpOption(Of String).None
@@ -66,7 +66,7 @@ Module Commands
         End Try
     End Sub
 
-    Sub SetIPv4()
+    Sub SetIPv4(args As String())
         Try
             Dim addr = new IPEndPoint(IPAddress.Parse("192.168.1.100"), 60000)
             Dim protocol = FSharpOption(Of String).None
@@ -79,6 +79,29 @@ Module Commands
             If (result.IsOk)
                 WriteLine("set-IPv4")
                 WriteLine("  ok")
+            Else If (result.IsError)
+                Throw New Exception(result.ErrorValue)
+            End If
+
+        Catch Err As Exception
+            WriteLine("Exception  {0}", err.Message)
+        End Try
+    End Sub
+
+    Sub GetListener(args As String())
+        Try
+            Dim addr = new IPEndPoint(IPAddress.Parse("192.168.1.100"), 60000)
+            Dim protocol = FSharpOption(Of String).None
+            Dim controller = new uhppoted.Controller(405419896, addr, protocol)
+            Dim result = get_listener(controller, TIMEOUT, DEBUG)
+
+            If (result.IsOk)
+                Dim response = result.ResultValue
+                WriteLine("get-listener")
+                WriteLine("  controller {0}", response.controller)
+                WriteLine("    endpoint {0}", response.endpoint)
+                WriteLine("    interval {0}s", response.interval)
+                WriteLine()
             Else If (result.IsError)
                 Throw New Exception(result.ErrorValue)
             End If

@@ -24,3 +24,15 @@ type TestDecoder() =
 
         let response = Decode.get_controller_response packet
         Assert.That(response, Is.EqualTo(expected))
+
+    [<Test>]
+    member this.TestDecodeGetListenerResponse() =
+        let packet = TestResponses.get_listener
+
+        let expected =
+            { controller = 405419896u
+              endpoint = IPEndPoint(IPAddress.Parse("192.168.1.100"), 60001)
+              interval = 13uy }
+
+        let response = Decode.get_listener_response packet
+        Assert.That(response, Is.EqualTo(expected))

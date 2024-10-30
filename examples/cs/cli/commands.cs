@@ -8,6 +8,7 @@ using static uhppoted.Uhppoted;
 
 class Commands
 {
+    const uint CONTROLLER = 405419896u;
     const int TIMEOUT = 1000;
     const bool DEBUG = true;
 
@@ -16,7 +17,7 @@ class Commands
         return date.HasValue ? date.Value.ToString("yyyy-MM-dd") : "---";
     }
 
-    public static void GetControllers()
+    public static void GetControllers(string[] args)
     {
         try
         {
@@ -41,13 +42,13 @@ class Commands
         }
     }
 
-    public static void GetController()
+    public static void GetController(string[] args)
     {
         try
         {
             var addr = new IPEndPoint(IPAddress.Parse("192.168.1.100"), 60000);
             var controller = new uhppoted.Controller(
-                                 controller: 405419896u,
+                                 controller: CONTROLLER,
                                  address: FSharpOption<IPEndPoint>.Some(addr),
                                  protocol: FSharpOption<string>.None);
 
@@ -75,17 +76,16 @@ class Commands
         catch (Exception err)
         {
             WriteLine("** ERROR  {0}", err.Message);
-            WriteLine("** STACKTRACE  {0}" + err.StackTrace);
         }
     }
 
-    public static void SetIPv4()
+    public static void SetIPv4(string[] args)
     {
         try
         {
             var addr = new IPEndPoint(IPAddress.Parse("192.168.1.100"), 60000);
             var controller = new uhppoted.Controller(
-                                 controller: 405419896u,
+                                 controller: CONTROLLER,
                                  address: FSharpOption<IPEndPoint>.Some(addr),
                                  protocol: FSharpOption<string>.None);
 
@@ -107,8 +107,41 @@ class Commands
         catch (Exception err)
         {
             WriteLine("** ERROR  {0}", err.Message);
-            WriteLine("** STACKTRACE  {0}" + err.StackTrace);
         }
     }
+
+    public static void GetListener(string[] args)
+    {
+        try
+        {
+            var addr = new IPEndPoint(IPAddress.Parse("192.168.1.100"), 60000);
+            var controller = new uhppoted.Controller(
+                                 controller: CONTROLLER,
+                                 address: FSharpOption<IPEndPoint>.Some(addr),
+                                 protocol: FSharpOption<string>.None);
+
+            var result = get_listener(controller, TIMEOUT, DEBUG);
+
+            if (result.IsOk)
+            {
+                var response = result.ResultValue;
+
+                WriteLine("get-listener");
+                WriteLine("  controller {0}", response.controller);
+                WriteLine("    endpoint {0}", response.endpoint);
+                WriteLine("    interval {0}s", response.interval);
+                WriteLine();
+            }
+            else if (result.IsError)
+            {
+                throw new Exception(result.ErrorValue);
+            }
+        }
+        catch (Exception err)
+        {
+            WriteLine("** ERROR  {0}", err.Message);
+        }
+    }
+
 }
 
