@@ -3,8 +3,9 @@
 format:
 	dotnet fantomas .
 
-build: format
+build: 
 	dotnet build
+	dotnet fantomas .
 
 test: build
 	dotnet test --logger:console;verbosity=detailed

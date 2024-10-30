@@ -1,6 +1,7 @@
 CLI = dotnet run --project ./examples/fs/cli
 
 .PHONY: format
+.PHONY: integration-tests
 
 build-all:
 	cd uhppoted        && make build && make test
@@ -8,7 +9,7 @@ build-all:
 	cd examples/cs/cli && make build
 	cd examples/vb/cli && make build
 
-integration-tests:
+integration-tests: 
 	cd integration-tests && make test
 
 get-controllers:

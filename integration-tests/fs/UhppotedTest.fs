@@ -12,6 +12,20 @@ type TestClass() =
     [<DefaultValue>]
     val mutable emulator: Emulator
 
+    let controllers =
+        [ { controller = 405419896u
+            address = Some(IPEndPoint(IPAddress.Parse("192.168.1.100"), 59999))
+            protocol = None }
+
+          { controller = 405419896u
+            address = Some(IPEndPoint(IPAddress.Parse("192.168.1.100"), 59999))
+            protocol = Some("udp") }
+
+          { controller = 405419896u
+            address = Some(IPEndPoint(IPAddress.Parse("192.168.1.100"), 59999))
+            protocol = Some("tcp") } ]
+
+
     [<OneTimeSetUp>]
     member this.Initialise() =
         TestContext.Error.WriteLine("=========>OneTimeSetUp")
@@ -30,11 +44,6 @@ type TestClass() =
 
     [<Test>]
     member this.TestGetController() =
-        let controller =
-            { controller = 405419896u
-              address = Some(IPEndPoint(IPAddress.Parse("192.168.1.100"), 59999))
-              protocol = Some("udp") }
-
         let expected: GetControllerResponse =
             { controller = 405419896u
               address = IPAddress.Parse("192.168.1.100")
@@ -44,6 +53,8 @@ type TestClass() =
               version = "v8.92"
               date = Some(DateOnly.ParseExact("2018-08-16", "yyyy-MM-dd")) }
 
-        match Uhppoted.get_controller (controller, 1000, false) with
-        | Ok response -> Assert.That(response, Is.EqualTo(expected))
-        | Error err -> Assert.Fail(err)
+        controllers
+        |> List.iter (fun controller ->
+            match Uhppoted.get_controller (controller, 1000, false) with
+            | Ok response -> Assert.That(response, Is.EqualTo(expected))
+            | Error err -> Assert.Fail(err))

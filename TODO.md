@@ -20,15 +20,14 @@
             - https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/values/null-values
             - https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/component-design-guidelines#use-the-trygetvalue-pattern-instead-of-returning-f-option-values-and-prefer-method-overloading-to-taking-f-option-values-as-arguments
       - [ ] error handling
-      - [ ] integration test
 
 - [ ] integration tests
       - [ ] UDP broadcast
       - [ ] UDP broadcast-to
       - [x] UDP send-to
-      - [ ] TCP send-to
+      - [x] TCP send-to
       - [ ] get-all-controllers
-      - [ ] get-controller
+      - [x] get-controller
       - [ ] set-IPv4
       - [ ] get-listener
 

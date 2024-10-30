@@ -29,3 +29,4 @@ jobs:
     - name: Build
       run: |
         make build-all
+        make integration-tests
