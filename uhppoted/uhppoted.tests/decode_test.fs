@@ -31,7 +31,7 @@ type TestDecoder() =
 
         let expected =
             { controller = 405419896u
-              endpoint = IPEndPoint(IPAddress.Parse("192.168.1.100"), 60001)
+              endpoint = IPEndPoint.Parse("192.168.1.100:60001")
               interval = 13uy }
 
         let response = Decode.get_listener_response packet

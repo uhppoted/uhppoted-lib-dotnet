@@ -11,7 +11,22 @@ type Emulator =
       tcp: (TcpListener * Task) }
 
 module Stub =
-    let rec udp_receive (socket: UdpClient) (logger: TextWriter) =
+    let dump packet (logger: TextWriter) =
+        let hex = packet |> Array.map (fun (x: byte) -> String.Format("{0:x2}", x))
+
+        for ix in 0..4 do
+            let p = 16 * ix
+            let q = 16 * ix + 7
+            let left = String.Join(" ", hex.[p..q])
+            let right = String.Join(" ", hex.[p + 8 .. q + 8])
+            logger.WriteLine("    {0}  {1}", left, right)
+
+    let find packet =
+        match Requests.find packet with
+        | Some(key) -> Responses.find key
+        | _ -> None
+
+    let rec recv (socket: UdpClient) (logger: TextWriter) =
         async {
             try
                 let! (packet, remote) =
@@ -23,18 +38,20 @@ module Stub =
                             (packet, !addr))
                     )
 
-                logger.WriteLine("** incoming {0} {1}", remote, packet)
+                match find packet with
+                | Some(reply) when reply.Length = 64 -> socket.Send(reply, reply.Length, remote) |> ignore
+                | Some(_) -> ()
+                | _ ->
+                    logger.WriteLine("*** ERROR unknown packet")
+                    dump packet logger
 
-                let response = Responses.get_controller
-                socket.Send(response, response.Length, remote) |> ignore
-
-                return! udp_receive socket logger
+                return! recv socket logger
             with
             | :? ObjectDisposedException -> logger.WriteLine("** UDP SOCKET CLOSED")
             | err -> logger.WriteLine("** ERROR {0}", err.Message)
         }
 
-    let rec tcp_receive (stream: NetworkStream) (logger: TextWriter) =
+    let rec read (stream: NetworkStream) (logger: TextWriter) =
         async {
             try
                 let! packet =
@@ -48,11 +65,14 @@ module Stub =
                     )
 
                 if packet.Length > 0 then
-                    if packet.Length = 64 then
-                        let response = Responses.get_controller
-                        stream.Write(response) |> ignore
+                    match find packet with
+                    | Some(reply) when reply.Length = 64 -> stream.Write(reply) |> ignore
+                    | Some(_) -> ()
+                    | _ ->
+                        logger.WriteLine("*** ERROR unknown packet")
+                        dump packet logger
 
-                    return! tcp_receive stream logger
+                    return! read stream logger
 
                 return ()
             with err ->
@@ -60,17 +80,16 @@ module Stub =
                 return ()
         }
 
-    let tcp_listen (socket: TcpListener) (logger: TextWriter) =
+    let listen (socket: TcpListener) (logger: TextWriter) =
         async {
             try
                 socket.Start()
-                logger.WriteLine("** listening")
 
                 while true do
                     let! connection = socket.AcceptTcpClientAsync() |> Async.AwaitTask
                     let stream = connection.GetStream()
 
-                    tcp_receive stream logger |> Async.Start
+                    read stream logger |> Async.Start
             with
             | :? ObjectDisposedException -> logger.WriteLine("** TCP SOCKET CLOSED")
             | err -> logger.WriteLine("** ERROR {0}", err.Message)
@@ -78,10 +97,10 @@ module Stub =
 
     let initialise (logger: TextWriter) : Emulator =
         let udp = new UdpClient(59999)
-        let udprx = udp_receive udp logger |> Async.StartAsTask
+        let udprx = recv udp logger |> Async.StartAsTask
 
         let tcp = new TcpListener(IPAddress.Any, 59999)
-        let tcprx = tcp_listen tcp logger |> Async.StartAsTask
+        let tcprx = listen tcp logger |> Async.StartAsTask
 
         { udp = (udp, udprx)
           tcp = (tcp, tcprx) }

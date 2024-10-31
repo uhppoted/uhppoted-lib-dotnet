@@ -12,35 +12,37 @@ type TestClass() =
     [<DefaultValue>]
     val mutable emulator: Emulator
 
+    let CONTROLLER = 405419896u
+    let ENDPOINT = IPEndPoint.Parse("192.168.1.100:59999")
+    let TIMEOUT = 500
+    let DEBUG = false
+
     let controllers =
-        [ { controller = 405419896u
-            address = Some(IPEndPoint(IPAddress.Parse("192.168.1.100"), 59999))
+        [ { controller = CONTROLLER
+            address = Some(ENDPOINT)
             protocol = None }
 
-          { controller = 405419896u
-            address = Some(IPEndPoint(IPAddress.Parse("192.168.1.100"), 59999))
+          { controller = CONTROLLER
+            address = Some(ENDPOINT)
             protocol = Some("udp") }
 
-          { controller = 405419896u
-            address = Some(IPEndPoint(IPAddress.Parse("192.168.1.100"), 59999))
+          { controller = CONTROLLER
+            address = Some(ENDPOINT)
             protocol = Some("tcp") } ]
 
 
     [<OneTimeSetUp>]
     member this.Initialise() =
-        TestContext.Error.WriteLine("=========>OneTimeSetUp")
         this.emulator <- Stub.initialise TestContext.Error
 
     [<OneTimeTearDown>]
-    member this.Terminate() =
-        TestContext.Error.WriteLine("=========>OneTimeTearDown")
-        Stub.terminate this.emulator
+    member this.Terminate() = Stub.terminate this.emulator
 
     [<SetUp>]
-    member this.Setup() = printfn ">>> setup %A" this.emulator
+    member this.Setup() = ()
 
     [<TearDown>]
-    member this.TearDown() = printfn ">>> teardown %A" this.emulator
+    member this.TearDown() = ()
 
     [<Test>]
     member this.TestGetController() =
@@ -55,6 +57,44 @@ type TestClass() =
 
         controllers
         |> List.iter (fun controller ->
-            match Uhppoted.get_controller (controller, 1000, false) with
+            match Uhppoted.get_controller (controller, TIMEOUT, DEBUG) with
+            | Ok response -> Assert.That(response, Is.EqualTo(expected))
+            | Error err -> Assert.Fail(err))
+
+    [<Test>]
+    member this.TestSetIPv4() =
+        let address = IPAddress.Parse("192.168.1.100")
+        let netmask = IPAddress.Parse("255.255.255.0")
+        let gateway = IPAddress.Parse("192.168.1.1")
+
+        controllers
+        |> List.iter (fun controller ->
+            match Uhppoted.set_IPv4 (controller, address, netmask, gateway, TIMEOUT, DEBUG) with
+            | Ok response -> Assert.Pass()
+            | Error err -> Assert.Fail(err))
+
+    [<Test>]
+    member this.TestGetListener() =
+        let expected: GetListenerResponse =
+            { controller = 405419896u
+              endpoint = IPEndPoint.Parse("192.168.1.100:60001")
+              interval = 13uy }
+
+        controllers
+        |> List.iter (fun controller ->
+            match Uhppoted.get_listener (controller, TIMEOUT, DEBUG) with
+            | Ok response -> Assert.That(response, Is.EqualTo(expected))
+            | Error err -> Assert.Fail(err))
+
+    [<Test>]
+    member this.TestSetListener() =
+        let expected: SetListenerResponse = { controller = 405419896u; ok = true }
+
+        let endpoint = IPEndPoint.Parse("192.168.1.100:60001")
+        let interval = 17uy
+
+        controllers
+        |> List.iter (fun controller ->
+            match Uhppoted.set_listener (controller, endpoint, interval, TIMEOUT, DEBUG) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))

@@ -28,9 +28,9 @@
       - [x] TCP send-to
       - [ ] get-all-controllers
       - [x] get-controller
-      - [ ] set-IPv4
-      - [ ] get-listener
-      - [ ] set-listener
+      - [x] set-IPv4
+      - [x] get-listener
+      - [x] set-listener
 
 - [x] get-all-controllers
 - [x] get-controller
@@ -77,7 +77,6 @@
 - [ ] restore-default-parameters
 - [ ] listen
 
-- [ ] Config struct parameter
 - [x] dump
 - [ ] Add .NET 8 as a target framework on github
 ```
