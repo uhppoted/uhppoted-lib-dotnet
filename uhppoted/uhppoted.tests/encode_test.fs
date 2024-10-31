@@ -43,3 +43,15 @@ type TestEncoder() =
         let packet = Encode.get_listener_request controller
 
         Assert.That(packet, Is.EqualTo(expected))
+
+    [<Test>]
+    member this.TestEncodeSetListener() =
+        let expected = TestRequests.set_listener
+
+        let controller = 405419896u
+        let address = IPAddress.Parse("192.168.1.100")
+        let port = 60001us
+        let interval = 17uy
+        let packet = Encode.set_listener_request controller address port interval
+
+        Assert.That(packet, Is.EqualTo(expected))

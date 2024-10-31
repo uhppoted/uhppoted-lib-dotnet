@@ -22,3 +22,6 @@ set-ip: build
 
 get-listener: build
 	$(CLI) get-listener
+
+set-listener: build
+	$(CLI) set-listener

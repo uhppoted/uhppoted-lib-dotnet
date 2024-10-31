@@ -23,3 +23,6 @@ set-ipv4:
 
 get-listener:
 	$(CLI) get-listener
+
+set-listener:
+	$(CLI) set-listener

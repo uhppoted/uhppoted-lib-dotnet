@@ -20,3 +20,6 @@ set-ip: build
 
 get-listener: build
 	dotnet run get-listener --controller 405419896
+
+set-listener: build
+	dotnet run set-listener --controller 405419896

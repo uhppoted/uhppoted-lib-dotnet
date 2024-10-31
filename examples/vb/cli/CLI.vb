@@ -27,6 +27,10 @@ Module Program
                     Commands.GetListener(slice)
                     Environment.Exit(0)
 
+                Case "set-listener"
+                    Commands.SetListener(slice)
+                    Environment.Exit(0)
+
                 Case Else
                     WriteLine("** ERROR invalid command {0}", args(0))
                     WriteLine()
@@ -46,6 +50,7 @@ Module Program
         WriteLine("  - get-controller       Retrieves the controller information for a specific controller")
         WriteLine("  - set-IPv4             Sets the controller IPv4 address, netmask and gateway")
         WriteLine("  - get-listener         Retrieves the controller event listener address:port and auto-send interval")
+        WriteLine("  - set-listener         Sets the controller event listener address:port and auto-send interval")
         WriteLine()
     End Sub
 End Module

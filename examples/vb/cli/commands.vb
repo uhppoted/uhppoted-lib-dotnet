@@ -41,7 +41,7 @@ Module Commands
 
     Sub GetController(args As String())
         Try
-            Dim addr = new IPEndPoint(IPAddress.Parse("192.168.1.100"), 60000)
+            Dim addr = IPEndPoint.Parse("192.168.1.100:60000")
             Dim protocol = FSharpOption(Of String).None
             Dim controller = new uhppoted.Controller(405419896, addr, protocol)
             Dim result = get_controller(controller, TIMEOUT, DEBUG)
@@ -68,7 +68,7 @@ Module Commands
 
     Sub SetIPv4(args As String())
         Try
-            Dim addr = new IPEndPoint(IPAddress.Parse("192.168.1.100"), 60000)
+            Dim addr = IPEndPoint.Parse("192.168.1.100:60000")
             Dim protocol = FSharpOption(Of String).None
             Dim controller = new uhppoted.Controller(405419896, addr, protocol)
             Dim address = IPAddress.Parse("192.168.1.100")
@@ -90,7 +90,7 @@ Module Commands
 
     Sub GetListener(args As String())
         Try
-            Dim addr = new IPEndPoint(IPAddress.Parse("192.168.1.100"), 60000)
+            Dim addr = IPEndPoint.Parse("192.168.1.100:60000")
             Dim protocol = FSharpOption(Of String).None
             Dim controller = new uhppoted.Controller(405419896, addr, protocol)
             Dim result = get_listener(controller, TIMEOUT, DEBUG)
@@ -101,6 +101,30 @@ Module Commands
                 WriteLine("  controller {0}", response.controller)
                 WriteLine("    endpoint {0}", response.endpoint)
                 WriteLine("    interval {0}s", response.interval)
+                WriteLine()
+            Else If (result.IsError)
+                Throw New Exception(result.ErrorValue)
+            End If
+
+        Catch Err As Exception
+            WriteLine("Exception  {0}", err.Message)
+        End Try
+    End Sub
+
+    Sub SetListener(args As String())
+        Try
+            Dim addr = IPEndPoint.Parse("192.168.1.100:60000")
+            Dim protocol = FSharpOption(Of String).None
+            Dim controller = new uhppoted.Controller(405419896, addr, protocol)
+            Dim endpoint = IPEndPoint.Parse("192.168.1.100:60001")
+            Dim interval = 30
+            Dim result = set_listener(controller, endpoint, interval, TIMEOUT, DEBUG)
+
+            If (result.IsOk)
+                Dim response = result.ResultValue
+                WriteLine("set-listener")
+                WriteLine("  controller {0}", response.controller)
+                WriteLine("          ok {0}", response.ok)
                 WriteLine()
             Else If (result.IsError)
                 Throw New Exception(result.ErrorValue)

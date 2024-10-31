@@ -21,6 +21,11 @@ module Decode =
         let u32 = u32 + (uint32 slice[3] <<< 24)
         u32
 
+    let unpackBool (slice: byte array) =
+        match slice[0] with
+        | 0x01uy -> true
+        | _ -> false
+
     let unpackIPv4 (slice: byte array) = IPAddress(slice[0..3])
 
     let unpack_version (slice: byte array) = $"v%x{slice[0]}.%02x{slice[1]}"
@@ -53,3 +58,7 @@ module Decode =
         { controller = controller
           endpoint = IPEndPoint(address, int port)
           interval = interval }
+
+    let set_listener_response (packet: byte array) : SetListenerResponse =
+        { controller = unpackU32 packet[4..]
+          ok = unpackBool packet[8..] }

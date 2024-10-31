@@ -71,3 +71,21 @@ module Uhppoted =
         match result with
         | Ok packet -> Ok(Decode.get_listener_response packet)
         | Error err -> Error err
+
+    let set_listener (controller: Controller, endpoint: IPEndPoint, interval: uint8, timeout: int, debug: bool) =
+        let cfg = configure (debug)
+        let address = endpoint.Address
+        let port = uint16 endpoint.Port
+
+        let request =
+            Encode.set_listener_request controller.controller address port interval
+
+        let result =
+            match controller.address, controller.protocol with
+            | None, _ -> UDP.broadcast_to (request, cfg.broadcast, timeout, cfg.debug)
+            | Some(addr), Some("tcp") -> TCP.send_to (request, addr, timeout, cfg.debug)
+            | Some(addr), _ -> UDP.send_to (request, addr, timeout, cfg.debug)
+
+        match result with
+        | Ok packet -> Ok(Decode.set_listener_response packet)
+        | Error err -> Error err

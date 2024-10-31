@@ -20,3 +20,6 @@ set-ip: build
 
 get-listener: build
 	dotnet run get-listener
+
+set-listener: build
+	dotnet run set-listener

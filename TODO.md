@@ -30,12 +30,13 @@
       - [x] get-controller
       - [ ] set-IPv4
       - [ ] get-listener
+      - [ ] set-listener
 
 - [x] get-all-controllers
 - [x] get-controller
 - [x] set-IPv4
-
 - [x] get-listener
+- [x] set-listener
       - [x] UDP broadcast_to
       - [x] UDP send-to
       - [x] TCP send-to
@@ -44,7 +45,6 @@
             - [x] C#
             - [x] VB.NET
 
-- [ ] set-listener
 - [ ] get-time
 - [ ] set-time
 - [ ] get-door-delay

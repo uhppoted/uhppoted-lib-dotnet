@@ -46,7 +46,7 @@ class Commands
     {
         try
         {
-            var addr = new IPEndPoint(IPAddress.Parse("192.168.1.100"), 60000);
+            var addr = IPEndPoint.Parse("192.168.1.100:60000");
             var controller = new uhppoted.Controller(
                                  controller: CONTROLLER,
                                  address: FSharpOption<IPEndPoint>.Some(addr),
@@ -83,7 +83,7 @@ class Commands
     {
         try
         {
-            var addr = new IPEndPoint(IPAddress.Parse("192.168.1.100"), 60000);
+            var addr = IPEndPoint.Parse("192.168.1.100:60000");
             var controller = new uhppoted.Controller(
                                  controller: CONTROLLER,
                                  address: FSharpOption<IPEndPoint>.Some(addr),
@@ -114,7 +114,7 @@ class Commands
     {
         try
         {
-            var addr = new IPEndPoint(IPAddress.Parse("192.168.1.100"), 60000);
+            var addr = IPEndPoint.Parse("192.168.1.100:60000");
             var controller = new uhppoted.Controller(
                                  controller: CONTROLLER,
                                  address: FSharpOption<IPEndPoint>.Some(addr),
@@ -130,6 +130,40 @@ class Commands
                 WriteLine("  controller {0}", response.controller);
                 WriteLine("    endpoint {0}", response.endpoint);
                 WriteLine("    interval {0}s", response.interval);
+                WriteLine();
+            }
+            else if (result.IsError)
+            {
+                throw new Exception(result.ErrorValue);
+            }
+        }
+        catch (Exception err)
+        {
+            WriteLine("** ERROR  {0}", err.Message);
+        }
+    }
+
+    public static void SetListener(string[] args)
+    {
+        try
+        {
+            var addr = IPEndPoint.Parse("192.168.1.100:60000");
+            var controller = new uhppoted.Controller(
+                                 controller: CONTROLLER,
+                                 address: FSharpOption<IPEndPoint>.Some(addr),
+                                 protocol: FSharpOption<string>.None);
+
+            var endpoint = IPEndPoint.Parse("192.168.1.100:60001");
+            var interval = (byte)30;
+            var result = set_listener(controller, endpoint, interval, TIMEOUT, DEBUG);
+
+            if (result.IsOk)
+            {
+                var response = result.ResultValue;
+
+                WriteLine("set-listener");
+                WriteLine("  controller {0}", response.controller);
+                WriteLine("          ok {0}", response.ok);
                 WriteLine();
             }
             else if (result.IsError)

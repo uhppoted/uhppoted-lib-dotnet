@@ -17,3 +17,5 @@ type GetListenerResponse =
     { controller: uint32
       endpoint: IPEndPoint
       interval: uint8 }
+
+type SetListenerResponse = { controller: uint32; ok: bool }

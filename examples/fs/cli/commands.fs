@@ -86,3 +86,21 @@ let get_listener args =
         printf "\n"
 
     | Error err -> printf "  ** ERROR %A\n" err
+
+let set_listener args =
+    let controller =
+        { controller = argparse args "--controller" CONTROLLER
+          address = ADDRESS
+          protocol = PROTOCOL }
+
+    let endpoint = IPEndPoint.Parse("192.168.1.100:60001")
+    let interval = 30uy
+
+    match Uhppoted.set_listener (controller, endpoint, interval, TIMEOUT, DEBUG) with
+    | Ok response ->
+        printf "set-listener\n"
+        printf "  controller %u\n" response.controller
+        printf "          ok %A\n" response.ok
+        printf "\n"
+
+    | Error err -> printf "  ** ERROR %A\n" err

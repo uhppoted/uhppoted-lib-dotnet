@@ -36,3 +36,12 @@ type TestDecoder() =
 
         let response = Decode.get_listener_response packet
         Assert.That(response, Is.EqualTo(expected))
+
+    [<Test>]
+    member this.TestDecodeSetListenerResponse() =
+        let packet = TestResponses.set_listener
+
+        let expected = { controller = 405419896u; ok = true }
+
+        let response = Decode.set_listener_response packet
+        Assert.That(response, Is.EqualTo(expected))

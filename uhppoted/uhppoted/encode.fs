@@ -6,6 +6,11 @@ module Encode =
     [<Literal>]
     let MAGIC_WORD = 0x55aaaa55u
 
+    let packU8 (v: uint8) = [| (byte ((v >>> 0) &&& 0x00ffuy)) |]
+
+    let packU16 (v: uint16) =
+        [| (byte ((v >>> 0) &&& 0x00ffus)); (byte ((v >>> 8) &&& 0x00ffus)) |]
+
     let packU32 (v: uint32) =
         [| (byte ((v >>> 0) &&& 0x00ffu))
            (byte ((v >>> 8) &&& 0x00ffu))
@@ -45,5 +50,18 @@ module Encode =
         Array.set packet 1 (byte 0x92)
 
         Array.blit (packU32 controller) 0 packet 4 4
+
+        packet
+
+    let set_listener_request (controller: uint32) (address: IPAddress) (port: uint16) (interval: uint8) =
+        let packet: byte array = Array.zeroCreate 64
+
+        Array.set packet 0 (byte 0x17)
+        Array.set packet 1 (byte 0x90)
+
+        Array.blit (packU32 controller) 0 packet 4 4
+        Array.blit (packIPv4 address) 0 packet 8 4
+        Array.blit (packU16 port) 0 packet 12 2
+        Array.blit (packU8 interval) 0 packet 14 1
 
         packet
