@@ -13,7 +13,7 @@ type TestClass() =
     val mutable emulator: Emulator
 
     let CONTROLLER = 405419896u
-    let ENDPOINT = IPEndPoint.Parse("192.168.1.100:59999")
+    let ENDPOINT = IPEndPoint.Parse("127.0.0.1:59999")
     let TIMEOUT = 500
     let DEBUG = false
 
