@@ -6,12 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="controller.fs" />
+    <Compile Include="options.fs" />
     <Compile Include="structs.fs" />
     <Compile Include="encode.fs" />
     <Compile Include="decode.fs" />
     <Compile Include="udp.fs" />
     <Compile Include="tcp.fs" />
-    <Compile Include="controller.fs" />
     <Compile Include="uhppoted.fs" />
   </ItemGroup>
 

@@ -1,12 +1,14 @@
 CLI = dotnet run --project ../examples/fs/cli
 
 .PHONY: format
+.PHONY: build
 
 format:
 	dotnet fantomas .
 
-build: format
+build:
 	dotnet build
+	dotnet fantomas .
 
 test:
 	dotnet test

@@ -2,6 +2,8 @@
 
 - [x] `Controller` record
       - [x] builder for C# and VB.NET
+      - https://stackoverflow.com/questions/55838917/f-records-with-members-vs-classes
+      - https://fsharpforfunandprofit.com/posts/type-extensions/
 
 - [ ] Options
       - [ ] bind

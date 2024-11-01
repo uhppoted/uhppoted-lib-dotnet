@@ -13,18 +13,18 @@ type ControllerBuilder(controller: uint32) =
 
     member this.With(value: obj) =
         match value with
-        | :? IPEndPoint as a -> address <- Some a
-        | :? string as p -> protocol <- Some p
+        | :? IPEndPoint as v -> address <- Some v
+        | :? string as v -> protocol <- Some v
         | _ -> ()
 
         this
 
-    member this.WithAddress(a: IPEndPoint) =
-        address <- Some a
+    member this.WithAddress(v: IPEndPoint) =
+        address <- Some v
         this
 
-    member this.WithProtocol(p: string) =
-        protocol <- Some p
+    member this.WithProtocol(v: string) =
+        protocol <- Some v
         this
 
     member this.build() =
