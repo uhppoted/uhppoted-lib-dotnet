@@ -11,6 +11,7 @@
     <Compile Include="decode.fs" />
     <Compile Include="udp.fs" />
     <Compile Include="tcp.fs" />
+    <Compile Include="controller.fs" />
     <Compile Include="uhppoted.fs" />
   </ItemGroup>
 

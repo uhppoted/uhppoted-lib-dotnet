@@ -11,6 +11,11 @@ build: format
 test:
 	dotnet test
 
+debug: build
+#	dotnet run --project ../examples/fs/cli get-controller
+#	dotnet run --project ../examples/cs/cli get-controller
+	dotnet run --project ../examples/vb/cli get-controller
+
 get-controllers: build
 	$(CLI) get-all-controllers
 

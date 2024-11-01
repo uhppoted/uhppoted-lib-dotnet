@@ -1,7 +1,7 @@
 # TODO
 
-- [ ] `Controller` struct
-      - [ ] constructor for C# and VB.NET
+- [x] `Controller` record
+      - [x] builder for C# and VB.NET
 
 - [ ] Options
       - [ ] bind
@@ -13,6 +13,7 @@
       - [ ] validate message type
 
 - [ ] get-all-controllers
+      - [ ] Return ordinary array of controllers (and remove FSharpCollections dependency)
       - [ ] pprint Option<DateOnly>
             - [x] F#
             - [ ] C#

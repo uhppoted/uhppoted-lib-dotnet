@@ -15,9 +15,9 @@ let YYYYMMDD date =
     | Some(v: DateOnly) -> v.ToString("yyyy-MM-dd")
     | None -> "---"
 
-let YYYYMMDDHHmmss  (datetime: Nullable<DateTime>) =
+let YYYYMMDDHHmmss (datetime: Nullable<DateTime>) =
     if datetime.HasValue then
-       datetime.Value.ToString("yyyy-MM-dd HH:mm:ss")
+        datetime.Value.ToString("yyyy-MM-dd HH:mm:ss")
     else
         "---"
 

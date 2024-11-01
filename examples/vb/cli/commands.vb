@@ -1,9 +1,9 @@
-Imports Microsoft.FSharp.Core
 Imports Microsoft.FSharp.Collections
 
 Imports System.Console
 Imports System.Net
 
+Imports uhppoted
 Imports uhppoted.Uhppoted
 
 Module Commands
@@ -28,7 +28,7 @@ Module Commands
 
     Sub GetControllers(args As String())
         Try
-            Dim controllers As FSharpList(Of uhppoted.GetControllerResponse) = get_all_controllers(TIMEOUT, DEBUG)
+            Dim controllers As FSharpList(Of GetControllerResponse) = get_all_controllers(TIMEOUT, DEBUG)
 
             WriteLine("get-controllers: {0}", controllers.Length)
             For Each controller In controllers
@@ -49,9 +49,10 @@ Module Commands
 
     Sub GetController(args As String())
         Try
-            Dim addr = IPEndPoint.Parse("192.168.1.100:60000")
-            Dim protocol = FSharpOption(Of String).None
-            Dim controller = new uhppoted.Controller(405419896, addr, protocol)
+            Dim controller = New ControllerBuilder(405419896).
+                                 With(IPEndPoint.Parse("192.168.1.100:60000")).
+                                 With("udp").build()
+
             Dim result = get_controller(controller, TIMEOUT, DEBUG)
 
             If (result.IsOk)
@@ -76,9 +77,10 @@ Module Commands
 
     Sub SetIPv4(args As String())
         Try
-            Dim addr = IPEndPoint.Parse("192.168.1.100:60000")
-            Dim protocol = FSharpOption(Of String).None
-            Dim controller = new uhppoted.Controller(405419896, addr, protocol)
+            Dim controller = New ControllerBuilder(405419896).
+                                 With(IPEndPoint.Parse("192.168.1.100:60000")).
+                                 With("udp").build()
+
             Dim address = IPAddress.Parse("192.168.1.100")
             Dim netmask = IPAddress.Parse("255.255.255.0")
             Dim gateway = IPAddress.Parse("192.168.1.1")
@@ -98,9 +100,10 @@ Module Commands
 
     Sub GetListener(args As String())
         Try
-            Dim addr = IPEndPoint.Parse("192.168.1.100:60000")
-            Dim protocol = FSharpOption(Of String).None
-            Dim controller = new uhppoted.Controller(405419896, addr, protocol)
+            Dim controller = New ControllerBuilder(405419896).
+                                 With(IPEndPoint.Parse("192.168.1.100:60000")).
+                                 With("udp").build()
+
             Dim result = get_listener(controller, TIMEOUT, DEBUG)
 
             If (result.IsOk)
@@ -121,9 +124,10 @@ Module Commands
 
     Sub SetListener(args As String())
         Try
-            Dim addr = IPEndPoint.Parse("192.168.1.100:60000")
-            Dim protocol = FSharpOption(Of String).None
-            Dim controller = new uhppoted.Controller(405419896, addr, protocol)
+            Dim controller = New ControllerBuilder(405419896).
+                                 With(IPEndPoint.Parse("192.168.1.100:60000")).
+                                 With("udp").build()
+
             Dim endpoint = IPEndPoint.Parse("192.168.1.100:60001")
             Dim interval = 30
             Dim result = set_listener(controller, endpoint, interval, TIMEOUT, DEBUG)
@@ -145,9 +149,10 @@ Module Commands
 
     Sub GetTime(args As String())
         Try
-            Dim addr = IPEndPoint.Parse("192.168.1.100:60000")
-            Dim protocol = FSharpOption(Of String).None
-            Dim controller = new uhppoted.Controller(405419896, addr, protocol)
+            Dim controller = New ControllerBuilder(405419896).
+                                 With(IPEndPoint.Parse("192.168.1.100:60000")).
+                                 With("udp").build()
+
             Dim result = get_time(controller, TIMEOUT, DEBUG)
 
             If (result.IsOk)

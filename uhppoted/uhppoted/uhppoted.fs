@@ -2,11 +2,6 @@
 
 open System.Net
 
-type Controller =
-    { controller: uint32
-      address: Option<IPEndPoint>
-      protocol: Option<string> }
-
 type Config =
     { bind: IPEndPoint
       broadcast: IPEndPoint

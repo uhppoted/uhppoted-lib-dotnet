@@ -1,4 +1,3 @@
-using Microsoft.FSharp.Core;
 using Microsoft.FSharp.Collections;
 
 using System.Net;
@@ -53,11 +52,10 @@ class Commands
     {
         try
         {
-            var addr = IPEndPoint.Parse("192.168.1.100:60000");
-            var controller = new uhppoted.Controller(
-                                 controller: CONTROLLER,
-                                 address: FSharpOption<IPEndPoint>.Some(addr),
-                                 protocol: FSharpOption<string>.None);
+            var controller = new uhppoted.ControllerBuilder(CONTROLLER)
+                                         .With (IPEndPoint.Parse("192.168.1.100:60000"))
+                                         .With ("udp")
+                                         .build();
 
             var result = get_controller(controller, TIMEOUT, DEBUG);
 
@@ -90,11 +88,10 @@ class Commands
     {
         try
         {
-            var addr = IPEndPoint.Parse("192.168.1.100:60000");
-            var controller = new uhppoted.Controller(
-                                 controller: CONTROLLER,
-                                 address: FSharpOption<IPEndPoint>.Some(addr),
-                                 protocol: FSharpOption<string>.None);
+            var controller = new uhppoted.ControllerBuilder(CONTROLLER)
+                                         .With (IPEndPoint.Parse("192.168.1.100:60000"))
+                                         .With ("udp")
+                                         .build();
 
             var address = IPAddress.Parse("192.168.1.100");
             var netmask = IPAddress.Parse("255.255.255.0");
@@ -121,11 +118,10 @@ class Commands
     {
         try
         {
-            var addr = IPEndPoint.Parse("192.168.1.100:60000");
-            var controller = new uhppoted.Controller(
-                                 controller: CONTROLLER,
-                                 address: FSharpOption<IPEndPoint>.Some(addr),
-                                 protocol: FSharpOption<string>.None);
+            var controller = new uhppoted.ControllerBuilder(CONTROLLER)
+                                         .With (IPEndPoint.Parse("192.168.1.100:60000"))
+                                         .With ("udp")
+                                         .build();
 
             var result = get_listener(controller, TIMEOUT, DEBUG);
 
@@ -154,11 +150,10 @@ class Commands
     {
         try
         {
-            var addr = IPEndPoint.Parse("192.168.1.100:60000");
-            var controller = new uhppoted.Controller(
-                                 controller: CONTROLLER,
-                                 address: FSharpOption<IPEndPoint>.Some(addr),
-                                 protocol: FSharpOption<string>.None);
+            var controller = new uhppoted.ControllerBuilder(CONTROLLER)
+                                         .With (IPEndPoint.Parse("192.168.1.100:60000"))
+                                         .With ("udp")
+                                         .build();
 
             var endpoint = IPEndPoint.Parse("192.168.1.100:60001");
             var interval = (byte)30;
@@ -188,11 +183,10 @@ class Commands
     {
         try
         {
-            var addr = IPEndPoint.Parse("192.168.1.100:60000");
-            var controller = new uhppoted.Controller(
-                                 controller: CONTROLLER,
-                                 address: FSharpOption<IPEndPoint>.Some(addr),
-                                 protocol: FSharpOption<string>.None);
+            var controller = new uhppoted.ControllerBuilder(CONTROLLER)
+                                         .With (IPEndPoint.Parse("192.168.1.100:60000"))
+                                         .With ("udp")
+                                         .build();
 
             var result = get_time(controller, TIMEOUT, DEBUG);
 
@@ -217,4 +211,3 @@ class Commands
     }
 
 }
-
