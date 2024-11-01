@@ -8,5 +8,5 @@ build:
 	dotnet fantomas .
 
 test: build
-	dotnet test --logger:console;verbosity=detailed
+	dotnet test
 
