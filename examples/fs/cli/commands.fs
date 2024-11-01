@@ -15,6 +15,12 @@ let YYYYMMDD date =
     | Some(v: DateOnly) -> v.ToString("yyyy-MM-dd")
     | None -> "---"
 
+let YYYYMMDDHHmmss  (datetime: Nullable<DateTime>) =
+    if datetime.HasValue then
+       datetime.Value.ToString("yyyy-MM-dd HH:mm:ss")
+    else
+        "---"
+
 let argparse args flag defval = defval
 
 let get_controllers args =
@@ -101,6 +107,21 @@ let set_listener args =
         printf "set-listener\n"
         printf "  controller %u\n" response.controller
         printf "          ok %A\n" response.ok
+        printf "\n"
+
+    | Error err -> printf "  ** ERROR %A\n" err
+
+let get_time args =
+    let controller =
+        { controller = argparse args "--controller" CONTROLLER
+          address = ADDRESS
+          protocol = PROTOCOL }
+
+    match Uhppoted.get_time (controller, TIMEOUT, DEBUG) with
+    | Ok response ->
+        printf "get-controller\n"
+        printf "  controller %u\n" response.controller
+        printf "    datetime %s\n" (YYYYMMDDHHmmss response.datetime)
         printf "\n"
 
     | Error err -> printf "  ** ERROR %A\n" err

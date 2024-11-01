@@ -65,3 +65,13 @@ module Encode =
         Array.blit (packU8 interval) 0 packet 14 1
 
         packet
+
+    let get_time_request (controller: uint32) =
+        let packet: byte array = Array.zeroCreate 64
+
+        Array.set packet 0 (byte 0x17)
+        Array.set packet 1 (byte 0x32)
+
+        Array.blit (packU32 controller) 0 packet 4 4
+
+        packet

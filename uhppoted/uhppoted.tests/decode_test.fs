@@ -23,6 +23,7 @@ type TestDecoder() =
               date = Some(DateOnly(2018, 8, 16)) }
 
         let response = Decode.get_controller_response packet
+
         Assert.That(response, Is.EqualTo(expected))
 
     [<Test>]
@@ -35,6 +36,7 @@ type TestDecoder() =
               interval = 13uy }
 
         let response = Decode.get_listener_response packet
+
         Assert.That(response, Is.EqualTo(expected))
 
     [<Test>]
@@ -44,4 +46,29 @@ type TestDecoder() =
         let expected = { controller = 405419896u; ok = true }
 
         let response = Decode.set_listener_response packet
+
+        Assert.That(response, Is.EqualTo(expected))
+
+    [<Test>]
+    member this.TestDecodeGetTimeResponse() =
+        let packet = TestResponses.get_time
+
+        let expected =
+            { controller = 405419896u
+              datetime = Nullable(DateTime.ParseExact("2024-11-01 12:34:56", "yyyy-MM-dd HH:mm:ss", null)) }
+
+        let response = Decode.get_time_response packet
+
+        Assert.That(response, Is.EqualTo(expected))
+
+    [<Test>]
+    member this.TestDecodeGetTimeResponseWithInvalidDateTime() =
+        let packet = TestResponses.get_time_with_invalid_datetime
+
+        let expected =
+            { controller = 405419896u
+              datetime = Nullable() }
+
+        let response = Decode.get_time_response packet
+
         Assert.That(response, Is.EqualTo(expected))

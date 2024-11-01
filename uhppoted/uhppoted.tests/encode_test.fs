@@ -55,3 +55,12 @@ type TestEncoder() =
         let packet = Encode.set_listener_request controller address port interval
 
         Assert.That(packet, Is.EqualTo(expected))
+
+    [<Test>]
+    member this.TestEncodeGetTime() =
+        let expected = TestRequests.get_time
+
+        let controller = 405419896u
+        let packet = Encode.get_time_request controller
+
+        Assert.That(packet, Is.EqualTo(expected))

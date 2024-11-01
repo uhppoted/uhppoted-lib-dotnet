@@ -17,6 +17,13 @@ class Commands
         return date.HasValue ? date.Value.ToString("yyyy-MM-dd") : "---";
     }
 
+    public static string YYYYMMDDHHmmss(DateTime? datetime)
+    {
+        return datetime.HasValue
+            ? datetime.Value.ToString("yyyy-MM-dd HH:mm:ss")
+            : "---";
+    }
+
     public static void GetControllers(string[] args)
     {
         try
@@ -164,6 +171,38 @@ class Commands
                 WriteLine("set-listener");
                 WriteLine("  controller {0}", response.controller);
                 WriteLine("          ok {0}", response.ok);
+                WriteLine();
+            }
+            else if (result.IsError)
+            {
+                throw new Exception(result.ErrorValue);
+            }
+        }
+        catch (Exception err)
+        {
+            WriteLine("** ERROR  {0}", err.Message);
+        }
+    }
+
+    public static void GetTime(string[] args)
+    {
+        try
+        {
+            var addr = IPEndPoint.Parse("192.168.1.100:60000");
+            var controller = new uhppoted.Controller(
+                                 controller: CONTROLLER,
+                                 address: FSharpOption<IPEndPoint>.Some(addr),
+                                 protocol: FSharpOption<string>.None);
+
+            var result = get_time(controller, TIMEOUT, DEBUG);
+
+            if (result.IsOk)
+            {
+                var response = result.ResultValue;
+
+                WriteLine("get-time");
+                WriteLine("  controller {0}", response.controller);
+                WriteLine("    datetime {0}", YYYYMMDDHHmmss(response.datetime));
                 WriteLine();
             }
             else if (result.IsError)

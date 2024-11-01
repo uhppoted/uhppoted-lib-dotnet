@@ -36,6 +36,11 @@ class CLI
                     Environment.Exit(0);
                     break;
 
+                case "get-time":
+                    Commands.GetTime(args[1..]);
+                    Environment.Exit(0);
+                    break;
+
                 default:
                     WriteLine("** ERROR invalid command {0}", args[0]);
                     WriteLine();
@@ -57,6 +62,7 @@ class CLI
         WriteLine("  - set-IPv4             Sets the controller IPv4 address, netmask and gateway");
         WriteLine("  - get-listener         Retrieves the controller event listener address:port and auto-send interval");
         WriteLine("  - set-listener         Sets the controller event listener address:port and auto-send interval");
+        WriteLine("  - get-time             Retrieves the controller system datetime");
         WriteLine();
     }
 }

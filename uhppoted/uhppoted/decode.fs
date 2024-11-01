@@ -1,6 +1,7 @@
 namespace uhppoted
 
 open System
+open System.Globalization
 open System.Net
 open System.Net.NetworkInformation
 
@@ -40,6 +41,21 @@ module Decode =
         with _ ->
             None
 
+    let unpack_datetime (slice: byte array) : Nullable<DateTime> =
+        let bcd =
+            $"%02x{slice[0]}%02x{slice[1]}-%02x{slice[2]}-%02x{slice[3]} %02x{slice[4]}:%02x{slice[5]}:%02x{slice[6]}"
+
+        match
+            System.DateTime.TryParseExact(
+                bcd,
+                "yyyy-MM-dd HH:mm:ss",
+                CultureInfo.InvariantCulture,
+                DateTimeStyles.AssumeLocal
+            )
+        with
+        | true, datetime -> Nullable datetime
+        | false, _ -> Nullable()
+
     let get_controller_response (packet: byte array) : GetControllerResponse =
         { controller = unpackU32 packet[4..]
           address = unpackIPv4 packet[8..]
@@ -62,3 +78,7 @@ module Decode =
     let set_listener_response (packet: byte array) : SetListenerResponse =
         { controller = unpackU32 packet[4..]
           ok = unpackBool packet[8..] }
+
+    let get_time_response (packet: byte array) : GetTimeResponse =
+        { controller = unpackU32 packet[4..]
+          datetime = unpack_datetime (packet[8..]) }

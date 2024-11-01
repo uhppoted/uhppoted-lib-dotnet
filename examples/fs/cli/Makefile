@@ -23,3 +23,6 @@ get-listener: build
 
 set-listener: build
 	dotnet run set-listener --controller 405419896
+
+get-time: build
+	dotnet run get-time --controller 405419896

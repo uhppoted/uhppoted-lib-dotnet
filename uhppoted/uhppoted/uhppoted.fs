@@ -89,3 +89,17 @@ module Uhppoted =
         match result with
         | Ok packet -> Ok(Decode.set_listener_response packet)
         | Error err -> Error err
+
+    let get_time (controller: Controller, timeout: int, debug: bool) =
+        let cfg = configure (debug)
+        let request = Encode.get_time_request controller.controller
+
+        let result =
+            match controller.address, controller.protocol with
+            | None, _ -> UDP.broadcast_to (request, cfg.broadcast, timeout, cfg.debug)
+            | Some(addr), Some("tcp") -> TCP.send_to (request, addr, timeout, cfg.debug)
+            | Some(addr), _ -> UDP.send_to (request, addr, timeout, cfg.debug)
+
+        match result with
+        | Ok packet -> Ok(Decode.get_time_response packet)
+        | Error err -> Error err

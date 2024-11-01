@@ -24,3 +24,6 @@ get-listener: build
 
 set-listener: build
 	dotnet run set-listener
+
+get-time: build
+	dotnet run get-time

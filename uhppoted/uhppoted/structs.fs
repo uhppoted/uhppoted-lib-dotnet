@@ -19,3 +19,7 @@ type GetListenerResponse =
       interval: uint8 }
 
 type SetListenerResponse = { controller: uint32; ok: bool }
+
+type GetTimeResponse =
+    { controller: uint32
+      datetime: DateTime Nullable }

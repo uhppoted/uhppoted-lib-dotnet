@@ -31,21 +31,20 @@
       - [x] set-IPv4
       - [x] get-listener
       - [x] set-listener
+      - [x] get-time
 
 - [x] get-all-controllers
 - [x] get-controller
 - [x] set-IPv4
 - [x] get-listener
 - [x] set-listener
-      - [x] UDP broadcast_to
-      - [x] UDP send-to
-      - [x] TCP send-to
+- [x] get-time
+      - [x] API fn
       - [x] CLI
             - [x] F#
             - [x] C#
             - [x] VB.NET
 
-- [ ] get-time
 - [ ] set-time
 - [ ] get-door-delay
 - [ ] set-door-delay
