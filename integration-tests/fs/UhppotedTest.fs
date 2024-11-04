@@ -18,7 +18,7 @@ type TestClass() =
 
     let OPTIONS: Options =
         { bind = IPEndPoint(IPAddress.Any, 0)
-          broadcast = IPEndPoint(IPAddress.Broadcast, 60000)
+          broadcast = IPEndPoint(IPAddress.Broadcast, 59999)
           listen = IPEndPoint(IPAddress.Any, 60001)
           debug = false }
 
@@ -48,6 +48,37 @@ type TestClass() =
 
     [<TearDown>]
     member this.TearDown() = ()
+
+    [<Test>]
+    member this.TestGetAllController() =
+        let expected: GetControllerResponse list =
+            [ { controller = 405419896u
+                address = IPAddress.Parse("192.168.1.100")
+                netmask = IPAddress.Parse("255.255.255.0")
+                gateway = IPAddress.Parse("192.168.1.1")
+                MAC = PhysicalAddress([| 0x00uy; 0x12uy; 0x23uy; 0x34uy; 0x45uy; 0x56uy |])
+                version = "v8.92"
+                date = Some(DateOnly.ParseExact("2018-11-05", "yyyy-MM-dd")) }
+
+              { controller = 303986753u
+                address = IPAddress.Parse("192.168.1.100")
+                netmask = IPAddress.Parse("255.255.255.0")
+                gateway = IPAddress.Parse("192.168.1.1")
+                MAC = PhysicalAddress([| 0x52uy; 0xfduy; 0xfcuy; 0x07uy; 0x21uy; 0x82uy |])
+                version = "v8.92"
+                date = Some(DateOnly.ParseExact("2019-08-15", "yyyy-MM-dd")) }
+
+              { controller = 201020304u
+                address = IPAddress.Parse("192.168.1.101")
+                netmask = IPAddress.Parse("255.255.255.0")
+                gateway = IPAddress.Parse("192.168.1.1")
+                MAC = PhysicalAddress([| 0x52uy; 0xfduy; 0xfcuy; 0x07uy; 0x21uy; 0x82uy |])
+                version = "v6.62"
+                date = Some(DateOnly.ParseExact("2020-01-01", "yyyy-MM-dd")) } ]
+
+        let result = Uhppoted.get_all_controllers (TIMEOUT, OPTIONS)
+
+        Assert.That(result, Is.EqualTo(expected))
 
     [<Test>]
     member this.TestGetController() =

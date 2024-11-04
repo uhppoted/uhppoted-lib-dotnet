@@ -29,7 +29,7 @@
       - [ ] UDP broadcast-to
       - [x] UDP send-to
       - [x] TCP send-to
-      - [ ] get-all-controllers
+      - [x] get-all-controllers
       - [x] get-controller
       - [x] set-IPv4
       - [x] get-listener
@@ -38,6 +38,8 @@
       - [x] set-time
 
 - [x] get-all-controllers
+      - [ ] return Result
+
 - [x] get-controller
 - [x] set-IPv4
 - [x] get-listener

@@ -22,8 +22,8 @@ module Stub =
             logger.WriteLine("    {0}  {1}", left, right)
 
     let find packet =
-        match Requests.find packet with
-        | Some(key) -> Responses.find key
+        match Messages.find packet with
+        | Some(responses) -> Some(responses)
         | _ -> None
 
     let rec recv (socket: UdpClient) (logger: TextWriter) =
@@ -39,8 +39,9 @@ module Stub =
                     )
 
                 match find packet with
-                | Some(reply) when reply.Length = 64 -> socket.Send(reply, reply.Length, remote) |> ignore
-                | Some(_) -> ()
+                | Some(replies) ->
+                    for reply in replies do
+                        socket.Send(reply, reply.Length, remote) |> ignore
                 | _ ->
                     logger.WriteLine("*** ERROR unknown packet")
                     dump packet logger
@@ -66,8 +67,9 @@ module Stub =
 
                 if packet.Length > 0 then
                     match find packet with
-                    | Some(reply) when reply.Length = 64 -> stream.Write(reply) |> ignore
-                    | Some(_) -> ()
+                    | Some(replies) ->
+                        for reply in replies do
+                            stream.Write(reply) |> ignore
                     | _ ->
                         logger.WriteLine("*** ERROR unknown packet")
                         dump packet logger
