@@ -35,3 +35,6 @@ set-listener: build
 
 get-time: build
 	$(CLI) get-time
+
+set-time: build
+	$(CLI) set-time

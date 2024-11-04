@@ -82,3 +82,7 @@ module Decode =
     let get_time_response (packet: byte array) : GetTimeResponse =
         { controller = unpackU32 packet[4..]
           datetime = unpack_datetime (packet[8..]) }
+
+    let set_time_response (packet: byte array) : SetTimeResponse =
+        { controller = unpackU32 packet[4..]
+          datetime = unpack_datetime (packet[8..]) }

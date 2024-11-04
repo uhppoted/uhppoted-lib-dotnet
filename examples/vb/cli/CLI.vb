@@ -35,6 +35,10 @@ Module Program
                     Commands.GetTime(slice)
                     Environment.Exit(0)
 
+                Case "set-time"
+                    Commands.SetTime(slice)
+                    Environment.Exit(0)
+
                 Case Else
                     WriteLine("** ERROR invalid command {0}", args(0))
                     WriteLine()
@@ -55,7 +59,8 @@ Module Program
         WriteLine("  - set-IPv4             Sets the controller IPv4 address, netmask and gateway")
         WriteLine("  - get-listener         Retrieves the controller event listener address:port and auto-send interval")
         WriteLine("  - set-listener         Sets the controller event listener address:port and auto-send interval")
-        WriteLine("  - get-time             Retrieves the controller system datetime")
+        WriteLine("  - get-time             Retrieves the controller system date and time")
+        WriteLine("  - set-time             Sets the controller system date and time")
         WriteLine()
     End Sub
 End Module

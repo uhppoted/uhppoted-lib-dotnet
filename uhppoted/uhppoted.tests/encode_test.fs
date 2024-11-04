@@ -64,3 +64,16 @@ type TestEncoder() =
         let packet = Encode.get_time_request controller
 
         Assert.That(packet, Is.EqualTo(expected))
+
+    [<Test>]
+    member this.TestEncodeSetTime() =
+        let expected = TestRequests.set_time
+
+        let controller = 405419896u
+
+        let datetime =
+            DateTime.ParseExact("2024-11-04 12:34:56", "yyyy-MM-dd HH:mm:ss", null)
+
+        let packet = Encode.set_time_request controller datetime
+
+        Assert.That(packet, Is.EqualTo(expected))

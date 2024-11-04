@@ -8,7 +8,9 @@ Imports uhppoted.Uhppoted
 
 Module Commands
     Private Const TIMEOUT = 1000
-    Private Const DEBUG = True
+    Private Dim OPTIONS = New uhppoted.OptionsBuilder().
+                                       WithDebug(true).
+                                       build()
 
     Private Function YYYYMMDD(v As Nullable(Of DateOnly)) As String
         If v.HasValue Then
@@ -28,7 +30,7 @@ Module Commands
 
     Sub GetControllers(args As String())
         Try
-            Dim controllers As FSharpList(Of GetControllerResponse) = get_all_controllers(TIMEOUT, DEBUG)
+            Dim controllers As FSharpList(Of GetControllerResponse) = get_all_controllers(TIMEOUT, OPTIONS)
 
             WriteLine("get-controllers: {0}", controllers.Length)
             For Each controller In controllers
@@ -53,7 +55,7 @@ Module Commands
                                  With(IPEndPoint.Parse("192.168.1.100:60000")).
                                  With("udp").build()
 
-            Dim result = get_controller(controller, TIMEOUT, DEBUG)
+            Dim result = get_controller(controller, TIMEOUT, OPTIONS)
 
             If (result.IsOk)
                 Dim response = result.ResultValue
@@ -84,7 +86,7 @@ Module Commands
             Dim address = IPAddress.Parse("192.168.1.100")
             Dim netmask = IPAddress.Parse("255.255.255.0")
             Dim gateway = IPAddress.Parse("192.168.1.1")
-            Dim result = set_IPv4(controller, address, netmask, gateway, TIMEOUT, DEBUG)
+            Dim result = set_IPv4(controller, address, netmask, gateway, TIMEOUT, OPTIONS)
 
             If (result.IsOk)
                 WriteLine("set-IPv4")
@@ -104,7 +106,7 @@ Module Commands
                                  With(IPEndPoint.Parse("192.168.1.100:60000")).
                                  With("udp").build()
 
-            Dim result = get_listener(controller, TIMEOUT, DEBUG)
+            Dim result = get_listener(controller, TIMEOUT, OPTIONS)
 
             If (result.IsOk)
                 Dim response = result.ResultValue
@@ -130,7 +132,7 @@ Module Commands
 
             Dim endpoint = IPEndPoint.Parse("192.168.1.100:60001")
             Dim interval = 30
-            Dim result = set_listener(controller, endpoint, interval, TIMEOUT, DEBUG)
+            Dim result = set_listener(controller, endpoint, interval, TIMEOUT, OPTIONS)
 
             If (result.IsOk)
                 Dim response = result.ResultValue
@@ -153,11 +155,35 @@ Module Commands
                                  With(IPEndPoint.Parse("192.168.1.100:60000")).
                                  With("udp").build()
 
-            Dim result = get_time(controller, TIMEOUT, DEBUG)
+            Dim result = get_time(controller, TIMEOUT, OPTIONS)
 
             If (result.IsOk)
                 Dim response = result.ResultValue
                 WriteLine("get-time")
+                WriteLine("  controller {0}", response.controller)
+                WriteLine("    datetime {0}", YYYYMMDDHHmmss(response.datetime))
+                WriteLine()
+            Else If (result.IsError)
+                Throw New Exception(result.ErrorValue)
+            End If
+
+        Catch Err As Exception
+            WriteLine("Exception  {0}", err.Message)
+        End Try
+    End Sub
+
+    Sub SetTime(args As String())
+        Try
+            Dim controller = New ControllerBuilder(405419896).
+                                 With(IPEndPoint.Parse("192.168.1.100:60000")).
+                                 With("udp").build()
+            Dim now = DateTime.Now
+
+            Dim result = set_time(controller, now, TIMEOUT, OPTIONS)
+
+            If (result.IsOk)
+                Dim response = result.ResultValue
+                WriteLine("set-time")
                 WriteLine("  controller {0}", response.controller)
                 WriteLine("    datetime {0}", YYYYMMDDHHmmss(response.datetime))
                 WriteLine()

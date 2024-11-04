@@ -35,6 +35,7 @@
       - [x] get-listener
       - [x] set-listener
       - [x] get-time
+      - [x] set-time
 
 - [x] get-all-controllers
 - [x] get-controller
@@ -42,14 +43,14 @@
 - [x] get-listener
 - [x] set-listener
 - [x] get-time
-      - [x] API fn
-      - [x] CLI
-            - [x] F#
-            - [x] C#
-            - [x] VB.NET
-
-- [ ] set-time
+- [x] set-time
 - [ ] get-door-delay
+      - [ ] API fn
+      - [ ] CLI
+            - [ ] F#
+            - [ ] C#
+            - [ ] VB.NET
+
 - [ ] set-door-delay
 - [ ] get-door-control
 - [ ] set-door-control

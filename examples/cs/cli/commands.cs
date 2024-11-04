@@ -9,7 +9,9 @@ class Commands
 {
     const uint CONTROLLER = 405419896u;
     const int TIMEOUT = 1000;
-    const bool DEBUG = true;
+    static readonly uhppoted.Options OPTIONS = new uhppoted.OptionsBuilder()
+                                                           .WithDebug(true)
+                                                           .build();
 
     private static string YYYYMMDD(DateOnly? date)
     {
@@ -27,7 +29,7 @@ class Commands
     {
         try
         {
-            FSharpList<uhppoted.GetControllerResponse> controllers = get_all_controllers(TIMEOUT, DEBUG);
+            FSharpList<uhppoted.GetControllerResponse> controllers = get_all_controllers(TIMEOUT, OPTIONS);
 
             WriteLine("get-controllers: {0}", controllers.Length);
             foreach (var controller in controllers)
@@ -53,11 +55,11 @@ class Commands
         try
         {
             var controller = new uhppoted.ControllerBuilder(CONTROLLER)
-                                         .With (IPEndPoint.Parse("192.168.1.100:60000"))
-                                         .With ("udp")
+                                         .With(IPEndPoint.Parse("192.168.1.100:60000"))
+                                         .With("udp")
                                          .build();
 
-            var result = get_controller(controller, TIMEOUT, DEBUG);
+            var result = get_controller(controller, TIMEOUT, OPTIONS);
 
             if (result.IsOk)
             {
@@ -89,14 +91,14 @@ class Commands
         try
         {
             var controller = new uhppoted.ControllerBuilder(CONTROLLER)
-                                         .With (IPEndPoint.Parse("192.168.1.100:60000"))
-                                         .With ("udp")
+                                         .With(IPEndPoint.Parse("192.168.1.100:60000"))
+                                         .With("udp")
                                          .build();
 
             var address = IPAddress.Parse("192.168.1.100");
             var netmask = IPAddress.Parse("255.255.255.0");
             var gateway = IPAddress.Parse("192.168.1.1");
-            var result = set_IPv4(controller, address, netmask, gateway, TIMEOUT, DEBUG);
+            var result = set_IPv4(controller, address, netmask, gateway, TIMEOUT, OPTIONS);
 
             if (result.IsOk)
             {
@@ -119,11 +121,11 @@ class Commands
         try
         {
             var controller = new uhppoted.ControllerBuilder(CONTROLLER)
-                                         .With (IPEndPoint.Parse("192.168.1.100:60000"))
-                                         .With ("udp")
+                                         .With(IPEndPoint.Parse("192.168.1.100:60000"))
+                                         .With("udp")
                                          .build();
 
-            var result = get_listener(controller, TIMEOUT, DEBUG);
+            var result = get_listener(controller, TIMEOUT, OPTIONS);
 
             if (result.IsOk)
             {
@@ -151,13 +153,13 @@ class Commands
         try
         {
             var controller = new uhppoted.ControllerBuilder(CONTROLLER)
-                                         .With (IPEndPoint.Parse("192.168.1.100:60000"))
-                                         .With ("udp")
+                                         .With(IPEndPoint.Parse("192.168.1.100:60000"))
+                                         .With("udp")
                                          .build();
 
             var endpoint = IPEndPoint.Parse("192.168.1.100:60001");
             var interval = (byte)30;
-            var result = set_listener(controller, endpoint, interval, TIMEOUT, DEBUG);
+            var result = set_listener(controller, endpoint, interval, TIMEOUT, OPTIONS);
 
             if (result.IsOk)
             {
@@ -184,11 +186,11 @@ class Commands
         try
         {
             var controller = new uhppoted.ControllerBuilder(CONTROLLER)
-                                         .With (IPEndPoint.Parse("192.168.1.100:60000"))
-                                         .With ("udp")
+                                         .With(IPEndPoint.Parse("192.168.1.100:60000"))
+                                         .With("udp")
                                          .build();
 
-            var result = get_time(controller, TIMEOUT, DEBUG);
+            var result = get_time(controller, TIMEOUT, OPTIONS);
 
             if (result.IsOk)
             {
@@ -210,4 +212,35 @@ class Commands
         }
     }
 
+    public static void SetTime(string[] args)
+    {
+        try
+        {
+            var controller = new uhppoted.ControllerBuilder(CONTROLLER)
+                                         .With(IPEndPoint.Parse("192.168.1.100:60000"))
+                                         .With("udp")
+                                         .build();
+            var datetime = DateTime.Now;
+
+            var result = set_time(controller, datetime, TIMEOUT, OPTIONS);
+
+            if (result.IsOk)
+            {
+                var response = result.ResultValue;
+
+                WriteLine("set-time");
+                WriteLine("  controller {0}", response.controller);
+                WriteLine("    datetime {0}", YYYYMMDDHHmmss(response.datetime));
+                WriteLine();
+            }
+            else if (result.IsError)
+            {
+                throw new Exception(result.ErrorValue);
+            }
+        }
+        catch (Exception err)
+        {
+            WriteLine("** ERROR  {0}", err.Message);
+        }
+    }
 }

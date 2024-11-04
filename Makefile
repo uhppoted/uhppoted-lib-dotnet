@@ -29,3 +29,6 @@ set-listener:
 
 get-time:
 	$(CLI) get-time
+
+set-time:
+	$(CLI) set-time

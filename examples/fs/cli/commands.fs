@@ -8,7 +8,12 @@ let CONTROLLER = 405419896u
 let ADDRESS = Some(IPEndPoint(IPAddress.Parse("192.168.1.100"), 60000))
 let PROTOCOL = Some("udp")
 let TIMEOUT = 1000
-let DEBUG = true
+
+let OPTIONS: Options =
+    { bind = IPEndPoint(IPAddress.Any, 0)
+      broadcast = IPEndPoint(IPAddress.Broadcast, 60000)
+      listen = IPEndPoint(IPAddress.Any, 60001)
+      debug = true }
 
 let YYYYMMDD date =
     match date with
@@ -24,7 +29,7 @@ let YYYYMMDDHHmmss (datetime: Nullable<DateTime>) =
 let argparse args flag defval = defval
 
 let get_controllers args =
-    let controllers = Uhppoted.get_all_controllers (TIMEOUT, DEBUG)
+    let controllers = Uhppoted.get_all_controllers (TIMEOUT, OPTIONS)
 
     printf "get-all-controllers: %d\n" controllers.Length
 
@@ -45,7 +50,7 @@ let get_controller args =
           address = ADDRESS
           protocol = PROTOCOL }
 
-    match Uhppoted.get_controller (controller, TIMEOUT, DEBUG) with
+    match Uhppoted.get_controller (controller, TIMEOUT, OPTIONS) with
     | Ok response ->
         printf "get-controller\n"
         printf "  controller %u\n" response.controller
@@ -69,7 +74,7 @@ let set_IPv4 args =
     let netmask = IPAddress.Parse("255.255.255.0")
     let gateway = IPAddress.Parse("192.168.1.1")
 
-    match Uhppoted.set_IPv4 (controller, address, netmask, gateway, TIMEOUT, DEBUG) with
+    match Uhppoted.set_IPv4 (controller, address, netmask, gateway, TIMEOUT, OPTIONS) with
     | Ok response ->
         printf "set-IPv4\n"
         printf "  ok\n"
@@ -83,7 +88,7 @@ let get_listener args =
           address = ADDRESS
           protocol = PROTOCOL }
 
-    match Uhppoted.get_listener (controller, TIMEOUT, DEBUG) with
+    match Uhppoted.get_listener (controller, TIMEOUT, OPTIONS) with
     | Ok response ->
         printf "get-listener\n"
         printf "  controller %u\n" response.controller
@@ -102,7 +107,7 @@ let set_listener args =
     let endpoint = IPEndPoint.Parse("192.168.1.100:60001")
     let interval = 30uy
 
-    match Uhppoted.set_listener (controller, endpoint, interval, TIMEOUT, DEBUG) with
+    match Uhppoted.set_listener (controller, endpoint, interval, TIMEOUT, OPTIONS) with
     | Ok response ->
         printf "set-listener\n"
         printf "  controller %u\n" response.controller
@@ -117,9 +122,26 @@ let get_time args =
           address = ADDRESS
           protocol = PROTOCOL }
 
-    match Uhppoted.get_time (controller, TIMEOUT, DEBUG) with
+    match Uhppoted.get_time (controller, TIMEOUT, OPTIONS) with
     | Ok response ->
         printf "get-controller\n"
+        printf "  controller %u\n" response.controller
+        printf "    datetime %s\n" (YYYYMMDDHHmmss response.datetime)
+        printf "\n"
+
+    | Error err -> printf "  ** ERROR %A\n" err
+
+let set_time args =
+    let controller =
+        { controller = argparse args "--controller" CONTROLLER
+          address = ADDRESS
+          protocol = PROTOCOL }
+
+    let datetime = DateTime.Now
+
+    match Uhppoted.set_time (controller, datetime, TIMEOUT, OPTIONS) with
+    | Ok response ->
+        printf "set-controller\n"
         printf "  controller %u\n" response.controller
         printf "    datetime %s\n" (YYYYMMDDHHmmss response.datetime)
         printf "\n"

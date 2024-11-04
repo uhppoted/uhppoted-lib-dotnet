@@ -15,7 +15,12 @@ type TestClass() =
     let CONTROLLER = 405419896u
     let ENDPOINT = IPEndPoint.Parse("127.0.0.1:59999")
     let TIMEOUT = 500
-    let DEBUG = false
+
+    let OPTIONS: Options =
+        { bind = IPEndPoint(IPAddress.Any, 0)
+          broadcast = IPEndPoint(IPAddress.Broadcast, 60000)
+          listen = IPEndPoint(IPAddress.Any, 60001)
+          debug = false }
 
     let controllers =
         [ { controller = CONTROLLER
@@ -57,7 +62,7 @@ type TestClass() =
 
         controllers
         |> List.iter (fun controller ->
-            match Uhppoted.get_controller (controller, TIMEOUT, DEBUG) with
+            match Uhppoted.get_controller (controller, TIMEOUT, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
@@ -69,7 +74,7 @@ type TestClass() =
 
         controllers
         |> List.iter (fun controller ->
-            match Uhppoted.set_IPv4 (controller, address, netmask, gateway, TIMEOUT, DEBUG) with
+            match Uhppoted.set_IPv4 (controller, address, netmask, gateway, TIMEOUT, OPTIONS) with
             | Ok response -> Assert.Pass()
             | Error err -> Assert.Fail(err))
 
@@ -82,7 +87,7 @@ type TestClass() =
 
         controllers
         |> List.iter (fun controller ->
-            match Uhppoted.get_listener (controller, TIMEOUT, DEBUG) with
+            match Uhppoted.get_listener (controller, TIMEOUT, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
@@ -95,10 +100,9 @@ type TestClass() =
 
         controllers
         |> List.iter (fun controller ->
-            match Uhppoted.set_listener (controller, endpoint, interval, TIMEOUT, DEBUG) with
+            match Uhppoted.set_listener (controller, endpoint, interval, TIMEOUT, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
-
 
     [<Test>]
     member this.TestGetTime() =
@@ -108,6 +112,21 @@ type TestClass() =
 
         controllers
         |> List.iter (fun controller ->
-            match Uhppoted.get_time (controller, TIMEOUT, DEBUG) with
+            match Uhppoted.get_time (controller, TIMEOUT, OPTIONS) with
+            | Ok response -> Assert.That(response, Is.EqualTo(expected))
+            | Error err -> Assert.Fail(err))
+
+    [<Test>]
+    member this.TestSetTime() =
+        let expected: SetTimeResponse =
+            { controller = 405419896u
+              datetime = Nullable(DateTime.ParseExact("2024-11-04 12:34:56", "yyyy-MM-dd HH:mm:ss", null)) }
+
+        let datetime =
+            DateTime.ParseExact("2024-11-04 12:34:56", "yyyy-MM-dd HH:mm:ss", null)
+
+        controllers
+        |> List.iter (fun controller ->
+            match Uhppoted.set_time (controller, datetime, TIMEOUT, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))

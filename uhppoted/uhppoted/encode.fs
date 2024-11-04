@@ -1,5 +1,6 @@
 namespace uhppoted
 
+open System
 open System.Net
 
 module Encode =
@@ -18,6 +19,12 @@ module Encode =
            (byte ((v >>> 24) &&& 0x00ffu)) |]
 
     let packIPv4 (v: IPAddress) = v.MapToIPv4().GetAddressBytes()
+
+    let packDateTime (v: DateTime) =
+        let bcd = v.ToString("yyyyMMddHHmmss")
+        let bytes = Convert.FromHexString bcd
+
+        bytes
 
     let get_controller_request (controller: uint32) =
         let packet: byte array = Array.zeroCreate 64
@@ -73,5 +80,16 @@ module Encode =
         Array.set packet 1 (byte 0x32)
 
         Array.blit (packU32 controller) 0 packet 4 4
+
+        packet
+
+    let set_time_request (controller: uint32) (datetime: DateTime) =
+        let packet: byte array = Array.zeroCreate 64
+
+        Array.set packet 0 (byte 0x17)
+        Array.set packet 1 (byte 0x30)
+
+        Array.blit (packU32 controller) 0 packet 4 4
+        Array.blit (packDateTime datetime) 0 packet 8 7
 
         packet

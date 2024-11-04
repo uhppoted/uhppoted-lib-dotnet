@@ -8,7 +8,8 @@ let usage () =
     printfn "  - set-IPv4             Sets the controller IPv4 address, netmask and gateway"
     printfn "  - get-listener         Retrieves the controller event listener address:port and auto-send interval"
     printfn "  - set-listener         Sets the controller event listener address:port and auto-send interval"
-    printfn "  - get-time             Retrieves the controller system datetime"
+    printfn "  - get-time             Retrieves the controller system date and time"
+    printfn "  - set-time             Sets the controller system date and time"
     printfn "\n"
 
 [<EntryPoint>]
@@ -24,6 +25,7 @@ let main args =
     | "get-listener" :: _ -> get_listener (arglist[1..])
     | "set-listener" :: _ -> set_listener (arglist[1..])
     | "get-time" :: _ -> get_time (arglist[1..])
+    | "set-time" :: _ -> set_time (arglist[1..])
     | _ -> usage ()
 
     0
