@@ -17,7 +17,11 @@ module Uhppoted =
         let request = Encode.get_controller_request 0u
         let replies = UDP.broadcast (request, broadcast, timeout, debug)
 
-        replies |> List.map (fun v -> Decode.get_controller_response v)
+        replies
+        |> List.choose (fun v ->
+            match Decode.get_controller_response v with
+            | Ok response -> Some(response)
+            | _ -> None)
 
     let get_controller (controller: Controller, timeout: int, options: Options) =
         let broadcast = options.broadcast
@@ -31,7 +35,7 @@ module Uhppoted =
             | Some(addr), _ -> UDP.send_to (request, addr, timeout, debug)
 
         match result with
-        | Ok packet -> Ok(Decode.get_controller_response packet)
+        | Ok packet -> Decode.get_controller_response packet
         | Error err -> Error err
 
     let set_IPv4
@@ -69,7 +73,7 @@ module Uhppoted =
             | Some(addr), _ -> UDP.send_to (request, addr, timeout, debug)
 
         match result with
-        | Ok packet -> Ok(Decode.get_listener_response packet)
+        | Ok packet -> Decode.get_listener_response packet
         | Error err -> Error err
 
     let set_listener (controller: Controller, endpoint: IPEndPoint, interval: uint8, timeout: int, options: Options) =
@@ -88,7 +92,7 @@ module Uhppoted =
             | Some(addr), _ -> UDP.send_to (request, addr, timeout, debug)
 
         match result with
-        | Ok packet -> Ok(Decode.set_listener_response packet)
+        | Ok packet -> Decode.set_listener_response packet
         | Error err -> Error err
 
     let get_time (controller: Controller, timeout: int, options: Options) =
@@ -103,7 +107,7 @@ module Uhppoted =
             | Some(addr), _ -> UDP.send_to (request, addr, timeout, debug)
 
         match result with
-        | Ok packet -> Ok(Decode.get_time_response packet)
+        | Ok packet -> Decode.get_time_response packet
         | Error err -> Error err
 
     let set_time (controller: Controller, datetime: DateTime, timeout: int, options: Options) =
@@ -118,7 +122,7 @@ module Uhppoted =
             | Some(addr), _ -> UDP.send_to (request, addr, timeout, debug)
 
         match result with
-        | Ok packet -> Ok(Decode.set_time_response packet)
+        | Ok packet -> Decode.set_time_response packet
         | Error err -> Error err
 
     let get_door_settings (controller: Controller, door: uint8, timeout: int, options: Options) =

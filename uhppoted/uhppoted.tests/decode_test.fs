@@ -22,9 +22,9 @@ type TestDecoder() =
               version = "v8.92"
               date = Some(DateOnly(2018, 8, 16)) }
 
-        let response = Decode.get_controller_response packet
-
-        Assert.That(response, Is.EqualTo(expected))
+        match Decode.get_controller_response packet with
+        | Ok response -> Assert.That(response, Is.EqualTo(expected))
+        | Error err -> Assert.Fail(err)
 
     [<Test>]
     member this.TestDecodeGetListenerResponse() =
@@ -35,9 +35,9 @@ type TestDecoder() =
               endpoint = IPEndPoint.Parse("192.168.1.100:60001")
               interval = 13uy }
 
-        let response = Decode.get_listener_response packet
-
-        Assert.That(response, Is.EqualTo(expected))
+        match Decode.get_listener_response packet with
+        | Ok response -> Assert.That(response, Is.EqualTo(expected))
+        | Error err -> Assert.Fail(err)
 
     [<Test>]
     member this.TestDecodeSetListenerResponse() =
@@ -45,9 +45,9 @@ type TestDecoder() =
 
         let expected = { controller = 405419896u; ok = true }
 
-        let response = Decode.set_listener_response packet
-
-        Assert.That(response, Is.EqualTo(expected))
+        match Decode.set_listener_response packet with
+        | Ok response -> Assert.That(response, Is.EqualTo(expected))
+        | Error err -> Assert.Fail(err)
 
     [<Test>]
     member this.TestDecodeGetTimeResponse() =
@@ -58,9 +58,9 @@ type TestDecoder() =
               GetTimeResponse.datetime =
                 Nullable(DateTime.ParseExact("2024-11-01 12:34:56", "yyyy-MM-dd HH:mm:ss", null)) }
 
-        let response = Decode.get_time_response packet
-
-        Assert.That(response, Is.EqualTo(expected))
+        match Decode.get_time_response packet with
+        | Ok response -> Assert.That(response, Is.EqualTo(expected))
+        | Error err -> Assert.Fail(err)
 
     [<Test>]
     member this.TestDecodeGetTimeResponseWithInvalidDateTime() =
@@ -70,9 +70,9 @@ type TestDecoder() =
             { GetTimeResponse.controller = 405419896u
               GetTimeResponse.datetime = Nullable() }
 
-        let response = Decode.get_time_response packet
-
-        Assert.That(response, Is.EqualTo(expected))
+        match Decode.get_time_response packet with
+        | Ok response -> Assert.That(response, Is.EqualTo(expected))
+        | Error err -> Assert.Fail(err)
 
     [<Test>]
     member this.TestDecodeSetTimeResponse() =
@@ -83,9 +83,9 @@ type TestDecoder() =
               SetTimeResponse.datetime =
                 Nullable(DateTime.ParseExact("2024-11-04 12:34:56", "yyyy-MM-dd HH:mm:ss", null)) }
 
-        let response = Decode.set_time_response packet
-
-        Assert.That(response, Is.EqualTo(expected))
+        match Decode.set_time_response packet with
+        | Ok response -> Assert.That(response, Is.EqualTo(expected))
+        | Error err -> Assert.Fail(err)
 
     [<Test>]
     member this.TestDecodeSetTimeResponseWithInvalidDateTime() =
@@ -95,9 +95,9 @@ type TestDecoder() =
             { SetTimeResponse.controller = 405419896u
               SetTimeResponse.datetime = Nullable() }
 
-        let response = Decode.set_time_response packet
-
-        Assert.That(response, Is.EqualTo(expected))
+        match Decode.set_time_response packet with
+        | Ok response -> Assert.That(response, Is.EqualTo(expected))
+        | Error err -> Assert.Fail(err)
 
     [<Test>]
     member this.TestDecodeGetDoorSettingsResponse() =

@@ -9,7 +9,7 @@
     <Compile Include="requests.fs" />
     <Compile Include="responses.fs" />
     <Compile Include="messages.fs" />
-    <Compile Include="stubx.fs" />
+    <Compile Include="stub.fs" />
   </ItemGroup>
 
 </Project>

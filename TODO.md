@@ -3,17 +3,19 @@
 - [x] `Controller` record
 - [x] Options
 - [ ] decode
-      - [ ] validate message type
+      - [x] validate message type
+      - [ ] message type constants
 
 - [ ] translations
       - [ ] door mode
 
 - [ ] integration tests
-      - [ ] UDP broadcast
-      - [ ] UDP broadcast-to
+      - [x] UDP broadcast
+      - [x] UDP broadcast-to
       - [x] UDP send-to
       - [x] TCP send-to
-      - (?) TCP client not closing network connection
+      - [ ] Check TCP client is closing network connection
+      - [ ] Check UDP client is closing network connection
 
 - [x] get-all-controllers
       - [ ] return Result

@@ -56,36 +56,71 @@ module Decode =
         | true, datetime -> Nullable datetime
         | false, _ -> Nullable()
 
-    let get_controller_response (packet: byte array) : GetControllerResponse =
-        { controller = unpackU32 packet[4..]
-          address = unpackIPv4 packet[8..]
-          netmask = unpackIPv4 packet[12..]
-          gateway = unpackIPv4 packet[16..]
-          MAC = unpackMAC packet[20..25]
-          version = unpack_version packet[26..]
-          date = unpack_date (packet[28..]) }
+    let get_controller_response (packet: byte array) : Result<GetControllerResponse, string> =
+        if packet[0] <> 0x17uy then
+            Error("invalid controller response")
+        else if packet[1] <> 0x94uy then
+            Error("invalid get-controller response")
+        else
+            Ok(
+                { controller = unpackU32 packet[4..]
+                  address = unpackIPv4 packet[8..]
+                  netmask = unpackIPv4 packet[12..]
+                  gateway = unpackIPv4 packet[16..]
+                  MAC = unpackMAC packet[20..25]
+                  version = unpack_version packet[26..]
+                  date = unpack_date (packet[28..]) }
+            )
 
-    let get_listener_response (packet: byte array) : GetListenerResponse =
-        let controller = unpackU32 packet[4..]
-        let address = unpackIPv4 packet[8..]
-        let port = unpackU16 packet[12..]
-        let interval = unpackU8 packet[14..]
+    let get_listener_response (packet: byte array) : Result<GetListenerResponse, string> =
+        if packet[0] <> 0x17uy then
+            Error("invalid controller response")
+        else if packet[1] <> 0x92uy then
+            Error("invalid get-listener response")
+        else
+            let controller = unpackU32 packet[4..]
+            let address = unpackIPv4 packet[8..]
+            let port = unpackU16 packet[12..]
+            let interval = unpackU8 packet[14..]
 
-        { controller = controller
-          endpoint = IPEndPoint(address, int port)
-          interval = interval }
+            Ok(
+                { controller = controller
+                  endpoint = IPEndPoint(address, int port)
+                  interval = interval }
+            )
 
-    let set_listener_response (packet: byte array) : SetListenerResponse =
-        { controller = unpackU32 packet[4..]
-          ok = unpackBool packet[8..] }
+    let set_listener_response (packet: byte array) : Result<SetListenerResponse, string> =
+        if packet[0] <> 0x17uy then
+            Error("invalid controller response")
+        else if packet[1] <> 0x90uy then
+            Error("invalid set-listener response")
+        else
+            Ok(
+                { controller = unpackU32 packet[4..]
+                  ok = unpackBool packet[8..] }
+            )
 
-    let get_time_response (packet: byte array) : GetTimeResponse =
-        { controller = unpackU32 packet[4..]
-          datetime = unpack_datetime (packet[8..]) }
+    let get_time_response (packet: byte array) : Result<GetTimeResponse, string> =
+        if packet[0] <> 0x17uy then
+            Error("invalid controller response")
+        else if packet[1] <> 0x32uy then
+            Error("invalid get-time response")
+        else
+            Ok(
+                { controller = unpackU32 packet[4..]
+                  datetime = unpack_datetime (packet[8..]) }
+            )
 
-    let set_time_response (packet: byte array) : SetTimeResponse =
-        { controller = unpackU32 packet[4..]
-          datetime = unpack_datetime (packet[8..]) }
+    let set_time_response (packet: byte array) : Result<SetTimeResponse, string> =
+        if packet[0] <> 0x17uy then
+            Error("invalid controller response")
+        else if packet[1] <> 0x30uy then
+            Error("invalid set-time response")
+        else
+            Ok(
+                { controller = unpackU32 packet[4..]
+                  datetime = unpack_datetime (packet[8..]) }
+            )
 
     let get_door_settings_response (packet: byte array) : Result<GetDoorSettingsResponse, string> =
         if packet[0] <> 0x17uy then
