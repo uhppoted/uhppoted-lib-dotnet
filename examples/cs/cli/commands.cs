@@ -244,7 +244,7 @@ class Commands
         }
     }
 
-    public static void GetDoorSettings(string[] args)
+    public static void GetDoor(string[] args)
     {
         try
         {
@@ -254,13 +254,13 @@ class Commands
                                          .build();
             byte door = 4;
 
-            var result = get_door_settings(controller, door, TIMEOUT, OPTIONS);
+            var result = get_door(controller, door, TIMEOUT, OPTIONS);
 
             if (result.IsOk)
             {
                 var response = result.ResultValue;
 
-                WriteLine("get-door-settings");
+                WriteLine("get-door");
                 WriteLine("  controller {0}", response.controller);
                 WriteLine("        door {0}", response.door);
                 WriteLine("        mode {0}", response.mode);

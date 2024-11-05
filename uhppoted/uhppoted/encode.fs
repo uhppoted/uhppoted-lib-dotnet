@@ -94,7 +94,7 @@ module Encode =
 
         packet
 
-    let get_door_settings_request (controller: uint32) (door: uint8) =
+    let get_door_request (controller: uint32) (door: uint8) =
         let packet: byte array = Array.zeroCreate 64
 
         Array.set packet 0 (byte messages.SOM)

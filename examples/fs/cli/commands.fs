@@ -148,7 +148,7 @@ let set_time args =
 
     | Error err -> printf "  ** ERROR %A\n" err
 
-let get_door_settings args =
+let get_door args =
     let controller =
         { controller = argparse args "--controller" CONTROLLER
           address = ADDRESS
@@ -156,9 +156,9 @@ let get_door_settings args =
 
     let door = 4uy
 
-    match Uhppoted.get_door_settings (controller, door, TIMEOUT, OPTIONS) with
+    match Uhppoted.get_door (controller, door, TIMEOUT, OPTIONS) with
     | Ok response ->
-        printf "get-door-settings\n"
+        printf "get-door\n"
         printf "  controller %u\n" response.controller
         printf "        door %d\n" response.door
         printf "        mode %d\n" response.mode

@@ -46,8 +46,8 @@ class CLI
                     Environment.Exit(0);
                     break;
 
-                case "get-door-settings":
-                    Commands.GetDoorSettings(args[1..]);
+                case "get-door":
+                    Commands.GetDoor(args[1..]);
                     Environment.Exit(0);
                     break;
 
@@ -74,7 +74,7 @@ class CLI
         WriteLine("  - set-listener         Sets the controller event listener address:port and auto-send interval");
         WriteLine("  - get-time             Retrieves the controller system date and time");
         WriteLine("  - set-time             Sets the controller system date and time");
-        WriteLine("  - get-door-settings    Retrieves a controller door mode and delay settings");
+        WriteLine("  - get-door             Retrieves a controller door mode and delay settings");
         WriteLine();
     }
 }

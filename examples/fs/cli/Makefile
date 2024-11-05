@@ -30,5 +30,5 @@ get-time: build
 set-time: build
 	dotnet run set-time --controller 405419896
 
-get-door-settings: build
-	dotnet run get-door-settings --controller 405419896
+get-door: build
+	dotnet run get-door --controller 405419896

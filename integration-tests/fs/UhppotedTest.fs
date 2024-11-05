@@ -168,8 +168,8 @@ type TestClass() =
             | Error err -> Assert.Fail(err))
 
     [<Test>]
-    member this.TestGetDoorSettings() =
-        let expected: GetDoorSettingsResponse =
+    member this.TestGetDoor() =
+        let expected: GetDoorResponse =
             { controller = 405419896u
               door = 4uy
               mode = 3uy
@@ -177,6 +177,6 @@ type TestClass() =
 
         controllers
         |> List.iter (fun controller ->
-            match Uhppoted.get_door_settings (controller, DOOR, TIMEOUT, OPTIONS) with
+            match Uhppoted.get_door (controller, DOOR, TIMEOUT, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))

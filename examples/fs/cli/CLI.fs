@@ -10,7 +10,7 @@ let usage () =
     printfn "  - set-listener         Sets the controller event listener address:port and auto-send interval"
     printfn "  - get-time             Retrieves the controller system date and time"
     printfn "  - set-time             Sets the controller system date and time"
-    printfn "  - get-door-settings    Retrieves a controller door mode and delay settings"
+    printfn "  - get-door             Retrieves a controller door mode and delay settings"
     printfn "\n"
 
 [<EntryPoint>]
@@ -27,7 +27,7 @@ let main args =
     | "set-listener" :: _ -> set_listener (arglist[1..])
     | "get-time" :: _ -> get_time (arglist[1..])
     | "set-time" :: _ -> set_time (arglist[1..])
-    | "get-door-settings" :: _ -> get_door_settings (arglist[1..])
+    | "get-door" :: _ -> get_door (arglist[1..])
     | _ -> usage ()
 
     0

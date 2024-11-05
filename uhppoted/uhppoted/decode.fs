@@ -122,11 +122,11 @@ module Decode =
                   datetime = unpack_datetime (packet[8..]) }
             )
 
-    let get_door_settings_response (packet: byte array) : Result<GetDoorSettingsResponse, string> =
+    let get_door_response (packet: byte array) : Result<GetDoorResponse, string> =
         if packet[0] <> messages.SOM then
             Error("invalid controller response")
         else if packet[1] <> messages.GET_DOOR then
-            Error("invalid get-door-settings response")
+            Error("invalid get-door response")
         else
             Ok(
                 { controller = unpackU32 packet[4..]

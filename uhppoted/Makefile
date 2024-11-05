@@ -13,10 +13,13 @@ build:
 test:
 	dotnet test
 
+integration-tests:
+	cd ../integration-tests && make test
+
 debug: build
-	dotnet run --project ../examples/fs/cli get-door-settings
-	dotnet run --project ../examples/cs/cli get-door-settings
-	dotnet run --project ../examples/vb/cli get-door-settings
+	dotnet run --project ../examples/fs/cli get-door
+	dotnet run --project ../examples/cs/cli get-door
+	dotnet run --project ../examples/vb/cli get-door
 
 get-controllers: build
 	$(CLI) get-all-controllers
@@ -39,6 +42,6 @@ get-time: build
 set-time: build
 	$(CLI) set-time
 
-get-door-settings: build
-	$(CLI) get-door-settings
+get-door: build
+	$(CLI) get-door
 

@@ -100,8 +100,8 @@ type TestDecoder() =
         | Error err -> Assert.Fail(err)
 
     [<Test>]
-    member this.TestDecodeGetDoorSettingsResponse() =
-        let packet = TestResponses.get_door_settings
+    member this.TestDecodeGetDoorResponse() =
+        let packet = TestResponses.get_door
 
         let expected =
             { controller = 405419896u
@@ -109,6 +109,6 @@ type TestDecoder() =
               mode = 01uy
               delay = 05uy }
 
-        match Decode.get_door_settings_response packet with
+        match Decode.get_door_response packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)
