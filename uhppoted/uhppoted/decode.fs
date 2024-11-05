@@ -57,9 +57,9 @@ module Decode =
         | false, _ -> Nullable()
 
     let get_controller_response (packet: byte array) : Result<GetControllerResponse, string> =
-        if packet[0] <> 0x17uy then
+        if packet[0] <> messages.SOM then
             Error("invalid controller response")
-        else if packet[1] <> 0x94uy then
+        else if packet[1] <> messages.GET_CONTROLLER then
             Error("invalid get-controller response")
         else
             Ok(
@@ -73,9 +73,9 @@ module Decode =
             )
 
     let get_listener_response (packet: byte array) : Result<GetListenerResponse, string> =
-        if packet[0] <> 0x17uy then
+        if packet[0] <> messages.SOM then
             Error("invalid controller response")
-        else if packet[1] <> 0x92uy then
+        else if packet[1] <> messages.GET_LISTENER then
             Error("invalid get-listener response")
         else
             let controller = unpackU32 packet[4..]
@@ -90,9 +90,9 @@ module Decode =
             )
 
     let set_listener_response (packet: byte array) : Result<SetListenerResponse, string> =
-        if packet[0] <> 0x17uy then
+        if packet[0] <> messages.SOM then
             Error("invalid controller response")
-        else if packet[1] <> 0x90uy then
+        else if packet[1] <> messages.SET_LISTENER then
             Error("invalid set-listener response")
         else
             Ok(
@@ -101,9 +101,9 @@ module Decode =
             )
 
     let get_time_response (packet: byte array) : Result<GetTimeResponse, string> =
-        if packet[0] <> 0x17uy then
+        if packet[0] <> messages.SOM then
             Error("invalid controller response")
-        else if packet[1] <> 0x32uy then
+        else if packet[1] <> messages.GET_TIME then
             Error("invalid get-time response")
         else
             Ok(
@@ -112,9 +112,9 @@ module Decode =
             )
 
     let set_time_response (packet: byte array) : Result<SetTimeResponse, string> =
-        if packet[0] <> 0x17uy then
+        if packet[0] <> messages.SOM then
             Error("invalid controller response")
-        else if packet[1] <> 0x30uy then
+        else if packet[1] <> messages.SET_TIME then
             Error("invalid set-time response")
         else
             Ok(
@@ -123,9 +123,9 @@ module Decode =
             )
 
     let get_door_settings_response (packet: byte array) : Result<GetDoorSettingsResponse, string> =
-        if packet[0] <> 0x17uy then
+        if packet[0] <> messages.SOM then
             Error("invalid controller response")
-        else if packet[1] <> 0x82uy then
+        else if packet[1] <> messages.GET_DOOR then
             Error("invalid get-door-settings response")
         else
             Ok(

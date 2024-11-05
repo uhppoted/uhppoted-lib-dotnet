@@ -29,8 +29,8 @@ module Encode =
     let get_controller_request (controller: uint32) =
         let packet: byte array = Array.zeroCreate 64
 
-        Array.set packet 0 (byte 0x17)
-        Array.set packet 1 (byte 0x94)
+        Array.set packet 0 (byte messages.SOM)
+        Array.set packet 1 (byte messages.GET_CONTROLLER)
 
         Array.blit (packU32 controller) 0 packet 4 4
 
@@ -39,8 +39,8 @@ module Encode =
     let set_IPv4_request (controller: uint32) address netmask gateway =
         let packet: byte array = Array.zeroCreate 64
 
-        Array.set packet 0 (byte 0x17)
-        Array.set packet 1 (byte 0x96)
+        Array.set packet 0 (byte messages.SOM)
+        Array.set packet 1 (byte messages.SET_IPv4)
 
         Array.blit (packU32 controller) 0 packet 4 4
         Array.blit (packIPv4 address) 0 packet 8 4
@@ -53,8 +53,8 @@ module Encode =
     let get_listener_request (controller: uint32) =
         let packet: byte array = Array.zeroCreate 64
 
-        Array.set packet 0 (byte 0x17)
-        Array.set packet 1 (byte 0x92)
+        Array.set packet 0 (byte messages.SOM)
+        Array.set packet 1 (byte messages.GET_LISTENER)
 
         Array.blit (packU32 controller) 0 packet 4 4
 
@@ -63,8 +63,8 @@ module Encode =
     let set_listener_request (controller: uint32) (address: IPAddress) (port: uint16) (interval: uint8) =
         let packet: byte array = Array.zeroCreate 64
 
-        Array.set packet 0 (byte 0x17)
-        Array.set packet 1 (byte 0x90)
+        Array.set packet 0 (byte messages.SOM)
+        Array.set packet 1 (byte messages.SET_LISTENER)
 
         Array.blit (packU32 controller) 0 packet 4 4
         Array.blit (packIPv4 address) 0 packet 8 4
@@ -76,8 +76,8 @@ module Encode =
     let get_time_request (controller: uint32) =
         let packet: byte array = Array.zeroCreate 64
 
-        Array.set packet 0 (byte 0x17)
-        Array.set packet 1 (byte 0x32)
+        Array.set packet 0 (byte messages.SOM)
+        Array.set packet 1 (byte messages.GET_TIME)
 
         Array.blit (packU32 controller) 0 packet 4 4
 
@@ -86,8 +86,8 @@ module Encode =
     let set_time_request (controller: uint32) (datetime: DateTime) =
         let packet: byte array = Array.zeroCreate 64
 
-        Array.set packet 0 (byte 0x17)
-        Array.set packet 1 (byte 0x30)
+        Array.set packet 0 (byte messages.SOM)
+        Array.set packet 1 (byte messages.SET_TIME)
 
         Array.blit (packU32 controller) 0 packet 4 4
         Array.blit (packDateTime datetime) 0 packet 8 7
@@ -97,8 +97,8 @@ module Encode =
     let get_door_settings_request (controller: uint32) (door: uint8) =
         let packet: byte array = Array.zeroCreate 64
 
-        Array.set packet 0 (byte 0x17)
-        Array.set packet 1 (byte 0x82)
+        Array.set packet 0 (byte messages.SOM)
+        Array.set packet 1 (byte messages.GET_DOOR)
 
         Array.blit (packU32 controller) 0 packet 4 4
         Array.blit (packU8 door) 0 packet 8 1

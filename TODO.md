@@ -2,9 +2,9 @@
 
 - [x] `Controller` record
 - [x] Options
-- [ ] decode
+- [x] decode
       - [x] validate message type
-      - [ ] message type constants
+      - [x] message type constants
 
 - [ ] translations
       - [ ] door mode
