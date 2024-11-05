@@ -93,3 +93,14 @@ module Encode =
         Array.blit (packDateTime datetime) 0 packet 8 7
 
         packet
+
+    let get_door_settings_request (controller: uint32) (door: uint8) =
+        let packet: byte array = Array.zeroCreate 64
+
+        Array.set packet 0 (byte 0x17)
+        Array.set packet 1 (byte 0x82)
+
+        Array.blit (packU32 controller) 0 packet 4 4
+        Array.blit (packU8 door) 0 packet 8 1
+
+        packet

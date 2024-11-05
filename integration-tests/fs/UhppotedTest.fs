@@ -13,6 +13,7 @@ type TestClass() =
     val mutable emulator: Emulator
 
     let CONTROLLER = 405419896u
+    let DOOR = 4uy
     let ENDPOINT = IPEndPoint.Parse("127.0.0.1:59999")
     let TIMEOUT = 500
 
@@ -159,5 +160,19 @@ type TestClass() =
         controllers
         |> List.iter (fun controller ->
             match Uhppoted.set_time (controller, datetime, TIMEOUT, OPTIONS) with
+            | Ok response -> Assert.That(response, Is.EqualTo(expected))
+            | Error err -> Assert.Fail(err))
+
+    [<Test>]
+    member this.TestGetDoorSettings() =
+        let expected: GetDoorSettingsResponse =
+            { controller = 405419896u
+              door = 4uy
+              mode = 3uy
+              delay = 7uy }
+
+        controllers
+        |> List.iter (fun controller ->
+            match Uhppoted.get_door_settings (controller, DOOR, TIMEOUT, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))

@@ -29,3 +29,7 @@ get-time: build
 
 set-time: build
 	dotnet run set-time
+
+get-door-settings: build
+	dotnet run get-door-settings
+

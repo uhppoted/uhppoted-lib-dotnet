@@ -98,3 +98,17 @@ type TestDecoder() =
         let response = Decode.set_time_response packet
 
         Assert.That(response, Is.EqualTo(expected))
+
+    [<Test>]
+    member this.TestDecodeGetDoorSettingsResponse() =
+        let packet = TestResponses.get_door_settings
+
+        let expected =
+            { controller = 405419896u
+              door = 03uy
+              mode = 01uy
+              delay = 05uy }
+
+        match Decode.get_door_settings_response packet with
+        | Ok response -> Assert.That(response, Is.EqualTo(expected))
+        | Error err -> Assert.Fail(err)

@@ -86,3 +86,16 @@ module Decode =
     let set_time_response (packet: byte array) : SetTimeResponse =
         { controller = unpackU32 packet[4..]
           datetime = unpack_datetime (packet[8..]) }
+
+    let get_door_settings_response (packet: byte array) : Result<GetDoorSettingsResponse, string> =
+        if packet[0] <> 0x17uy then
+            Error("invalid controller response")
+        else if packet[1] <> 0x82uy then
+            Error("invalid get-door-settings response")
+        else
+            Ok(
+                { controller = unpackU32 packet[4..]
+                  door = unpackU8 (packet[8..])
+                  mode = unpackU8 (packet[9..])
+                  delay = unpackU8 (packet[10..]) }
+            )

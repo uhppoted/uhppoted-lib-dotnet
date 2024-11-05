@@ -36,6 +36,7 @@
       - [x] set-listener
       - [x] get-time
       - [x] set-time
+      - [x] get-door-settings
 
 - [x] get-all-controllers
       - [ ] return Result
@@ -46,16 +47,15 @@
 - [x] set-listener
 - [x] get-time
 - [x] set-time
-- [ ] get-door-delay
+- [x] get-door-settings
+- [ ] set-door-settings
       - [ ] API fn
       - [ ] CLI
             - [ ] F#
             - [ ] C#
             - [ ] VB.NET
+      - [ ] integration test
 
-- [ ] set-door-delay
-- [ ] get-door-control
-- [ ] set-door-control
 - [ ] set-door-passcodes
 - [ ] record-special-events
 - [ ] get-status
@@ -82,6 +82,8 @@
 - [ ] restore-default-parameters
 - [ ] listen
 
+- [ ] translations
+      - [ ] door mode
 - [x] dump
 - [ ] Add .NET 8 as a target framework on github
 ```

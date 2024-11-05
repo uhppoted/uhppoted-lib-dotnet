@@ -14,9 +14,9 @@ test:
 	dotnet test
 
 debug: build
-#	dotnet run --project ../examples/fs/cli get-controller
-#	dotnet run --project ../examples/cs/cli get-controller
-	dotnet run --project ../examples/vb/cli get-controller
+	dotnet run --project ../examples/fs/cli get-door-settings
+	dotnet run --project ../examples/cs/cli get-door-settings
+	dotnet run --project ../examples/vb/cli get-door-settings
 
 get-controllers: build
 	$(CLI) get-all-controllers
@@ -38,3 +38,7 @@ get-time: build
 
 set-time: build
 	$(CLI) set-time
+
+get-door-settings: build
+	$(CLI) get-door-settings
+

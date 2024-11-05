@@ -32,3 +32,6 @@ get-time:
 
 set-time:
 	$(CLI) set-time
+
+get-door-settings:
+	$(CLI) get-door-settings

@@ -196,4 +196,29 @@ Module Commands
         End Try
     End Sub
 
+    Sub GetDoorSettings(args As String())
+        Try
+            Dim controller = New ControllerBuilder(405419896).
+                                 With(IPEndPoint.Parse("192.168.1.100:60000")).
+                                 With("udp").build()
+            Dim door = 4
+            Dim result = get_door_settings(controller, door, TIMEOUT, OPTIONS)
+
+            If (result.IsOk)
+                Dim response = result.ResultValue
+                WriteLine("get-door-setttings")
+                WriteLine("  controller {0}", response.controller)
+                WriteLine("        door {0}", response.door)
+                WriteLine("        mode {0}", response.mode)
+                WriteLine("       delay {0}s", response.delay)
+                WriteLine()
+            Else If (result.IsError)
+                Throw New Exception(result.ErrorValue)
+            End If
+
+        Catch Err As Exception
+            WriteLine("Exception  {0}", err.Message)
+        End Try
+    End Sub
+
 End Module

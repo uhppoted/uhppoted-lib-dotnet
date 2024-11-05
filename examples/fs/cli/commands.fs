@@ -124,7 +124,7 @@ let get_time args =
 
     match Uhppoted.get_time (controller, TIMEOUT, OPTIONS) with
     | Ok response ->
-        printf "get-controller\n"
+        printf "get-time\n"
         printf "  controller %u\n" response.controller
         printf "    datetime %s\n" (YYYYMMDDHHmmss response.datetime)
         printf "\n"
@@ -141,9 +141,28 @@ let set_time args =
 
     match Uhppoted.set_time (controller, datetime, TIMEOUT, OPTIONS) with
     | Ok response ->
-        printf "set-controller\n"
+        printf "set-time\n"
         printf "  controller %u\n" response.controller
         printf "    datetime %s\n" (YYYYMMDDHHmmss response.datetime)
+        printf "\n"
+
+    | Error err -> printf "  ** ERROR %A\n" err
+
+let get_door_settings args =
+    let controller =
+        { controller = argparse args "--controller" CONTROLLER
+          address = ADDRESS
+          protocol = PROTOCOL }
+
+    let door = 4uy
+
+    match Uhppoted.get_door_settings (controller, door, TIMEOUT, OPTIONS) with
+    | Ok response ->
+        printf "get-door-settings\n"
+        printf "  controller %u\n" response.controller
+        printf "        door %d\n" response.door
+        printf "        mode %d\n" response.mode
+        printf "       delay %ds\n" response.delay
         printf "\n"
 
     | Error err -> printf "  ** ERROR %A\n" err

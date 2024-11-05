@@ -27,3 +27,9 @@ type GetTimeResponse =
 type SetTimeResponse =
     { controller: uint32
       datetime: DateTime Nullable }
+
+type GetDoorSettingsResponse =
+    { controller: uint32
+      door: uint8
+      mode: uint8
+      delay: uint8 }

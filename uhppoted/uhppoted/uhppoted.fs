@@ -120,3 +120,18 @@ module Uhppoted =
         match result with
         | Ok packet -> Ok(Decode.set_time_response packet)
         | Error err -> Error err
+
+    let get_door_settings (controller: Controller, door: uint8, timeout: int, options: Options) =
+        let broadcast = options.broadcast
+        let debug = options.debug
+        let request = Encode.get_door_settings_request controller.controller door
+
+        let result =
+            match controller.address, controller.protocol with
+            | None, _ -> UDP.broadcast_to (request, broadcast, timeout, debug)
+            | Some(addr), Some("tcp") -> TCP.send_to (request, addr, timeout, debug)
+            | Some(addr), _ -> UDP.send_to (request, addr, timeout, debug)
+
+        match result with
+        | Ok packet -> Decode.get_door_settings_response packet
+        | Error err -> Error err
