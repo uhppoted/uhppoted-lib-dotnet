@@ -60,7 +60,8 @@ module UDP =
         }
 
     let broadcast (request: byte array, addrPort: IPEndPoint, timeout: int, debug: bool) : byte array list =
-        let socket = new UdpClient()
+        let bind = IPEndPoint(IPAddress.Any, 0)
+        let socket = new UdpClient(bind)
 
         try
             let rx = receive_all socket [] |> Async.StartAsTask
@@ -91,7 +92,8 @@ module UDP =
             []
 
     let broadcast_to (request: byte array, addrPort: IPEndPoint, timeout: int, debug: bool) =
-        let socket = new UdpClient()
+        let bind = IPEndPoint(IPAddress.Any, 0)
+        let socket = new UdpClient(bind)
 
         let timer (timeout: int) : Async<Result<byte array * IPEndPoint, string>> =
             async {
@@ -137,7 +139,8 @@ module UDP =
             socket.Close()
 
     let send_to (request: byte array, addrPort: IPEndPoint, timeout: int, debug: bool) =
-        let socket = new UdpClient()
+        let bind = IPEndPoint(IPAddress.Any, 0)
+        let socket = new UdpClient(bind)
 
         let timer (timeout: int) : Async<Result<byte array * IPEndPoint, string>> =
             async {

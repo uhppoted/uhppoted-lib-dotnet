@@ -25,6 +25,10 @@ type TestClass() =
 
     let controllers =
         [ { controller = CONTROLLER
+            address = None
+            protocol = None }
+
+          { controller = CONTROLLER
             address = Some(ENDPOINT)
             protocol = None }
 

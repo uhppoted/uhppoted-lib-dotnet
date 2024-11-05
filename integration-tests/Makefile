@@ -10,3 +10,6 @@ build:
 test: build
 	dotnet test
 
+debug: build
+	dotnet test -- NUnit.Where="test =~ /TestGetDoorSettings/" 
+

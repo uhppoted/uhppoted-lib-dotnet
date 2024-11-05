@@ -1,20 +1,22 @@
 # TODO
 
 - [x] `Controller` record
-      - [x] builder for C# and VB.NET
-      - https://stackoverflow.com/questions/55838917/f-records-with-members-vs-classes
-      - https://fsharpforfunandprofit.com/posts/type-extensions/
-
-- [ ] Options
-      - [ ] bind
-      - [ ] broadcast
-      - [ ] listen
-      - [ ] debug
-
+- [x] Options
 - [ ] decode
       - [ ] validate message type
 
-- [ ] get-all-controllers
+- [ ] translations
+      - [ ] door mode
+
+- [ ] integration tests
+      - [ ] UDP broadcast
+      - [ ] UDP broadcast-to
+      - [x] UDP send-to
+      - [x] TCP send-to
+      - (?) TCP client not closing network connection
+
+- [x] get-all-controllers
+      - [ ] return Result
       - [ ] Return ordinary array of controllers (and remove FSharpCollections dependency)
       - [ ] pprint Option<DateOnly>
             - [x] F#
@@ -24,23 +26,7 @@
             - https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/component-design-guidelines#use-the-trygetvalue-pattern-instead-of-returning-f-option-values-and-prefer-method-overloading-to-taking-f-option-values-as-arguments
       - [ ] error handling
 
-- [ ] integration tests
-      - [ ] UDP broadcast
-      - [ ] UDP broadcast-to
-      - [x] UDP send-to
-      - [x] TCP send-to
-      - [x] get-all-controllers
-      - [x] get-controller
-      - [x] set-IPv4
-      - [x] get-listener
-      - [x] set-listener
-      - [x] get-time
-      - [x] set-time
-      - [x] get-door-settings
-
-- [x] get-all-controllers
-      - [ ] return Result
-
+- [ ] bind to bind-addr
 - [x] get-controller
 - [x] set-IPv4
 - [x] get-listener
@@ -82,8 +68,6 @@
 - [ ] restore-default-parameters
 - [ ] listen
 
-- [ ] translations
-      - [ ] door mode
 - [x] dump
 - [ ] Add .NET 8 as a target framework on github
 ```
