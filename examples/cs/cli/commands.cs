@@ -277,4 +277,40 @@ class Commands
             WriteLine("** ERROR  {0}", err.Message);
         }
     }
+
+    public static void SetDoor(string[] args)
+    {
+        try
+        {
+            var controller = new uhppoted.ControllerBuilder(CONTROLLER)
+                                         .With(IPEndPoint.Parse("192.168.1.100:60000"))
+                                         .With("udp")
+                                         .build();
+            byte door = 4;
+            byte mode = 2;
+            byte delay = 7;
+
+            var result = set_door(controller, door, mode, delay, TIMEOUT, OPTIONS);
+
+            if (result.IsOk)
+            {
+                var response = result.ResultValue;
+
+                WriteLine("set-door");
+                WriteLine("  controller {0}", response.controller);
+                WriteLine("        door {0}", response.door);
+                WriteLine("        mode {0}", response.mode);
+                WriteLine("       delay {0}s", response.delay);
+                WriteLine();
+            }
+            else if (result.IsError)
+            {
+                throw new Exception(result.ErrorValue);
+            }
+        }
+        catch (Exception err)
+        {
+            WriteLine("** ERROR  {0}", err.Message);
+        }
+    }
 }

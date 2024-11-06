@@ -51,6 +51,11 @@ class CLI
                     Environment.Exit(0);
                     break;
 
+                case "set-door":
+                    Commands.SetDoor(args[1..]);
+                    Environment.Exit(0);
+                    break;
+
                 default:
                     WriteLine("** ERROR invalid command {0}", args[0]);
                     WriteLine();
@@ -75,6 +80,7 @@ class CLI
         WriteLine("  - get-time             Retrieves the controller system date and time");
         WriteLine("  - set-time             Sets the controller system date and time");
         WriteLine("  - get-door             Retrieves a controller door mode and delay settings");
+        WriteLine("  - set-door             Sets a controller door mode and delay");
         WriteLine();
     }
 }

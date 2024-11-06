@@ -33,3 +33,7 @@ set-time: build
 get-door-settings: build
 	dotnet run get-door-settings
 
+set-door-settings: build
+	dotnet run set-door-settings
+
+

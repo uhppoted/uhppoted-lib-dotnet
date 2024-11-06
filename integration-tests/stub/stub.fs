@@ -65,7 +65,9 @@ module Stub =
                             buffer[0 .. N - 1])
                     )
 
-                if packet.Length > 0 then
+                if packet.Length <= 0 then
+                    return ()
+                else
                     match find packet with
                     | Some(replies) ->
                         for reply in replies do
@@ -75,11 +77,10 @@ module Stub =
                         dump packet logger
 
                     return! read stream logger
-
-                return ()
             with err ->
                 logger.WriteLine("*** ERROR {0}", Error err.Message)
-                return ()
+
+            return ()
         }
 
     let listen (socket: TcpListener) (logger: TextWriter) =

@@ -41,9 +41,13 @@ module Messages =
             request = Requests.set_time
             responses = [ Responses.set_time ] }
 
-          { test = "get-door-settings"
-            request = Requests.get_door_settings
-            responses = [ Responses.get_door_settings ] } ]
+          { test = "get-door"
+            request = Requests.get_door
+            responses = [ Responses.get_door ] }
+
+          { test = "set-door"
+            request = Requests.set_door
+            responses = [ Responses.set_door ] } ]
 
     let find request =
         match messages |> Seq.tryFind (fun (msg) -> msg.request.SequenceEqual(request)) with

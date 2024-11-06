@@ -35,3 +35,6 @@ set-time:
 
 get-door-settings:
 	$(CLI) get-door-settings
+
+set-door-settings:
+	$(CLI) set-door-settings

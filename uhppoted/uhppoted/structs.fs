@@ -33,3 +33,9 @@ type GetDoorResponse =
       door: uint8
       mode: uint8
       delay: uint8 }
+
+type SetDoorResponse =
+    { controller: uint32
+      door: uint8
+      mode: uint8
+      delay: uint8 }

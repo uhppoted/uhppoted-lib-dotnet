@@ -1,21 +1,21 @@
 # TODO
 
+- [x] dump
 - [x] `Controller` record
 - [x] Options
 - [x] decode
-      - [x] validate message type
-      - [x] message type constants
 
-- [ ] translations
+- [ ] bind to bind-addr
+- [ ] translations/enums
       - [ ] door mode
+- [ ] function signature file
 
-- [ ] integration tests
+- [x] integration tests
       - [x] UDP broadcast
       - [x] UDP broadcast-to
       - [x] UDP send-to
       - [x] TCP send-to
-      - [ ] Check TCP client is closing network connection
-      - [ ] Check UDP client is closing network connection
+      - [x] Check TCP client is closing network connection
 
 - [x] get-all-controllers
       - [ ] return Result
@@ -28,23 +28,23 @@
             - https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/component-design-guidelines#use-the-trygetvalue-pattern-instead-of-returning-f-option-values-and-prefer-method-overloading-to-taking-f-option-values-as-arguments
       - [ ] error handling
 
-- [ ] bind to bind-addr
 - [x] get-controller
 - [x] set-IPv4
 - [x] get-listener
 - [x] set-listener
 - [x] get-time
 - [x] set-time
-- [x] get-door-settings
-- [ ] set-door-settings
+- [x] get-door
+- [x] set-door
+- [ ] set-door-passcodes
       - [ ] API fn
       - [ ] CLI
             - [ ] F#
             - [ ] C#
             - [ ] VB.NET
       - [ ] integration test
+      - [ ] API doc
 
-- [ ] set-door-passcodes
 - [ ] record-special-events
 - [ ] get-status
 - [ ] get-cards
@@ -70,7 +70,6 @@
 - [ ] restore-default-parameters
 - [ ] listen
 
-- [x] dump
 - [ ] Add .NET 8 as a target framework on github
 ```
     <TargetFrameworks>net7.0;net8.0</TargetFrameworks>

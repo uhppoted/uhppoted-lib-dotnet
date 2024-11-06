@@ -87,3 +87,15 @@ type TestEncoder() =
         let packet = Encode.get_door_request controller door
 
         Assert.That(packet, Is.EqualTo(expected))
+
+    [<Test>]
+    member this.TestEncodeSetDoor() =
+        let expected = TestRequests.set_door
+
+        let controller = 405419896u
+        let door = 3uy
+        let mode = 2uy
+        let delay = 17uy
+        let packet = Encode.set_door_request controller door mode delay
+
+        Assert.That(packet, Is.EqualTo(expected))

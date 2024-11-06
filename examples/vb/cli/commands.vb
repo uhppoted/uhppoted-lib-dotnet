@@ -221,4 +221,31 @@ Module Commands
         End Try
     End Sub
 
+    Sub SetDoor(args As String())
+        Try
+            Dim controller = New ControllerBuilder(405419896).
+                                 With(IPEndPoint.Parse("192.168.1.100:60000")).
+                                 With("udp").build()
+            Dim door = 4
+            Dim mode = 2
+            Dim delay = 7
+            Dim result = set_door(controller, door, mode, delay, TIMEOUT, OPTIONS)
+
+            If (result.IsOk)
+                Dim response = result.ResultValue
+                WriteLine("set-door")
+                WriteLine("  controller {0}", response.controller)
+                WriteLine("        door {0}", response.door)
+                WriteLine("        mode {0}", response.mode)
+                WriteLine("       delay {0}s", response.delay)
+                WriteLine()
+            Else If (result.IsError)
+                Throw New Exception(result.ErrorValue)
+            End If
+
+        Catch Err As Exception
+            WriteLine("Exception  {0}", err.Message)
+        End Try
+    End Sub
+
 End Module
