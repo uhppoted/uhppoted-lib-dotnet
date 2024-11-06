@@ -37,7 +37,7 @@ let get_controllers args =
     printf "get-all-controllers: %d\n" controllers.Length
 
     controllers
-    |> List.iter (fun response ->
+    |> Array.iter (fun response ->
         printf "  controller %u\n" response.controller
         printf "    address  %A\n" response.address
         printf "    netmask  %A\n" response.netmask

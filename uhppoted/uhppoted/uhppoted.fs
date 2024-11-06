@@ -19,7 +19,7 @@ module Uhppoted =
         | Some(addr), Some("tcp") -> TCP.send_to (request, addr, timeout, debug)
         | Some(addr), _ -> UDP.send_to (request, addr, timeout, debug)
 
-    let get_all_controllers (timeout: int, options: Options) : GetControllerResponse list =
+    let get_all_controllers (timeout: int, options: Options) : GetControllerResponse array =
         let broadcast = options.broadcast
         let debug = options.debug
         let request = Encode.get_controller_request 0u
@@ -30,6 +30,7 @@ module Uhppoted =
             match Decode.get_controller_response v with
             | Ok response -> Some(response)
             | _ -> None)
+        |> List.toArray
 
     let get_controller (controller: Controller, timeout: int, options: Options) =
         let request = Encode.get_controller_request controller.controller

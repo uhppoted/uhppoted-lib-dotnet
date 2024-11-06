@@ -1,5 +1,3 @@
-Imports Microsoft.FSharp.Collections
-
 Imports System.Console
 Imports System.Net
 
@@ -30,7 +28,7 @@ Module Commands
 
     Sub GetControllers(args As String())
         Try
-            Dim controllers As FSharpList(Of GetControllerResponse) = get_all_controllers(TIMEOUT, OPTIONS)
+            Dim controllers = get_all_controllers(TIMEOUT, OPTIONS)
 
             WriteLine("get-controllers: {0}", controllers.Length)
             For Each controller In controllers

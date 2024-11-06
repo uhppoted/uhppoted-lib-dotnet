@@ -1,5 +1,3 @@
-using Microsoft.FSharp.Collections;
-
 using System.Net;
 
 using static System.Console;
@@ -29,7 +27,7 @@ class Commands
     {
         try
         {
-            FSharpList<uhppoted.GetControllerResponse> controllers = get_all_controllers(TIMEOUT, OPTIONS);
+            var controllers = get_all_controllers(TIMEOUT, OPTIONS);
 
             WriteLine("get-controllers: {0}", controllers.Length);
             foreach (var controller in controllers)

@@ -22,8 +22,8 @@
             - [x] F#
             - [x] C#
             - [x] VB
+      - [x] Return array of controllers and remove FSharpCollections dependency
       - [ ] return Result
-      - [ ] Return ordinary array of controllers (and remove FSharpCollections dependency)
       - [ ] error handling
 
 - [x] get-controller
