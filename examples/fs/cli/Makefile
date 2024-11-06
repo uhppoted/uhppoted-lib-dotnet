@@ -1,3 +1,5 @@
+CLI = dotnet run --framework net7.0
+
 .PHONY: format
 
 format:
@@ -7,31 +9,31 @@ build: format
 	dotnet build
 
 run: build
-	dotnet run
+	$(CLI)
 
-get-all-controllers: build
-	dotnet run get-all-controllers
+get-controllers: build
+	$(CLI) get-all-controllers
 
 get-controller: build
-	dotnet run get-controller
+	$(CLI) get-controller
 
 set-ip: build
-	dotnet run set-IPv4
+	$(CLI) set-IPv4
 
 get-listener: build
-	dotnet run get-listener --controller 405419896
+	$(CLI) get-listener --controller 405419896
 
 set-listener: build
-	dotnet run set-listener --controller 405419896
+	$(CLI) set-listener --controller 405419896
 
 get-time: build
-	dotnet run get-time --controller 405419896
+	$(CLI) get-time --controller 405419896
 
 set-time: build
-	dotnet run set-time --controller 405419896
+	$(CLI) set-time --controller 405419896
 
 get-door: build
-	dotnet run get-door --controller 405419896
+	$(CLI) get-door --controller 405419896
 
 set-door: build
-	dotnet run set-door --controller 405419896
+	$(CLI) set-door --controller 405419896

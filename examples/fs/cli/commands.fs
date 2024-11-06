@@ -46,6 +46,7 @@ let get_controllers args =
         printf "    version  %s\n" response.version
         printf "    date     %s\n" (YYYYMMDD response.date)
         printf "\n")
+
     Ok()
 
 let get_controller args =
@@ -67,7 +68,7 @@ let get_controller args =
         printf "\n"
         Ok()
 
-    | Error err -> 
+    | Error err ->
         printf "  ** ERROR %A\n" err
         Error(err)
 
@@ -88,7 +89,7 @@ let set_IPv4 args =
         printf "\n"
         Ok()
 
-    | Error err -> 
+    | Error err ->
         printf "  ** ERROR %A\n" err
         Error(err)
 
@@ -107,7 +108,7 @@ let get_listener args =
         printf "\n"
         Ok()
 
-    | Error err -> 
+    | Error err ->
         printf "  ** ERROR %A\n" err
         Error(err)
 
@@ -128,7 +129,7 @@ let set_listener args =
         printf "\n"
         Ok()
 
-    | Error err -> 
+    | Error err ->
         printf "  ** ERROR %A\n" err
         Error(err)
 
@@ -146,8 +147,7 @@ let get_time args =
         printf "\n"
         Ok()
 
-    | Error err -> 
-        Error(err)
+    | Error err -> Error(err)
 
 let set_time args =
     let controller =
@@ -165,8 +165,7 @@ let set_time args =
         printf "\n"
         Ok()
 
-    | Error err -> 
-        Error(err)
+    | Error err -> Error(err)
 
 let get_door args =
     let controller =
@@ -186,8 +185,7 @@ let get_door args =
         printf "\n"
         Ok()
 
-    | Error err -> 
-        Error(err)
+    | Error err -> Error(err)
 
 let set_door args =
     let controller =
@@ -209,5 +207,4 @@ let set_door args =
         printf "\n"
         Ok()
 
-    | Error err -> 
-        Error(err)
+    | Error err -> Error(err)

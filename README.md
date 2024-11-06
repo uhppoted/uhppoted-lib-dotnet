@@ -11,7 +11,14 @@
 
 ### C# Interop
 
-1. The FSharp.Core package needs to be installed:
+1. May require the FSharp.Core package
+```
+dotnet add package FSharp.Core
+```
+
+### VB.NET Interop
+
+1. May require the FSharp.Core package
 ```
 dotnet add package FSharp.Core
 ```

@@ -1,4 +1,4 @@
-CLI = dotnet run --project ./examples/fs/cli
+CLI = dotnet run --project ./examples/fs/cli --framework net7.0
 
 .PHONY: format
 .PHONY: integration-tests
