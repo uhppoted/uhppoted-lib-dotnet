@@ -10,7 +10,6 @@
     <TargetFrameworks>net7.0;net8.0</TargetFrameworks>
 ```
 
-
 - [ ] translations/enums
       - [ ] door mode
 - [ ] function signature file
@@ -45,13 +44,18 @@
       - [ ] integration test
       - [ ] API doc
 
-- [ ] record-special-events
+- [ ] open-door
 - [ ] get-status
 - [ ] get-cards
 - [ ] get-card
 - [ ] put-card
 - [ ] delete-card
 - [ ] delete-cards
+- [ ] get-events
+- [ ] get-event
+- [ ] get-event-index
+- [ ] set-event-index
+- [ ] record-special-events
 - [ ] get-time-profile
 - [ ] set-time-profile
 - [ ] clear-time-profiles
@@ -59,11 +63,6 @@
 - [ ] add-task
 - [ ] refresh-task-list
 - [ ] set-task-list
-- [ ] get-events
-- [ ] get-event
-- [ ] get-event-index
-- [ ] set-event-index
-- [ ] open-door
 - [ ] set-pc-control
 - [ ] set-interlock
 - [ ] activate-keypads
