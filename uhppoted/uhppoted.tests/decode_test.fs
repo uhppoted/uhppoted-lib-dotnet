@@ -20,7 +20,24 @@ type TestDecoder() =
               gateway = IPAddress([| 0xc0uy; 0xa8uy; 0x01uy; 0x01uy |])
               MAC = PhysicalAddress([| 0x00uy; 0x66uy; 0x19uy; 0x39uy; 0x55uy; 0x2duy |])
               version = "v8.92"
-              date = Some(DateOnly(2018, 8, 16)) }
+              date = Nullable(DateOnly(2018, 8, 16)) }
+
+        match Decode.get_controller_response packet with
+        | Ok response -> Assert.That(response, Is.EqualTo(expected))
+        | Error err -> Assert.Fail(err)
+
+    [<Test>]
+    member this.TestDecodeGetControllerResponseWithInvalidDate() =
+        let packet = TestResponses.get_controller_with_invalid_date
+
+        let expected =
+            { controller = 405419896u
+              address = IPAddress([| 0xc0uy; 0xa8uy; 0x01uy; 0x64uy |])
+              netmask = IPAddress([| 0xffuy; 0xffuy; 0xffuy; 0x00uy |])
+              gateway = IPAddress([| 0xc0uy; 0xa8uy; 0x01uy; 0x01uy |])
+              MAC = PhysicalAddress([| 0x00uy; 0x66uy; 0x19uy; 0x39uy; 0x55uy; 0x2duy |])
+              version = "v8.92"
+              date = Nullable() }
 
         match Decode.get_controller_response packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))

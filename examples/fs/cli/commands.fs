@@ -17,10 +17,11 @@ let OPTIONS: Options =
       listen = IPEndPoint(IPAddress.Any, 60001)
       debug = true }
 
-let YYYYMMDD date =
-    match date with
-    | Some(v: DateOnly) -> v.ToString("yyyy-MM-dd")
-    | None -> "---"
+let YYYYMMDD (date: Nullable<DateOnly>) =
+    if date.HasValue then
+        date.Value.ToString("yyyy-MM-dd")
+    else
+        "---"
 
 let YYYYMMDDHHmmss (datetime: Nullable<DateTime>) =
     if datetime.HasValue then

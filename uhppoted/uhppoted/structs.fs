@@ -11,7 +11,7 @@ type GetControllerResponse =
       gateway: IPAddress
       MAC: PhysicalAddress
       version: string
-      date: Option<DateOnly> }
+      date: DateOnly Nullable }
 
 type GetListenerResponse =
     { controller: uint32

@@ -18,14 +18,12 @@
       - [x] Check TCP client is closing network connection
 
 - [x] get-all-controllers
+      - [x] pprint Nullable DateOnly
+            - [x] F#
+            - [x] C#
+            - [x] VB
       - [ ] return Result
       - [ ] Return ordinary array of controllers (and remove FSharpCollections dependency)
-      - [ ] pprint Option<DateOnly>
-            - [x] F#
-            - [ ] C#
-            - [ ] VB
-            - https://learn.microsoft.com/en-us/dotnet/fsharp/language-reference/values/null-values
-            - https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/component-design-guidelines#use-the-trygetvalue-pattern-instead-of-returning-f-option-values-and-prefer-method-overloading-to-taking-f-option-values-as-arguments
       - [ ] error handling
 
 - [x] get-controller

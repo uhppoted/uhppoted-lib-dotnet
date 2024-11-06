@@ -40,7 +40,7 @@ Module Commands
                 WriteLine("    gateway  {0}", controller.gateway)
                 WriteLine("    MAC      {0}", controller.MAC)
                 WriteLine("    version  {0}", controller.version)
-                WriteLine("    date     {0}", controller.date)
+                WriteLine("    date     {0}", YYYYMMDD(controller.date))
                 WriteLine()
             Next
 
@@ -66,7 +66,7 @@ Module Commands
                 WriteLine("    gateway  {0}", response.gateway)
                 WriteLine("    MAC      {0}", response.MAC)
                 WriteLine("    version  {0}", response.version)
-                WriteLine("    date     {0}", response.date)
+                WriteLine("    date     {0}", YYYYMMDD(response.date))
                 WriteLine()
             Else If (result.IsError)
                 Throw New Exception(result.ErrorValue)

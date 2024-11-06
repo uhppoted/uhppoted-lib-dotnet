@@ -34,12 +34,11 @@ module Decode =
     let unpackMAC (slice: byte array) = PhysicalAddress(slice[0..5])
 
     let unpack_date (slice: byte array) =
-        try
-            let bcd = $"%02x{slice[0]}%02x{slice[1]}-%02x{slice[2]}-%02x{slice[3]}"
-            let date = DateOnly.ParseExact(bcd, "yyyy-MM-dd")
-            Some(date)
-        with _ ->
-            None
+        let bcd = $"%02x{slice[0]}%02x{slice[1]}-%02x{slice[2]}-%02x{slice[3]}"
+
+        match DateOnly.TryParseExact(bcd, "yyyy-MM-dd") with
+        | true, date -> Nullable date
+        | false, _ -> Nullable()
 
     let unpack_datetime (slice: byte array) : Nullable<DateTime> =
         let bcd =
