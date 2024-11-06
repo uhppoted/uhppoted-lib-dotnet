@@ -59,18 +59,19 @@ module UDP =
                 return Error err.Message
         }
 
-    let broadcast (request: byte array, addrPort: IPEndPoint, timeout: int, debug: bool) : byte array list =
-        let bind = IPEndPoint(IPAddress.Any, 0)
+    let broadcast
+        (request: byte array, bind: IPEndPoint, broadcast: IPEndPoint, timeout: int, debug: bool)
+        : byte array list =
         let socket = new UdpClient(bind)
 
         try
             let rx = receive_all socket [] |> Async.StartAsTask
 
             socket.EnableBroadcast <- true
-            socket.Send(request, request.Length, addrPort) |> ignore
+            socket.Send(request, request.Length, broadcast) |> ignore
 
             if debug then
-                printfn "    ... sent %d bytes to %A" request.Length addrPort.Address
+                printfn "    ... sent %d bytes to %A" request.Length broadcast.Address
                 dump request
 
             Thread.Sleep timeout
@@ -91,8 +92,7 @@ module UDP =
             printfn "%s" error.Message
             []
 
-    let broadcast_to (request: byte array, addrPort: IPEndPoint, timeout: int, debug: bool) =
-        let bind = IPEndPoint(IPAddress.Any, 0)
+    let broadcast_to (request: byte array, bind: IPEndPoint, broadcast: IPEndPoint, timeout: int, debug: bool) =
         let socket = new UdpClient(bind)
 
         let timer (timeout: int) : Async<Result<byte array * IPEndPoint, string>> =
@@ -107,10 +107,10 @@ module UDP =
                 let rx_timeout = timer timeout |> Async.StartAsTask
 
                 socket.EnableBroadcast <- true
-                socket.Send(request, request.Length, addrPort) |> ignore
+                socket.Send(request, request.Length, broadcast) |> ignore
 
                 if debug then
-                    printfn "    ... sent %d bytes to %A" request.Length addrPort.Address
+                    printfn "    ... sent %d bytes to %A" request.Length broadcast.Address
                     dump request
 
                 // set-IPv4 does not return a reply
@@ -138,9 +138,8 @@ module UDP =
         finally
             socket.Close()
 
-    let send_to (request: byte array, addrPort: IPEndPoint, timeout: int, debug: bool) =
-        let bind = IPEndPoint(IPAddress.Any, 0)
-        let socket = new UdpClient(bind)
+    let send_to (request: byte array, src: IPEndPoint, dest: IPEndPoint, timeout: int, debug: bool) =
+        let socket = new UdpClient(src)
 
         let timer (timeout: int) : Async<Result<byte array * IPEndPoint, string>> =
             async {
@@ -150,7 +149,7 @@ module UDP =
 
         try
             try
-                socket.Connect(addrPort)
+                socket.Connect(dest)
 
                 let rx = receive socket |> Async.StartAsTask
                 let rx_timeout = timer timeout |> Async.StartAsTask
@@ -158,7 +157,7 @@ module UDP =
                 socket.Send(request, request.Length) |> ignore
 
                 if debug then
-                    printfn "    ... sent %d bytes to %A" request.Length addrPort.Address
+                    printfn "    ... sent %d bytes to %A" request.Length dest.Address
                     dump request
 
                 // set-IPv4 does not return a reply

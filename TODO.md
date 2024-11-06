@@ -4,8 +4,13 @@
 - [x] `Controller` record
 - [x] Options
 - [x] decode
+- [x] bind to bind-addr
+- [ ] Add .NET 8 as a target framework on github
+```
+    <TargetFrameworks>net7.0;net8.0</TargetFrameworks>
+```
 
-- [ ] bind to bind-addr
+
 - [ ] translations/enums
       - [ ] door mode
 - [ ] function signature file
@@ -19,9 +24,6 @@
 
 - [x] get-all-controllers
       - [x] pprint Nullable DateOnly
-            - [x] F#
-            - [x] C#
-            - [x] VB
       - [x] Return array of controllers and remove FSharpCollections dependency
       - [ ] return Result
       - [ ] error handling
@@ -67,11 +69,6 @@
 - [ ] activate-keypads
 - [ ] restore-default-parameters
 - [ ] listen
-
-- [ ] Add .NET 8 as a target framework on github
-```
-    <TargetFrameworks>net7.0;net8.0</TargetFrameworks>
-```
 
 ## CS
 - https://stackoverflow.com/questions/35163327/working-with-f-options-in-c-e-g-fsharpoptiondictionaryguid-membershipuser

@@ -39,8 +39,8 @@ module TCP =
                 return Error err.Message
         }
 
-    let send_to (request: byte array, addrPort: IPEndPoint, timeout: int, debug: bool) =
-        let socket = new TcpClient()
+    let send_to (request: byte array, src: IPEndPoint, dest: IPEndPoint, timeout: int, debug: bool) =
+        let socket = new TcpClient(src)
 
         let timer (timeout: int) : Async<Result<byte array * IPEndPoint, string>> =
             async {
@@ -50,7 +50,7 @@ module TCP =
 
         try
             try
-                socket.Connect(addrPort)
+                socket.Connect(dest)
 
                 let stream = socket.GetStream()
                 let rx = receive stream |> Async.StartAsTask
@@ -59,7 +59,7 @@ module TCP =
                 stream.Write(request) |> ignore
 
                 if debug then
-                    printfn "    ... sent %d bytes to %A" request.Length addrPort.Address
+                    printfn "    ... sent %d bytes to %A" request.Length dest.Address
                     dump request
 
                 // set-IPv4 does not return a reply
@@ -73,7 +73,7 @@ module TCP =
                         match rx.Result with
                         | Ok(packet) when packet.Length = 64 ->
                             if debug then
-                                printfn "    ... received %d bytes from %A" packet.Length addrPort.Address
+                                printfn "    ... received %d bytes from %A" packet.Length dest.Address
                                 dump packet
 
                             Ok packet
