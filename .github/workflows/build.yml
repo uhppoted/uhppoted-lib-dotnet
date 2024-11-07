@@ -11,13 +11,16 @@ jobs:
 
   build:
     name: Build
+    strategy:
+      matrix:
+        version: ['7.0.x']
     runs-on: ubuntu-latest
     steps:
 
     - name: Set up .NET
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: '7.0.x'
+        dotnet-version: ${{ matrix.version }}
 
     - name: Check out code
       uses: actions/checkout@v4
