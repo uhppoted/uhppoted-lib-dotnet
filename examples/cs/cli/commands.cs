@@ -27,19 +27,28 @@ class Commands
     {
         try
         {
-            var controllers = get_all_controllers(TIMEOUT, OPTIONS);
+            var result = get_all_controllers(TIMEOUT, OPTIONS);
 
-            WriteLine("get-controllers: {0}", controllers.Length);
-            foreach (var controller in controllers)
+            if (result.IsOk)
             {
-                WriteLine("  controller {0}", controller.controller);
-                WriteLine("    address  {0}", controller.address);
-                WriteLine("    netmask  {0}", controller.netmask);
-                WriteLine("    gateway  {0}", controller.gateway);
-                WriteLine("    MAC      {0}", controller.MAC);
-                WriteLine("    version  {0}", controller.version);
-                WriteLine("    date     {0}", YYYYMMDD(controller.date));
-                WriteLine();
+                var controllers = result.ResultValue;
+
+                WriteLine("get-controllers: {0}", controllers.Length);
+                foreach (var controller in controllers)
+                {
+                    WriteLine("  controller {0}", controller.controller);
+                    WriteLine("    address  {0}", controller.address);
+                    WriteLine("    netmask  {0}", controller.netmask);
+                    WriteLine("    gateway  {0}", controller.gateway);
+                    WriteLine("    MAC      {0}", controller.MAC);
+                    WriteLine("    version  {0}", controller.version);
+                    WriteLine("    date     {0}", YYYYMMDD(controller.date));
+                    WriteLine();
+                }
+            }
+            else if (result.IsError)
+            {
+                throw new Exception(result.ErrorValue);
             }
         }
         catch (Exception err)
@@ -321,7 +330,7 @@ class Commands
                                          .With("udp")
                                          .build();
             byte door = 4;
-            uint[] passcodes = { 12345,54321,0,999999 };
+            uint[] passcodes = { 12345, 54321, 0, 999999 };
 
             var result = set_door_passcodes(controller, door, passcodes[0], passcodes[1], passcodes[2], passcodes[3], TIMEOUT, OPTIONS);
 

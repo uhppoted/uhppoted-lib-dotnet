@@ -32,22 +32,23 @@ let YYYYMMDDHHmmss (datetime: Nullable<DateTime>) =
 let argparse args flag defval = defval
 
 let get_controllers args =
-    let controllers = Uhppoted.get_all_controllers (TIMEOUT, OPTIONS)
+    match Uhppoted.get_all_controllers (TIMEOUT, OPTIONS) with
+    | Ok controllers ->
+        printf "get-all-controllers: %d\n" controllers.Length
 
-    printf "get-all-controllers: %d\n" controllers.Length
+        controllers
+        |> Array.iter (fun v ->
+            printf "  controller %u\n" v.controller
+            printf "    address  %A\n" v.address
+            printf "    netmask  %A\n" v.netmask
+            printf "    gateway  %A\n" v.gateway
+            printf "    MAC      %A\n" v.MAC
+            printf "    version  %s\n" v.version
+            printf "    date     %s\n" (YYYYMMDD v.date)
+            printf "\n")
 
-    controllers
-    |> Array.iter (fun response ->
-        printf "  controller %u\n" response.controller
-        printf "    address  %A\n" response.address
-        printf "    netmask  %A\n" response.netmask
-        printf "    gateway  %A\n" response.gateway
-        printf "    MAC      %A\n" response.MAC
-        printf "    version  %s\n" response.version
-        printf "    date     %s\n" (YYYYMMDD response.date)
-        printf "\n")
-
-    Ok()
+        Ok()
+    | Error err -> Error(err)
 
 let get_controller args =
     let controller =
@@ -67,7 +68,6 @@ let get_controller args =
         printf "    date     %s\n" (YYYYMMDD response.date)
         printf "\n"
         Ok()
-
     | Error err ->
         printf "  ** ERROR %A\n" err
         Error(err)
@@ -88,7 +88,6 @@ let set_IPv4 args =
         printf "  ok\n"
         printf "\n"
         Ok()
-
     | Error err ->
         printf "  ** ERROR %A\n" err
         Error(err)
@@ -107,7 +106,6 @@ let get_listener args =
         printf "    interval %ds\n" response.interval
         printf "\n"
         Ok()
-
     | Error err ->
         printf "  ** ERROR %A\n" err
         Error(err)
@@ -128,7 +126,6 @@ let set_listener args =
         printf "          ok %A\n" response.ok
         printf "\n"
         Ok()
-
     | Error err ->
         printf "  ** ERROR %A\n" err
         Error(err)
@@ -146,7 +143,6 @@ let get_time args =
         printf "    datetime %s\n" (YYYYMMDDHHmmss response.datetime)
         printf "\n"
         Ok()
-
     | Error err -> Error(err)
 
 let set_time args =
@@ -164,7 +160,6 @@ let set_time args =
         printf "    datetime %s\n" (YYYYMMDDHHmmss response.datetime)
         printf "\n"
         Ok()
-
     | Error err -> Error(err)
 
 let get_door args =
@@ -184,7 +179,6 @@ let get_door args =
         printf "       delay %ds\n" response.delay
         printf "\n"
         Ok()
-
     | Error err -> Error(err)
 
 let set_door args =
@@ -206,7 +200,6 @@ let set_door args =
         printf "       delay %ds\n" response.delay
         printf "\n"
         Ok()
-
     | Error err -> Error(err)
 
 let set_door_passcodes args =
@@ -216,14 +209,24 @@ let set_door_passcodes args =
           protocol = PROTOCOL }
 
     let door = 4uy
-    let passcodes = [| 1234u;545321u;0u;999999u |]
+    let passcodes = [| 1234u; 545321u; 0u; 999999u |]
 
-    match Uhppoted.set_door_passcodes (controller, door, passcodes[0], passcodes[1], passcodes[2], passcodes[3], TIMEOUT, OPTIONS) with
+    match
+        Uhppoted.set_door_passcodes (
+            controller,
+            door,
+            passcodes[0],
+            passcodes[1],
+            passcodes[2],
+            passcodes[3],
+            TIMEOUT,
+            OPTIONS
+        )
+    with
     | Ok response ->
         printf "set-door-passcodes\n"
         printf "  controller %u\n" response.controller
         printf "          ok %b\n" response.ok
         printf "\n"
         Ok()
-
     | Error err -> Error(err)

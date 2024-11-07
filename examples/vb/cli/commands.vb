@@ -28,19 +28,25 @@ Module Commands
 
     Sub GetControllers(args As String())
         Try
-            Dim controllers = get_all_controllers(TIMEOUT, OPTIONS)
+            Dim result = get_all_controllers(TIMEOUT, OPTIONS)
 
-            WriteLine("get-controllers: {0}", controllers.Length)
-            For Each controller In controllers
-                WriteLine("  controller {0}", controller.controller)
-                WriteLine("    address  {0}", controller.address)
-                WriteLine("    netmask  {0}", controller.netmask)
-                WriteLine("    gateway  {0}", controller.gateway)
-                WriteLine("    MAC      {0}", controller.MAC)
-                WriteLine("    version  {0}", controller.version)
-                WriteLine("    date     {0}", YYYYMMDD(controller.date))
-                WriteLine()
-            Next
+            If (result.IsOk)
+                Dim controllers = result.ResultValue
+
+                WriteLine("get-controllers: {0}", controllers.Length)
+                For Each controller In controllers
+                    WriteLine("  controller {0}", controller.controller)
+                    WriteLine("    address  {0}", controller.address)
+                    WriteLine("    netmask  {0}", controller.netmask)
+                    WriteLine("    gateway  {0}", controller.gateway)
+                    WriteLine("    MAC      {0}", controller.MAC)
+                    WriteLine("    version  {0}", controller.version)
+                    WriteLine("    date     {0}", YYYYMMDD(controller.date))
+                    WriteLine()
+                Next
+            Else If (result.IsError)
+                Throw New Exception(result.ErrorValue)
+            End If
 
         Catch Err As Exception
             WriteLine("Exception  {0}", err.Message)
@@ -57,6 +63,7 @@ Module Commands
 
             If (result.IsOk)
                 Dim response = result.ResultValue
+
                 WriteLine("get-controller")
                 WriteLine("  controller {0}", response.controller)
                 WriteLine("    address  {0}", response.address)

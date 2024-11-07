@@ -83,9 +83,9 @@ type TestClass() =
                  version = "v6.62"
                  date = Nullable(DateOnly.ParseExact("2020-01-01", "yyyy-MM-dd")) } |]
 
-        let result = Uhppoted.get_all_controllers (TIMEOUT, OPTIONS)
-
-        Assert.That(result, Is.EqualTo(expected))
+        match Uhppoted.get_all_controllers (TIMEOUT, OPTIONS) with
+        | Ok controllers -> Assert.That(controllers, Is.EqualTo(expected))
+        | Error err -> Assert.Fail(err)
 
     [<Test>]
     member this.TestGetController() =

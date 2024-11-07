@@ -6,6 +6,8 @@
 - [x] decode
 - [x] bind to bind-addr
 - [x] integration tests
+- (?) verify controller ID in response
+- [ ] Restructure API fns to use |>
 
 - [ ] Add .NET 8 as a target framework on github
 - [ ] github _nightly_ build
@@ -20,8 +22,8 @@
 - [ ] get-all-controllers
       - [x] pprint Nullable DateOnly
       - [x] Return array of controllers and remove FSharpCollections dependency
-      - [ ] return Result
-      - [ ] error handling
+      - [x] Return Result
+      - [ ] Handle errors in receive-all
 
 - [ ] API
       - [x] get-controller

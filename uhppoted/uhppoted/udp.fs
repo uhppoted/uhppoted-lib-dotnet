@@ -59,9 +59,7 @@ module UDP =
                 return Error err.Message
         }
 
-    let broadcast
-        (request: byte array, bind: IPEndPoint, broadcast: IPEndPoint, timeout: int, debug: bool)
-        : byte array list =
+    let broadcast (request: byte array, bind: IPEndPoint, broadcast: IPEndPoint, timeout: int, debug: bool) =
         let socket = new UdpClient(bind)
 
         try
@@ -86,11 +84,10 @@ module UDP =
                     printfn "    ... received %d bytes from %A" packet.Length addr.Address
                     dump packet)
 
-            received |> List.map fst
+            received |> List.map fst |> Ok
 
         with error ->
-            printfn "%s" error.Message
-            []
+            Error error.Message
 
     let broadcast_to (request: byte array, bind: IPEndPoint, broadcast: IPEndPoint, timeout: int, debug: bool) =
         let socket = new UdpClient(bind)

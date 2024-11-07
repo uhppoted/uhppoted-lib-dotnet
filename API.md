@@ -23,29 +23,40 @@ This function sends a broadcast request to a network and processes the received 
 ```fsharp
 let timeout = 5000
 let options = { broadcast = IPAddress.Parse("255.255.255.255"); debug = true }
-
-let controllers = get_all_controllers(timeout, options)
-
-controllers |> Array.iter (fun controller ->
-    printfn "controller: %u, version: %s" controller.controller controller.version
+match get_all_controllers(timeout, options) with
+| Ok controllers -> controllers |> Array.iter (fun controller -> printfn "controller: %u, version: %s" controller.controller controller.version
+| Error err -> printfn "get-all-controllers %A" err
 )
 ```
 ```csharp
 var timeout = 5000;
 var options = new Options { broadcast = IPAddress.Parse("255.255.255.255"), debug = true };
-var controllers = get_all_controllers(timeout, options);
-foreach (var controller in controllers)
-{
-    Console.WriteLine($"controller: {controller.controller}, version: {controller.version}");
-}
+var result = get_all_controllers(timeout, options);
+            if (result.IsOk)
+            {
+                var controllers = result.ResultValue;
+                foreach (var controller in controllers)
+                {
+                   Console.WriteLine($"controller: {controller.controller}, version: {controller.version}");
+                }
+            }
+            else if (result.IsError)
+            {
+                throw new Exception(result.ErrorValue);
+            }
 ```
 ```vb
 Dim timeout As Integer = 3000
 Dim options As New Options With { .broadcast = IPAddress.Parse("255.255.255.255"), .debug = True }
-Dim controllers = get_all_controllers(timeout, options)
-For Each controller In controllers
-    Console.WriteLine($"Controller ID: {controller.controller}, Version: {controller.version}")
-Next
+Dim result = get_all_controllers(timeout, options)
+If (result.IsOk)
+    Dim controllers = result.ResultValue
+    For Each controller In controllers
+        Console.WriteLine($"Controller ID: {controller.controller}, Version: {controller.version}")
+    Next
+Else If (result.IsError)
+    Throw New Exception(result.ErrorValue)
+End If
 ```
 
 **Errors**
