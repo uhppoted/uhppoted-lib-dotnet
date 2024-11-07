@@ -9,6 +9,10 @@
     <TargetFrameworks>net7.0</TargetFrameworks>
   </PropertyGroup>
 
+  <PropertyGroup>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+  
   <ItemGroup>
     <Compile Include="controller.fs" />
     <Compile Include="options.fs" />

@@ -6,10 +6,10 @@
 - [x] decode
 - [x] bind to bind-addr
 - [x] integration tests
+- [x] Add .NET 8 as a target framework on github
 - (?) verify controller ID in response
 - [ ] Restructure API fns to use |>
 
-- [ ] Add .NET 8 as a target framework on github
 - [ ] github _nightly_ build
 - [ ] function signature file
 - [ ] README
