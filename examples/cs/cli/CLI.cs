@@ -56,6 +56,11 @@ class CLI
                     Environment.Exit(0);
                     break;
 
+                case "set-door-passcodes":
+                    Commands.SetDoorPasscodes(args[1..]);
+                    Environment.Exit(0);
+                    break;
+
                 default:
                     WriteLine("** ERROR invalid command {0}", args[0]);
                     WriteLine();
@@ -81,6 +86,7 @@ class CLI
         WriteLine("  - set-time             Sets the controller system date and time");
         WriteLine("  - get-door             Retrieves a controller door mode and delay settings");
         WriteLine("  - set-door             Sets a controller door mode and delay");
+        WriteLine("  - set-door-passcodes   Sets the supervisor passcodes for a controller door");
         WriteLine();
     }
 }

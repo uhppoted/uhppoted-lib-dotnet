@@ -37,3 +37,6 @@ get-door: build
 
 set-door: build
 	$(CLI) set-door --controller 405419896
+
+set-door-passcodes: build
+	$(CLI) set-door-passcodes --controller 405419896

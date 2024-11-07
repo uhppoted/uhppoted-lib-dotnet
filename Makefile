@@ -33,8 +33,11 @@ get-time:
 set-time:
 	$(CLI) set-time
 
-get-door-settings:
-	$(CLI) get-door-settings
+get-door:
+	$(CLI) get-door
 
-set-door-settings:
-	$(CLI) set-door-settings
+set-door:
+	$(CLI) set-door
+
+set-door-passcodes:
+	$(CLI) set-door-passcodes

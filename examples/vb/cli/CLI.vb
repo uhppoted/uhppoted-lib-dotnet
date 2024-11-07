@@ -47,6 +47,10 @@ Module Program
                     Commands.SetDoor(slice)
                     Environment.Exit(0)
 
+                Case "set-door-passcodes"
+                    Commands.SetDoorPasscodes(slice)
+                    Environment.Exit(0)
+
                 Case Else
                     WriteLine("** ERROR invalid command {0}", args(0))
                     WriteLine()
@@ -71,6 +75,7 @@ Module Program
         WriteLine("  - set-time             Sets the controller system date and time")
         WriteLine("  - get-door             Retrieves a controller door mode and delay settings")
         WriteLine("  - set-door             Sets a controller door mode and delay")
+        WriteLine("  - set-door-passcodes   Sets the supervisor passcodes for a controller door")
         WriteLine()
     End Sub
 End Module

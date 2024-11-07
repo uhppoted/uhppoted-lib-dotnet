@@ -208,3 +208,22 @@ let set_door args =
         Ok()
 
     | Error err -> Error(err)
+
+let set_door_passcodes args =
+    let controller =
+        { controller = argparse args "--controller" CONTROLLER
+          address = ADDRESS
+          protocol = PROTOCOL }
+
+    let door = 4uy
+    let passcodes = [| 1234u;545321u;0u;999999u |]
+
+    match Uhppoted.set_door_passcodes (controller, door, passcodes[0], passcodes[1], passcodes[2], passcodes[3], TIMEOUT, OPTIONS) with
+    | Ok response ->
+        printf "set-door-passcodes\n"
+        printf "  controller %u\n" response.controller
+        printf "          ok %b\n" response.ok
+        printf "\n"
+        Ok()
+
+    | Error err -> Error(err)

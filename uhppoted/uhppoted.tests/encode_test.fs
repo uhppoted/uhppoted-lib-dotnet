@@ -99,3 +99,29 @@ type TestEncoder() =
         let packet = Encode.set_door_request controller door mode delay
 
         Assert.That(packet, Is.EqualTo(expected))
+
+    [<Test>]
+    member this.TestEncodeSetDoorPasscodes() =
+        let expected = TestRequests.set_door_passcodes
+
+        let controller = 405419896u
+        let door = 3uy
+        let passcodes = [| 123456u; 234567u; 345678u; 456789u |]
+
+        let packet =
+            Encode.set_door_passcodes_request controller door passcodes[0] passcodes[1] passcodes[2] passcodes[3]
+
+        Assert.That(packet, Is.EqualTo(expected))
+
+    [<Test>]
+    member this.TestEncodeSetDoorPasscodesWithInvalidPasscode() =
+        let expected = TestRequests.set_door_passcodes_with_invalid_passcode
+
+        let controller = 405419896u
+        let door = 3uy
+        let passcodes = [| 123456u; 1234567u; 345678u; 456789u |]
+
+        let packet =
+            Encode.set_door_passcodes_request controller door passcodes[0] passcodes[1] passcodes[2] passcodes[3]
+
+        Assert.That(packet, Is.EqualTo(expected))

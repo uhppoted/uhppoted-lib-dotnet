@@ -311,4 +311,37 @@ class Commands
             WriteLine("** ERROR  {0}", err.Message);
         }
     }
+
+    public static void SetDoorPasscodes(string[] args)
+    {
+        try
+        {
+            var controller = new uhppoted.ControllerBuilder(CONTROLLER)
+                                         .With(IPEndPoint.Parse("192.168.1.100:60000"))
+                                         .With("udp")
+                                         .build();
+            byte door = 4;
+            uint[] passcodes = { 12345,54321,0,999999 };
+
+            var result = set_door_passcodes(controller, door, passcodes[0], passcodes[1], passcodes[2], passcodes[3], TIMEOUT, OPTIONS);
+
+            if (result.IsOk)
+            {
+                var response = result.ResultValue;
+
+                WriteLine("set-door-passcodes");
+                WriteLine("  controller {0}", response.controller);
+                WriteLine("          ok {0}", response.ok);
+                WriteLine();
+            }
+            else if (result.IsError)
+            {
+                throw new Exception(result.ErrorValue);
+            }
+        }
+        catch (Exception err)
+        {
+            WriteLine("** ERROR  {0}", err.Message);
+        }
+    }
 }

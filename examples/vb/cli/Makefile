@@ -38,4 +38,9 @@ get-door: build
 set-door: build
 	$(CLI) set-door
 
+set-door-passcodes: build
+	$(CLI) set-door-passcodes
+
+
+
 

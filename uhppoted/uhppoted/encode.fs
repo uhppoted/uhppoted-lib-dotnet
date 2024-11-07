@@ -117,3 +117,33 @@ module Encode =
         Array.blit (packU8 delay) 0 packet 10 1
 
         packet
+
+    let set_door_passcodes_request
+        (controller: uint32)
+        (door: uint8)
+        (passcode1: uint32)
+        (passcode2: uint32)
+        (passcode3: uint32)
+        (passcode4: uint32)
+        =
+        let packet: byte array = Array.zeroCreate 64
+
+        Array.set packet 0 (byte messages.SOM)
+        Array.set packet 1 (byte messages.SET_DOOR_PASSCODES)
+
+        Array.blit (packU32 controller) 0 packet 4 4
+        Array.blit (packU8 door) 0 packet 8 1
+
+        if passcode1 <= 999999u then
+            Array.blit (packU32 passcode1) 0 packet 12 4
+
+        if passcode2 <= 999999u then
+            Array.blit (packU32 passcode2) 0 packet 16 4
+
+        if passcode3 <= 999999u then
+            Array.blit (packU32 passcode3) 0 packet 20 4
+
+        if passcode4 <= 999999u then
+            Array.blit (packU32 passcode4) 0 packet 24 4
+
+        packet

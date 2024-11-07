@@ -12,6 +12,7 @@ let usage () =
     printfn "  - set-time             Sets the controller system date and time"
     printfn "  - get-door             Retrieves a controller door mode and delay settings"
     printfn "  - set-door             Sets a controller door mode and delay"
+    printfn "  - set-door-passcodes   Sets the supervisor passcodes for a controller door"
     printfn "\n"
 
 [<EntryPoint>]
@@ -31,6 +32,7 @@ let main args =
         | "set-time" :: _ -> set_time (arglist[1..])
         | "get-door" :: _ -> get_door (arglist[1..])
         | "set-door" :: _ -> set_door (arglist[1..])
+        | "set-door-passcodes" :: _ -> set_door_passcodes (arglist[1..])
         | _ -> Error "invalid command"
 
     match result with

@@ -147,3 +147,69 @@ module Uhppoted =
         match result with
         | Ok packet -> Decode.set_door_response packet
         | Error err -> Error err
+
+    /// <summary>
+    /// Sets up to 4 passcodes for a controller door.
+    /// </summary>
+    /// <param name="controller">Controller ID and (optionally) address and transport protocol.</param>
+    /// <param name="door">Door number [1..4].</param>
+    /// <param name="passcode1">Passcode [0..999999] (0 is 'none').</param>
+    /// <param name="passcode2">Passcode [0..999999] (0 is 'none').</param>
+    /// <param name="passcode3">Passcode [0..999999] (0 is 'none').</param>
+    /// <param name="passcode4">Passcode [0..999999] (0 is 'none').</param>
+    /// <param name="timeout">Operation timeout (ms).</param>
+    /// <param name="options">Optional bind, broadcast and listen addresses.</param>
+    /// <returns>
+    /// Returns Ok if the request was processed, error otherwise. The Ok response should be
+    /// checked for 'true'
+    /// </returns>
+    /// <example>
+    /// <code language="fsharp">
+    /// let controller = { controller = 405419896u; address = None; protocol = None }
+    /// let options = { broadcast = IPAddress.Broadcast; debug = true }
+    /// match set_door_passcodes controller 4uy 12345u 54321u 0u 999999u 5000 options with
+    /// | Ok response -> printfn "set door passcodes %A" response.ok
+    /// | Error err -> printfn "error setting door passcodes: %A" err
+    /// </code>
+    /// <code language="csharp">
+    /// var controller = new ControllerBuilder(405419896).build();
+    /// var options = new OptionsBuilder().build();
+    /// var result = set_door_passcodes(controller, 4, 12345, 54321, 0, 999999, 5000, options);
+    /// if (result.IsOk)
+    /// {
+    ///     Console.WriteLine($"set-door-passcodes: {result.ResultValue.ok}");
+    /// }
+    /// else
+    /// {
+    ///     Console.WriteLine($"set-door-passcodes: error {result.ErrorValue}");
+    /// }
+    /// </code>
+    /// <code language="vbnet">
+    /// Dim controller As New ControllerBuilder(405419896u).build()
+    /// Dim options As New OptionsBuilder().build()
+    /// Dim result = set_door_passcodes(controller, 4, 12345UI, 54321UI, 0UI, 999999UI, 5000, options)
+    /// If result.IsOk Then
+    ///     Console.WriteLine($"set-door-passcodes: {result.ResultValue.ok}")
+    /// Else
+    ///     Console.WriteLine($"set-door-passcodes: error {result.ErrorValue}")
+    /// End If
+    /// </code>
+    let set_door_passcodes
+        (
+            controller: Controller,
+            door: uint8,
+            passcode1: uint32,
+            passcode2: uint32,
+            passcode3: uint32,
+            passcode4: uint32,
+            timeout: int,
+            options: Options
+        ) =
+        let request =
+            Encode.set_door_passcodes_request controller.controller door passcode1 passcode2 passcode3 passcode4
+
+        let result = exec controller request timeout options
+
+        match result with
+        | Ok packet -> Decode.set_door_passcodes_response packet
+        | Error err -> Error err

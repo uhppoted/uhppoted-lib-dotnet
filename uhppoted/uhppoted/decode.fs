@@ -146,3 +146,14 @@ module Decode =
                   mode = unpackU8 (packet[9..])
                   delay = unpackU8 (packet[10..]) }
             )
+
+    let set_door_passcodes_response (packet: byte array) : Result<SetDoorPasscodesResponse, string> =
+        if packet[0] <> messages.SOM then
+            Error("invalid controller response")
+        else if packet[1] <> messages.SET_DOOR_PASSCODES then
+            Error("invalid set-door-passcodes response")
+        else
+            Ok(
+                { controller = unpackU32 packet[4..]
+                  ok = unpackBool (packet[8..]) }
+            )

@@ -5,69 +5,66 @@
 - [x] Options
 - [x] decode
 - [x] bind to bind-addr
+- [x] integration tests
+
 - [ ] Add .NET 8 as a target framework on github
-```
-    <TargetFrameworks>net7.0;net8.0</TargetFrameworks>
-```
+- [ ] github _nightly_ build
+- [ ] function signature file
+- [ ] README
+- (?) Cross-platform builds
+      - https://stackoverflow.com/questions/69393627/create-nuget-package-for-different-platforms-architectures-and-net-versions
 
 - [ ] translations/enums
       - [ ] door mode
-- [ ] function signature file
 
-- [x] integration tests
-      - [x] UDP broadcast
-      - [x] UDP broadcast-to
-      - [x] UDP send-to
-      - [x] TCP send-to
-      - [x] Check TCP client is closing network connection
-
-- [x] get-all-controllers
+- [ ] get-all-controllers
       - [x] pprint Nullable DateOnly
       - [x] Return array of controllers and remove FSharpCollections dependency
       - [ ] return Result
       - [ ] error handling
 
-- [x] get-controller
-- [x] set-IPv4
-- [x] get-listener
-- [x] set-listener
-- [x] get-time
-- [x] set-time
-- [x] get-door
-- [x] set-door
-- [ ] set-door-passcodes
-      - [ ] API fn
-      - [ ] CLI
-            - [ ] F#
-            - [ ] C#
-            - [ ] VB.NET
-      - [ ] integration test
-      - [ ] API doc
-
-- [ ] open-door
-- [ ] get-status
-- [ ] get-cards
-- [ ] get-card
-- [ ] put-card
-- [ ] delete-card
-- [ ] delete-cards
-- [ ] get-events
-- [ ] get-event
-- [ ] get-event-index
-- [ ] set-event-index
-- [ ] record-special-events
-- [ ] get-time-profile
-- [ ] set-time-profile
-- [ ] clear-time-profiles
-- [ ] clear-task-list
-- [ ] add-task
-- [ ] refresh-task-list
-- [ ] set-task-list
-- [ ] set-pc-control
-- [ ] set-interlock
-- [ ] activate-keypads
-- [ ] restore-default-parameters
-- [ ] listen
+- [ ] API
+      - [x] get-controller
+      - [x] set-IPv4
+      - [x] get-listener
+      - [x] set-listener
+      - [x] get-time
+      - [x] set-time
+      - [x] get-door
+      - [x] set-door
+      - [x] set-door-passcodes
+      - [ ] open-door
+            - [ ] API fn
+            - [ ] CLI
+                  - [ ] F#
+                  - [ ] C#
+                  - [ ] VB.NET
+            - [ ] integration test
+            - [ ] API doc
+      
+      - [ ] get-status
+      - [ ] get-cards
+      - [ ] get-card
+      - [ ] put-card
+      - [ ] delete-card
+      - [ ] delete-cards
+      - [ ] get-events
+      - [ ] get-event
+      - [ ] get-event-index
+      - [ ] set-event-index
+      - [ ] record-special-events
+      - [ ] get-time-profile
+      - [ ] set-time-profile
+      - [ ] clear-time-profiles
+      - [ ] clear-task-list
+      - [ ] add-task
+      - [ ] refresh-task-list
+      - [ ] set-task-list
+      - [ ] set-pc-control
+      - [ ] set-interlock
+      - [ ] activate-keypads
+      - [ ] restore-default-parameters
+      - [ ] listen
 
 ## CS
 - https://stackoverflow.com/questions/35163327/working-with-f-options-in-c-e-g-fsharpoptiondictionaryguid-membershipuser

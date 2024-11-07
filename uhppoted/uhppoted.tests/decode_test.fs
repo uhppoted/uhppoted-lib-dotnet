@@ -60,7 +60,7 @@ type TestDecoder() =
     member this.TestDecodeSetListenerResponse() =
         let packet = TestResponses.set_listener
 
-        let expected = { controller = 405419896u; ok = true }
+        let expected: SetListenerResponse = { controller = 405419896u; ok = true }
 
         match Decode.set_listener_response packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
@@ -70,10 +70,9 @@ type TestDecoder() =
     member this.TestDecodeGetTimeResponse() =
         let packet = TestResponses.get_time
 
-        let expected =
-            { GetTimeResponse.controller = 405419896u
-              GetTimeResponse.datetime =
-                Nullable(DateTime.ParseExact("2024-11-01 12:34:56", "yyyy-MM-dd HH:mm:ss", null)) }
+        let expected: GetTimeResponse =
+            { controller = 405419896u
+              datetime = Nullable(DateTime.ParseExact("2024-11-01 12:34:56", "yyyy-MM-dd HH:mm:ss", null)) }
 
         match Decode.get_time_response packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
@@ -83,9 +82,9 @@ type TestDecoder() =
     member this.TestDecodeGetTimeResponseWithInvalidDateTime() =
         let packet = TestResponses.get_time_with_invalid_datetime
 
-        let expected =
-            { GetTimeResponse.controller = 405419896u
-              GetTimeResponse.datetime = Nullable() }
+        let expected: GetTimeResponse =
+            { controller = 405419896u
+              datetime = Nullable() }
 
         match Decode.get_time_response packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
@@ -95,10 +94,9 @@ type TestDecoder() =
     member this.TestDecodeSetTimeResponse() =
         let packet = TestResponses.set_time
 
-        let expected =
-            { SetTimeResponse.controller = 405419896u
-              SetTimeResponse.datetime =
-                Nullable(DateTime.ParseExact("2024-11-04 12:34:56", "yyyy-MM-dd HH:mm:ss", null)) }
+        let expected: SetTimeResponse =
+            { controller = 405419896u
+              datetime = Nullable(DateTime.ParseExact("2024-11-04 12:34:56", "yyyy-MM-dd HH:mm:ss", null)) }
 
         match Decode.set_time_response packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
@@ -108,9 +106,9 @@ type TestDecoder() =
     member this.TestDecodeSetTimeResponseWithInvalidDateTime() =
         let packet = TestResponses.set_time_with_invalid_datetime
 
-        let expected =
-            { SetTimeResponse.controller = 405419896u
-              SetTimeResponse.datetime = Nullable() }
+        let expected: SetTimeResponse =
+            { controller = 405419896u
+              datetime = Nullable() }
 
         match Decode.set_time_response packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
@@ -120,11 +118,11 @@ type TestDecoder() =
     member this.TestDecodeGetDoorResponse() =
         let packet = TestResponses.get_door
 
-        let expected =
-            { GetDoorResponse.controller = 405419896u
-              GetDoorResponse.door = 03uy
-              GetDoorResponse.mode = 01uy
-              GetDoorResponse.delay = 05uy }
+        let expected: GetDoorResponse =
+            { controller = 405419896u
+              door = 03uy
+              mode = 01uy
+              delay = 05uy }
 
         match Decode.get_door_response packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
@@ -134,12 +132,22 @@ type TestDecoder() =
     member this.TestDecodeSetDoorResponse() =
         let packet = TestResponses.set_door
 
-        let expected =
-            { SetDoorResponse.controller = 405419896u
-              SetDoorResponse.door = 03uy
-              SetDoorResponse.mode = 02uy
-              SetDoorResponse.delay = 17uy }
+        let expected: SetDoorResponse =
+            { controller = 405419896u
+              door = 03uy
+              mode = 02uy
+              delay = 17uy }
 
         match Decode.set_door_response packet with
+        | Ok response -> Assert.That(response, Is.EqualTo(expected))
+        | Error err -> Assert.Fail(err)
+
+    [<Test>]
+    member this.TestDecodeSetDoorPasscodesResponse() =
+        let packet = TestResponses.set_door_passcodes
+
+        let expected: SetDoorPasscodesResponse = { controller = 405419896u; ok = true }
+
+        match Decode.set_door_passcodes_response packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)

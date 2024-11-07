@@ -196,3 +196,13 @@ type TestClass() =
             match Uhppoted.set_door (controller, DOOR, MODE, DELAY, TIMEOUT, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
+
+    [<Test>]
+    member this.TestSetDoorPasscodes() =
+        let expected: SetDoorPasscodesResponse = { controller = 405419896u; ok = true }
+
+        controllers
+        |> List.iter (fun controller ->
+            match Uhppoted.set_door_passcodes (controller, DOOR, 12345u, 54321u, 0u, 999999u, TIMEOUT, OPTIONS) with
+            | Ok response -> Assert.That(response, Is.EqualTo(expected))
+            | Error err -> Assert.Fail(err))
