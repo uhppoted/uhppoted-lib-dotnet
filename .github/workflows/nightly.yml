@@ -1,0 +1,35 @@
+name: nightly
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron:  '30 1 * * SUN'
+  release:
+    types: [published]
+
+jobs:
+
+  build:
+    name: Build
+    strategy:
+      matrix:
+        version: ['7.0.x', '8.0.x']
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ matrix.version }}
+
+    - name: Check out code
+      uses: actions/checkout@v4
+
+    - name: Install fantomas
+      run: |
+        dotnet tool install fantomas
+
+    - name: Build
+      run: |
+        make build-all
+        make integration-tests
