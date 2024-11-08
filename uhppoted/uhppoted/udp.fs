@@ -32,10 +32,8 @@ module UDP =
                 return! receive_all socket ((packet, remote) :: packets)
 
             with
-            | :? ObjectDisposedException -> return List.rev packets
-            | err ->
-                printfn "** ERROR  %s" err.Message
-                return List.rev packets
+            | :? ObjectDisposedException -> return Ok(List.rev packets)
+            | err -> return Error err.Message
         }
 
     let rec receive (socket: UdpClient) : Async<Result<byte array * IPEndPoint, string>> =
@@ -75,16 +73,18 @@ module UDP =
             Thread.Sleep timeout
             socket.Close()
 
-            let received = rx.Result
-            let received = received |> List.filter (fun (packet, address) -> packet.Length = 64)
+            match rx.Result with
+            | Ok received ->
+                let replies = received |> List.filter (fun (packet, address) -> packet.Length = 64)
 
-            if debug then
-                received
-                |> List.iter (fun (packet, addr) ->
-                    printfn "    ... received %d bytes from %A" packet.Length addr.Address
-                    dump packet)
+                if debug then
+                    replies
+                    |> List.iter (fun (packet, addr) ->
+                        printfn "    ... received %d bytes from %A" packet.Length addr.Address
+                        dump packet)
 
-            received |> List.map fst |> Ok
+                replies |> List.map fst |> Ok
+            | Error err -> Error err
 
         with error ->
             Error error.Message

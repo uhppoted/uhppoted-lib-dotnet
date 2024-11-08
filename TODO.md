@@ -19,11 +19,11 @@
 
 - (?) verify controller ID in response
 
-- [ ] get-all-controllers
+- [x] get-all-controllers
       - [x] pprint Nullable DateOnly
       - [x] Return array of controllers and remove FSharpCollections dependency
       - [x] Return Result
-      - [ ] Handle errors in receive-all
+      - [x] Handle errors in receive-all
 
 - [ ] Restructure API fns to use |>
 
