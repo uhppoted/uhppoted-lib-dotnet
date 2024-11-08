@@ -17,9 +17,9 @@ integration-tests:
 	cd ../integration-tests && make test
 
 debug: build
-	dotnet run --project ../examples/fs/cli --framework net7.0 get-all-controllers
-	dotnet run --project ../examples/cs/cli --framework net7.0 get-all-controllers
-	dotnet run --project ../examples/vb/cli --framework net7.0 get-all-controllers
+	dotnet run --project ../examples/fs/cli --framework net7.0 open-door
+	dotnet run --project ../examples/cs/cli --framework net7.0 open-door
+	dotnet run --project ../examples/vb/cli --framework net7.0 open-door
 
 get-controllers: build
 	$(CLI) get-all-controllers
@@ -50,4 +50,8 @@ set-door: build
 
 set-door-passcodes: build
 	$(CLI) set-door-passcodes
+
+open-door: build
+	$(CLI) open-door
+
 

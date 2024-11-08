@@ -147,3 +147,14 @@ module Encode =
             Array.blit (packU32 passcode4) 0 packet 24 4
 
         packet
+
+    let open_door_request (controller: uint32) (door: uint8) =
+        let packet: byte array = Array.zeroCreate 64
+
+        Array.set packet 0 (byte messages.SOM)
+        Array.set packet 1 (byte messages.OPEN_DOOR)
+
+        Array.blit (packU32 controller) 0 packet 4 4
+        Array.blit (packU8 door) 0 packet 8 1
+
+        packet

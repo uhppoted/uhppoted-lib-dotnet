@@ -56,6 +56,11 @@ class CLI
                     Environment.Exit(0);
                     break;
 
+                case "open-door":
+                    Commands.OpenDoor(args[1..]);
+                    Environment.Exit(0);
+                    break;
+
                 case "set-door-passcodes":
                     Commands.SetDoorPasscodes(args[1..]);
                     Environment.Exit(0);
@@ -77,16 +82,12 @@ class CLI
         WriteLine("Usage: dotnet run <command>");
         WriteLine();
         WriteLine("  Supported commands:");
-        WriteLine("  - get-all-controllers  Retrieves a list of controllers accessible on the local LAN");
-        WriteLine("  - get-controller       Retrieves the controller information for a specific controller");
-        WriteLine("  - set-IPv4             Sets the controller IPv4 address, netmask and gateway");
-        WriteLine("  - get-listener         Retrieves the controller event listener address:port and auto-send interval");
-        WriteLine("  - set-listener         Sets the controller event listener address:port and auto-send interval");
-        WriteLine("  - get-time             Retrieves the controller system date and time");
-        WriteLine("  - set-time             Sets the controller system date and time");
-        WriteLine("  - get-door             Retrieves a controller door mode and delay settings");
-        WriteLine("  - set-door             Sets a controller door mode and delay");
-        WriteLine("  - set-door-passcodes   Sets the supervisor passcodes for a controller door");
+
+        foreach (var command in Commands.commands)
+        {
+            WriteLine("  - {0,-19}  {1}", command.command, command.description);
+        }
+
         WriteLine();
     }
 }

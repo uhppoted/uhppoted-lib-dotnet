@@ -4,6 +4,9 @@ open System
 open System.Net
 open uhppoted
 
+type command =
+    { command: string; description: string }
+
 let CONTROLLER = 405419896u
 let ADDRESS = Some(IPEndPoint(IPAddress.Parse("192.168.1.100"), 60000))
 let PROTOCOL = Some("udp")
@@ -230,3 +233,44 @@ let set_door_passcodes args =
         printf "\n"
         Ok()
     | Error err -> Error(err)
+
+let open_door args =
+    let controller =
+        { controller = argparse args "--controller" CONTROLLER
+          address = ADDRESS
+          protocol = PROTOCOL }
+
+    let door = 4uy
+
+    match Uhppoted.open_door (controller, door, TIMEOUT, OPTIONS) with
+    | Ok response ->
+        printf "open-door\n"
+        printf "  controller %u\n" response.controller
+        printf "          ok %b\n" response.ok
+        printf "\n"
+        Ok()
+    | Error err -> Error(err)
+
+let commands =
+    [ { command = "get-all-controllers"
+        description = "Retrieves a list of controllers accessible on the local LAN" }
+      { command = "get-controller"
+        description = "Retrieves the controller information for a specific controller" }
+      { command = "set-IPv4"
+        description = "Sets the controller IPv4 address, netmask and gateway" }
+      { command = "get-listener"
+        description = "Retrieves the controller event listener address:port and auto-send interval" }
+      { command = "set-listener"
+        description = "Sets the controller event listener address:port and auto-send interval" }
+      { command = "get-time"
+        description = "Retrieves the controller system date and time" }
+      { command = "set-time"
+        description = "Sets the controller system date and time" }
+      { command = "get-door"
+        description = "Retrieves a controller door mode and delay settings" }
+      { command = "set-door"
+        description = "Sets a controller door mode and delay" }
+      { command = "set-door-passcodes"
+        description = "Sets the supervisor passcodes for a controller door" }
+      { command = "open-door"
+        description = "Unlocks a door controlled by a controller" } ]

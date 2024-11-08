@@ -41,3 +41,5 @@ type SetDoorResponse =
       delay: uint8 }
 
 type SetDoorPasscodesResponse = { controller: uint32; ok: bool }
+
+type OpenDoorResponse = { controller: uint32; ok: bool }

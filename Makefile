@@ -41,3 +41,6 @@ set-door:
 
 set-door-passcodes:
 	$(CLI) set-door-passcodes
+
+open-door:
+	$(CLI) open-door

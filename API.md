@@ -2,24 +2,23 @@
 
 - [`get_all_controllers`](#get_all_controllers)
 - [`set_door_passcodes`](#set_door_passcodes)
+- [`open_door`](#open_door)
 
 
-### **`get_all_controllers`**
+## **`get_all_controllers`**
 
-**Description**
-This function sends a broadcast request to a network and processes the received UDP responses. For each valid response, it decodes the controller data and returns it as an array of `GetControllerResponse` records.
+'Discovers' all controllers accessible via a UDP broadcast on the local LAN.
 
-**Parameters**
+### Parameters
 - `timeout` (`int`): The timeout duration in milliseconds for the UDP request. If the response takes longer than this value, it will be discarded.
 - `options` (`Options`): A configuration object containing the following fields:
   - `broadcast` (`IPAddress`): The target IP address for broadcasting the request.
   - `debug` (`bool`): A flag to indicate whether to log debug information during the request/response process.
 
-**Returns**
+### Returns
 `GetControllerResponse array`: An array of `GetControllerResponse` records that represent the valid decoded responses. Each record includes data about a network controller, including its address, MAC, version, and other relevant details.
 
-**Example Usage**
-
+### Examples
 ```fsharp
 let timeout = 5000
 let options = { broadcast = IPAddress.Parse("255.255.255.255"); debug = true }
@@ -59,11 +58,11 @@ Else If (result.IsError)
 End If
 ```
 
-**Errors**
+### Errors
 - If the UDP request fails or times out, the response will be excluded from the results.
 - Invalid responses that cannot be decoded into `GetControllerResponse` records are discarded.
 
-**Notes**
+### Notes
 - The `GetControllerResponse` record includes the following fields:
   - `controller` (`uint32`): The controller identifier.
   - `address` (`IPAddress option`): The IP address of the controller, or `None` if not available.
@@ -79,7 +78,6 @@ End If
 Sets up to 4 passcodes for a controller door.
 
 ### Parameters
-
 - **`controller`**: Controller ID and (optionally) address and transport protocol.
 - **`door`**: Door number `[1..4]`.
 - **`passcode1`**: Passcode `[0..999999]` (0 is 'none').
@@ -90,11 +88,9 @@ Sets up to 4 passcodes for a controller door.
 - **`options`**: Optional bind, broadcast, and listen addresses.
 
 ### Returns
-
 Returns `Ok` if the request was processed, or an error otherwise. The `Ok` response should be checked for `true`.
 
 ### Examples
-
 ```fsharp
 let controller = { controller = 405419896u; address = None; protocol = None }
 let options = { broadcast = IPAddress.Broadcast; debug = true }
@@ -123,5 +119,52 @@ If result.IsOk Then
     Console.WriteLine($"set-door-passcodes: {result.ResultValue.ok}")
 Else
     Console.WriteLine($"set-door-passcodes: error {result.ErrorValue}")
+End If
+```
+
+## **`open_door`**
+
+Unlocks a door controlled by a controller.
+
+### Parameters
+- **`controller`**: Controller ID and (optionally) address and transport protocol.
+- **`door`**: Door number `[1..4]`.
+- **`timeout`**: Operation timeout (ms).
+- **`options`**: Optional bind, broadcast, and listen addresses.
+
+### Returns
+Returns Ok if the request was processed, error otherwise. The Ok response should be checked for 'true'.
+
+### Examples
+
+```fsharp
+let controller = { controller = 405419896u; address = None; protocol = None }
+let options = { broadcast = IPAddress.Broadcast; debug = true }
+let result = open_door controller 4uy 5000 options
+match result with
+| Ok response -> printfn "Door opened successfully: %A" response
+| Error e -> printfn "Error: %s" e
+```
+```csharp
+var controller = new ControllerBuilder(405419896).build();
+var options = new OptionsBuilder().build();
+var result = open_door(controller, 1, 5000, options);
+if (result.IsOk)
+{
+    Console.WriteLine("open-door: {0}", result.Value.ok);
+}
+else
+{
+    Console.WriteLine("open-door: error {0}", result.Error);
+}
+```
+```vb
+Dim controller As New ControllerBuilder(405419896u).build()
+Dim options As New OptionsBuilder().build()
+Dim result = OpenDoor(controller, 1, 3000, options)
+If result.IsOk Then
+    Console.WriteLine("open-door: {0}", result.Value.ok)
+Else
+    Console.WriteLine("open-door: error {0}", result.Error)
 End If
 ```

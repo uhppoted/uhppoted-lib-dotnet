@@ -7,8 +7,6 @@
 - [x] bind to bind-addr
 - [x] integration tests
 - [x] Add .NET 8 as a target framework on github
-- (?) verify controller ID in response
-- [ ] Restructure API fns to use |>
 
 - [ ] github _nightly_ build
 - [ ] function signature file
@@ -19,11 +17,15 @@
 - [ ] translations/enums
       - [ ] door mode
 
+- (?) verify controller ID in response
+
 - [ ] get-all-controllers
       - [x] pprint Nullable DateOnly
       - [x] Return array of controllers and remove FSharpCollections dependency
       - [x] Return Result
       - [ ] Handle errors in receive-all
+
+- [ ] Restructure API fns to use |>
 
 - [ ] API
       - [x] get-controller
@@ -35,7 +37,8 @@
       - [x] get-door
       - [x] set-door
       - [x] set-door-passcodes
-      - [ ] open-door
+      - [x] open-door
+      - [ ] get-status
             - [ ] API fn
             - [ ] CLI
                   - [ ] F#
@@ -44,7 +47,6 @@
             - [ ] integration test
             - [ ] API doc
       
-      - [ ] get-status
       - [ ] get-cards
       - [ ] get-card
       - [ ] put-card
@@ -68,17 +70,4 @@
       - [ ] restore-default-parameters
       - [ ] listen
 
-## CS
-- https://stackoverflow.com/questions/35163327/working-with-f-options-in-c-e-g-fsharpoptiondictionaryguid-membershipuser
-- https://bizmonger.wordpress.com/2016/09/27/accessing-fsharps-option-type-from-c/
-- https://gsscoder.github.io/consuming-fsharp-results-in-c/
-
 ## Notes
-- https://stackoverflow.com/questions/10110174/best-approach-for-designing-f-libraries-for-use-from-both-f-and-c-sharp
-- https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/component-design-guidelines
-- https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/
-- https://github.com/knocte/2fsharp/blob/master/csharp2fsharp.md
-- https://forums.fsharp.org/t/how-to-use-f-in-c-and-conversely/1274
-- https://github.com/dandereggK/FSharp_Types_In_CSharp
-- https://stackoverflow.com/questions/75451183/how-to-access-f-results-from-c-sharp
-- https://bizmonger.wordpress.com/2016/09/27/accessing-fsharps-option-type-from-c/

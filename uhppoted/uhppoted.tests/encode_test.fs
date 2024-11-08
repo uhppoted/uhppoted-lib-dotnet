@@ -125,3 +125,14 @@ type TestEncoder() =
             Encode.set_door_passcodes_request controller door passcodes[0] passcodes[1] passcodes[2] passcodes[3]
 
         Assert.That(packet, Is.EqualTo(expected))
+
+    [<Test>]
+    member this.TestEncodeOpenDoor() =
+        let expected = TestRequests.open_door
+
+        let controller = 405419896u
+        let door = 3uy
+
+        let packet = Encode.open_door_request controller door
+
+        Assert.That(packet, Is.EqualTo(expected))

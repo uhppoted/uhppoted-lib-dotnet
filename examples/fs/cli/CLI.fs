@@ -3,17 +3,10 @@
 let usage () =
     printfn "Usage: dotnet run <command>\n"
     printfn "  Supported commands:\n"
-    printfn "  - get-all-controllers  Retrieves a list of controllers accessible on the local LAN"
-    printfn "  - get-controller       Retrieves the controller information for a specific controller"
-    printfn "  - set-IPv4             Sets the controller IPv4 address, netmask and gateway"
-    printfn "  - get-listener         Retrieves the controller event listener address:port and auto-send interval"
-    printfn "  - set-listener         Sets the controller event listener address:port and auto-send interval"
-    printfn "  - get-time             Retrieves the controller system date and time"
-    printfn "  - set-time             Sets the controller system date and time"
-    printfn "  - get-door             Retrieves a controller door mode and delay settings"
-    printfn "  - set-door             Sets a controller door mode and delay"
-    printfn "  - set-door-passcodes   Sets the supervisor passcodes for a controller door"
-    printfn "\n"
+
+    commands |> List.iter (fun v -> printfn "  - %-19s  %s" v.command v.description)
+
+    printfn ""
 
 [<EntryPoint>]
 let main args =
@@ -33,6 +26,7 @@ let main args =
         | "get-door" :: _ -> get_door (arglist[1..])
         | "set-door" :: _ -> set_door (arglist[1..])
         | "set-door-passcodes" :: _ -> set_door_passcodes (arglist[1..])
+        | "open-door" :: _ -> open_door (arglist[1..])
         | _ -> Error "invalid command"
 
     match result with

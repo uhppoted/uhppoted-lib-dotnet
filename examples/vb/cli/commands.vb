@@ -4,27 +4,35 @@ Imports System.Net
 Imports uhppoted
 Imports uhppoted.Uhppoted
 
+Public Structure Command
+    Public ReadOnly command As String
+    Public ReadOnly description As String
+
+    Public Sub New(command As String, description As String)
+        Me.command = command
+        Me.description = description
+    End Sub
+End Structure
+
 Module Commands
     Private Const TIMEOUT = 1000
     Private Dim OPTIONS = New uhppoted.OptionsBuilder().
                                        WithDebug(true).
                                        build()
 
-    Private Function YYYYMMDD(v As Nullable(Of DateOnly)) As String
-        If v.HasValue Then
-            Return v.Value.ToString("yyyy-MM-dd")
-        Else
-            Return "---"
-        End If
-    End Function
-
-    Public Function YYYYMMDDHHmmss(datetime As DateTime?) As String
-        If datetime.HasValue Then
-            Return datetime.Value.ToString("yyyy-MM-dd HH:mm:ss")
-        Else
-            Return "---"
-        End If
-    End Function
+    Public Dim commands As New List(Of Command) From {
+           New Command("get-all-controllers", "Retrieves a list of controllers accessible on the local LAN"),
+           New Command("get-controller", "Retrieves the controller information for a specific controller"),
+           New Command("set-IPv4", "Sets the controller IPv4 address, netmask and gateway"),
+           New Command("get-listener", "Retrieves the controller event listener address:port and auto-send interval"),
+           New Command("set-listener", "Sets the controller event listener address:port and auto-send interval"),
+           New Command("get-time", "Retrieves the controller system date and time"),
+           New Command("set-time", "Sets the controller system date and time"),
+           New Command("get-door", "Retrieves a controller door mode and delay settings"),
+           New Command("set-door", "Sets a controller door mode and delay"),
+           New Command("set-door-passcodes", "Sets the supervisor passcodes for a controller door"),
+           New Command("open-door", "Unlocks a door controlled by a controller")
+       }
 
     Sub GetControllers(args As String())
         Try
@@ -276,5 +284,44 @@ Module Commands
             WriteLine("Exception  {0}", err.Message)
         End Try
     End Sub
+
+    Sub OpenDoor(args As String())
+        Try
+            Dim controller = New ControllerBuilder(405419896).
+                                 With(IPEndPoint.Parse("192.168.1.100:60000")).
+                                 With("udp").build()
+            Dim door = 4
+            Dim result = open_door(controller, door, TIMEOUT, OPTIONS)
+
+            If (result.IsOk)
+                Dim response = result.ResultValue
+                WriteLine("open-door")
+                WriteLine("  controller {0}", response.controller)
+                WriteLine("          ok {0}", response.ok)
+                WriteLine()
+            Else If (result.IsError)
+                Throw New Exception(result.ErrorValue)
+            End If
+
+        Catch Err As Exception
+            WriteLine("Exception  {0}", err.Message)
+        End Try
+    End Sub
+
+    Private Function YYYYMMDD(v As Nullable(Of DateOnly)) As String
+        If v.HasValue Then
+            Return v.Value.ToString("yyyy-MM-dd")
+        Else
+            Return "---"
+        End If
+    End Function
+
+    Public Function YYYYMMDDHHmmss(datetime As DateTime?) As String
+        If datetime.HasValue Then
+            Return datetime.Value.ToString("yyyy-MM-dd HH:mm:ss")
+        Else
+            Return "---"
+        End If
+    End Function
 
 End Module
