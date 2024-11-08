@@ -10,15 +10,30 @@ module Uhppoted =
           listen = IPEndPoint(IPAddress.Any, 60001)
           debug = false }
 
-    let private exec (controller: Controller) request (timeout: int) (options: Options) =
+    let private exec
+        (controller: Controller)
+        request
+        (decode: byte[] -> Result<'b, string>)
+        timeout
+        options
+        : Result<'b, string> when 'b :> IResponse =
         let bind = options.bind
         let broadcast = options.broadcast
         let debug = options.debug
 
-        match controller.address, controller.protocol with
-        | None, _ -> UDP.broadcast_to (request, bind, broadcast, timeout, debug)
-        | Some(addr), Some("tcp") -> TCP.send_to (request, bind, addr, timeout, debug)
-        | Some(addr), _ -> UDP.send_to (request, bind, addr, timeout, debug)
+        let result =
+            match controller.address, controller.protocol with
+            | None, _ -> UDP.broadcast_to (request, bind, broadcast, timeout, debug)
+            | Some(addr), Some("tcp") -> TCP.send_to (request, bind, addr, timeout, debug)
+            | Some(addr), _ -> UDP.send_to (request, bind, addr, timeout, debug)
+
+        match result with
+        | Ok packet ->
+            match decode packet with
+            | Ok response when response.controller = controller.controller -> Ok response
+            | Ok _ -> Error "invalid response"
+            | Error err -> Error err
+        | Error err -> Error err
 
     /// <summary>
     /// Retrieves a list of controllers on the local LAN accessible via a UDP broadcast.
@@ -92,11 +107,8 @@ module Uhppoted =
 
     let get_controller (controller: Controller, timeout: int, options: Options) =
         let request = Encode.get_controller_request controller.controller
-        let result = exec controller request timeout options
 
-        match result with
-        | Ok packet -> Decode.get_controller_response packet
-        | Error err -> Error err
+        exec controller request Decode.get_controller_response timeout options
 
     let set_IPv4
         (
@@ -107,8 +119,16 @@ module Uhppoted =
             timeout: int,
             options: Options
         ) =
+        let bind = options.bind
+        let broadcast = options.broadcast
+        let debug = options.debug
         let request = Encode.set_IPv4_request controller.controller address netmask gateway
-        let result = exec controller request timeout options
+
+        let result =
+            match controller.address, controller.protocol with
+            | None, _ -> UDP.broadcast_to (request, bind, broadcast, timeout, debug)
+            | Some(addr), Some("tcp") -> TCP.send_to (request, bind, addr, timeout, debug)
+            | Some(addr), _ -> UDP.send_to (request, bind, addr, timeout, debug)
 
         match result with
         | Ok _ -> Ok()
@@ -116,11 +136,8 @@ module Uhppoted =
 
     let get_listener (controller: Controller, timeout: int, options: Options) =
         let request = Encode.get_listener_request controller.controller
-        let result = exec controller request timeout options
 
-        match result with
-        | Ok packet -> Decode.get_listener_response packet
-        | Error err -> Error err
+        exec controller request Decode.get_listener_response timeout options
 
     let set_listener (controller: Controller, endpoint: IPEndPoint, interval: uint8, timeout: int, options: Options) =
         let address = endpoint.Address
@@ -129,43 +146,27 @@ module Uhppoted =
         let request =
             Encode.set_listener_request controller.controller address port interval
 
-        let result = exec controller request timeout options
-
-        match result with
-        | Ok packet -> Decode.set_listener_response packet
-        | Error err -> Error err
+        exec controller request Decode.set_listener_response timeout options
 
     let get_time (controller: Controller, timeout: int, options: Options) =
         let request = Encode.get_time_request controller.controller
-        let result = exec controller request timeout options
 
-        match result with
-        | Ok packet -> Decode.get_time_response packet
-        | Error err -> Error err
+        exec controller request Decode.get_time_response timeout options
 
     let set_time (controller: Controller, datetime: DateTime, timeout: int, options: Options) =
         let request = Encode.set_time_request controller.controller datetime
-        let result = exec controller request timeout options
 
-        match result with
-        | Ok packet -> Decode.set_time_response packet
-        | Error err -> Error err
+        exec controller request Decode.set_time_response timeout options
 
     let get_door (controller: Controller, door: uint8, timeout: int, options: Options) =
         let request = Encode.get_door_request controller.controller door
-        let result = exec controller request timeout options
 
-        match result with
-        | Ok packet -> Decode.get_door_response packet
-        | Error err -> Error err
+        exec controller request Decode.get_door_response timeout options
 
     let set_door (controller: Controller, door: uint8, mode: uint8, delay: uint8, timeout: int, options: Options) =
         let request = Encode.set_door_request controller.controller door mode delay
-        let result = exec controller request timeout options
 
-        match result with
-        | Ok packet -> Decode.set_door_response packet
-        | Error err -> Error err
+        exec controller request Decode.set_door_response timeout options
 
     /// <summary>
     /// Sets up to 4 passcodes for a controller door.
@@ -227,11 +228,7 @@ module Uhppoted =
         let request =
             Encode.set_door_passcodes_request controller.controller door passcode1 passcode2 passcode3 passcode4
 
-        let result = exec controller request timeout options
-
-        match result with
-        | Ok packet -> Decode.set_door_passcodes_response packet
-        | Error err -> Error err
+        exec controller request Decode.set_door_passcodes_response timeout options
 
     /// <summary>
     /// Unlocks a door controlled by a controller.
@@ -281,8 +278,5 @@ module Uhppoted =
     /// </example>
     let open_door (controller: Controller, door: uint8, timeout: int, options: Options) =
         let request = Encode.open_door_request controller.controller door
-        let result = exec controller request timeout options
 
-        match result with
-        | Ok packet -> Decode.open_door_response packet
-        | Error err -> Error err
+        exec controller request Decode.open_door_response timeout options

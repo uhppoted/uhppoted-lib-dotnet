@@ -7,6 +7,7 @@
 - [x] bind to bind-addr
 - [x] integration tests
 - [x] Add .NET 8 as a target framework on github
+- [x] verify controller ID in response
 
 - [ ] github _nightly_ build
 - [ ] function signature file
@@ -16,8 +17,6 @@
 
 - [ ] translations/enums
       - [ ] door mode
-
-- (?) verify controller ID in response
 
 - [x] get-all-controllers
       - [x] pprint Nullable DateOnly
