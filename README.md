@@ -51,6 +51,9 @@ Sets up to 4 passcodes for a controller door.
 ### `open-door`
 Unlocks a door controlled by a controller.
 
+### `get-status`
+Retrieves a controller status record.
+
 
 ## Notes
 

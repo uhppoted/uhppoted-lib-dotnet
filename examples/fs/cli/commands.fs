@@ -5,7 +5,9 @@ open System.Net
 open uhppoted
 
 type command =
-    { command: string; description: string }
+    { command: string
+      description: string
+      f: string list -> Result<unit, string> }
 
 let CONTROLLER = 405419896u
 let ADDRESS = Some(IPEndPoint(IPAddress.Parse("192.168.1.100"), 60000))
@@ -251,26 +253,77 @@ let open_door args =
         Ok()
     | Error err -> Error(err)
 
+let get_status args =
+    let controller =
+        { controller = argparse args "--controller" CONTROLLER
+          address = ADDRESS
+          protocol = PROTOCOL }
+
+    match Uhppoted.get_status (controller, TIMEOUT, OPTIONS) with
+    | Ok response ->
+        printfn "get-status"
+        printfn "         controller %u" response.controller
+        printfn "        door 1 open %b" response.door1_open
+        printfn "        door 2 open %b" response.door2_open
+        printfn "        door 3 open %b" response.door3_open
+        printfn "        door 4 open %b" response.door3_open
+        printfn "   button 1 pressed %b" response.door1_button
+        printfn "   button 2 pressed %b" response.door1_button
+        printfn "   button 3 pressed %b" response.door1_button
+        printfn "   button 4 pressed %b" response.door1_button
+        printfn "       system error %u" response.system_error
+        printfn "   system date/time %A" (YYYYMMDDHHmmss(response.system_datetime))
+        printfn "       sequence no. %u" response.sequence_number
+        printfn "       special info %u" response.special_info
+        printfn "             relays %02x" response.relays
+        printfn "             inputs %02x" response.inputs
+        printfn ""
+        printfn "    event index     %u" response.evt.index
+        printfn "          event     %u" response.evt.event_type
+        printfn "          granted   %b" response.evt.granted
+        printfn "          door      %u" response.evt.door
+        printfn "          direction %u" response.evt.direction
+        printfn "          card      %u" response.evt.card
+        printfn "          timestamp %A" (YYYYMMDDHHmmss(response.evt.timestamp))
+        printfn "          reason    %u" response.evt.reason
+        printfn ""
+        Ok()
+    | Error err -> Error(err)
+
 let commands =
     [ { command = "get-all-controllers"
-        description = "Retrieves a list of controllers accessible on the local LAN" }
+        description = "Retrieves a list of controllers accessible on the local LAN"
+        f = get_controllers }
       { command = "get-controller"
-        description = "Retrieves the controller information for a specific controller" }
+        description = "Retrieves the controller information for a specific controller"
+        f = get_controller }
       { command = "set-IPv4"
-        description = "Sets the controller IPv4 address, netmask and gateway" }
+        description = "Sets the controller IPv4 address, netmask and gateway"
+        f = set_IPv4 }
       { command = "get-listener"
-        description = "Retrieves the controller event listener address:port and auto-send interval" }
+        description = "Retrieves the controller event listener address:port and auto-send interval"
+        f = get_listener }
       { command = "set-listener"
-        description = "Sets the controller event listener address:port and auto-send interval" }
+        description = "Sets the controller event listener address:port and auto-send interval"
+        f = set_listener }
       { command = "get-time"
-        description = "Retrieves the controller system date and time" }
+        description = "Retrieves the controller system date and time"
+        f = get_time }
       { command = "set-time"
-        description = "Sets the controller system date and time" }
+        description = "Sets the controller system date and time"
+        f = set_time }
       { command = "get-door"
-        description = "Retrieves a controller door mode and delay settings" }
+        description = "Retrieves a controller door mode and delay settings"
+        f = get_door }
       { command = "set-door"
-        description = "Sets a controller door mode and delay" }
+        description = "Sets a controller door mode and delay"
+        f = set_door }
       { command = "set-door-passcodes"
-        description = "Sets the supervisor passcodes for a controller door" }
+        description = "Sets the supervisor passcodes for a controller door"
+        f = set_door_passcodes }
       { command = "open-door"
-        description = "Unlocks a door controlled by a controller" } ]
+        description = "Unlocks a door controlled by a controller"
+        f = open_door }
+      { command = "get-status"
+        description = "Retrieves the current status of the controller"
+        f = get_status } ]

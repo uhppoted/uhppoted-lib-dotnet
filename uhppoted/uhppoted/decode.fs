@@ -55,6 +55,20 @@ module Decode =
         | true, datetime -> Nullable datetime
         | false, _ -> Nullable()
 
+    let unpack_yymmdd (slice: byte array) =
+        let bcd = $"20%02x{slice[0]}-%02x{slice[1]}-%02x{slice[2]}"
+
+        match DateOnly.TryParseExact(bcd, "yyyy-MM-dd") with
+        | true, date -> Nullable date
+        | false, _ -> Nullable()
+
+    let unpack_HHmmss (slice: byte array) =
+        let bcd = $"%02x{slice[0]}:%02x{slice[1]}:%02x{slice[2]}"
+
+        match TimeOnly.TryParseExact(bcd, "HH:mm:ss") with
+        | true, time -> Nullable time
+        | false, _ -> Nullable()
+
     let get_controller_response (packet: byte array) : Result<GetControllerResponse, string> =
         if packet[0] <> messages.SOM then
             Error("invalid controller response")
@@ -167,4 +181,45 @@ module Decode =
             Ok(
                 { controller = unpackU32 packet[4..]
                   ok = unpackBool (packet[8..]) }
+            )
+
+    let get_status_response (packet: byte array) : Result<GetStatusResponse, string> =
+        if packet[0] <> messages.SOM then
+            Error("invalid controller response")
+        else if packet[1] <> messages.GET_STATUS then
+            Error("invalid get-status response")
+        else
+            let sysdate = unpack_yymmdd (packet[51..])
+            let systime = unpack_HHmmss (packet[37..])
+
+            let sysdatetime =
+                match sysdate.HasValue, systime.HasValue with
+                | true, true -> Nullable(sysdate.Value.ToDateTime(systime.Value))
+                | _, _ -> Nullable()
+
+            Ok(
+                { controller = unpackU32 packet[4..]
+                  door1_open = unpackBool packet[28..]
+                  door2_open = unpackBool packet[29..]
+                  door3_open = unpackBool packet[30..]
+                  door4_open = unpackBool packet[31..]
+                  door1_button = unpackBool packet[32..]
+                  door2_button = unpackBool packet[33..]
+                  door3_button = unpackBool packet[34..]
+                  door4_button = unpackBool packet[35..]
+                  system_error = unpackU8 packet[36..]
+                  system_datetime = sysdatetime
+                  sequence_number = unpackU32 packet[40..]
+                  special_info = unpackU8 packet[48..]
+                  relays = unpackU8 packet[49..]
+                  inputs = unpackU8 packet[50..]
+                  evt =
+                    {| index = unpackU32 packet[8..]
+                       event_type = unpackU8 packet[12..]
+                       granted = unpackBool packet[13..]
+                       door = unpackU8 packet[14..]
+                       direction = unpackU8 packet[15..]
+                       card = unpackU32 packet[16..]
+                       timestamp = unpack_datetime (packet[20..])
+                       reason = unpackU8 packet[27..] |} }
             )

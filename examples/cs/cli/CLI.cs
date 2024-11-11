@@ -56,13 +56,18 @@ class CLI
                     Environment.Exit(0);
                     break;
 
+                case "set-door-passcodes":
+                    Commands.SetDoorPasscodes(args[1..]);
+                    Environment.Exit(0);
+                    break;
+
                 case "open-door":
                     Commands.OpenDoor(args[1..]);
                     Environment.Exit(0);
                     break;
 
-                case "set-door-passcodes":
-                    Commands.SetDoorPasscodes(args[1..]);
+                case "get-status":
+                    Commands.GetStatus(args[1..]);
                     Environment.Exit(0);
                     break;
 

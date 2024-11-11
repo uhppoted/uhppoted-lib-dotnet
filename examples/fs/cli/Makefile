@@ -43,3 +43,6 @@ set-door-passcodes: build
 
 open-door: build
 	$(CLI) open-door --controller 405419896
+
+get-status:
+	$(CLI) get-status

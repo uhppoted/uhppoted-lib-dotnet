@@ -158,3 +158,13 @@ module Encode =
         Array.blit (packU8 door) 0 packet 8 1
 
         packet
+
+    let get_status_request (controller: uint32) =
+        let packet: byte array = Array.zeroCreate 64
+
+        Array.set packet 0 (byte messages.SOM)
+        Array.set packet 1 (byte messages.GET_STATUS)
+
+        Array.blit (packU32 controller) 0 packet 4 4
+
+        packet

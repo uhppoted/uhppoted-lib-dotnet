@@ -79,3 +79,32 @@ type OpenDoorResponse =
 
     interface IResponse with
         member this.controller = this.controller
+
+type GetStatusResponse =
+    { controller: uint32
+      door1_open: bool
+      door2_open: bool
+      door3_open: bool
+      door4_open: bool
+      door1_button: bool
+      door2_button: bool
+      door3_button: bool
+      door4_button: bool
+      system_error: uint8
+      system_datetime: DateTime Nullable
+      sequence_number: uint32
+      special_info: uint8
+      relays: uint8
+      inputs: uint8
+      evt:
+          {| index: uint32
+             event_type: uint8
+             granted: bool
+             door: uint8
+             direction: uint8
+             card: uint32
+             timestamp: DateTime Nullable
+             reason: uint8 |} }
+
+    interface IResponse with
+        member this.controller = this.controller

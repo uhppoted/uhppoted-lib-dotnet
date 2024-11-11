@@ -280,3 +280,50 @@ module Uhppoted =
         let request = Encode.open_door_request controller.controller door
 
         exec controller request Decode.open_door_response timeout options
+
+    /// <summary>
+    /// Retrieves the current status of a controller.
+    /// </summary>
+    /// <param name="controller">Controller ID and (optionally) address and transport protocol.</param>
+    /// <param name="timeout">Operation timeout (ms).</param>
+    /// <param name="options">Optional bind, broadcast and listen addresses.</param>
+    /// <returns>
+    /// The controller status record, including the most recent event (if any).
+    /// </returns>
+    /// <example>
+    /// <code language="fsharp">
+    /// let controller = { controller = 405419896u; address = None; protocol = None }
+    /// let options = { broadcast = IPAddress.Broadcast; debug = true }
+    /// let result = get_status controller 5000 options
+    /// match result with
+    /// | Ok response -> printfn "get-status: %A" response
+    /// | Error e -> printfn "Error: %s" e
+    /// </code>
+    /// <code language="csharp">
+    /// var controller = new ControllerBuilder(405419896).build();
+    /// var options = new OptionsBuilder().build();
+    /// var result = get_status(controller, 1, 5000, options);
+    /// if (result.IsOk)
+    /// {
+    ///     Console.WriteLine("get-status: {0}",result.Value.ok);
+    /// }
+    /// else
+    /// {
+    ///     Console.WriteLine("get-status: error {0}",result.Error);
+    /// }
+    /// </code>
+    /// <code language="vbnet">
+    /// Dim controller As New ControllerBuilder(405419896u).build()
+    /// Dim options As New OptionsBuilder().build()
+    /// Dim result = open_door(controller, 1, 3000, options)
+    /// If result.IsOk Then
+    ///     Console.WriteLine("get-status: {0}",result.Value.ok)
+    /// Else
+    ///     Console.WriteLine("get-status: error {0}",result.Error);
+    /// End If
+    /// </code>
+    /// </example>
+    let get_status (controller: Controller, timeout: int, options: Options) =
+        let request = Encode.get_status_request controller.controller
+
+        exec controller request Decode.get_status_response timeout options

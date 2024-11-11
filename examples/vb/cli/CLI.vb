@@ -55,6 +55,10 @@ Module Program
                     Commands.OpenDoor(slice)
                     Environment.Exit(0)
 
+                Case "get-status"
+                    Commands.GetStatus(slice)
+                    Environment.Exit(0)
+
                 Case Else
                     WriteLine("** ERROR invalid command {0}", args(0))
                     WriteLine()

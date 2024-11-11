@@ -25,6 +25,7 @@
       - [x] Handle errors in receive-all
 
 - [ ] Restructure API fns to use |>
+- (?) Maybe use structs rather than records
 
 - [ ] API
       - [x] get-controller
@@ -37,7 +38,8 @@
       - [x] set-door
       - [x] set-door-passcodes
       - [x] open-door
-      - [ ] get-status
+      - [x] get-status
+      - [ ] get-cards
             - [ ] API fn
             - [ ] CLI
                   - [ ] F#
@@ -46,7 +48,6 @@
             - [ ] integration test
             - [ ] API doc
       
-      - [ ] get-cards
       - [ ] get-card
       - [ ] put-card
       - [ ] delete-card

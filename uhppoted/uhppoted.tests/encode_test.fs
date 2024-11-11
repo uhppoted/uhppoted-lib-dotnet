@@ -136,3 +136,12 @@ type TestEncoder() =
         let packet = Encode.open_door_request controller door
 
         Assert.That(packet, Is.EqualTo(expected))
+
+    [<Test>]
+    member this.TestEncodeGetStatus() =
+        let expected = TestRequests.get_status
+
+        let controller = 405419896u
+        let packet = Encode.get_status_request controller
+
+        Assert.That(packet, Is.EqualTo(expected))

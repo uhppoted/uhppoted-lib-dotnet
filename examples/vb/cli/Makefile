@@ -44,3 +44,5 @@ set-door-passcodes: build
 open-door: build
 	$(CLI) open-door
 
+get-status:
+	$(CLI) get-status

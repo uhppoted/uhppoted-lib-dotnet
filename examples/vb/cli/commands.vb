@@ -31,7 +31,8 @@ Module Commands
            New Command("get-door", "Retrieves a controller door mode and delay settings"),
            New Command("set-door", "Sets a controller door mode and delay"),
            New Command("set-door-passcodes", "Sets the supervisor passcodes for a controller door"),
-           New Command("open-door", "Unlocks a door controlled by a controller")
+           New Command("open-door", "Unlocks a door controlled by a controller"),
+           New Command("get-status", "Retrieves the current status of the controller")
        }
 
     Sub GetControllers(args As String())
@@ -298,6 +299,52 @@ Module Commands
                 WriteLine("open-door")
                 WriteLine("  controller {0}", response.controller)
                 WriteLine("          ok {0}", response.ok)
+                WriteLine()
+            Else If (result.IsError)
+                Throw New Exception(result.ErrorValue)
+            End If
+
+        Catch Err As Exception
+            WriteLine("Exception  {0}", err.Message)
+        End Try
+    End Sub
+
+
+    Sub GetStatus(args As String())
+        Try
+            Dim controller = New ControllerBuilder(405419896).
+                                 With(IPEndPoint.Parse("192.168.1.100:60000")).
+                                 With("udp").build()
+
+            Dim result = get_status(controller, TIMEOUT, OPTIONS)
+
+            If (result.IsOk)
+                Dim response = result.ResultValue
+                WriteLine("get-status")
+                WriteLine("         controller {0}", response.controller)
+                WriteLine("        door 1 open {0}", response.door1_open)
+                WriteLine("        door 2 open {0}", response.door2_open)
+                WriteLine("        door 3 open {0}", response.door3_open)
+                WriteLine("        door 4 open {0}", response.door3_open)
+                WriteLine("   button 1 pressed {0}", response.door1_button)
+                WriteLine("   button 2 pressed {0}", response.door1_button)
+                WriteLine("   button 3 pressed {0}", response.door1_button)
+                WriteLine("   button 4 pressed {0}", response.door1_button)
+                WriteLine("       system error {0}", response.system_error)
+                WriteLine("   system date/time {0}", YYYYMMDDHHmmss(response.system_datetime))
+                WriteLine("       sequence no. {0}", response.sequence_number)
+                WriteLine("       special info {0}", response.special_info)
+                WriteLine("             relays {0:X}", response.relays)
+                WriteLine("             inputs {0:X}", response.inputs)
+                WriteLine()
+                WriteLine("    event index     {0}", response.evt.index)
+                WriteLine("          event     {0}", response.evt.event_type)
+                WriteLine("          granted   {0}", response.evt.granted)
+                WriteLine("          door      {0}", response.evt.door)
+                WriteLine("          direction {0}", response.evt.direction)
+                WriteLine("          card      {0}", response.evt.card)
+                WriteLine("          timestamp {0}", YYYYMMDDHHmmss(response.evt.timestamp))
+                WriteLine("          reason    {0}", response.evt.reason)
                 WriteLine()
             Else If (result.IsError)
                 Throw New Exception(result.ErrorValue)
