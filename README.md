@@ -54,6 +54,9 @@ Unlocks a door controlled by a controller.
 ### `get-status`
 Retrieves a controller status record.
 
+### `get-cards`
+Retrieves the number of card records stored on a controller.
+
 
 ## Notes
 

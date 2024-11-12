@@ -12,6 +12,9 @@ build-all:
 integration-tests: 
 	cd integration-tests && make test
 
+release:
+	cd uhppoted && make release
+
 get-controllers:
 	$(CLI) get-all-controllers
 

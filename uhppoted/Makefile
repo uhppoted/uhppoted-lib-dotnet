@@ -16,6 +16,9 @@ test:
 integration-tests:
 	cd ../integration-tests && make test
 
+release: build test integration-tests
+	dotnet pack --configuration Release --output dist
+
 debug: build
 	dotnet run --project ../examples/fs/cli --framework net7.0 get-cards
 	dotnet run --project ../examples/cs/cli --framework net7.0 get-cards

@@ -8,6 +8,7 @@
 - [x] integration tests
 - [x] Add .NET 8 as a target framework on github
 - [x] verify controller ID in response
+- [x] README
 
 - [ ] github _nightly_ build
       - https://devblogs.microsoft.com/dotnet/dotnet-loves-github-actions
@@ -17,22 +18,16 @@
       - https://www.meziantou.net/publishing-a-nuget-package-following-best-practices-using-github.htm
 
 - [ ] function signature file
-- [ ] README
 - (?) Cross-platform builds
       - https://stackoverflow.com/questions/69393627/create-nuget-package-for-different-platforms-architectures-and-net-versions
 
 - [ ] translations/enums
       - [ ] door mode
 
-- [x] get-all-controllers
-      - [x] pprint Nullable DateOnly
-      - [x] Return array of controllers and remove FSharpCollections dependency
-      - [x] Return Result
-      - [x] Handle errors in receive-all
-
 - (?) Restructure API fns to use |>
 
 - [ ] API
+      - [x] get-all-controllers
       - [x] get-controller
       - [x] set-IPv4
       - [x] get-listener
@@ -53,6 +48,7 @@
                   - [ ] VB.NET
             - [ ] integration test
             - [ ] API doc
+            - [ ] README
       
       - [ ] put-card
       - [ ] delete-card

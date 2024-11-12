@@ -33,3 +33,8 @@ jobs:
       run: |
         make build-all
         make integration-tests
+
+    - name: Release
+      run: |
+        make release
+        ls -la

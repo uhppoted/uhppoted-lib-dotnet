@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>uhppoted</id>
+    <version>0.8.9</version>
+    <authors>uhppoted</authors>
+    <owners>uhppoted</owners>
+    <description>.NET wrapper around the UHPPOTE access controller API.</description>
+    <tags>F# C# VB.NET</tags>
+    <license type="expression">MIT</license>
+    <repository type="git" url="https://github.com/uhppoted/uhppoted-lib-dotnet" />
+  </metadata>
+</package>
