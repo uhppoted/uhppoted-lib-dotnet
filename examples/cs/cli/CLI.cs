@@ -9,72 +9,15 @@ class CLI
 
         if (args.Length > 0)
         {
-            switch (args[0])
+            var cmd = args[0];
+
+            foreach (var command in Commands.commands)
             {
-                case "get-all-controllers":
-                    Commands.GetControllers(args[1..]);
+                if (command.command == cmd)
+                {
+                    command.f(args[1..]);
                     Environment.Exit(0);
-                    break;
-
-                case "get-controller":
-                    Commands.GetController(args[1..]);
-                    Environment.Exit(0);
-                    break;
-
-                case "set-IPv4":
-                    Commands.SetIPv4(args[1..]);
-                    Environment.Exit(0);
-                    break;
-
-                case "get-listener":
-                    Commands.GetListener(args[1..]);
-                    Environment.Exit(0);
-                    break;
-
-                case "set-listener":
-                    Commands.SetListener(args[1..]);
-                    Environment.Exit(0);
-                    break;
-
-                case "get-time":
-                    Commands.GetTime(args[1..]);
-                    Environment.Exit(0);
-                    break;
-
-                case "set-time":
-                    Commands.SetTime(args[1..]);
-                    Environment.Exit(0);
-                    break;
-
-                case "get-door":
-                    Commands.GetDoor(args[1..]);
-                    Environment.Exit(0);
-                    break;
-
-                case "set-door":
-                    Commands.SetDoor(args[1..]);
-                    Environment.Exit(0);
-                    break;
-
-                case "set-door-passcodes":
-                    Commands.SetDoorPasscodes(args[1..]);
-                    Environment.Exit(0);
-                    break;
-
-                case "open-door":
-                    Commands.OpenDoor(args[1..]);
-                    Environment.Exit(0);
-                    break;
-
-                case "get-status":
-                    Commands.GetStatus(args[1..]);
-                    Environment.Exit(0);
-                    break;
-
-                default:
-                    WriteLine("** ERROR invalid command {0}", args[0]);
-                    WriteLine();
-                    break;
+                }
             }
         }
 

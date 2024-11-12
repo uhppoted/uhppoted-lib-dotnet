@@ -10,60 +10,12 @@ Module Program
             Dim cmd = args(0)
             Dim slice = args.Skip(1).ToArray()
 
-            Select cmd
-                Case "get-all-controllers"
-                    Commands.GetControllers(slice)
+            For Each command In Commands.commands
+                If command.command = cmd Then
+                    command.f(slice)
                     Environment.Exit(0)
-
-                Case "get-controller"
-                    Commands.GetController(slice)
-                    Environment.Exit(0)
-
-                case "set-IPv4" :
-                    Commands.SetIPv4(slice)
-                    Environment.Exit(0)
-
-                Case "get-listener"
-                    Commands.GetListener(slice)
-                    Environment.Exit(0)
-
-                Case "set-listener"
-                    Commands.SetListener(slice)
-                    Environment.Exit(0)
-
-                Case "get-time"
-                    Commands.GetTime(slice)
-                    Environment.Exit(0)
-
-                Case "set-time"
-                    Commands.SetTime(slice)
-                    Environment.Exit(0)
-
-                Case "get-door"
-                    Commands.GetDoor(slice)
-                    Environment.Exit(0)
-
-                Case "set-door"
-                    Commands.SetDoor(slice)
-                    Environment.Exit(0)
-
-                Case "set-door-passcodes"
-                    Commands.SetDoorPasscodes(slice)
-                    Environment.Exit(0)
-
-                Case "open-door"
-                    Commands.OpenDoor(slice)
-                    Environment.Exit(0)
-
-                Case "get-status"
-                    Commands.GetStatus(slice)
-                    Environment.Exit(0)
-
-                Case Else
-                    WriteLine("** ERROR invalid command {0}", args(0))
-                    WriteLine()
-
-            End Select
+                End If
+            Next
         End If
 
         Usage()

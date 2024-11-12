@@ -3,6 +3,8 @@
 - [`get_all_controllers`](#get_all_controllers)
 - [`set_door_passcodes`](#set_door_passcodes)
 - [`open_door`](#open_door)
+- [`get_status`](#get_status)
+- [`get_cards`](#get_cards)
 
 
 ## **`get_all_controllers`**
@@ -240,3 +242,54 @@ End If
   - `evt.card (`uint32`) Event card (0 if none).
   - `evt.timestamp (`DateTime Nullable`) Event timestamp.
   - `evt.reason (`uint8`) Event reason code.
+
+## **`get_cards`**
+
+Retrieves the number of cards stored on a controller.
+
+### Parameters
+- **`controller`**: Controller ID and (optionally) address and transport protocol.
+- **`timeout`**: Operation timeout (ms).
+- **`options`**: Optional bind, broadcast, and listen addresses.
+
+### Returns
+Returns Ok and the number of cards stored on the controller if the request was processed, error otherwise.
+
+### Examples
+
+```fsharp
+let controller = { controller = 405419896u; address = None; protocol = None }
+let options = { broadcast = IPAddress.Broadcast; debug = true }
+let result = get-cards controller 5000 options
+match result with
+| Ok response -> printfn "get-cards: ok %A" response
+| Error e -> printfn "get-cards: error %A" e
+```
+```csharp
+var controller = new ControllerBuilder(405419896).build();
+var options = new OptionsBuilder().build();
+var result = get_cards(controller, 5000, options);
+if (result.IsOk)
+{
+    Console.WriteLine("get-cards: ok {0}", result.Value.ok);
+}
+else
+{
+    Console.WriteLine("get-cards: error {0}", result.Error);
+}
+```
+```vb
+Dim controller As New ControllerBuilder(405419896u).build()
+Dim options As New OptionsBuilder().build()
+Dim result = get_cards(controller, 5000, options)
+If result.IsOk Then
+    Console.WriteLine("get-cards: ok {0}", result.Value.ok)
+Else
+    Console.WriteLine("get-cards: error {0}", result.Error)
+End If
+```
+
+### Notes
+- The `GetCardsResponse` record includes the following fields:
+  - `controller` (`uint32`): The controller identifier.
+  - `cards` (`uint32`): Number of cards stored on the controller.

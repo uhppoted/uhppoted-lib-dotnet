@@ -59,7 +59,11 @@ module Messages =
 
           { test = "get-status"
             request = Requests.get_status
-            responses = [ Responses.get_status ] } ]
+            responses = [ Responses.get_status ] }
+
+          { test = "get-cards"
+            request = Requests.get_cards
+            responses = [ Responses.get_cards ] } ]
 
     let find request =
         match messages |> Seq.tryFind (fun (msg) -> msg.request.SequenceEqual(request)) with

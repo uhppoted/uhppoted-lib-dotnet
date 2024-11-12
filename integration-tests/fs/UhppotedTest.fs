@@ -250,3 +250,15 @@ type TestClass() =
             match Uhppoted.get_status (controller, TIMEOUT, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
+
+    [<Test>]
+    member this.TestGetCards() =
+        let expected: GetCardsResponse =
+            { controller = 405419896u
+              cards = 13579u }
+
+        controllers
+        |> List.iter (fun controller ->
+            match Uhppoted.get_cards (controller, TIMEOUT, OPTIONS) with
+            | Ok response -> Assert.That(response, Is.EqualTo(expected))
+            | Error err -> Assert.Fail(err))

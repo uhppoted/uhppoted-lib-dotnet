@@ -296,8 +296,8 @@ module Uhppoted =
     /// let options = { broadcast = IPAddress.Broadcast; debug = true }
     /// let result = get_status controller 5000 options
     /// match result with
-    /// | Ok response -> printfn "get-status: %A" response
-    /// | Error e -> printfn "Error: %s" e
+    /// | Ok response -> printfn "get-status: ok %A" response
+    /// | Error e -> printfn "get-cards: error %s" e
     /// </code>
     /// <code language="csharp">
     /// var controller = new ControllerBuilder(405419896).build();
@@ -315,7 +315,7 @@ module Uhppoted =
     /// <code language="vbnet">
     /// Dim controller As New ControllerBuilder(405419896u).build()
     /// Dim options As New OptionsBuilder().build()
-    /// Dim result = open_door(controller, 1, 3000, options)
+    /// Dim result = get_status(controller, 1, 5000, options)
     /// If result.IsOk Then
     ///     Console.WriteLine("get-status: {0}",result.Value.ok)
     /// Else
@@ -327,3 +327,50 @@ module Uhppoted =
         let request = Encode.get_status_request controller.controller
 
         exec controller request Decode.get_status_response timeout options
+
+    /// <summary>
+    /// Retrieves the number of card records stored on a controller.
+    /// </summary>
+    /// <param name="controller">Controller ID and (optionally) address and transport protocol.</param>
+    /// <param name="timeout">Operation timeout (ms).</param>
+    /// <param name="options">Optional bind, broadcast and listen addresses.</param>
+    /// <returns>
+    /// Number of cards stored on the controller (or an error).
+    /// </returns>
+    /// <example>
+    /// <code language="fsharp">
+    /// let controller = { controller = 405419896u; address = None; protocol = None }
+    /// let options = { broadcast = IPAddress.Broadcast; debug = true }
+    /// let result = get_cards controller 5000 options
+    /// match result with
+    /// | Ok response -> printfn "get-cards: ok %A" response
+    /// | Error e -> printfn "get-cards: error %A" e
+    /// </code>
+    /// <code language="csharp">
+    /// var controller = new ControllerBuilder(405419896).build();
+    /// var options = new OptionsBuilder().build();
+    /// var result = get_cards(controller, 1, 5000, options);
+    /// if (result.IsOk)
+    /// {
+    ///     Console.WriteLine("get-cards: {0}",result.Value.ok);
+    /// }
+    /// else
+    /// {
+    ///     Console.WriteLine("get-cards: error {0}",result.Error);
+    /// }
+    /// </code>
+    /// <code language="vbnet">
+    /// Dim controller As New ControllerBuilder(405419896u).build()
+    /// Dim options As New OptionsBuilder().build()
+    /// Dim result = get_cards(controller, 5000, options)
+    /// If result.IsOk Then
+    ///     Console.WriteLine("get-cards: {0}",result.Value.ok)
+    /// Else
+    ///     Console.WriteLine("get-cards: error {0}",result.Error);
+    /// End If
+    /// </code>
+    /// </example>
+    let get_cards (controller: Controller, timeout: int, options: Options) =
+        let request = Encode.get_cards_request controller.controller
+
+        exec controller request Decode.get_cards_response timeout options

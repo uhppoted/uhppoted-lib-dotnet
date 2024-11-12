@@ -7,11 +7,13 @@ public readonly struct Command
 {
     public readonly string command;
     public readonly string description;
+    public readonly Action<string[]> f;
 
-    public Command(string command, string description)
+    public Command(string command, string description, Action<string[]> f)
     {
         this.command = command;
         this.description = description;
+        this.f = f;
     }
 }
 
@@ -24,20 +26,21 @@ class Commands
                                                            .build();
 
     public static List<Command> commands = new List<Command>
-        {
-    new Command ( "get-all-controllers","Retrieves a list of controllers accessible on the local LAN"),
-    new Command ( "get-controller","Retrieves the controller information for a specific controller"),
-    new Command ( "set-IPv4","Sets the controller IPv4 address, netmask and gateway"),
-    new Command ( "get-listener","Retrieves the controller event listener address:port and auto-send interval"),
-    new Command ( "set-listener","Sets the controller event listener address:port and auto-send interval"),
-    new Command ( "get-time","Retrieves the controller system date and time"),
-    new Command ( "set-time","Sets the controller system date and time"),
-    new Command ( "get-door","Retrieves a controller door mode and delay settings"),
-    new Command ( "set-door","Sets a controller door mode and delay"),
-    new Command ( "set-door-passcodes","Sets the supervisor passcodes for a controller door"),
-    new Command ( "open-door","Unlocks a door controlled by a controller"),
-    new Command ( "get-status","Retrieves the current status of the controller"),
-};
+    {
+          new Command ( "get-all-controllers","Retrieves a list of controllers accessible on the local LAN", GetControllers),
+          new Command ( "get-controller","Retrieves the controller information for a specific controller", GetController),
+          new Command ( "set-IPv4","Sets the controller IPv4 address, netmask and gateway", SetIPv4),
+          new Command ( "get-listener","Retrieves the controller event listener address:port and auto-send interval", GetListener),
+          new Command ( "set-listener","Sets the controller event listener address:port and auto-send interval", SetListener),
+          new Command ( "get-time","Retrieves the controller system date and time", GetTime),
+          new Command ( "set-time","Sets the controller system date and time",SetTime),
+          new Command ( "get-door","Retrieves a controller door mode and delay settings", GetDoor),
+          new Command ( "set-door","Sets a controller door mode and delay",SetDoor),
+          new Command ( "set-door-passcodes","Sets the supervisor passcodes for a controller door",SetDoorPasscodes),
+          new Command ( "open-door","Unlocks a door controlled by a controller",OpenDoor),
+          new Command ( "get-status","Retrieves the current status of the controller",GetStatus),
+          new Command ( "get-cards","Retrieves the number of cards stored on the controller",GetCards)
+    };
 
     public static void GetControllers(string[] args)
     {
@@ -453,6 +456,37 @@ class Commands
             WriteLine("** ERROR  {0}", err.Message);
         }
     }
+
+    public static void GetCards(string[] args)
+    {
+        try
+        {
+            var controller = new uhppoted.ControllerBuilder(CONTROLLER)
+                                         .With(IPEndPoint.Parse("192.168.1.100:60000"))
+                                         .With("udp")
+                                         .build();
+            var result = get_cards(controller, TIMEOUT, OPTIONS);
+
+            if (result.IsOk)
+            {
+                var response = result.ResultValue;
+
+                WriteLine("get-cards");
+                WriteLine("  controller {0}", response.controller);
+                WriteLine("       cards {0}", response.cards);
+                WriteLine();
+            }
+            else if (result.IsError)
+            {
+                throw new Exception(result.ErrorValue);
+            }
+        }
+        catch (Exception err)
+        {
+            WriteLine("** ERROR  {0}", err.Message);
+        }
+    }
+
 
     private static string YYYYMMDD(DateOnly? date)
     {

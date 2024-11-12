@@ -75,7 +75,7 @@ module Decode =
         else if packet[1] <> messages.GET_CONTROLLER then
             Error("invalid get-controller response")
         else
-            Ok(
+            Ok
                 { controller = unpackU32 packet[4..]
                   address = unpackIPv4 packet[8..]
                   netmask = unpackIPv4 packet[12..]
@@ -83,7 +83,6 @@ module Decode =
                   MAC = unpackMAC packet[20..25]
                   version = unpack_version packet[26..]
                   date = unpack_date (packet[28..]) }
-            )
 
     let get_listener_response (packet: byte array) : Result<GetListenerResponse, string> =
         if packet[0] <> messages.SOM then
@@ -96,11 +95,10 @@ module Decode =
             let port = unpackU16 packet[12..]
             let interval = unpackU8 packet[14..]
 
-            Ok(
+            Ok
                 { controller = controller
                   endpoint = IPEndPoint(address, int port)
                   interval = interval }
-            )
 
     let set_listener_response (packet: byte array) : Result<SetListenerResponse, string> =
         if packet[0] <> messages.SOM then
@@ -108,10 +106,9 @@ module Decode =
         else if packet[1] <> messages.SET_LISTENER then
             Error("invalid set-listener response")
         else
-            Ok(
+            Ok
                 { controller = unpackU32 packet[4..]
                   ok = unpackBool packet[8..] }
-            )
 
     let get_time_response (packet: byte array) : Result<GetTimeResponse, string> =
         if packet[0] <> messages.SOM then
@@ -119,10 +116,9 @@ module Decode =
         else if packet[1] <> messages.GET_TIME then
             Error("invalid get-time response")
         else
-            Ok(
+            Ok
                 { controller = unpackU32 packet[4..]
                   datetime = unpack_datetime (packet[8..]) }
-            )
 
     let set_time_response (packet: byte array) : Result<SetTimeResponse, string> =
         if packet[0] <> messages.SOM then
@@ -130,10 +126,9 @@ module Decode =
         else if packet[1] <> messages.SET_TIME then
             Error("invalid set-time response")
         else
-            Ok(
+            Ok
                 { controller = unpackU32 packet[4..]
                   datetime = unpack_datetime (packet[8..]) }
-            )
 
     let get_door_response (packet: byte array) : Result<GetDoorResponse, string> =
         if packet[0] <> messages.SOM then
@@ -141,12 +136,11 @@ module Decode =
         else if packet[1] <> messages.GET_DOOR then
             Error("invalid get-door response")
         else
-            Ok(
+            Ok
                 { controller = unpackU32 packet[4..]
                   door = unpackU8 (packet[8..])
                   mode = unpackU8 (packet[9..])
                   delay = unpackU8 (packet[10..]) }
-            )
 
     let set_door_response (packet: byte array) : Result<SetDoorResponse, string> =
         if packet[0] <> messages.SOM then
@@ -154,12 +148,11 @@ module Decode =
         else if packet[1] <> messages.SET_DOOR then
             Error("invalid set-door response")
         else
-            Ok(
+            Ok
                 { controller = unpackU32 packet[4..]
                   door = unpackU8 (packet[8..])
                   mode = unpackU8 (packet[9..])
                   delay = unpackU8 (packet[10..]) }
-            )
 
     let set_door_passcodes_response (packet: byte array) : Result<SetDoorPasscodesResponse, string> =
         if packet[0] <> messages.SOM then
@@ -167,10 +160,9 @@ module Decode =
         else if packet[1] <> messages.SET_DOOR_PASSCODES then
             Error("invalid set-door-passcodes response")
         else
-            Ok(
+            Ok
                 { controller = unpackU32 packet[4..]
                   ok = unpackBool (packet[8..]) }
-            )
 
     let open_door_response (packet: byte array) : Result<OpenDoorResponse, string> =
         if packet[0] <> messages.SOM then
@@ -178,10 +170,9 @@ module Decode =
         else if packet[1] <> messages.OPEN_DOOR then
             Error("invalid open-door response")
         else
-            Ok(
+            Ok
                 { controller = unpackU32 packet[4..]
                   ok = unpackBool (packet[8..]) }
-            )
 
     let get_status_response (packet: byte array) : Result<GetStatusResponse, string> =
         if packet[0] <> messages.SOM then
@@ -197,7 +188,7 @@ module Decode =
                 | true, true -> Nullable(sysdate.Value.ToDateTime(systime.Value))
                 | _, _ -> Nullable()
 
-            Ok(
+            Ok
                 { controller = unpackU32 packet[4..]
                   door1_open = unpackBool packet[28..]
                   door2_open = unpackBool packet[29..]
@@ -222,4 +213,13 @@ module Decode =
                        card = unpackU32 packet[16..]
                        timestamp = unpack_datetime (packet[20..])
                        reason = unpackU8 packet[27..] |} }
-            )
+
+    let get_cards_response (packet: byte array) : Result<GetCardsResponse, string> =
+        if packet[0] <> messages.SOM then
+            Error("invalid controller response")
+        else if packet[1] <> messages.GET_CARDS then
+            Error("invalid get-cards response")
+        else
+            Ok
+                { controller = unpackU32 packet[4..]
+                  cards = unpackU32 packet[8..] }

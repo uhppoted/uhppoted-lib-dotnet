@@ -290,40 +290,70 @@ let get_status args =
         Ok()
     | Error err -> Error(err)
 
+let get_cards args =
+    let controller =
+        { controller = argparse args "--controller" CONTROLLER
+          address = ADDRESS
+          protocol = PROTOCOL }
+
+    match Uhppoted.get_cards (controller, TIMEOUT, OPTIONS) with
+    | Ok response ->
+        printfn "get-cards"
+        printf "  controller %u\n" response.controller
+        printf "       cards %u\n" response.cards
+        printfn ""
+        Ok()
+    | Error err -> Error(err)
+
 let commands =
     [ { command = "get-all-controllers"
         description = "Retrieves a list of controllers accessible on the local LAN"
         f = get_controllers }
+
       { command = "get-controller"
         description = "Retrieves the controller information for a specific controller"
         f = get_controller }
+
       { command = "set-IPv4"
         description = "Sets the controller IPv4 address, netmask and gateway"
         f = set_IPv4 }
+
       { command = "get-listener"
         description = "Retrieves the controller event listener address:port and auto-send interval"
         f = get_listener }
+
       { command = "set-listener"
         description = "Sets the controller event listener address:port and auto-send interval"
         f = set_listener }
+
       { command = "get-time"
         description = "Retrieves the controller system date and time"
         f = get_time }
+
       { command = "set-time"
         description = "Sets the controller system date and time"
         f = set_time }
+
       { command = "get-door"
         description = "Retrieves a controller door mode and delay settings"
         f = get_door }
+
       { command = "set-door"
         description = "Sets a controller door mode and delay"
         f = set_door }
+
       { command = "set-door-passcodes"
         description = "Sets the supervisor passcodes for a controller door"
         f = set_door_passcodes }
+
       { command = "open-door"
         description = "Unlocks a door controlled by a controller"
         f = open_door }
+
       { command = "get-status"
         description = "Retrieves the current status of the controller"
-        f = get_status } ]
+        f = get_status }
+
+      { command = "get-cards"
+        description = "Retrieves the number of cards stored on the controller"
+        f = get_cards } ]

@@ -108,3 +108,10 @@ type GetStatusResponse =
 
     interface IResponse with
         member this.controller = this.controller
+
+type GetCardsResponse =
+    { controller: uint32
+      cards: uint32 }
+
+    interface IResponse with
+        member this.controller = this.controller

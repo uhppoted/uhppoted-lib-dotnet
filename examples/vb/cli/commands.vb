@@ -7,10 +7,12 @@ Imports uhppoted.Uhppoted
 Public Structure Command
     Public ReadOnly command As String
     Public ReadOnly description As String
+    Public ReadOnly f As Action(Of String())
 
-    Public Sub New(command As String, description As String)
+    Public Sub New(command As String, description As String, f As Action(Of String()))
         Me.command = command
         Me.description = description
+        Me.f = f
     End Sub
 End Structure
 
@@ -21,18 +23,19 @@ Module Commands
                                        build()
 
     Public Dim commands As New List(Of Command) From {
-           New Command("get-all-controllers", "Retrieves a list of controllers accessible on the local LAN"),
-           New Command("get-controller", "Retrieves the controller information for a specific controller"),
-           New Command("set-IPv4", "Sets the controller IPv4 address, netmask and gateway"),
-           New Command("get-listener", "Retrieves the controller event listener address:port and auto-send interval"),
-           New Command("set-listener", "Sets the controller event listener address:port and auto-send interval"),
-           New Command("get-time", "Retrieves the controller system date and time"),
-           New Command("set-time", "Sets the controller system date and time"),
-           New Command("get-door", "Retrieves a controller door mode and delay settings"),
-           New Command("set-door", "Sets a controller door mode and delay"),
-           New Command("set-door-passcodes", "Sets the supervisor passcodes for a controller door"),
-           New Command("open-door", "Unlocks a door controlled by a controller"),
-           New Command("get-status", "Retrieves the current status of the controller")
+           New Command("get-all-controllers", "Retrieves a list of controllers accessible on the local LAN", AddressOf GetControllers),
+           New Command("get-controller", "Retrieves the controller information for a specific controller", AddressOf GetController),
+           New Command("set-IPv4", "Sets the controller IPv4 address, netmask and gateway", AddressOf SetIPv4),
+           New Command("get-listener", "Retrieves the controller event listener address:port and auto-send interval", AddressOf GetListener),
+           New Command("set-listener", "Sets the controller event listener address:port and auto-send interval", AddressOf SetListener),
+           New Command("get-time", "Retrieves the controller system date and time", AddressOf GetTime),
+           New Command("set-time", "Sets the controller system date and time", AddressOf SetTime),
+           New Command("get-door", "Retrieves a controller door mode and delay settings", AddressOf GetDoor),
+           New Command("set-door", "Sets a controller door mode and delay", AddressOf SetDoor),
+           New Command("set-door-passcodes", "Sets the supervisor passcodes for a controller door", AddressOf SetDoorPasscodes),
+           New Command("open-door", "Unlocks a door controlled by a controller", AddressOf OpenDoor),
+           New Command("get-status", "Retrieves the current status of the controller", AddressOf GetStatus),
+           New Command("get-cards", "Retrieves the number of cards stored on the controller", AddressOf GetCards)
        }
 
     Sub GetControllers(args As String())
@@ -309,7 +312,6 @@ Module Commands
         End Try
     End Sub
 
-
     Sub GetStatus(args As String())
         Try
             Dim controller = New ControllerBuilder(405419896).
@@ -345,6 +347,29 @@ Module Commands
                 WriteLine("          card      {0}", response.evt.card)
                 WriteLine("          timestamp {0}", YYYYMMDDHHmmss(response.evt.timestamp))
                 WriteLine("          reason    {0}", response.evt.reason)
+                WriteLine()
+            Else If (result.IsError)
+                Throw New Exception(result.ErrorValue)
+            End If
+
+        Catch Err As Exception
+            WriteLine("Exception  {0}", err.Message)
+        End Try
+    End Sub
+
+    Sub GetCards(args As String())
+        Try
+            Dim controller = New ControllerBuilder(405419896).
+                                 With(IPEndPoint.Parse("192.168.1.100:60000")).
+                                 With("udp").build()
+
+            Dim result = get_cards(controller, TIMEOUT, OPTIONS)
+
+            If (result.IsOk)
+                Dim response = result.ResultValue
+                WriteLine("get-cards")
+                WriteLine("  controller {0}", response.controller)
+                WriteLine("       cards {0}", response.cards)
                 WriteLine()
             Else If (result.IsError)
                 Throw New Exception(result.ErrorValue)

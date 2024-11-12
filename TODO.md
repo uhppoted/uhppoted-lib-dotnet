@@ -10,6 +10,12 @@
 - [x] verify controller ID in response
 
 - [ ] github _nightly_ build
+      - https://devblogs.microsoft.com/dotnet/dotnet-loves-github-actions
+      - https://www.dotnetcurry.com/dotnetcore/github-actions-for-dotnet-developers
+      - https://samlearnsazure.blog/2021/07/27/publishing-a-nuget-package-to-github-packages
+      - https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-nuget-registry
+      - https://www.meziantou.net/publishing-a-nuget-package-following-best-practices-using-github.htm
+
 - [ ] function signature file
 - [ ] README
 - (?) Cross-platform builds
@@ -24,8 +30,7 @@
       - [x] Return Result
       - [x] Handle errors in receive-all
 
-- [ ] Restructure API fns to use |>
-- (?) Maybe use structs rather than records
+- (?) Restructure API fns to use |>
 
 - [ ] API
       - [x] get-controller
@@ -39,7 +44,8 @@
       - [x] set-door-passcodes
       - [x] open-door
       - [x] get-status
-      - [ ] get-cards
+      - [x] get-cards
+      - [ ] get-card
             - [ ] API fn
             - [ ] CLI
                   - [ ] F#
@@ -48,7 +54,6 @@
             - [ ] integration test
             - [ ] API doc
       
-      - [ ] get-card
       - [ ] put-card
       - [ ] delete-card
       - [ ] delete-cards

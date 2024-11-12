@@ -46,3 +46,8 @@ open-door: build
 
 get-status:
 	$(CLI) get-status
+
+get-cards: build
+	$(CLI) get-cards
+
+

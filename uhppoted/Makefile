@@ -17,9 +17,9 @@ integration-tests:
 	cd ../integration-tests && make test
 
 debug: build
-	dotnet run --project ../examples/fs/cli --framework net7.0 get-status
-	dotnet run --project ../examples/cs/cli --framework net7.0 get-status
-	dotnet run --project ../examples/vb/cli --framework net7.0 get-status
+	dotnet run --project ../examples/fs/cli --framework net7.0 get-cards
+	dotnet run --project ../examples/cs/cli --framework net7.0 get-cards
+	dotnet run --project ../examples/vb/cli --framework net7.0 get-cards
 
 get-controllers: build
 	$(CLI) get-all-controllers
@@ -56,4 +56,8 @@ open-door: build
 
 get-status: build
 	$(CLI) get-status
+
+get-cards: build
+	$(CLI) get-cards
+
 
