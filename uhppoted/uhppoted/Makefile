@@ -2,6 +2,10 @@ build:
 	dotnet build
 	dotnet fantomas .
 
+release: build
+	rm -rf dist
+	dotnet pack --configuration Release --output dist
+
 get-all-controllers: build
 	dotnet run --project ../../examples/fs/cli get-all-controllers
 

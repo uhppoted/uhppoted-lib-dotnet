@@ -11,8 +11,8 @@
 - [x] README
 
 - [ ] github _nightly_ build
-      - [ ] Fix version
-      - [ ] Fix missing version
+      - [x] Fix version
+      - [ ] Fix missing README
       - [ ] Upload artifacts
       - https://devblogs.microsoft.com/dotnet/dotnet-loves-github-actions
       - https://www.dotnetcurry.com/dotnetcore/github-actions-for-dotnet-developers

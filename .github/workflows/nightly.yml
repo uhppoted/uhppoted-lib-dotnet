@@ -29,7 +29,7 @@ jobs:
         make build-all
         make integration-tests
 
-    - name: Release
+    - name: Package artificats
       run: |
         make release
         ls -la ./uhppoted
