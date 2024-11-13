@@ -1,23 +1,18 @@
-![build](https://github.com/uhppoted/uhppoted-lib-dotnet/workflows/build/badge.svg)
-
-# uhppoted-lib-dotnet
-
-** IN DEVELOPMENT **
+# uhppoted
 
 .NET package for the UHPPOTE access controller API.
 
-The API is described in [API.md](documentation/API/API.md) and example CLI implementations in F#, C# and VB.NET that 
-illustrate the use of the API can be found in the [examples](examples) folder.
+The API is described in [API](API.md) and example CLI implementations in F#, C# and VB.NET that 
+illustrate the use of the API can be found in the [examples](https://github.com/uhppoted/uhppoted-lib-dotnet/examples)
+folder on the github [repository](https://github.com/uhppoted/uhppoted-lib-dotnet).
 
 ## Installation
 
 ## Release Notes
 
-#### Current Release
-
 ## API summary
 
-### `get-all-controllers`
+### [`get-all-controllers`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/get-all-controllers.md))
 'Discovers' all controllers accessible via a UDP broadcast on the local LAN.
 
 ### `get-controller`
@@ -56,9 +51,8 @@ Retrieves a controller status record.
 ### `get-cards`
 Retrieves the number of card records stored on a controller.
 
-### [`get-card`](documentation/API/get-card.md)
+### `get-card`
 Retrieves a card record by card number.
-
 
 ## Notes
 

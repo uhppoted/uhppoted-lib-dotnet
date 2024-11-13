@@ -10,6 +10,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="argparse.fs" />
     <Compile Include="commands.fs" />
     <Compile Include="CLI.fs" />
   </ItemGroup>

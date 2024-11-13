@@ -5,6 +5,7 @@
 - [`open_door`](#open_door)
 - [`get_status`](#get_status)
 - [`get_cards`](#get_cards)
+- [`get_card`](get_card.md)
 
 
 ## **`get_all_controllers`**

@@ -1,7 +1,7 @@
 using System.Net;
 
 using static System.Console;
-using static uhppoted.Uhppoted;
+using uhppoted;
 
 public readonly struct Command
 {
@@ -20,6 +20,7 @@ public readonly struct Command
 class Commands
 {
     const uint CONTROLLER = 405419896u;
+    const uint CARD = 10058400u;
     const int TIMEOUT = 1000;
     static readonly uhppoted.Options OPTIONS = new uhppoted.OptionsBuilder()
                                                            .WithDebug(true)
@@ -39,14 +40,15 @@ class Commands
           new Command ( "set-door-passcodes","Sets the supervisor passcodes for a controller door",SetDoorPasscodes),
           new Command ( "open-door","Unlocks a door controlled by a controller",OpenDoor),
           new Command ( "get-status","Retrieves the current status of the controller",GetStatus),
-          new Command ( "get-cards","Retrieves the number of cards stored on the controller",GetCards)
+          new Command ( "get-cards","Retrieves the number of cards stored on the controller",GetCards),
+          new Command ( "get-card","Retrieves a card record from the controller",GetCard)
     };
 
     public static void GetControllers(string[] args)
     {
         try
         {
-            var result = get_all_controllers(TIMEOUT, OPTIONS);
+            var result = Uhppoted.get_all_controllers(TIMEOUT, OPTIONS);
 
             if (result.IsOk)
             {
@@ -85,7 +87,7 @@ class Commands
                                          .With("udp")
                                          .build();
 
-            var result = get_controller(controller, TIMEOUT, OPTIONS);
+            var result = Uhppoted.get_controller(controller, TIMEOUT, OPTIONS);
 
             if (result.IsOk)
             {
@@ -124,7 +126,7 @@ class Commands
             var address = IPAddress.Parse("192.168.1.100");
             var netmask = IPAddress.Parse("255.255.255.0");
             var gateway = IPAddress.Parse("192.168.1.1");
-            var result = set_IPv4(controller, address, netmask, gateway, TIMEOUT, OPTIONS);
+            var result = Uhppoted.set_IPv4(controller, address, netmask, gateway, TIMEOUT, OPTIONS);
 
             if (result.IsOk)
             {
@@ -151,7 +153,7 @@ class Commands
                                          .With("udp")
                                          .build();
 
-            var result = get_listener(controller, TIMEOUT, OPTIONS);
+            var result = Uhppoted.get_listener(controller, TIMEOUT, OPTIONS);
 
             if (result.IsOk)
             {
@@ -185,7 +187,7 @@ class Commands
 
             var endpoint = IPEndPoint.Parse("192.168.1.100:60001");
             var interval = (byte)30;
-            var result = set_listener(controller, endpoint, interval, TIMEOUT, OPTIONS);
+            var result = Uhppoted.set_listener(controller, endpoint, interval, TIMEOUT, OPTIONS);
 
             if (result.IsOk)
             {
@@ -216,7 +218,7 @@ class Commands
                                          .With("udp")
                                          .build();
 
-            var result = get_time(controller, TIMEOUT, OPTIONS);
+            var result = Uhppoted.get_time(controller, TIMEOUT, OPTIONS);
 
             if (result.IsOk)
             {
@@ -248,7 +250,7 @@ class Commands
                                          .build();
             var datetime = DateTime.Now;
 
-            var result = set_time(controller, datetime, TIMEOUT, OPTIONS);
+            var result = Uhppoted.set_time(controller, datetime, TIMEOUT, OPTIONS);
 
             if (result.IsOk)
             {
@@ -280,7 +282,7 @@ class Commands
                                          .build();
             byte door = 4;
 
-            var result = get_door(controller, door, TIMEOUT, OPTIONS);
+            var result = Uhppoted.get_door(controller, door, TIMEOUT, OPTIONS);
 
             if (result.IsOk)
             {
@@ -316,7 +318,7 @@ class Commands
             byte mode = 2;
             byte delay = 7;
 
-            var result = set_door(controller, door, mode, delay, TIMEOUT, OPTIONS);
+            var result = Uhppoted.set_door(controller, door, mode, delay, TIMEOUT, OPTIONS);
 
             if (result.IsOk)
             {
@@ -351,7 +353,7 @@ class Commands
             byte door = 4;
             uint[] passcodes = { 12345, 54321, 0, 999999 };
 
-            var result = set_door_passcodes(controller, door, passcodes[0], passcodes[1], passcodes[2], passcodes[3], TIMEOUT, OPTIONS);
+            var result = Uhppoted.set_door_passcodes(controller, door, passcodes[0], passcodes[1], passcodes[2], passcodes[3], TIMEOUT, OPTIONS);
 
             if (result.IsOk)
             {
@@ -383,7 +385,7 @@ class Commands
                                          .build();
             byte door = 4;
 
-            var result = open_door(controller, door, TIMEOUT, OPTIONS);
+            var result = Uhppoted.open_door(controller, door, TIMEOUT, OPTIONS);
 
             if (result.IsOk)
             {
@@ -413,7 +415,7 @@ class Commands
                                          .With(IPEndPoint.Parse("192.168.1.100:60000"))
                                          .With("udp")
                                          .build();
-            var result = get_status(controller, TIMEOUT, OPTIONS);
+            var result = Uhppoted.get_status(controller, TIMEOUT, OPTIONS);
 
             if (result.IsOk)
             {
@@ -465,7 +467,7 @@ class Commands
                                          .With(IPEndPoint.Parse("192.168.1.100:60000"))
                                          .With("udp")
                                          .build();
-            var result = get_cards(controller, TIMEOUT, OPTIONS);
+            var result = Uhppoted.get_cards(controller, TIMEOUT, OPTIONS);
 
             if (result.IsOk)
             {
@@ -474,6 +476,44 @@ class Commands
                 WriteLine("get-cards");
                 WriteLine("  controller {0}", response.controller);
                 WriteLine("       cards {0}", response.cards);
+                WriteLine();
+            }
+            else if (result.IsError)
+            {
+                throw new Exception(result.ErrorValue);
+            }
+        }
+        catch (Exception err)
+        {
+            WriteLine("** ERROR  {0}", err.Message);
+        }
+    }
+
+    public static void GetCard(string[] args)
+    {
+        try
+        {
+            var controller = new uhppoted.ControllerBuilder(CONTROLLER)
+                                         .With(IPEndPoint.Parse("192.168.1.100:60000"))
+                                         .With("udp")
+                                         .build();
+            var card = CARD;
+            var result = Uhppoted.GetCard(controller, card, TIMEOUT, OPTIONS);
+
+            if (result.IsOk)
+            {
+                var response = result.ResultValue;
+
+                WriteLine("get-card");
+                WriteLine("  controller {0}", response.controller);
+                WriteLine("        card {0}", response.card);
+                WriteLine("  start date {0}", (YYYYMMDD(response.startdate)));
+                WriteLine("    end date {0}", (YYYYMMDD(response.enddate)));
+                WriteLine("      door 1 {0}", response.door1);
+                WriteLine("      door 2 {0}", response.door2);
+                WriteLine("      door 3 {0}", response.door3);
+                WriteLine("      door 4 {0}", response.door4);
+                WriteLine("         PIN {0}", response.PIN);
                 WriteLine();
             }
             else if (result.IsError)

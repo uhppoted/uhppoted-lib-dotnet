@@ -18,6 +18,7 @@ type TestClass() =
     let DOOR = 4uy
     let MODE = 2uy
     let DELAY = 17uy
+    let CARD = 10058400u
 
     let OPTIONS: Options =
         { bind = IPEndPoint(IPAddress.Any, 0)
@@ -261,4 +262,43 @@ type TestClass() =
         |> List.iter (fun controller ->
             match Uhppoted.get_cards (controller, TIMEOUT, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
+            | Error err -> Assert.Fail(err))
+
+    [<Test>]
+    member this.TestGetCard() =
+        let expected: GetCardResponse =
+            { controller = 405419896u
+              card = 10058400u
+              startdate = Nullable(DateOnly(2024, 1, 1))
+              enddate = Nullable(DateOnly(2024, 12, 31))
+              door1 = 1uy
+              door2 = 0uy
+              door3 = 17uy
+              door4 = 1uy
+              PIN = 7531u }
+
+        controllers
+        |> List.iter (fun controller ->
+            match Uhppoted.GetCard(controller, CARD, TIMEOUT, OPTIONS) with
+            | Ok response -> Assert.That(response, Is.EqualTo(expected))
+            | Error err -> Assert.Fail(err))
+
+    [<Test>]
+    member this.TestGetCardNotFound() =
+        let expected: GetCardResponse =
+            { controller = 405419896u
+              card = 10058400u
+              startdate = Nullable(DateOnly(2024, 1, 1))
+              enddate = Nullable(DateOnly(2024, 12, 31))
+              door1 = 1uy
+              door2 = 0uy
+              door3 = 17uy
+              door4 = 1uy
+              PIN = 7531u }
+
+        controllers
+        |> List.iter (fun controller ->
+            match Uhppoted.GetCard(controller, 10058399u, TIMEOUT, OPTIONS) with
+            | Ok _ -> Assert.Fail("expected 'card not found' error")
+            | Error "card not found" -> Assert.Pass()
             | Error err -> Assert.Fail(err))

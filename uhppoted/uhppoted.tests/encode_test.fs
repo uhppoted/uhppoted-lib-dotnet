@@ -154,3 +154,13 @@ type TestEncoder() =
         let packet = Encode.get_cards_request controller
 
         Assert.That(packet, Is.EqualTo(expected))
+
+    [<Test>]
+    member this.TestEncodeGetCard() =
+        let expected = TestRequests.get_card
+
+        let controller = 405419896u
+        let card = 10058400u
+        let packet = Encode.get_card_request controller card
+
+        Assert.That(packet, Is.EqualTo(expected))

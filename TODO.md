@@ -11,6 +11,9 @@
 - [x] README
 
 - [ ] github _nightly_ build
+      - [ ] Fix version
+      - [ ] Fix missing version
+      - [ ] Upload artifacts
       - https://devblogs.microsoft.com/dotnet/dotnet-loves-github-actions
       - https://www.dotnetcurry.com/dotnetcore/github-actions-for-dotnet-developers
       - https://samlearnsazure.blog/2021/07/27/publishing-a-nuget-package-to-github-packages
@@ -24,7 +27,19 @@
 - [ ] translations/enums
       - [ ] door mode
 
-- (?) Restructure API fns to use |>
+- [ ] F#: argparse
+      - [x] --controller
+      - [x] --address
+      - [x] --netmask
+      - [x] --gateway
+      - [ ] --listener
+      - [ ] --interval
+      - [ ] --time
+      - [ ] --door
+      - [ ] --mode
+      - [ ] --delay
+      - [ ] --passcode
+      - [ ] --card
 
 - [ ] API
       - [x] get-all-controllers
@@ -40,8 +55,9 @@
       - [x] open-door
       - [x] get-status
       - [x] get-cards
-      - [ ] get-card
-            - [ ] API fn
+      - [x] get-card
+      - [ ] put-card
+            - [ ] API function
             - [ ] CLI
                   - [ ] F#
                   - [ ] C#
@@ -50,7 +66,6 @@
             - [ ] API doc
             - [ ] README
       
-      - [ ] put-card
       - [ ] delete-card
       - [ ] delete-cards
       - [ ] get-events

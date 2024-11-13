@@ -20,9 +20,9 @@ release: build test integration-tests
 	dotnet pack --configuration Release --output dist
 
 debug: build
-	dotnet run --project ../examples/fs/cli --framework net7.0 get-cards
-	dotnet run --project ../examples/cs/cli --framework net7.0 get-cards
-	dotnet run --project ../examples/vb/cli --framework net7.0 get-cards
+	dotnet run --project ../examples/fs/cli --framework net7.0 get-card
+	dotnet run --project ../examples/cs/cli --framework net7.0 get-card
+	dotnet run --project ../examples/vb/cli --framework net7.0 get-card
 
 get-controllers: build
 	$(CLI) get-all-controllers
@@ -62,5 +62,10 @@ get-status: build
 
 get-cards: build
 	$(CLI) get-cards
+
+get-card: build
+	$(CLI) get-card
+
+
 
 

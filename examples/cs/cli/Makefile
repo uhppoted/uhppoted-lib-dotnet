@@ -50,4 +50,6 @@ get-status:
 get-cards: build
 	$(CLI) get-cards
 
+get-card: build
+	$(CLI) get-card
 

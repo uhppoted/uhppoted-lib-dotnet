@@ -349,7 +349,7 @@ module Uhppoted =
     /// <code language="csharp">
     /// var controller = new ControllerBuilder(405419896).build();
     /// var options = new OptionsBuilder().build();
-    /// var result = get_cards(controller, 1, 5000, options);
+    /// var result = get_cards(controller, 5000, options);
     /// if (result.IsOk)
     /// {
     ///     Console.WriteLine("get-cards: {0}",result.Value.ok);
@@ -374,3 +374,60 @@ module Uhppoted =
         let request = Encode.get_cards_request controller.controller
 
         exec controller request Decode.get_cards_response timeout options
+
+    /// <summary>
+    /// Retrieves the card record for the requested card number.
+    /// </summary>
+    /// <param name="controller">Controller ID and (optionally) address and transport protocol.</param>
+    /// <param name="card">Card number to retrieve.</param>
+    /// <param name="timeout">Operation timeout (ms).</param>
+    /// <param name="options">Optional bind, broadcast and listen addresses.</param>
+    /// <returns>
+    /// Card record matching card number (or an error).
+    /// </returns>
+    /// <example>
+    /// <code language="fsharp">
+    /// let controller = { controller = 405419896u; address = None; protocol = None }
+    /// let card = 10058400u
+    /// let timeout = 5000
+    /// let options = { broadcast = IPAddress.Broadcast; debug = true }
+    /// let result = GetCard controller card timeout options
+    /// match result with
+    /// | Ok response -> printfn "get-card: ok %A" response
+    /// | Error e -> printfn "get-card: error %A" e
+    /// </code>
+    /// <code language="csharp">
+    /// var controller = new ControllerBuilder(405419896).build();
+    /// var card = 10058400
+    /// var timeout = 5000
+    /// var options = new OptionsBuilder().build();
+    /// var result = GetCard(controller, card, timeout, options);
+    /// if (result.IsOk)
+    /// {
+    ///     Console.WriteLine("get-card: {0}",result.Value);
+    /// }
+    /// else
+    /// {
+    ///     Console.WriteLine("get-card: error {0}",result.Error);
+    /// }
+    /// </code>
+    /// <code language="vbnet">
+    /// Dim controller As New ControllerBuilder(405419896).build()
+    /// Dim card = 10058400
+    /// Dim timeout = 5000
+    /// Dim options As New OptionsBuilder().build()
+    /// Dim result = GetCard(controller, card, timeout, options)
+    /// If result.IsOk Then
+    ///     Console.WriteLine("get-card: {0}",result.Value)
+    /// Else
+    ///     Console.WriteLine("get-card: error {0}",result.Error);
+    /// End If
+    /// </code>
+    /// </example>
+    let GetCard (controller: Controller, card: uint32, timeout: int, options: Options) =
+        let request = Encode.get_card_request controller.controller card
+
+        match (exec controller request Decode.get_card_response timeout options) with
+        | Ok response when response.card = 0u -> Error "card not found"
+        | Ok response -> Ok response
+        | Error err -> Error err

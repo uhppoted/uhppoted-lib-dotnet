@@ -207,3 +207,22 @@ type TestDecoder() =
         match Decode.get_cards_response packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)
+
+    [<Test>]
+    member this.TestDecodeGetCardResponse() =
+        let packet = TestResponses.get_card
+
+        let expected: GetCardResponse =
+            { controller = 405419896u
+              card = 10058400u
+              startdate = Nullable(DateOnly(2024, 1, 1))
+              enddate = Nullable(DateOnly(2024, 12, 31))
+              door1 = 1uy
+              door2 = 0uy
+              door3 = 17uy
+              door4 = 1uy
+              PIN = 999999u }
+
+        match Decode.get_card_response packet with
+        | Ok response -> Assert.That(response, Is.EqualTo(expected))
+        | Error err -> Assert.Fail(err)

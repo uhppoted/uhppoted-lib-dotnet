@@ -1,8 +1,9 @@
 Imports System.Console
 Imports System.Net
 
-Imports uhppoted
-Imports uhppoted.Uhppoted
+Imports UHPPOTE = uhppoted.Uhppoted
+Imports ControllerBuilder = uhppoted.ControllerBuilder
+Imports OptionsBuilder = uhppoted.OptionsBuilder
 
 Public Structure Command
     Public ReadOnly command As String
@@ -18,9 +19,7 @@ End Structure
 
 Module Commands
     Private Const TIMEOUT = 1000
-    Private Dim OPTIONS = New uhppoted.OptionsBuilder().
-                                       WithDebug(true).
-                                       build()
+    Private Dim OPTIONS = New OptionsBuilder().WithDebug(true).build()
 
     Public Dim commands As New List(Of Command) From {
            New Command("get-all-controllers", "Retrieves a list of controllers accessible on the local LAN", AddressOf GetControllers),
@@ -35,12 +34,13 @@ Module Commands
            New Command("set-door-passcodes", "Sets the supervisor passcodes for a controller door", AddressOf SetDoorPasscodes),
            New Command("open-door", "Unlocks a door controlled by a controller", AddressOf OpenDoor),
            New Command("get-status", "Retrieves the current status of the controller", AddressOf GetStatus),
-           New Command("get-cards", "Retrieves the number of cards stored on the controller", AddressOf GetCards)
+           New Command("get-cards", "Retrieves the number of cards stored on the controller", AddressOf GetCards),
+           New Command("get-card", "Retrieves a card record from the controller", AddressOf GetCard)
        }
 
     Sub GetControllers(args As String())
         Try
-            Dim result = get_all_controllers(TIMEOUT, OPTIONS)
+            Dim result = UHPPOTE.get_all_controllers(TIMEOUT, OPTIONS)
 
             If (result.IsOk)
                 Dim controllers = result.ResultValue
@@ -71,7 +71,7 @@ Module Commands
                                  With(IPEndPoint.Parse("192.168.1.100:60000")).
                                  With("udp").build()
 
-            Dim result = get_controller(controller, TIMEOUT, OPTIONS)
+            Dim result = UHPPOTE.get_controller(controller, TIMEOUT, OPTIONS)
 
             If (result.IsOk)
                 Dim response = result.ResultValue
@@ -103,7 +103,7 @@ Module Commands
             Dim address = IPAddress.Parse("192.168.1.100")
             Dim netmask = IPAddress.Parse("255.255.255.0")
             Dim gateway = IPAddress.Parse("192.168.1.1")
-            Dim result = set_IPv4(controller, address, netmask, gateway, TIMEOUT, OPTIONS)
+            Dim result = UHPPOTE.set_IPv4(controller, address, netmask, gateway, TIMEOUT, OPTIONS)
 
             If (result.IsOk)
                 WriteLine("set-IPv4")
@@ -123,7 +123,7 @@ Module Commands
                                  With(IPEndPoint.Parse("192.168.1.100:60000")).
                                  With("udp").build()
 
-            Dim result = get_listener(controller, TIMEOUT, OPTIONS)
+            Dim result = UHPPOTE.get_listener(controller, TIMEOUT, OPTIONS)
 
             If (result.IsOk)
                 Dim response = result.ResultValue
@@ -149,7 +149,7 @@ Module Commands
 
             Dim endpoint = IPEndPoint.Parse("192.168.1.100:60001")
             Dim interval = 30
-            Dim result = set_listener(controller, endpoint, interval, TIMEOUT, OPTIONS)
+            Dim result = UHPPOTE.set_listener(controller, endpoint, interval, TIMEOUT, OPTIONS)
 
             If (result.IsOk)
                 Dim response = result.ResultValue
@@ -172,7 +172,7 @@ Module Commands
                                  With(IPEndPoint.Parse("192.168.1.100:60000")).
                                  With("udp").build()
 
-            Dim result = get_time(controller, TIMEOUT, OPTIONS)
+            Dim result = UHPPOTE.get_time(controller, TIMEOUT, OPTIONS)
 
             If (result.IsOk)
                 Dim response = result.ResultValue
@@ -195,8 +195,7 @@ Module Commands
                                  With(IPEndPoint.Parse("192.168.1.100:60000")).
                                  With("udp").build()
             Dim now = DateTime.Now
-
-            Dim result = set_time(controller, now, TIMEOUT, OPTIONS)
+            Dim result = UHPPOTE.set_time(controller, now, TIMEOUT, OPTIONS)
 
             If (result.IsOk)
                 Dim response = result.ResultValue
@@ -219,7 +218,7 @@ Module Commands
                                  With(IPEndPoint.Parse("192.168.1.100:60000")).
                                  With("udp").build()
             Dim door = 4
-            Dim result = get_door(controller, door, TIMEOUT, OPTIONS)
+            Dim result = UHPPOTE.get_door(controller, door, TIMEOUT, OPTIONS)
 
             If (result.IsOk)
                 Dim response = result.ResultValue
@@ -246,7 +245,7 @@ Module Commands
             Dim door = 4
             Dim mode = 2
             Dim delay = 7
-            Dim result = set_door(controller, door, mode, delay, TIMEOUT, OPTIONS)
+            Dim result = UHPPOTE.set_door(controller, door, mode, delay, TIMEOUT, OPTIONS)
 
             If (result.IsOk)
                 Dim response = result.ResultValue
@@ -272,7 +271,7 @@ Module Commands
                                  With("udp").build()
             Dim door = 4
             Dim passcodes As UInteger() = {12345, 54321, 0, 999999}
-            Dim result = set_door_passcodes(controller, door, passcodes(0), passcodes(1), passcodes(2), passcodes(3), TIMEOUT, OPTIONS)
+            Dim result = UHPPOTE.set_door_passcodes(controller, door, passcodes(0), passcodes(1), passcodes(2), passcodes(3), TIMEOUT, OPTIONS)
 
             If (result.IsOk)
                 Dim response = result.ResultValue
@@ -295,7 +294,7 @@ Module Commands
                                  With(IPEndPoint.Parse("192.168.1.100:60000")).
                                  With("udp").build()
             Dim door = 4
-            Dim result = open_door(controller, door, TIMEOUT, OPTIONS)
+            Dim result = UHPPOTE.open_door(controller, door, TIMEOUT, OPTIONS)
 
             If (result.IsOk)
                 Dim response = result.ResultValue
@@ -318,7 +317,7 @@ Module Commands
                                  With(IPEndPoint.Parse("192.168.1.100:60000")).
                                  With("udp").build()
 
-            Dim result = get_status(controller, TIMEOUT, OPTIONS)
+            Dim result = UHPPOTE.get_status(controller, TIMEOUT, OPTIONS)
 
             If (result.IsOk)
                 Dim response = result.ResultValue
@@ -363,13 +362,43 @@ Module Commands
                                  With(IPEndPoint.Parse("192.168.1.100:60000")).
                                  With("udp").build()
 
-            Dim result = get_cards(controller, TIMEOUT, OPTIONS)
+            Dim result = UHPPOTE.get_cards(controller, TIMEOUT, OPTIONS)
 
             If (result.IsOk)
                 Dim response = result.ResultValue
                 WriteLine("get-cards")
                 WriteLine("  controller {0}", response.controller)
                 WriteLine("       cards {0}", response.cards)
+                WriteLine()
+            Else If (result.IsError)
+                Throw New Exception(result.ErrorValue)
+            End If
+
+        Catch Err As Exception
+            WriteLine("Exception  {0}", err.Message)
+        End Try
+    End Sub
+
+    Sub GetCard(args As String())
+        Try
+            Dim controller = New ControllerBuilder(405419896).
+                                 With(IPEndPoint.Parse("192.168.1.100:60000")).
+                                 With("udp").build()
+            Dim card = 10058400
+            Dim result = UHPPOTE.GetCard(controller, card, TIMEOUT, OPTIONS)
+
+            If (result.IsOk)
+                Dim response = result.ResultValue
+                WriteLine("get-card")
+                WriteLine("  controller {0}", response.controller)
+                WriteLine("        card {0}", response.card)
+                WriteLine("  start date {0}", (YYYYMMDD(response.startdate)))
+                WriteLine("    end date {0}", (YYYYMMDD(response.enddate)))
+                WriteLine("      door 1 {0}", response.door1)
+                WriteLine("      door 2 {0}", response.door2)
+                WriteLine("      door 3 {0}", response.door3)
+                WriteLine("      door 4 {0}", response.door4)
+                WriteLine("         PIN {0}", response.PIN)
                 WriteLine()
             Else If (result.IsError)
                 Throw New Exception(result.ErrorValue)

@@ -11,14 +11,17 @@ build: format
 run: build
 	$(CLI)
 
+debug:
+	$(CLI) set-IPv4  --controller 303986753 --address 192.168.1.222 --netmask 255.254.253.251 --gateway 192.168.0.0
+
 get-controllers: build
 	$(CLI) get-all-controllers
 
 get-controller: build
-	$(CLI) get-controller
+	$(CLI) get-controller --controller 405419896
 
 set-ip: build
-	$(CLI) set-IPv4
+	$(CLI) set-IPv4  --controller 405419896 --address 192.168.1.100 --netmask 255.255.255.0 --gateway 192.168.1.1
 
 get-listener: build
 	$(CLI) get-listener --controller 405419896
@@ -50,4 +53,6 @@ get-status:
 get-cards: build
 	$(CLI) get-cards
 
+get-card: build
+	$(CLI) get-card
 

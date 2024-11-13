@@ -178,3 +178,14 @@ module Encode =
         Array.blit (packU32 controller) 0 packet 4 4
 
         packet
+
+    let get_card_request (controller: uint32) (card: uint32) =
+        let packet: byte array = Array.zeroCreate 64
+
+        Array.set packet 0 (byte messages.SOM)
+        Array.set packet 1 (byte messages.GET_CARD)
+
+        Array.blit (packU32 controller) 0 packet 4 4
+        Array.blit (packU32 card) 0 packet 8 4
+
+        packet
