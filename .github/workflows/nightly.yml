@@ -36,3 +36,4 @@ jobs:
         ls -la .
         ls -la ./uhppoted
         ls -la ./uhppoted/uhppoted
+        ls -la ./uhppoted/uhppoted/dist
