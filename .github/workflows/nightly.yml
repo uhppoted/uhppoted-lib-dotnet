@@ -34,3 +34,5 @@ jobs:
         make release
         echo "PWD: $(pwd)"
         ls -la .
+        ls -la ./uhppoted
+        ls -la ./uhppoted/uhppoted
