@@ -29,9 +29,8 @@ jobs:
         make build-all
         make integration-tests
 
-    - name: Package artificats
+    - name: Package artifacts
       run: |
         make release
-        ls -la ./uhppoted
-        ls -la ./uhppoted/uhppoted
-        ls -la ./uhppoted/uhppoted/dist
+        echo "PWD: $(pwd)"
+        ls -la .
