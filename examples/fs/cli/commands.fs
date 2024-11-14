@@ -17,11 +17,14 @@ let TIMEOUT = 1000
 let MODE = 2uy
 let DELAY = 7uy
 let CARD = 10058400u
+let CARD_INDEX = 1u
 
 let OPTIONS: Options =
     { bind = IPEndPoint(IPAddress.Any, 0)
       broadcast = IPEndPoint(IPAddress.Broadcast, 60000)
       listen = IPEndPoint(IPAddress.Any, 60001)
+      destination = None
+      protocol = None
       debug = true }
 
 let YYYYMMDD (date: Nullable<DateOnly>) =
@@ -321,6 +324,33 @@ let get_card args =
         Ok()
     | Error err -> Error(err)
 
+let get_card_at_index args =
+    let controller = argparse args "--controller" CONTROLLER
+    let index = CARD_INDEX
+    let timeout = TIMEOUT
+
+    let options =
+        { OPTIONS with
+            destination = ADDRESS
+            protocol = PROTOCOL }
+
+    match Uhppoted.GetCardAtIndex(controller, index, timeout, options) with
+    | Ok v when v.HasValue ->
+        let card = v.Value
+        printfn "get-card-at-index"
+        printfn "        card %u" card.card
+        printfn "  start date %s" (YYYYMMDD(card.startdate))
+        printfn "    end date %s" (YYYYMMDD(card.enddate))
+        printfn "      door 1 %u" card.door1
+        printfn "      door 2 %u" card.door2
+        printfn "      door 3 %u" card.door3
+        printfn "      door 4 %u" card.door4
+        printfn "         PIN %u" card.PIN
+        printfn ""
+        Ok()
+    | Ok _ -> Error "card not found"
+    | Error err -> Error(err)
+
 let commands =
     [ { command = "get-all-controllers"
         description = "Retrieves a list of controllers accessible on the local LAN"
@@ -376,4 +406,8 @@ let commands =
 
       { command = "get-card"
         description = "Retrieves a card record from the controller"
-        f = get_card } ]
+        f = get_card }
+
+      { command = "get-card-at-index"
+        description = "Retrieves the card record stored at the index from the controller"
+        f = get_card_at_index } ]

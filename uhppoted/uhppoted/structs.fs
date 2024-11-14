@@ -4,6 +4,18 @@ open System
 open System.Net
 open System.Net.NetworkInformation
 
+[<Struct>]
+type Card =
+    { card: uint32
+      startdate: DateOnly Nullable
+      enddate: DateOnly Nullable
+      door1: uint8
+      door2: uint8
+      door3: uint8
+      door4: uint8
+      PIN: uint32 }
+
+
 type IResponse =
     abstract member controller: uint32
 
@@ -117,6 +129,20 @@ type GetCardsResponse =
         member this.controller = this.controller
 
 type GetCardResponse =
+    { controller: uint32
+      card: uint32
+      startdate: DateOnly Nullable
+      enddate: DateOnly Nullable
+      door1: uint8
+      door2: uint8
+      door3: uint8
+      door4: uint8
+      PIN: uint32 }
+
+    interface IResponse with
+        member this.controller = this.controller
+
+type GetCardAtIndexResponse =
     { controller: uint32
       card: uint32
       startdate: DateOnly Nullable

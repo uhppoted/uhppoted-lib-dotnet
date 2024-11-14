@@ -240,3 +240,20 @@ module Decode =
                   door3 = unpackU8 (packet[22..])
                   door4 = unpackU8 (packet[23..])
                   PIN = unpackU32 (packet[24..]) }
+
+    let get_card_at_index_response (packet: byte array) : Result<GetCardAtIndexResponse, string> =
+        if packet[0] <> messages.SOM then
+            Error("invalid controller response")
+        else if packet[1] <> messages.GET_CARD_AT_INDEX then
+            Error("invalid get-card-at-index response")
+        else
+            Ok
+                { controller = unpackU32 packet[4..]
+                  card = unpackU32 packet[8..]
+                  startdate = unpack_date (packet[12..])
+                  enddate = unpack_date (packet[16..])
+                  door1 = unpackU8 (packet[20..])
+                  door2 = unpackU8 (packet[21..])
+                  door3 = unpackU8 (packet[22..])
+                  door4 = unpackU8 (packet[23..])
+                  PIN = unpackU32 (packet[24..]) }

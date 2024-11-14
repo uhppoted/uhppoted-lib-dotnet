@@ -18,8 +18,16 @@ Public Structure Command
 End Structure
 
 Module Commands
+    Private Const CONTROLLER_ID As UInt32 = 405419896
+    Private Const CARD As UInt32 = 10058400
+    Private Const CARD_INDEX As UInt32 = 1
     Private Const TIMEOUT = 1000
-    Private Dim OPTIONS = New OptionsBuilder().WithDebug(true).build()
+
+    Private Dim OPTIONS = New OptionsBuilder().
+                                WithDestination(IPEndPoint.Parse("192.168.1.100:60000")).
+                                WithProtocol("udp").
+                                WithDebug(true).
+                                build()
 
     Public Dim commands As New List(Of Command) From {
            New Command("get-all-controllers", "Retrieves a list of controllers accessible on the local LAN", AddressOf GetControllers),
@@ -35,7 +43,8 @@ Module Commands
            New Command("open-door", "Unlocks a door controlled by a controller", AddressOf OpenDoor),
            New Command("get-status", "Retrieves the current status of the controller", AddressOf GetStatus),
            New Command("get-cards", "Retrieves the number of cards stored on the controller", AddressOf GetCards),
-           New Command("get-card", "Retrieves a card record from the controller", AddressOf GetCard)
+           New Command("get-card", "Retrieves a card record from the controller", AddressOf GetCard),
+           New Command("get-card-at-index", "Retrieves the card record stored at the index from the controller", AddressOf GetCardAtIndex)
        }
 
     Sub GetControllers(args As String())
@@ -407,6 +416,31 @@ Module Commands
         Catch Err As Exception
             WriteLine("Exception  {0}", err.Message)
         End Try
+    End Sub
+
+    Sub GetCardAtIndex(args As String())
+        Dim controller = CONTROLLER_ID
+        Dim index = CARD_INDEX
+        Dim result = UHPPOTE.GetCardAtIndex(controller, index, TIMEOUT, OPTIONS)
+
+        If (result.IsOk And result.ResultValue.HasValue)
+            Dim card = result.ResultValue.Value
+
+            WriteLine("get-card-at-index")
+            WriteLine("        card {0}", card.card)
+            WriteLine("  start date {0}", (YYYYMMDD(card.startdate)))
+            WriteLine("    end date {0}", (YYYYMMDD(card.enddate)))
+            WriteLine("      door 1 {0}", card.door1)
+            WriteLine("      door 2 {0}", card.door2)
+            WriteLine("      door 3 {0}", card.door3)
+            WriteLine("      door 4 {0}", card.door4)
+            WriteLine("         PIN {0}", card.PIN)
+            WriteLine()
+        Else If (result.IsOk)
+            Throw New Exception("card not found")
+        Else If (result.IsError)
+            Throw New Exception(result.ErrorValue)
+        End If
     End Sub
 
     Private Function YYYYMMDD(v As Nullable(Of DateOnly)) As String

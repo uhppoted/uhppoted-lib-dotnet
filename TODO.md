@@ -12,7 +12,7 @@
 
 - [ ] github _nightly_ build
       - [x] Fix version
-      - [ ] Fix missing README
+      - [x] Fix missing README
       - [ ] Upload artifacts
       - https://devblogs.microsoft.com/dotnet/dotnet-loves-github-actions
       - https://www.dotnetcurry.com/dotnetcore/github-actions-for-dotnet-developers
@@ -40,6 +40,7 @@
       - [ ] --delay
       - [ ] --passcode
       - [ ] --card
+      - [ ] --card-index
 
 - [ ] API
       - [x] get-all-controllers
@@ -56,6 +57,7 @@
       - [x] get-status
       - [x] get-cards
       - [x] get-card
+      - [x] get-card-at-index
       - [ ] put-card
             - [ ] API function
             - [ ] CLI

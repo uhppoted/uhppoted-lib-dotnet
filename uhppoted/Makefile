@@ -20,9 +20,9 @@ release: build test integration-tests
 	cd uhppoted && make release
 
 debug: build
-	dotnet run --project ../examples/fs/cli --framework net7.0 get-card
-	dotnet run --project ../examples/cs/cli --framework net7.0 get-card
-	dotnet run --project ../examples/vb/cli --framework net7.0 get-card
+	dotnet run --project ../examples/fs/cli --framework net7.0 get-card-at-index
+	dotnet run --project ../examples/cs/cli --framework net7.0 get-card-at-index
+	dotnet run --project ../examples/vb/cli --framework net7.0 get-card-at-index
 
 get-controllers: build
 	$(CLI) get-all-controllers
@@ -65,6 +65,13 @@ get-cards: build
 
 get-card: build
 	$(CLI) get-card
+
+get-card-at-index: build
+	$(CLI) get-card-at-index
+
+
+
+
 
 
 

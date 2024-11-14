@@ -32,7 +32,7 @@ module messages =
     let GET_CARD = 0x5auy
 
     [<Literal>]
-    let GET_CARD_BY_INDEX = 0x5cuy
+    let GET_CARD_AT_INDEX = 0x5cuy
 
     [<Literal>]
     let SET_DOOR = 0x80uy

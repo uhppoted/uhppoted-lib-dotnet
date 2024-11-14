@@ -8,6 +8,8 @@ module Uhppoted =
         { bind = IPEndPoint(IPAddress.Any, 0)
           broadcast = IPEndPoint(IPAddress.Broadcast, 60000)
           listen = IPEndPoint(IPAddress.Any, 60001)
+          destination = None
+          protocol = None
           debug = false }
 
     let private exec
@@ -34,6 +36,27 @@ module Uhppoted =
             | Ok _ -> Error "invalid response"
             | Error err -> Error err
         | Error err -> Error err
+
+    let private exec2
+        request
+        (decode: byte[] -> Result<'b, string>)
+        timeout
+        options
+        : Result<'b, string> when 'b :> IResponse =
+        let bind = options.bind
+        let broadcast = options.broadcast
+        let debug = options.debug
+
+        let result =
+            match options.destination, options.protocol with
+            | None, _ -> UDP.broadcast_to (request, bind, broadcast, timeout, debug)
+            | Some(addr), Some("tcp") -> TCP.send_to (request, bind, addr, timeout, debug)
+            | Some(addr), _ -> UDP.send_to (request, bind, addr, timeout, debug)
+
+        match result with
+        | Ok packet -> decode packet
+        | Error err -> Error err
+
 
     /// <summary>
     /// Retrieves a list of controllers on the local LAN accessible via a UDP broadcast.
@@ -430,4 +453,77 @@ module Uhppoted =
         match (exec controller request Decode.get_card_response timeout options) with
         | Ok response when response.card = 0u -> Error "card not found"
         | Ok response -> Ok response
+        | Error err -> Error err
+
+
+    /// <summary>
+    /// Retrieves the card record at the supplied index.
+    /// </summary>
+    /// <param name="controller">Controller ID.</param>
+    /// <param name="card">Card number to retrieve.</param>
+    /// <param name="timeout">Operation timeout (ms).</param>
+    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <returns>
+    /// Card record at the index (or null if not found or deleted) or an error if the request failed.
+    /// </returns>
+    /// <example>
+    /// <code language="fsharp">
+    /// let controller = 405419896u
+    /// let index = 29u
+    /// let timeout = 5000
+    /// let options = { debug = true }
+    /// let result = GetCardAtIndex controller index timeout options
+    /// match result with
+    /// | Ok response -> printfn "get-card-at-index: ok %A" response
+    /// | Error e -> printfn "get-card-at-index: error %A" e
+    /// </code>
+    /// <code language="csharp">
+    /// var controller = 405419896;
+    /// var index = 29
+    /// var timeout = 5000
+    /// var options = new OptionsBuilder().build();
+    /// var result = GetCardAtIndex(controller, index, timeout, options);
+    /// if (result.IsOk)
+    /// {
+    ///     Console.WriteLine("get-card-at-index: {0}",result.Value);
+    /// }
+    /// else
+    /// {
+    ///     Console.WriteLine("get-card-at-index: error {0}",result.Error);
+    /// }
+    /// </code>
+    /// <code language="vbnet">
+    /// Dim controller = 405419896
+    /// Dim index = 29
+    /// Dim timeout = 5000
+    /// Dim options As New OptionsBuilder().build()
+    /// Dim result = GetCardAtIndex(controller, index, timeout, options)
+    /// If result.IsOk Then
+    ///     Console.WriteLine("get-card-at-index: {0}",result.Value)
+    /// Else
+    ///     Console.WriteLine("get-card-at_index: error {0}",result.Error);
+    /// End If
+    /// </code>
+    /// </example>
+    let GetCardAtIndex (controller: uint32, index: uint32, timeout: int, options: Options) =
+        let request = Encode.get_card_at_index_request controller index
+
+        match exec2 request Decode.get_card_at_index_response timeout options with
+        | Ok response when response.controller = controller && response.card = 0u -> // not found
+            Ok(Nullable())
+        | Ok response when response.controller = controller && response.card = 0xffffffffu -> // deleted
+            Ok(Nullable())
+        | Ok response when response.controller = controller ->
+            Ok(
+                Nullable
+                    { card = response.card
+                      startdate = response.startdate
+                      enddate = response.enddate
+                      door1 = response.door1
+                      door2 = response.door2
+                      door3 = response.door3
+                      door4 = response.door4
+                      PIN = response.PIN }
+            )
+        | Ok _ -> Error "invalid response"
         | Error err -> Error err

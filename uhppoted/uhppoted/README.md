@@ -54,6 +54,9 @@ Retrieves the number of card records stored on a controller.
 ### `get-card`
 Retrieves a card record by card number.
 
+### `get-card-at-index`
+Retrieves the card record (if any) at the index in the cards list stored on the controller.
+
 ## Notes
 
 ### C# Interop

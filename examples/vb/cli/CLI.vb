@@ -12,7 +12,11 @@ Module Program
 
             For Each command In Commands.commands
                 If command.command = cmd Then
-                    command.f(slice)
+                    Try
+                        command.f(slice)
+                    Catch Err As Exception
+                        WriteLine("  ** ERROR  {0}", err.Message)
+                    End Try
                     Environment.Exit(0)
                 End If
             Next

@@ -21,8 +21,14 @@ class Commands
 {
     const uint CONTROLLER = 405419896u;
     const uint CARD = 10058400u;
+    const uint CARD_INDEX = 1u;
     const int TIMEOUT = 1000;
+    const string PROTOCOL = "udp";
+    static readonly IPEndPoint ADDRESS = IPEndPoint.Parse("192.168.1.100:60000");
+
     static readonly uhppoted.Options OPTIONS = new uhppoted.OptionsBuilder()
+                                                           .WithDestination(ADDRESS)
+                                                           .WithProtocol(PROTOCOL)
                                                            .WithDebug(true)
                                                            .build();
 
@@ -41,7 +47,8 @@ class Commands
           new Command ( "open-door","Unlocks a door controlled by a controller",OpenDoor),
           new Command ( "get-status","Retrieves the current status of the controller",GetStatus),
           new Command ( "get-cards","Retrieves the number of cards stored on the controller",GetCards),
-          new Command ( "get-card","Retrieves a card record from the controller",GetCard)
+          new Command ( "get-card","Retrieves a card record from the controller",GetCard),
+          new Command ( "get-card-at-index","Retrieves the card record stored at the index from the controller",GetCardAtIndex),
     };
 
     public static void GetControllers(string[] args)
@@ -527,6 +534,45 @@ class Commands
         }
     }
 
+    public static void GetCardAtIndex(string[] args)
+    {
+        try
+        {
+            var controller = CONTROLLER;
+            var index = CARD_INDEX;
+            var timeout = TIMEOUT;
+            var options = OPTIONS;
+            var result = Uhppoted.GetCardAtIndex(controller, index, timeout, options);
+
+            if (result.IsOk && result.ResultValue.HasValue)
+            {
+                var card = result.ResultValue.Value;
+
+                WriteLine("get-card-at-index");
+                WriteLine("        card {0}", card.card);
+                WriteLine("  start date {0}", (YYYYMMDD(card.startdate)));
+                WriteLine("    end date {0}", (YYYYMMDD(card.enddate)));
+                WriteLine("      door 1 {0}", card.door1);
+                WriteLine("      door 2 {0}", card.door2);
+                WriteLine("      door 3 {0}", card.door3);
+                WriteLine("      door 4 {0}", card.door4);
+                WriteLine("         PIN {0}", card.PIN);
+                WriteLine();
+            }
+            else if (result.IsOk)
+            {
+                throw new Exception("card not found");
+            }
+            else if (result.IsError)
+            {
+                throw new Exception(result.ErrorValue);
+            }
+        }
+        catch (Exception err)
+        {
+            WriteLine("** ERROR  {0}", err.Message);
+        }
+    }
 
     private static string YYYYMMDD(DateOnly? date)
     {

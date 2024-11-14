@@ -19,11 +19,16 @@ type TestClass() =
     let MODE = 2uy
     let DELAY = 17uy
     let CARD = 10058400u
+    let CARD_INDEX = 135u
+    let CARD_INDEX_NOT_FOUND = 136u
+    let CARD_INDEX_DELETED = 137u
 
     let OPTIONS: Options =
         { bind = IPEndPoint(IPAddress.Any, 0)
           broadcast = IPEndPoint(IPAddress.Broadcast, 59999)
           listen = IPEndPoint(IPAddress.Any, 60001)
+          destination = None
+          protocol = None
           debug = false }
 
     let controllers =
@@ -43,6 +48,16 @@ type TestClass() =
             address = Some(ENDPOINT)
             protocol = Some("tcp") } ]
 
+    let options =
+        [ { OPTIONS with destination = None }
+          { OPTIONS with
+              destination = Some(ENDPOINT) }
+          { OPTIONS with
+              destination = Some(ENDPOINT)
+              protocol = Some("udp") }
+          { OPTIONS with
+              destination = Some(ENDPOINT)
+              protocol = Some("tcp") } ]
 
     [<OneTimeSetUp>]
     member this.Initialise() =
@@ -301,4 +316,40 @@ type TestClass() =
             match Uhppoted.GetCard(controller, 10058399u, TIMEOUT, OPTIONS) with
             | Ok _ -> Assert.Fail("expected 'card not found' error")
             | Error "card not found" -> Assert.Pass()
+            | Error err -> Assert.Fail(err))
+
+    [<Test>]
+    member this.TestGetCardAtIndex() =
+        let expected: Card =
+            { card = 10058400u
+              startdate = Nullable(DateOnly(2024, 1, 1))
+              enddate = Nullable(DateOnly(2024, 12, 31))
+              door1 = 1uy
+              door2 = 0uy
+              door3 = 17uy
+              door4 = 1uy
+              PIN = 7531u }
+
+        options
+        |> List.iter (fun opts ->
+            match Uhppoted.GetCardAtIndex(CONTROLLER, CARD_INDEX, TIMEOUT, opts) with
+            | Ok response -> Assert.That(response.Value, Is.EqualTo(expected))
+            | Error err -> Assert.Fail(err))
+
+    [<Test>]
+    member this.TestGetCardAtIndexNotFound() =
+        options
+        |> List.iter (fun opts ->
+            match Uhppoted.GetCardAtIndex(CONTROLLER, CARD_INDEX_NOT_FOUND, TIMEOUT, opts) with
+            | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
+            | Ok _ -> Assert.Pass()
+            | Error err -> Assert.Fail(err))
+
+    [<Test>]
+    member this.TestGetCardAtIndexDeleted() =
+        options
+        |> List.iter (fun opts ->
+            match Uhppoted.GetCardAtIndex(CONTROLLER, CARD_INDEX_DELETED, TIMEOUT, opts) with
+            | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
+            | Ok _ -> Assert.Pass()
             | Error err -> Assert.Fail(err))
