@@ -40,5 +40,5 @@ jobs:
 
     - name: Upload artifacts
       uses: actions/upload-artifact@v4
-        path: uhppoted/uhppoted/dist/uhppoted.0.8.9.nupkg
+        path: uhppoted/uhppoted/dist
         name: uhppoted.0.8.9.nupkg
