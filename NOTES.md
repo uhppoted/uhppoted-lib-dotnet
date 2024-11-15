@@ -3,6 +3,11 @@
 1. https://stackoverflow.com/questions/10110174/best-approach-for-designing-f-libraries-for-use-from-both-f-and-c-sharp
 2. https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/component-design-guidelines
 3. https://learn.microsoft.com/en-us/dotnet/standard/design-guidelines/
+4. https://devblogs.microsoft.com/dotnet/dotnet-loves-github-actions
+5. https://www.dotnetcurry.com/dotnetcore/github-actions-for-dotnet-developers
+6. https://samlearnsazure.blog/2021/07/27/publishing-a-nuget-package-to-github-packages
+7. https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-nuget-registry
+8. https://www.meziantou.net/publishing-a-nuget-package-following-best-practices-using-github.htm
 
 ## C#
 

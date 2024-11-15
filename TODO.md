@@ -6,21 +6,16 @@
 - [x] decode
 - [x] bind to bind-addr
 - [x] integration tests
+- [x] verify controller ID in response
+- [x] README
 - [x] Add .NET 8 as a target framework on github
 - [ ] Add .NET 9 as a target framework
 - [ ] Remove .NET 9 from target frameworks
-- [x] verify controller ID in response
-- [x] README
 
 - [ ] github _nightly_ build
       - [x] Fix version
       - [x] Fix missing README
       - [ ] Upload artifacts
-      - https://devblogs.microsoft.com/dotnet/dotnet-loves-github-actions
-      - https://www.dotnetcurry.com/dotnetcore/github-actions-for-dotnet-developers
-      - https://samlearnsazure.blog/2021/07/27/publishing-a-nuget-package-to-github-packages
-      - https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-nuget-registry
-      - https://www.meziantou.net/publishing-a-nuget-package-following-best-practices-using-github.htm
 
 - [ ] function signature file
 - (?) Cross-platform builds
@@ -42,7 +37,11 @@
       - [ ] --delay
       - [ ] --passcode
       - [ ] --card
-      - [ ] --card-index
+      - [ ] --index
+      - [ ] --start-date
+      - [ ] --end-date
+      - [ ] --permissions
+      - [ ] --PIN
 
 - [ ] API
       - [x] find-controllers
