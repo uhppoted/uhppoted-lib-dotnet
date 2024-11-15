@@ -7,7 +7,7 @@
 - [x] bind to bind-addr
 - [x] integration tests
 - [x] Add .NET 8 as a target framework on github
-- [ ] Add .NET 9 as a target framework on github
+- [x] Add .NET 9 as a target framework on github
 - [x] verify controller ID in response
 - [x] README
 
