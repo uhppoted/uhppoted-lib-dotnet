@@ -37,3 +37,8 @@ jobs:
         ls -la ./uhppoted
         ls -la ./uhppoted/uhppoted
         ls -la ./uhppoted/uhppoted/dist
+
+    - name: Upload artifacts
+      uses: actions/upload-artifact@v4
+        path: uhppoted/uhppoted/dist/uhppoted.0.8.9.nupkg
+        name: uhppoted.0.8.9.nupkg
