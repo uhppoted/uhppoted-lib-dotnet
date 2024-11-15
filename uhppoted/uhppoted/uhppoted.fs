@@ -69,54 +69,10 @@ module Uhppoted =
     /// <param name="timeout">The timeout duration in milliseconds to wait for all replies.</param>
     /// <param name="options">Bind, broadcast and listen address options.</param>
     /// <returns>A result with an array of GetControllerResponse records or error.</returns>
-    /// <example>
-    /// F#:
-    /// let timeout = 5000
-    /// let options = { broadcast = IPAddress.Parse("255.255.255.255"); debug = true }
-    /// match get_all_controllers(timeout, options) with
-    /// | Ok controllers -> controllers |> Array.iter (fun controller ->
-    ///                                                    printfn "controller ID: %u, version: %s" controller.controller controller.version
-    /// | Error err -> printfn "%A" err
-    /// )
-    /// </example>
-    /// <example>
-    /// C#:
-    /// var timeout = 5000;
-    /// var options = new Options { broadcast = IPAddress.Parse("255.255.255.255"), debug = true };
-    /// var result = get_all_controllers(timeout, options);
-    /// if (result.IsOk)
-    ///     {
-    ///       var controllers = result.ResultValue;
-    ///
-    ///       foreach (var controller in controllers)
-    ///       {
-    ///         Console.WriteLine($"Controller ID: {controller.controller}, Version: {controller.version}");
-    ///       }
-    ///     }
-    ///     else if (result.IsError)
-    ///     {
-    ///         throw new Exception(result.ErrorValue);
-    ///     }
-    /// </example>
-    /// <example>
-    /// VB.NET:
-    /// Dim timeout As Integer = 5000
-    /// Dim options As New Options With { .broadcast = IPAddress.Parse("255.255.255.255"), .debug = True }
-    /// Dim result = get_all_controllers(TIMEOUT, OPTIONS)
-    ///
-    /// If (result.IsOk)
-    ///    Dim controllers = result.ResultValue
-    ///    For Each controller In controllers
-    ///        Console.WriteLine($"Controller ID: {controller.controller}, Version: {controller.version}")
-    ///    Next
-    /// Else If (result.IsError)
-    ///    Throw New Exception(result.ErrorValue)
-    /// End If
-    /// </example>
     /// <remarks>
     /// Invalid individual responses are silently discarded.
     /// </remarks>
-    let get_all_controllers (timeout: int, options: Options) =
+    let FindControllers (timeout: int, options: Options) =
         let bind = options.bind
         let broadcast = options.broadcast
         let debug = options.debug

@@ -34,7 +34,7 @@ class Commands
 
     public static List<Command> commands = new List<Command>
     {
-          new Command ( "get-all-controllers","Retrieves a list of controllers accessible on the local LAN", GetControllers),
+          new Command ( "find-controllers","Retrieves a list of controllers accessible on the local LAN", FindControllers),
           new Command ( "get-controller","Retrieves the controller information for a specific controller", GetController),
           new Command ( "set-IPv4","Sets the controller IPv4 address, netmask and gateway", SetIPv4),
           new Command ( "get-listener","Retrieves the controller event listener address:port and auto-send interval", GetListener),
@@ -52,37 +52,30 @@ class Commands
           new Command ( "put-card","Adds or updates a card record on controller",PutCard),
     };
 
-    public static void GetControllers(string[] args)
+    public static void FindControllers(string[] args)
     {
-        try
+        var result = Uhppoted.FindControllers(TIMEOUT, OPTIONS);
+
+        if (result.IsOk)
         {
-            var result = Uhppoted.get_all_controllers(TIMEOUT, OPTIONS);
+            var controllers = result.ResultValue;
 
-            if (result.IsOk)
+            WriteLine("find-controllers: {0}", controllers.Length);
+            foreach (var controller in controllers)
             {
-                var controllers = result.ResultValue;
-
-                WriteLine("get-controllers: {0}", controllers.Length);
-                foreach (var controller in controllers)
-                {
-                    WriteLine("  controller {0}", controller.controller);
-                    WriteLine("    address  {0}", controller.address);
-                    WriteLine("    netmask  {0}", controller.netmask);
-                    WriteLine("    gateway  {0}", controller.gateway);
-                    WriteLine("    MAC      {0}", controller.MAC);
-                    WriteLine("    version  {0}", controller.version);
-                    WriteLine("    date     {0}", YYYYMMDD(controller.date));
-                    WriteLine();
-                }
-            }
-            else if (result.IsError)
-            {
-                throw new Exception(result.ErrorValue);
+                WriteLine("  controller {0}", controller.controller);
+                WriteLine("    address  {0}", controller.address);
+                WriteLine("    netmask  {0}", controller.netmask);
+                WriteLine("    gateway  {0}", controller.gateway);
+                WriteLine("    MAC      {0}", controller.MAC);
+                WriteLine("    version  {0}", controller.version);
+                WriteLine("    date     {0}", YYYYMMDD(controller.date));
+                WriteLine();
             }
         }
-        catch (Exception err)
+        else if (result.IsError)
         {
-            WriteLine("** ERROR  {0}", err.Message);
+            throw new Exception(result.ErrorValue);
         }
     }
 

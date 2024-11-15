@@ -73,7 +73,7 @@ type TestClass() =
     member this.TearDown() = ()
 
     [<Test>]
-    member this.TestGetAllController() =
+    member this.TestFindControllers() =
         let expected: GetControllerResponse array =
             [| { controller = 405419896u
                  address = IPAddress.Parse("192.168.1.100")
@@ -99,7 +99,7 @@ type TestClass() =
                  version = "v6.62"
                  date = Nullable(DateOnly.ParseExact("2020-01-01", "yyyy-MM-dd")) } |]
 
-        match Uhppoted.get_all_controllers (TIMEOUT, OPTIONS) with
+        match Uhppoted.FindControllers(TIMEOUT, OPTIONS) with
         | Ok controllers -> Assert.That(controllers, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)
 

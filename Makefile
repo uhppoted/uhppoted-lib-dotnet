@@ -15,8 +15,8 @@ integration-tests:
 release:
 	cd uhppoted && make release
 
-get-controllers:
-	$(CLI) get-all-controllers
+find-controllers:
+	$(CLI) find-controllers
 
 get-controller:
 	$(CLI) get-controller

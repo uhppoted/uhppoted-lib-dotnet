@@ -30,7 +30,7 @@ Module Commands
                                 build()
 
     Public Dim commands As New List(Of Command) From {
-           New Command("get-all-controllers", "Retrieves a list of controllers accessible on the local LAN", AddressOf GetControllers),
+           New Command("find-controllers", "Retrieves a list of controllers accessible on the local LAN", AddressOf FindControllers),
            New Command("get-controller", "Retrieves the controller information for a specific controller", AddressOf GetController),
            New Command("set-IPv4", "Sets the controller IPv4 address, netmask and gateway", AddressOf SetIPv4),
            New Command("get-listener", "Retrieves the controller event listener address:port and auto-send interval", AddressOf GetListener),
@@ -48,31 +48,26 @@ Module Commands
            New Command("put-card", "Adds or updates a card record on controller", AddressOf PutCard)
        }
 
-    Sub GetControllers(args As String())
-        Try
-            Dim result = UHPPOTE.get_all_controllers(TIMEOUT, OPTIONS)
+    Sub FindControllers(args As String())
+        Dim result = UHPPOTE.FindControllers(TIMEOUT, OPTIONS)
 
-            If (result.IsOk)
-                Dim controllers = result.ResultValue
+        If (result.IsOk)
+            Dim controllers = result.ResultValue
 
-                WriteLine("get-controllers: {0}", controllers.Length)
-                For Each controller In controllers
-                    WriteLine("  controller {0}", controller.controller)
-                    WriteLine("    address  {0}", controller.address)
-                    WriteLine("    netmask  {0}", controller.netmask)
-                    WriteLine("    gateway  {0}", controller.gateway)
-                    WriteLine("    MAC      {0}", controller.MAC)
-                    WriteLine("    version  {0}", controller.version)
-                    WriteLine("    date     {0}", YYYYMMDD(controller.date))
-                    WriteLine()
-                Next
-            Else If (result.IsError)
-                Throw New Exception(result.ErrorValue)
-            End If
-
-        Catch Err As Exception
-            WriteLine("Exception  {0}", err.Message)
-        End Try
+            WriteLine("get-controllers: {0}", controllers.Length)
+            For Each controller In controllers
+                WriteLine("  controller {0}", controller.controller)
+                WriteLine("    address  {0}", controller.address)
+                WriteLine("    netmask  {0}", controller.netmask)
+                WriteLine("    gateway  {0}", controller.gateway)
+                WriteLine("    MAC      {0}", controller.MAC)
+                WriteLine("    version  {0}", controller.version)
+                WriteLine("    date     {0}", YYYYMMDD(controller.date))
+                WriteLine()
+            Next
+        Else If (result.IsError)
+            Throw New Exception(result.ErrorValue)
+        End If
     End Sub
 
     Sub GetController(args As String())

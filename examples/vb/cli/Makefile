@@ -11,8 +11,8 @@ build: format
 run: build
 	$(CLI)
 
-get-controllers: build
-	$(CLI) get-all-controllers
+find-controllers: build
+	$(CLI) find-controllers
 
 get-controller: build
 	$(CLI) get-controller

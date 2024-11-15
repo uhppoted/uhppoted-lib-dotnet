@@ -7,6 +7,7 @@
 - [x] bind to bind-addr
 - [x] integration tests
 - [x] Add .NET 8 as a target framework on github
+- [ ] Add .NET 9 as a target framework on github
 - [x] verify controller ID in response
 - [x] README
 
@@ -43,7 +44,7 @@
       - [ ] --card-index
 
 - [ ] API
-      - [x] get-all-controllers
+      - [x] find-controllers
       - [x] get-controller
       - [x] set-IPv4
       - [x] get-listener

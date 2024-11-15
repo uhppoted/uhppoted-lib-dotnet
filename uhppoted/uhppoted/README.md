@@ -12,7 +12,7 @@ folder on the github [repository](https://github.com/uhppoted/uhppoted-lib-dotne
 
 ## API summary
 
-### [`get-all-controllers`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/get-all-controllers.md))
+### [`find-controllers`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/find-controllers.md))
 'Discovers' all controllers accessible via a UDP broadcast on the local LAN.
 
 ### `get-controller`
@@ -51,11 +51,14 @@ Retrieves a controller status record.
 ### `get-cards`
 Retrieves the number of card records stored on a controller.
 
-### `get-card`
-Retrieves a card record by card number.
+### [`get-card`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/get-card.md))
+Retrieves a card record from a controller by card number.
 
-### `get-card-at-index`
+### [`get-card-at-index`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/get-card-at-index.md))
 Retrieves the card record (if any) at the index in the cards list stored on the controller.
+
+### [`put-card`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/put-card.md))
+Adds or updates a card record stored on a controller.
 
 ## Notes
 

@@ -39,10 +39,10 @@ let YYYYMMDDHHmmss (datetime: Nullable<DateTime>) =
     else
         "---"
 
-let get_controllers args =
-    match Uhppoted.get_all_controllers (TIMEOUT, OPTIONS) with
+let find_controllers args =
+    match Uhppoted.FindControllers(TIMEOUT, OPTIONS) with
     | Ok controllers ->
-        printfn "get-all-controllers: %d" controllers.Length
+        printfn "find-controllers: %d" controllers.Length
 
         controllers
         |> Array.iter (fun v ->
@@ -382,9 +382,9 @@ let put_card args =
     | Error err -> Error(err)
 
 let commands =
-    [ { command = "get-all-controllers"
+    [ { command = "find-controllers"
         description = "Retrieves a list of controllers accessible on the local LAN"
-        f = get_controllers }
+        f = find_controllers }
 
       { command = "get-controller"
         description = "Retrieves the controller information for a specific controller"
