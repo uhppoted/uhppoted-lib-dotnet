@@ -6,7 +6,7 @@ Retrieves the card record (if any) at the index in the cards list stored on the 
 - **`controller`**: Controller ID.
 - **`index`**: Card index.
 - **`timeout`**: Operation timeout (ms).
-- **`options`**: Bind, broadcast, and listen addresses and (optionally) address and transport protocol.
+- **`options`**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 ### Returns
 Returns `Ok` with a Nullable `Card` if the request was processed or an error otherwise. 

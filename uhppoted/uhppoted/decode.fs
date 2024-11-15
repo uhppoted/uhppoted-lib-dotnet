@@ -257,3 +257,13 @@ module Decode =
                   door3 = unpackU8 (packet[22..])
                   door4 = unpackU8 (packet[23..])
                   PIN = unpackU32 (packet[24..]) }
+
+    let put_card_response (packet: byte array) : Result<PutCardResponse, string> =
+        if packet[0] <> messages.SOM then
+            Error("invalid controller response")
+        else if packet[1] <> messages.PUT_CARD then
+            Error("invalid put-card response")
+        else
+            Ok
+                { controller = unpackU32 packet[4..]
+                  ok = unpackBool (packet[8..]) }

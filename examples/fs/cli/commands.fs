@@ -327,6 +327,7 @@ let get_card args =
 let get_card_at_index args =
     let controller = argparse args "--controller" CONTROLLER
     let index = CARD_INDEX
+
     let timeout = TIMEOUT
 
     let options =
@@ -338,6 +339,7 @@ let get_card_at_index args =
     | Ok v when v.HasValue ->
         let card = v.Value
         printfn "get-card-at-index"
+        printfn "  controller %u" controller
         printfn "        card %u" card.card
         printfn "  start date %s" (YYYYMMDD(card.startdate))
         printfn "    end date %s" (YYYYMMDD(card.enddate))
@@ -349,6 +351,34 @@ let get_card_at_index args =
         printfn ""
         Ok()
     | Ok _ -> Error "card not found"
+    | Error err -> Error(err)
+
+let put_card args =
+    let controller = argparse args "--controller" CONTROLLER
+    let card = CARD
+    let startdate = DateOnly(2024, 1, 1)
+    let enddate = DateOnly(2024, 12, 31)
+    let door1 = 1uy
+    let door2 = 0uy
+    let door3 = 17uy
+    let door4 = 1uy
+    let PIN = 7531u
+
+    let timeout = TIMEOUT
+
+    let options =
+        { OPTIONS with
+            destination = ADDRESS
+            protocol = PROTOCOL }
+
+    match Uhppoted.PutCard(controller, card, startdate, enddate, door1, door2, door3, door4, PIN, timeout, options) with
+    | Ok ok ->
+        printfn "put-card"
+        printfn "  controller %u" controller
+        printfn "        card %u" card
+        printfn "          ok %b" ok
+        printfn ""
+        Ok()
     | Error err -> Error(err)
 
 let commands =
@@ -410,4 +440,8 @@ let commands =
 
       { command = "get-card-at-index"
         description = "Retrieves the card record stored at the index from the controller"
-        f = get_card_at_index } ]
+        f = get_card_at_index }
+
+      { command = "put-card"
+        description = "Adds or updates a card record on controller"
+        f = put_card } ]

@@ -38,6 +38,7 @@ module Uhppoted =
         | Error err -> Error err
 
     let private exec2
+        (controller: uint32)
         request
         (decode: byte[] -> Result<'b, string>)
         timeout
@@ -54,7 +55,11 @@ module Uhppoted =
             | Some(addr), _ -> UDP.send_to (request, bind, addr, timeout, debug)
 
         match result with
-        | Ok packet -> decode packet
+        | Ok packet ->
+            match decode packet with
+            | Ok response when response.controller = controller -> Ok response
+            | Ok _ -> Error "invalid response"
+            | Error err -> Error err
         | Error err -> Error err
 
 
@@ -508,12 +513,12 @@ module Uhppoted =
     let GetCardAtIndex (controller: uint32, index: uint32, timeout: int, options: Options) =
         let request = Encode.get_card_at_index_request controller index
 
-        match exec2 request Decode.get_card_at_index_response timeout options with
-        | Ok response when response.controller = controller && response.card = 0u -> // not found
+        match exec2 controller request Decode.get_card_at_index_response timeout options with
+        | Ok response when response.card = 0u -> // not found
             Ok(Nullable())
-        | Ok response when response.controller = controller && response.card = 0xffffffffu -> // deleted
+        | Ok response when response.card = 0xffffffffu -> // deleted
             Ok(Nullable())
-        | Ok response when response.controller = controller ->
+        | Ok response ->
             Ok(
                 Nullable
                     { card = response.card
@@ -525,5 +530,42 @@ module Uhppoted =
                       door4 = response.door4
                       PIN = response.PIN }
             )
-        | Ok _ -> Error "invalid response"
+        | Error err -> Error err
+
+    /// <summary>
+    /// Adds or updates a card record on a controller.
+    /// </summary>
+    /// <param name="controller">Controller ID.</param>
+    /// <param name="card">Card number to retrieve.</param>
+    /// <param name="startdate">Date from which card is valid.</param>
+    /// <param name="enddate">Date after which card is invalid.</param>
+    /// <param name="door1">Access permissions for door 1 (0: none, 1:all, [2..254]: time profile).</param>
+    /// <param name="door2">Access permissions for door 2 (0: none, 1:all, [2..254]: time profile).</param>
+    /// <param name="door3">Access permissions for door 3 (0: none, 1:all, [2..254]: time profile).</param>
+    /// <param name="door4">Access permissions for door 4 (0: none, 1:all, [2..254]: time profile).</param>
+    /// <param name="pin">Optional keypad PIN code [0..999999] (0 is none).</param>
+    /// <param name="timeout">Operation timeout (ms).</param>
+    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <returns>
+    /// Result with the boolean success/fail result or an Error if the request failed.
+    /// </returns>
+    let PutCard
+        (
+            controller: uint32,
+            card: uint32,
+            startdate: DateOnly,
+            enddate: DateOnly,
+            door1: uint8,
+            door2: uint8,
+            door3: uint8,
+            door4: uint8,
+            pin: uint32,
+            timeout: int,
+            options: Options
+        ) =
+        let request =
+            Encode.put_card_request controller card startdate enddate door1 door2 door3 door4 pin
+
+        match exec2 controller request Decode.put_card_response timeout options with
+        | Ok response -> Ok(response.ok)
         | Error err -> Error err

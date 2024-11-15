@@ -17,7 +17,10 @@ illustrate the use of the API can be found in the [examples](examples) folder.
 
 ## API summary
 
-### `get-all-controllers`
+### Usage
+
+
+### [`find-controllers`](documentation/API/find-controllers.md)
 'Discovers' all controllers accessible via a UDP broadcast on the local LAN.
 
 ### `get-controller`
@@ -62,6 +65,8 @@ Retrieves a card record by card number.
 ### [`get-card-at-index`](documentation/API/get-card-at-index.md)
 Retrieves the card record (if any) at the index in the cards list stored on the controller.
 
+### [`put-card`](documentation/API/put-card.md)
+Adds or updates a card record on a controller.
 
 ## Notes
 

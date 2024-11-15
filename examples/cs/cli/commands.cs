@@ -49,6 +49,7 @@ class Commands
           new Command ( "get-cards","Retrieves the number of cards stored on the controller",GetCards),
           new Command ( "get-card","Retrieves a card record from the controller",GetCard),
           new Command ( "get-card-at-index","Retrieves the card record stored at the index from the controller",GetCardAtIndex),
+          new Command ( "put-card","Adds or updates a card record on controller",PutCard),
     };
 
     public static void GetControllers(string[] args)
@@ -536,41 +537,67 @@ class Commands
 
     public static void GetCardAtIndex(string[] args)
     {
-        try
+        var controller = CONTROLLER;
+        var index = CARD_INDEX;
+        var timeout = TIMEOUT;
+        var options = OPTIONS;
+        var result = Uhppoted.GetCardAtIndex(controller, index, timeout, options);
+
+        if (result.IsOk && result.ResultValue.HasValue)
         {
-            var controller = CONTROLLER;
-            var index = CARD_INDEX;
-            var timeout = TIMEOUT;
-            var options = OPTIONS;
-            var result = Uhppoted.GetCardAtIndex(controller, index, timeout, options);
+            var card = result.ResultValue.Value;
 
-            if (result.IsOk && result.ResultValue.HasValue)
-            {
-                var card = result.ResultValue.Value;
-
-                WriteLine("get-card-at-index");
-                WriteLine("        card {0}", card.card);
-                WriteLine("  start date {0}", (YYYYMMDD(card.startdate)));
-                WriteLine("    end date {0}", (YYYYMMDD(card.enddate)));
-                WriteLine("      door 1 {0}", card.door1);
-                WriteLine("      door 2 {0}", card.door2);
-                WriteLine("      door 3 {0}", card.door3);
-                WriteLine("      door 4 {0}", card.door4);
-                WriteLine("         PIN {0}", card.PIN);
-                WriteLine();
-            }
-            else if (result.IsOk)
-            {
-                throw new Exception("card not found");
-            }
-            else if (result.IsError)
-            {
-                throw new Exception(result.ErrorValue);
-            }
+            WriteLine("get-card-at-index");
+            WriteLine("  controller {0}", controller);
+            WriteLine("        card {0}", card.card);
+            WriteLine("  start date {0}", (YYYYMMDD(card.startdate)));
+            WriteLine("    end date {0}", (YYYYMMDD(card.enddate)));
+            WriteLine("      door 1 {0}", card.door1);
+            WriteLine("      door 2 {0}", card.door2);
+            WriteLine("      door 3 {0}", card.door3);
+            WriteLine("      door 4 {0}", card.door4);
+            WriteLine("         PIN {0}", card.PIN);
+            WriteLine();
         }
-        catch (Exception err)
+        else if (result.IsOk)
         {
-            WriteLine("** ERROR  {0}", err.Message);
+            throw new Exception("card not found");
+        }
+        else if (result.IsError)
+        {
+            throw new Exception(result.ErrorValue);
+        }
+    }
+
+    public static void PutCard(string[] args)
+    {
+        var controller = CONTROLLER;
+        var card = CARD;
+        var startdate = new DateOnly(2024, 1, 1);
+        var enddate = new DateOnly(2024, 12, 31);
+        byte door1 = 1;
+        byte door2 = 0;
+        byte door3 = 17;
+        byte door4 = 1;
+        var PIN = 7531u;
+
+        var timeout = TIMEOUT;
+        var options = OPTIONS;
+        var result = Uhppoted.PutCard(controller, card, startdate, enddate, door1, door2, door3, door4, PIN, timeout, options);
+
+        if (result.IsOk)
+        {
+            var ok = result.ResultValue;
+
+            WriteLine("put-card");
+            WriteLine("  controller {0}", controller);
+            WriteLine("        card {0}", card);
+            WriteLine("          ok {0}", ok);
+            WriteLine();
+        }
+        else if (result.IsError)
+        {
+            throw new Exception(result.ErrorValue);
         }
     }
 

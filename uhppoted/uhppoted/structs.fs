@@ -155,3 +155,10 @@ type GetCardAtIndexResponse =
 
     interface IResponse with
         member this.controller = this.controller
+
+type PutCardResponse =
+    { controller: uint32
+      ok: bool }
+
+    interface IResponse with
+        member this.controller = this.controller

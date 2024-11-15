@@ -20,6 +20,12 @@ module Encode =
 
     let packIPv4 (v: IPAddress) = v.MapToIPv4().GetAddressBytes()
 
+    let packDate (v: DateOnly) =
+        let bcd = v.ToString("yyyyMMdd")
+        let bytes = Convert.FromHexString bcd
+
+        bytes
+
     let packDateTime (v: DateTime) =
         let bcd = v.ToString("yyyyMMddHHmmss")
         let bytes = Convert.FromHexString bcd
@@ -198,5 +204,33 @@ module Encode =
 
         Array.blit (packU32 controller) 0 packet 4 4
         Array.blit (packU32 index) 0 packet 8 4
+
+        packet
+
+    let put_card_request
+        (controller: uint32)
+        (card: uint32)
+        (startdate: DateOnly)
+        (enddate: DateOnly)
+        (door1: uint8)
+        (door2: uint8)
+        (door3: uint8)
+        (door4: uint8)
+        (pin: uint32)
+        =
+        let packet: byte array = Array.zeroCreate 64
+
+        Array.set packet 0 (byte messages.SOM)
+        Array.set packet 1 (byte messages.PUT_CARD)
+
+        Array.blit (packU32 controller) 0 packet 4 4
+        Array.blit (packU32 card) 0 packet 8 4
+        Array.blit (packDate startdate) 0 packet 12 4
+        Array.blit (packDate enddate) 0 packet 16 4
+        Array.blit (packU8 door1) 0 packet 20 1
+        Array.blit (packU8 door2) 0 packet 21 1
+        Array.blit (packU8 door3) 0 packet 22 1
+        Array.blit (packU8 door4) 0 packet 23 1
+        Array.blit (packU32 pin) 0 packet 24 4
 
         packet

@@ -6,7 +6,7 @@ Retrieves a card record from a controller by card number.
 - **`controller`**: Controller ID and (optionally) address and transport protocol.
 - **`card`**: Card number.
 - **`timeout`**: Operation timeout (ms).
-- **`options`**: Optional bind, broadcast, and listen addresses.
+- **`options`**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 ### Returns
 Returns `Ok` with a `GetCardResponse` if the request was processed, an error otherwise. Returns

@@ -59,3 +59,6 @@ get-card: build
 get-card-at-index: build
 	$(CLI) get-card-at-index
 
+put-card: build
+	$(CLI) put-card
+

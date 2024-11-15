@@ -174,3 +174,22 @@ type TestEncoder() =
         let packet = Encode.get_card_at_index_request controller index
 
         Assert.That(packet, Is.EqualTo(expected))
+
+    [<Test>]
+    member this.TestEncodePutCard() =
+        let expected = TestRequests.put_card
+
+        let controller = 405419896u
+        let card = 10058400u
+        let startdate = DateOnly(2024, 1, 1)
+        let enddate = DateOnly(2024, 12, 31)
+        let door1 = 1uy
+        let door2 = 0uy
+        let door3 = 17uy
+        let door4 = 1uy
+        let PIN = 999999u
+
+        let packet =
+            Encode.put_card_request controller card startdate enddate door1 door2 door3 door4 PIN
+
+        Assert.That(packet, Is.EqualTo(expected))

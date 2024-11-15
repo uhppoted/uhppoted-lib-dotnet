@@ -245,3 +245,13 @@ type TestDecoder() =
         match Decode.get_card_at_index_response packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)
+
+    [<Test>]
+    member this.TestDecodePutCardResponse() =
+        let packet = TestResponses.put_card
+
+        let expected: PutCardResponse = { controller = 405419896u; ok = true }
+
+        match Decode.put_card_response packet with
+        | Ok response -> Assert.That(response, Is.EqualTo(expected))
+        | Error err -> Assert.Fail(err)

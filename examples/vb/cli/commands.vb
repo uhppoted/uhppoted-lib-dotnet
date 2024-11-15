@@ -19,7 +19,7 @@ End Structure
 
 Module Commands
     Private Const CONTROLLER_ID As UInt32 = 405419896
-    Private Const CARD As UInt32 = 10058400
+    Private Const CARD_NUMBER As UInt32 = 10058400
     Private Const CARD_INDEX As UInt32 = 1
     Private Const TIMEOUT = 1000
 
@@ -44,7 +44,8 @@ Module Commands
            New Command("get-status", "Retrieves the current status of the controller", AddressOf GetStatus),
            New Command("get-cards", "Retrieves the number of cards stored on the controller", AddressOf GetCards),
            New Command("get-card", "Retrieves a card record from the controller", AddressOf GetCard),
-           New Command("get-card-at-index", "Retrieves the card record stored at the index from the controller", AddressOf GetCardAtIndex)
+           New Command("get-card-at-index", "Retrieves the card record stored at the index from the controller", AddressOf GetCardAtIndex),
+           New Command("put-card", "Adds or updates a card record on controller", AddressOf PutCard)
        }
 
     Sub GetControllers(args As String())
@@ -427,6 +428,7 @@ Module Commands
             Dim card = result.ResultValue.Value
 
             WriteLine("get-card-at-index")
+            WriteLine("  controller {0}", controller)
             WriteLine("        card {0}", card.card)
             WriteLine("  start date {0}", (YYYYMMDD(card.startdate)))
             WriteLine("    end date {0}", (YYYYMMDD(card.enddate)))
@@ -438,6 +440,32 @@ Module Commands
             WriteLine()
         Else If (result.IsOk)
             Throw New Exception("card not found")
+        Else If (result.IsError)
+            Throw New Exception(result.ErrorValue)
+        End If
+    End Sub
+
+    Sub PutCard(args As String())
+        Dim controller = CONTROLLER_ID
+        Dim card = CARD_NUMBER
+        Dim startdate = New DateOnly(2024, 1, 1)
+        Dim enddate = New DateOnly(2024, 12, 31)
+        Dim door1 = 1
+        Dim door2 = 0
+        Dim door3 = 17
+        Dim door4 = 1
+        Dim PIN = 7531
+
+        Dim result = UHPPOTE.PutCard(controller, card, startdate, enddate, door1, door2, door3, door4, PIN, TIMEOUT, OPTIONS)
+
+        If (result.IsOk)
+            Dim ok = result.ResultValue
+
+            WriteLine("put-card")
+            WriteLine("  controller {0}", controller)
+            WriteLine("        card {0}", card)
+            WriteLine("          ok {0}", ok)
+            WriteLine()
         Else If (result.IsError)
             Throw New Exception(result.ErrorValue)
         End If

@@ -353,3 +353,23 @@ type TestClass() =
             | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
             | Ok _ -> Assert.Pass()
             | Error err -> Assert.Fail(err))
+
+    [<Test>]
+    member this.TestPutCard() =
+        let expected = true
+
+        let startdate = DateOnly(2024, 1, 1)
+        let enddate = DateOnly(2024, 12, 31)
+        let door1 = 1uy
+        let door2 = 0uy
+        let door3 = 17uy
+        let door4 = 1uy
+        let PIN = 7531u
+
+        options
+        |> List.iter (fun opts ->
+            match
+                Uhppoted.PutCard(CONTROLLER, CARD, startdate, enddate, door1, door2, door3, door4, PIN, TIMEOUT, opts)
+            with
+            | Ok response -> Assert.That(response, Is.EqualTo(expected))
+            | Error err -> Assert.Fail(err))
