@@ -18,12 +18,13 @@ class CLI
                     try
                     {
                         command.f(args[1..]);
-                        Environment.Exit(0);
                     }
                     catch (Exception err)
                     {
                         WriteLine("** ERROR  {0}", err.Message);
                     }
+
+                    Environment.Exit(0);
                 }
             }
         }

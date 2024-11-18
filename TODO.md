@@ -35,12 +35,17 @@
       - [ ] --mode
       - [ ] --delay
       - [ ] --passcode
-      - [ ] --card
+      - [x] --card
       - [ ] --index
       - [ ] --start-date
       - [ ] --end-date
       - [ ] --permissions
       - [ ] --PIN
+
+- [ ] C#: argparse
+      - [x] --controller
+
+- [ ] VB.NET: argparse
 
 - [ ] API
       - [x] find-controllers

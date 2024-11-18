@@ -10,7 +10,7 @@ type command =
       description: string
       f: string list -> Result<unit, string> }
 
-let CONTROLLER = 405419896u
+let CONTROLLER = 1u
 let ADDRESS = Some(IPEndPoint(IPAddress.Parse("192.168.1.100"), 60000))
 let PROTOCOL = Some("udp")
 let TIMEOUT = 1000
@@ -312,7 +312,7 @@ let get_card args =
           address = ADDRESS
           protocol = PROTOCOL }
 
-    let card = CARD
+    let card = argparse args "--card" CARD
 
     match Uhppoted.GetCard(controller, card, TIMEOUT, OPTIONS) with
     | Ok response ->
@@ -361,7 +361,7 @@ let get_card_at_index args =
 
 let put_card args =
     let controller = argparse args "--controller" CONTROLLER
-    let card = CARD
+    let card = argparse args "--card" CARD
     let startdate = DateOnly(2024, 1, 1)
     let enddate = DateOnly(2024, 12, 31)
     let door1 = 1uy
@@ -389,7 +389,7 @@ let put_card args =
 
 let delete_card args =
     let controller = argparse args "--controller" CONTROLLER
-    let card = CARD
+    let card = argparse args "--card" CARD
 
     let timeout = TIMEOUT
 

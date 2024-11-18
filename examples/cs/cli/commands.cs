@@ -19,7 +19,7 @@ public readonly struct Command
 
 class Commands
 {
-    const uint CONTROLLER = 405419896u;
+    const uint CONTROLLER = 1u;
     const uint CARD = 10058400u;
     const uint CARD_INDEX = 1u;
     const int TIMEOUT = 1000;
@@ -82,7 +82,7 @@ class Commands
 
     public static void GetController(string[] args)
     {
-        var controller = CONTROLLER;
+        var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
         var timeout = TIMEOUT;
         var options = OPTIONS;
 
@@ -523,7 +523,7 @@ class Commands
 
     public static void GetCardAtIndex(string[] args)
     {
-        var controller = CONTROLLER;
+        var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
         var index = CARD_INDEX;
         var timeout = TIMEOUT;
         var options = OPTIONS;
@@ -557,7 +557,7 @@ class Commands
 
     public static void PutCard(string[] args)
     {
-        var controller = CONTROLLER;
+        var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
         var card = CARD;
         var startdate = new DateOnly(2024, 1, 1);
         var enddate = new DateOnly(2024, 12, 31);
@@ -589,7 +589,7 @@ class Commands
 
     public static void DeleteCard(string[] args)
     {
-        var controller = CONTROLLER;
+        var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
         var card = CARD;
 
         var timeout = TIMEOUT;

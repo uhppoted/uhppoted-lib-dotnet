@@ -1,4 +1,5 @@
 CLI = dotnet run --framework net7.0
+CONTROLLER ?= 405419896
 
 .PHONY: format
 
@@ -18,50 +19,50 @@ find-controllers: build
 	$(CLI) find-controllers
 
 get-controller: build
-	$(CLI) get-controller --controller 405419896
+	$(CLI) get-controller --controller $(CONTROLLER)
 
 set-ip: build
-	$(CLI) set-IPv4  --controller 405419896 --address 192.168.1.100 --netmask 255.255.255.0 --gateway 192.168.1.1
+	$(CLI) set-IPv4  --controller $(CONTROLLER) --address 192.168.1.100 --netmask 255.255.255.0 --gateway 192.168.1.1
 
 get-listener: build
-	$(CLI) get-listener --controller 405419896
+	$(CLI) get-listener --controller $(CONTROLLER)
 
 set-listener: build
-	$(CLI) set-listener --controller 405419896
+	$(CLI) set-listener --controller $(CONTROLLER)
 
 get-time: build
-	$(CLI) get-time --controller 405419896
+	$(CLI) get-time --controller $(CONTROLLER)
 
 set-time: build
-	$(CLI) set-time --controller 405419896
+	$(CLI) set-time --controller $(CONTROLLER)
 
 get-door: build
-	$(CLI) get-door --controller 405419896
+	$(CLI) get-door --controller $(CONTROLLER)
 
 set-door: build
-	$(CLI) set-door --controller 405419896
+	$(CLI) set-door --controller $(CONTROLLER)
 
 set-door-passcodes: build
-	$(CLI) set-door-passcodes --controller 405419896
+	$(CLI) set-door-passcodes --controller $(CONTROLLER)
 
 open-door: build
-	$(CLI) open-door --controller 405419896
+	$(CLI) open-door --controller $(CONTROLLER)
 
 get-status:
-	$(CLI) get-status
+	$(CLI) get-status --controller $(CONTROLLER)
 
 get-cards: build
-	$(CLI) get-cards
+	$(CLI) get-cards --controller $(CONTROLLER)
 
 get-card: build
-	$(CLI) get-card
+	$(CLI) get-card --controller $(CONTROLLER)
 
 get-card-at-index: build
-	$(CLI) get-card-at-index
+	$(CLI) get-card-at-index --controller $(CONTROLLER)
 
 put-card: build
-	$(CLI) put-card
+	$(CLI) put-card --controller $(CONTROLLER)
 
 delete-card: build
-	$(CLI) delete-card
+	$(CLI) delete-card --controller $(CONTROLLER)
 
