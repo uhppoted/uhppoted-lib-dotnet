@@ -82,37 +82,29 @@ class Commands
 
     public static void GetController(string[] args)
     {
-        try
+        var controller = CONTROLLER;
+        var timeout = TIMEOUT;
+        var options = OPTIONS;
+
+        var result = Uhppoted.GetController(controller, timeout, options);
+
+        if (result.IsOk)
         {
-            var controller = new uhppoted.ControllerBuilder(CONTROLLER)
-                                         .With(IPEndPoint.Parse("192.168.1.100:60000"))
-                                         .With("udp")
-                                         .build();
+            var record = result.ResultValue;
 
-            var result = Uhppoted.get_controller(controller, TIMEOUT, OPTIONS);
-
-            if (result.IsOk)
-            {
-                var response = result.ResultValue;
-
-                WriteLine("get-controller");
-                WriteLine("  controller {0}", response.controller);
-                WriteLine("    address  {0}", response.address);
-                WriteLine("    netmask  {0}", response.netmask);
-                WriteLine("    gateway  {0}", response.gateway);
-                WriteLine("    MAC      {0}", response.MAC);
-                WriteLine("    version  {0}", response.version);
-                WriteLine("    date     {0}", YYYYMMDD(response.date));
-                WriteLine();
-            }
-            else if (result.IsError)
-            {
-                throw new Exception(result.ErrorValue);
-            }
+            WriteLine("get-controller");
+            WriteLine("  controller {0}", record.controller);
+            WriteLine("    address  {0}", record.address);
+            WriteLine("    netmask  {0}", record.netmask);
+            WriteLine("    gateway  {0}", record.gateway);
+            WriteLine("    MAC      {0}", record.MAC);
+            WriteLine("    version  {0}", record.version);
+            WriteLine("    date     {0}", YYYYMMDD(record.date));
+            WriteLine();
         }
-        catch (Exception err)
+        else if (result.IsError)
         {
-            WriteLine("** ERROR  {0}", err.Message);
+            throw new Exception(result.ErrorValue);
         }
     }
 

@@ -10,7 +10,6 @@
 - [x] README
 - [x] Add .NET 8 as a target framework on github
 - [ ] Add .NET 9 as a target framework
-- [ ] Remove .NET 9 from target frameworks
 
 - [ ] github _nightly_ build
       - [x] Fix version

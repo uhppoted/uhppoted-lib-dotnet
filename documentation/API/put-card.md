@@ -3,7 +3,7 @@
 Adds or updates a card record on a controller.
 
 ### Parameters
-- **`controller`**: Controller ID and (optionally) address and transport protocol.
+- **`controller`**: Controller ID.
 - **`card`**: Card number.
 - **`startdate`**: Date from which card is valid.
 - **`enddate`**: Date after which card is no longer valid.
@@ -12,7 +12,10 @@ Adds or updates a card record on a controller.
 
 ### Returns
 
-Returns `Ok` with the success/fail result or an Error if the request failed.
+Returns:
+- `Ok` with the `true` if the card was added or updated
+- `Ok` with `false` if the card was not added or updated
+- `Error` if the request failed.
 
 ### Examples
 
@@ -36,7 +39,7 @@ match PutCard controller card startdate enddate door1 door2 door3 door4 PIN time
 ```
 
 ```csharp
-var controller = new ControllerBuilder(405419896).build();
+var controller = 405419896u;
 var card = 10058400u
 var startdate = new DateOnly(2024, 1, 1);
 var enddate = new DateOnly(2024, 12, 31);
@@ -61,7 +64,7 @@ else
 ```
 
 ```vb
-Dim controller As New ControllerBuilder(405419896u).build()
+Dim controller = 405419896
 Dim card = 10058400
 Dim startdate = New DateOnly(2024, 1, 1)
 Dim enddate = New DateOnly(2024, 12, 31)

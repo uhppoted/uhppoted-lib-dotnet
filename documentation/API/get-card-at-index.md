@@ -51,7 +51,7 @@ else
 ```
 
 ```vb
-Dim controller 405419896
+Dim controller = 405419896
 Dim index = 1
 Dim timeout = 5000
 Dim options As New OptionsBuilder().build()

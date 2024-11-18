@@ -12,11 +12,11 @@ folder on the github [repository](https://github.com/uhppoted/uhppoted-lib-dotne
 
 ## API summary
 
-### [`find-controllers`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/find-controllers.md))
+### [`FindControllers`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/find-controllers.md))
 'Discovers' all controllers accessible via a UDP broadcast on the local LAN.
 
-### `get-controller`
-Gets a controller IPv4 configuration, MAC address and version information.
+### [`GetController`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/get-controller.md))
+Retrieves the IPv4 configuration, MAC address and version information for an access controller.
 
 ### `set-IPv4`
 Sets a controller IPv4 configuration.
@@ -51,16 +51,16 @@ Retrieves a controller status record.
 ### `get-cards`
 Retrieves the number of card records stored on a controller.
 
-### [`get-card`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/get-card.md))
+### [`GetCard`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/get-card.md))
 Retrieves a card record from a controller by card number.
 
-### [`get-card-at-index`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/get-card-at-index.md))
+### [`GetCardAtIndex`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/get-card-at-index.md))
 Retrieves the card record (if any) at the index in the cards list stored on the controller.
 
-### [`put-card`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/put-card.md))
+### [`PutCard`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/put-card.md))
 Adds or updates a card record stored on a controller.
 
-### [`delete-card`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/delete-card.md))
+### [`DeleteCard`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/delete-card.md))
 Deletes a card record from a controller.
 
 ## Notes

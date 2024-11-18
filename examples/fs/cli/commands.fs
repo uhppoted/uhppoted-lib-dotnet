@@ -40,7 +40,10 @@ let YYYYMMDDHHmmss (datetime: Nullable<DateTime>) =
         "---"
 
 let find_controllers args =
-    match Uhppoted.FindControllers(TIMEOUT, OPTIONS) with
+    let timeout = TIMEOUT
+    let options = OPTIONS
+
+    match Uhppoted.FindControllers(timeout, options) with
     | Ok controllers ->
         printfn "find-controllers: %d" controllers.Length
 
@@ -59,21 +62,24 @@ let find_controllers args =
     | Error err -> Error err
 
 let get_controller args =
-    let controller =
-        { controller = argparse args "--controller" CONTROLLER
-          address = ADDRESS
-          protocol = PROTOCOL }
+    let controller = argparse args "--controller" CONTROLLER
+    let timeout = TIMEOUT
 
-    match Uhppoted.get_controller (controller, TIMEOUT, OPTIONS) with
-    | Ok response ->
+    let options =
+        { OPTIONS with
+            destination = ADDRESS
+            protocol = PROTOCOL }
+
+    match Uhppoted.GetController(controller, timeout, options) with
+    | Ok record ->
         printfn "get-controller"
-        printfn "  controller %u" response.controller
-        printfn "    address  %A" response.address
-        printfn "    netmask  %A" response.netmask
-        printfn "    gateway  %A" response.gateway
-        printfn "    MAC      %A" response.MAC
-        printfn "    version  %s" response.version
-        printfn "    date     %s" (YYYYMMDD response.date)
+        printfn "  controller %u" record.controller
+        printfn "    address  %A" record.address
+        printfn "    netmask  %A" record.netmask
+        printfn "    gateway  %A" record.gateway
+        printfn "    MAC      %A" record.MAC
+        printfn "    version  %s" record.version
+        printfn "    date     %s" (YYYYMMDD record.date)
         printfn ""
         Ok()
     | Error err -> Error err

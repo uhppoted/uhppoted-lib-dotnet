@@ -24,8 +24,8 @@ illustrate the use of the API can be found in the [examples](examples) folder.
 ### [`find-controllers`](documentation/API/find-controllers.md)
 'Discovers' all controllers accessible via a UDP broadcast on the local LAN.
 
-### `get-controller`
-Gets a controller IPv4 configuration, MAC address and version information.
+### [`get-controller`](documentation/API/get-controller.md)
+Retrieves the IPv4 configuration, MAC address and version information for an access controller.
 
 ### `set-IPv4`
 Sets a controller IPv4 configuration.

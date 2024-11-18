@@ -82,17 +82,49 @@ module Uhppoted =
         let f =
             fun v ->
                 match Decode.get_controller_response v with
-                | Ok response -> Some(response)
+                | Ok response ->
+                    let controller: ControllerRecord =
+                        { controller = response.controller
+                          address = response.address
+                          netmask = response.netmask
+                          gateway = response.gateway
+                          MAC = response.MAC
+                          version = response.version
+                          date = response.date }
+
+                    Some(controller)
+
                 | _ -> None
 
         match result with
         | Ok replies -> replies |> List.choose (f) |> List.toArray |> Ok
         | Error err -> Error err
 
-    let get_controller (controller: Controller, timeout: int, options: Options) =
-        let request = Encode.get_controller_request controller.controller
+    /// <summary>
+    /// Retrieves the IPv4 configuration, MAC address and version information for an access controller.
+    /// </summary>
+    /// <param name="controller">Controller ID.</param>
+    /// <param name="card">Card number to retrieve.</param>
+    /// <param name="timeout">Operation timeout (ms).</param>
+    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <returns>A Result with a populated Controller record if ok, Error otherwise.</returns>
+    /// <remarks></remarks>
+    let GetController (controller: uint32, timeout: int, options: Options) =
+        let request = Encode.get_controller_request controller
 
-        exec controller request Decode.get_controller_response timeout options
+        match exec2 controller request Decode.get_controller_response timeout options with
+        | Ok response ->
+            let record: ControllerRecord =
+                { controller = response.controller
+                  address = response.address
+                  netmask = response.netmask
+                  gateway = response.gateway
+                  MAC = response.MAC
+                  version = response.version
+                  date = response.date }
+
+            Ok(record)
+        | Error err -> Error err
 
     let set_IPv4
         (
@@ -369,45 +401,6 @@ module Uhppoted =
     /// <returns>
     /// Card record matching card number (or an error).
     /// </returns>
-    /// <example>
-    /// <code language="fsharp">
-    /// let controller = { controller = 405419896u; address = None; protocol = None }
-    /// let card = 10058400u
-    /// let timeout = 5000
-    /// let options = { broadcast = IPAddress.Broadcast; debug = true }
-    /// let result = GetCard controller card timeout options
-    /// match result with
-    /// | Ok response -> printfn "get-card: ok %A" response
-    /// | Error e -> printfn "get-card: error %A" e
-    /// </code>
-    /// <code language="csharp">
-    /// var controller = new ControllerBuilder(405419896).build();
-    /// var card = 10058400
-    /// var timeout = 5000
-    /// var options = new OptionsBuilder().build();
-    /// var result = GetCard(controller, card, timeout, options);
-    /// if (result.IsOk)
-    /// {
-    ///     Console.WriteLine("get-card: {0}",result.Value);
-    /// }
-    /// else
-    /// {
-    ///     Console.WriteLine("get-card: error {0}",result.Error);
-    /// }
-    /// </code>
-    /// <code language="vbnet">
-    /// Dim controller As New ControllerBuilder(405419896).build()
-    /// Dim card = 10058400
-    /// Dim timeout = 5000
-    /// Dim options As New OptionsBuilder().build()
-    /// Dim result = GetCard(controller, card, timeout, options)
-    /// If result.IsOk Then
-    ///     Console.WriteLine("get-card: {0}",result.Value)
-    /// Else
-    ///     Console.WriteLine("get-card: error {0}",result.Error);
-    /// End If
-    /// </code>
-    /// </example>
     let GetCard (controller: Controller, card: uint32, timeout: int, options: Options) =
         let request = Encode.get_card_request controller.controller card
 
@@ -427,45 +420,6 @@ module Uhppoted =
     /// <returns>
     /// Card record at the index (or null if not found or deleted) or an error if the request failed.
     /// </returns>
-    /// <example>
-    /// <code language="fsharp">
-    /// let controller = 405419896u
-    /// let index = 29u
-    /// let timeout = 5000
-    /// let options = { debug = true }
-    /// let result = GetCardAtIndex controller index timeout options
-    /// match result with
-    /// | Ok response -> printfn "get-card-at-index: ok %A" response
-    /// | Error e -> printfn "get-card-at-index: error %A" e
-    /// </code>
-    /// <code language="csharp">
-    /// var controller = 405419896;
-    /// var index = 29
-    /// var timeout = 5000
-    /// var options = new OptionsBuilder().build();
-    /// var result = GetCardAtIndex(controller, index, timeout, options);
-    /// if (result.IsOk)
-    /// {
-    ///     Console.WriteLine("get-card-at-index: {0}",result.Value);
-    /// }
-    /// else
-    /// {
-    ///     Console.WriteLine("get-card-at-index: error {0}",result.Error);
-    /// }
-    /// </code>
-    /// <code language="vbnet">
-    /// Dim controller = 405419896
-    /// Dim index = 29
-    /// Dim timeout = 5000
-    /// Dim options As New OptionsBuilder().build()
-    /// Dim result = GetCardAtIndex(controller, index, timeout, options)
-    /// If result.IsOk Then
-    ///     Console.WriteLine("get-card-at-index: {0}",result.Value)
-    /// Else
-    ///     Console.WriteLine("get-card-at_index: error {0}",result.Error);
-    /// End If
-    /// </code>
-    /// </example>
     let GetCardAtIndex (controller: uint32, index: uint32, timeout: int, options: Options) =
         let request = Encode.get_card_at_index_request controller index
 

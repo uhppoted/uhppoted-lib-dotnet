@@ -72,32 +72,26 @@ Module Commands
     End Sub
 
     Sub GetController(args As String())
-        Try
-            Dim controller = New ControllerBuilder(405419896).
-                                 With(IPEndPoint.Parse("192.168.1.100:60000")).
-                                 With("udp").build()
+        Dim controller = CONTROLLER_ID
+        Dim card = CARD_NUMBER
 
-            Dim result = UHPPOTE.get_controller(controller, TIMEOUT, OPTIONS)
+        Dim result = UHPPOTE.GetController(controller, TIMEOUT, OPTIONS)
 
-            If (result.IsOk)
-                Dim response = result.ResultValue
+        If (result.IsOk)
+            Dim record = result.ResultValue
 
-                WriteLine("get-controller")
-                WriteLine("  controller {0}", response.controller)
-                WriteLine("    address  {0}", response.address)
-                WriteLine("    netmask  {0}", response.netmask)
-                WriteLine("    gateway  {0}", response.gateway)
-                WriteLine("    MAC      {0}", response.MAC)
-                WriteLine("    version  {0}", response.version)
-                WriteLine("    date     {0}", YYYYMMDD(response.date))
-                WriteLine()
-            Else If (result.IsError)
-                Throw New Exception(result.ErrorValue)
-            End If
-
-        Catch Err As Exception
-            WriteLine("Exception  {0}", err.Message)
-        End Try
+            WriteLine("get-controller")
+            WriteLine("  controller {0}", record.controller)
+            WriteLine("    address  {0}", record.address)
+            WriteLine("    netmask  {0}", record.netmask)
+            WriteLine("    gateway  {0}", record.gateway)
+            WriteLine("    MAC      {0}", record.MAC)
+            WriteLine("    version  {0}", record.version)
+            WriteLine("    date     {0}", YYYYMMDD(record.date))
+            WriteLine()
+        Else If (result.IsError)
+            Throw New Exception(result.ErrorValue)
+        End If
     End Sub
 
     Sub SetIPv4(args As String())

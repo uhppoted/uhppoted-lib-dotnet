@@ -74,7 +74,7 @@ type TestClass() =
 
     [<Test>]
     member this.TestFindControllers() =
-        let expected: GetControllerResponse array =
+        let expected: ControllerRecord array =
             [| { controller = 405419896u
                  address = IPAddress.Parse("192.168.1.100")
                  netmask = IPAddress.Parse("255.255.255.0")
@@ -105,7 +105,7 @@ type TestClass() =
 
     [<Test>]
     member this.TestGetController() =
-        let expected: GetControllerResponse =
+        let expected: ControllerRecord =
             { controller = 405419896u
               address = IPAddress.Parse("192.168.1.100")
               netmask = IPAddress.Parse("255.255.255.0")
@@ -114,9 +114,9 @@ type TestClass() =
               version = "v8.92"
               date = Nullable(DateOnly.ParseExact("2018-08-16", "yyyy-MM-dd")) }
 
-        controllers
-        |> List.iter (fun controller ->
-            match Uhppoted.get_controller (controller, TIMEOUT, OPTIONS) with
+        options
+        |> List.iter (fun opts ->
+            match Uhppoted.GetController(CONTROLLER, TIMEOUT, opts) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 

@@ -5,6 +5,16 @@ open System.Net
 open System.Net.NetworkInformation
 
 [<Struct>]
+type ControllerRecord =
+    { controller: uint32
+      address: IPAddress
+      netmask: IPAddress
+      gateway: IPAddress
+      MAC: PhysicalAddress
+      version: string
+      date: DateOnly Nullable }
+
+[<Struct>]
 type Card =
     { card: uint32
       startdate: DateOnly Nullable
