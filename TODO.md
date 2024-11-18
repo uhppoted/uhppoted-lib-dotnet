@@ -23,11 +23,27 @@
 - [ ] translations/enums
       - [ ] door mode
 
-- [ ] F#: argparse
+- [ ] argparse
       - [x] --controller
-      - [x] --address
-      - [x] --netmask
-      - [x] --gateway
+      - [ ] --address
+            - [x] F#
+            - [ ] C#
+            - [ ] VB.NET
+
+      - [ ] --netmask
+            - [x] F#
+            - [ ] C#
+            - [ ] VB.NET
+      - [ ] --gateway
+            - [x] F#
+            - [ ] C#
+            - [ ] VB.NET
+
+      - [x] --card
+            - [x] F#
+            - [ ] C#
+            - [ ] VB.NET
+
       - [ ] --listener
       - [ ] --interval
       - [ ] --time
@@ -35,17 +51,11 @@
       - [ ] --mode
       - [ ] --delay
       - [ ] --passcode
-      - [x] --card
       - [ ] --index
       - [ ] --start-date
       - [ ] --end-date
       - [ ] --permissions
       - [ ] --PIN
-
-- [ ] C#: argparse
-      - [x] --controller
-
-- [ ] VB.NET: argparse
 
 - [ ] API
       - [x] find-controllers

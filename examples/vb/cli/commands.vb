@@ -18,7 +18,7 @@ Public Structure Command
 End Structure
 
 Module Commands
-    Private Const CONTROLLER_ID As UInt32 = 405419896
+    Private Const CONTROLLER_ID As UInt32 = 1
     Private Const CARD_NUMBER As UInt32 = 10058400
     Private Const CARD_INDEX As UInt32 = 1
     Private Const TIMEOUT = 1000
@@ -72,7 +72,7 @@ Module Commands
     End Sub
 
     Sub GetController(args As String())
-        Dim controller = CONTROLLER_ID
+        Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
         Dim card = CARD_NUMBER
 
         Dim result = UHPPOTE.GetController(controller, TIMEOUT, OPTIONS)
@@ -410,7 +410,7 @@ Module Commands
     End Sub
 
     Sub GetCardAtIndex(args As String())
-        Dim controller = CONTROLLER_ID
+        Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
         Dim index = CARD_INDEX
         Dim result = UHPPOTE.GetCardAtIndex(controller, index, TIMEOUT, OPTIONS)
 
@@ -436,7 +436,7 @@ Module Commands
     End Sub
 
     Sub PutCard(args As String())
-        Dim controller = CONTROLLER_ID
+        Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
         Dim card = CARD_NUMBER
         Dim startdate = New DateOnly(2024, 1, 1)
         Dim enddate = New DateOnly(2024, 12, 31)
@@ -462,7 +462,7 @@ Module Commands
     End Sub
 
     Sub DeleteCard(args As String())
-        Dim controller = CONTROLLER_ID
+        Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
         Dim card = CARD_NUMBER
 
         Dim result = UHPPOTE.DeleteCard(controller, card, TIMEOUT, OPTIONS)

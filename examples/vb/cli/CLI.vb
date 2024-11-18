@@ -17,6 +17,7 @@ Module Program
                     Catch Err As Exception
                         WriteLine("  ** ERROR  {0}", err.Message)
                     End Try
+
                     Environment.Exit(0)
                 End If
             Next
