@@ -4,8 +4,12 @@ open System
 open System.Globalization
 open System.Net
 open System.Net.NetworkInformation
+open System.Runtime.CompilerServices
 
-module Decode =
+[<assembly: InternalsVisibleTo("uhppoted.tests")>]
+do ()
+
+module internal Decode =
     let unpackU8 (slice: byte array) = slice[0]
 
     let unpackU16 (slice: byte array) =

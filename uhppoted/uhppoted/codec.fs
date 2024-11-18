@@ -1,6 +1,6 @@
 namespace uhppoted
 
-module messages =
+module internal messages =
     [<Literal>]
     let SOM = 0x17uy
 

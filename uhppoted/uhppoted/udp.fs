@@ -6,7 +6,7 @@ open System.Net.Sockets
 open System.Threading
 open System.Threading.Tasks
 
-module UDP =
+module internal UDP =
     let dump (packet: byte array) =
         let hex = packet |> Array.map (fun (x: byte) -> String.Format("{0:x2}", x))
 

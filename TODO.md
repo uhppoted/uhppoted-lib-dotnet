@@ -10,11 +10,10 @@
 - [x] README
 - [x] Add .NET 8 as a target framework on github
 - [ ] Add .NET 9 as a target framework
-
-- [ ] github _nightly_ build
+- [x] github _nightly_ build
       - [x] Fix version
       - [x] Fix missing README
-      - [ ] Upload artifacts
+      - [x] Upload artifacts
 
 - [ ] function signature file
 - (?) Cross-platform builds

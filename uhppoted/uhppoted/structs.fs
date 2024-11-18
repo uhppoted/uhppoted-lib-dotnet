@@ -26,10 +26,10 @@ type Card =
       PIN: uint32 }
 
 
-type IResponse =
+type internal IResponse =
     abstract member controller: uint32
 
-type GetControllerResponse =
+type internal GetControllerResponse =
     { controller: uint32
       address: IPAddress
       netmask: IPAddress
@@ -152,7 +152,7 @@ type GetCardResponse =
     interface IResponse with
         member this.controller = this.controller
 
-type GetCardAtIndexResponse =
+type internal GetCardAtIndexResponse =
     { controller: uint32
       card: uint32
       startdate: DateOnly Nullable
@@ -166,14 +166,14 @@ type GetCardAtIndexResponse =
     interface IResponse with
         member this.controller = this.controller
 
-type PutCardResponse =
+type internal PutCardResponse =
     { controller: uint32
       ok: bool }
 
     interface IResponse with
         member this.controller = this.controller
 
-type DeleteCardResponse =
+type internal DeleteCardResponse =
     { controller: uint32
       ok: bool }
 

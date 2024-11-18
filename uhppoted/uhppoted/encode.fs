@@ -2,8 +2,12 @@ namespace uhppoted
 
 open System
 open System.Net
+open System.Runtime.CompilerServices
 
-module Encode =
+[<assembly: InternalsVisibleTo("uhppoted.tests")>]
+do ()
+
+module internal Encode =
     [<Literal>]
     let MAGIC_WORD = 0x55aaaa55u
 
