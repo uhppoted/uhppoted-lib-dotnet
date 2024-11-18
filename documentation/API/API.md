@@ -8,6 +8,7 @@
 - [`GetCard`](get-card.md)
 - [`GetCardAtIndex`](get-card-at-index.md)
 - [`PutCard`](put-card.md)
+- [`DeleteCard`](delete-card.md)
 
 
 ## `set_door_passcodes`

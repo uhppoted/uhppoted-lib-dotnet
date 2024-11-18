@@ -60,7 +60,8 @@
       - [x] get-card
       - [x] get-card-at-index
       - [x] put-card
-      - [ ] delete-card
+      - [x] delete-card
+      - [ ] delete-all-cards
             - [ ] API function
             - [ ] CLI
                   - [ ] F#
@@ -70,7 +71,6 @@
             - [ ] API doc
             - [ ] README
       
-      - [ ] delete-all-cards
       - [ ] get-events
       - [ ] get-event
       - [ ] get-event-index

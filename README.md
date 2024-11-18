@@ -1,4 +1,5 @@
 ![build](https://github.com/uhppoted/uhppoted-lib-dotnet/workflows/build/badge.svg)
+![nightly](https://github.com/uhppoted/uhppoted-lib-dotnet/workflows/nightly/badge.svg)
 
 # uhppoted-lib-dotnet
 
@@ -67,6 +68,9 @@ Retrieves the card record (if any) at the index in the cards list stored on the 
 
 ### [`put-card`](documentation/API/put-card.md)
 Adds or updates a card record on a controller.
+
+### [`delete-card`](documentation/API/delete-card.md)
+Deletes a card record from a controller.
 
 ## Notes
 

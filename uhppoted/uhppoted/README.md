@@ -60,6 +60,9 @@ Retrieves the card record (if any) at the index in the cards list stored on the 
 ### [`put-card`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/put-card.md))
 Adds or updates a card record stored on a controller.
 
+### [`delete-card`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/delete-card.md))
+Deletes a card record from a controller.
+
 ## Notes
 
 ### C# Interop

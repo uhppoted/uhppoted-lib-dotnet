@@ -255,3 +255,13 @@ type TestDecoder() =
         match Decode.put_card_response packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)
+
+    [<Test>]
+    member this.TestDecodeDeleteCardResponse() =
+        let packet = TestResponses.delete_card
+
+        let expected: DeleteCardResponse = { controller = 405419896u; ok = true }
+
+        match Decode.delete_card_response packet with
+        | Ok response -> Assert.That(response, Is.EqualTo(expected))
+        | Error err -> Assert.Fail(err)

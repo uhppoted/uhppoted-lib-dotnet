@@ -381,6 +381,27 @@ let put_card args =
         Ok()
     | Error err -> Error(err)
 
+let delete_card args =
+    let controller = argparse args "--controller" CONTROLLER
+    let card = CARD
+
+    let timeout = TIMEOUT
+
+    let options =
+        { OPTIONS with
+            destination = ADDRESS
+            protocol = PROTOCOL }
+
+    match Uhppoted.DeleteCard(controller, card, timeout, options) with
+    | Ok ok ->
+        printfn "delete-card"
+        printfn "  controller %u" controller
+        printfn "        card %u" card
+        printfn "          ok %b" ok
+        printfn ""
+        Ok()
+    | Error err -> Error(err)
+
 let commands =
     [ { command = "find-controllers"
         description = "Retrieves a list of controllers accessible on the local LAN"
@@ -444,4 +465,8 @@ let commands =
 
       { command = "put-card"
         description = "Adds or updates a card record on controller"
-        f = put_card } ]
+        f = put_card }
+
+      { command = "delete-card"
+        description = "Deletes a card record from a controller"
+        f = delete_card } ]

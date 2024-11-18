@@ -162,3 +162,10 @@ type PutCardResponse =
 
     interface IResponse with
         member this.controller = this.controller
+
+type DeleteCardResponse =
+    { controller: uint32
+      ok: bool }
+
+    interface IResponse with
+        member this.controller = this.controller

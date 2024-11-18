@@ -59,3 +59,6 @@ get-card-at-index: build
 put-card: build
 	$(CLI) put-card
 
+delete-card: build
+	$(CLI) delete-card
+

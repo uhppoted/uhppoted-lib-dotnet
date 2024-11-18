@@ -22,7 +22,7 @@ module Decode =
         let u32 = u32 + (uint32 slice[3] <<< 24)
         u32
 
-    let unpackBool (slice: byte array) =
+    let unpack_bool (slice: byte array) =
         match slice[0] with
         | 0x01uy -> true
         | _ -> false
@@ -108,7 +108,7 @@ module Decode =
         else
             Ok
                 { controller = unpackU32 packet[4..]
-                  ok = unpackBool packet[8..] }
+                  ok = unpack_bool packet[8..] }
 
     let get_time_response (packet: byte array) : Result<GetTimeResponse, string> =
         if packet[0] <> messages.SOM then
@@ -162,7 +162,7 @@ module Decode =
         else
             Ok
                 { controller = unpackU32 packet[4..]
-                  ok = unpackBool (packet[8..]) }
+                  ok = unpack_bool (packet[8..]) }
 
     let open_door_response (packet: byte array) : Result<OpenDoorResponse, string> =
         if packet[0] <> messages.SOM then
@@ -172,7 +172,7 @@ module Decode =
         else
             Ok
                 { controller = unpackU32 packet[4..]
-                  ok = unpackBool (packet[8..]) }
+                  ok = unpack_bool (packet[8..]) }
 
     let get_status_response (packet: byte array) : Result<GetStatusResponse, string> =
         if packet[0] <> messages.SOM then
@@ -190,14 +190,14 @@ module Decode =
 
             Ok
                 { controller = unpackU32 packet[4..]
-                  door1_open = unpackBool packet[28..]
-                  door2_open = unpackBool packet[29..]
-                  door3_open = unpackBool packet[30..]
-                  door4_open = unpackBool packet[31..]
-                  door1_button = unpackBool packet[32..]
-                  door2_button = unpackBool packet[33..]
-                  door3_button = unpackBool packet[34..]
-                  door4_button = unpackBool packet[35..]
+                  door1_open = unpack_bool packet[28..]
+                  door2_open = unpack_bool packet[29..]
+                  door3_open = unpack_bool packet[30..]
+                  door4_open = unpack_bool packet[31..]
+                  door1_button = unpack_bool packet[32..]
+                  door2_button = unpack_bool packet[33..]
+                  door3_button = unpack_bool packet[34..]
+                  door4_button = unpack_bool packet[35..]
                   system_error = unpackU8 packet[36..]
                   system_datetime = sysdatetime
                   sequence_number = unpackU32 packet[40..]
@@ -207,7 +207,7 @@ module Decode =
                   evt =
                     {| index = unpackU32 packet[8..]
                        event_type = unpackU8 packet[12..]
-                       granted = unpackBool packet[13..]
+                       granted = unpack_bool packet[13..]
                        door = unpackU8 packet[14..]
                        direction = unpackU8 packet[15..]
                        card = unpackU32 packet[16..]
@@ -266,4 +266,14 @@ module Decode =
         else
             Ok
                 { controller = unpackU32 packet[4..]
-                  ok = unpackBool (packet[8..]) }
+                  ok = unpack_bool (packet[8..]) }
+
+    let delete_card_response (packet: byte array) : Result<DeleteCardResponse, string> =
+        if packet[0] <> messages.SOM then
+            Error("invalid controller response")
+        else if packet[1] <> messages.DELETE_CARD then
+            Error("invalid delete-card response")
+        else
+            Ok
+                { controller = unpackU32 packet[4..]
+                  ok = unpack_bool (packet[8..]) }

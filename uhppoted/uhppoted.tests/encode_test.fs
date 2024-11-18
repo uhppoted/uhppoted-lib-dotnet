@@ -193,3 +193,13 @@ type TestEncoder() =
             Encode.put_card_request controller card startdate enddate door1 door2 door3 door4 PIN
 
         Assert.That(packet, Is.EqualTo(expected))
+
+    [<Test>]
+    member this.TestEncodeDeleteCard() =
+        let expected = TestRequests.delete_card
+
+        let controller = 405419896u
+        let card = 10058400u
+        let packet = Encode.delete_card_request controller card
+
+        Assert.That(packet, Is.EqualTo(expected))
