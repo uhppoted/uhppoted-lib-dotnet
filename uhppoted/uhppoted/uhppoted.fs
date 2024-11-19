@@ -394,19 +394,31 @@ module Uhppoted =
     /// <summary>
     /// Retrieves the card record for the requested card number.
     /// </summary>
-    /// <param name="controller">Controller ID and (optionally) address and transport protocol.</param>
+    /// <param name="controller">Controller ID.</param>
     /// <param name="card">Card number to retrieve.</param>
     /// <param name="timeout">Operation timeout (ms).</param>
-    /// <param name="options">Optional bind, broadcast and listen addresses.</param>
+    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
     /// <returns>
-    /// Card record matching card number (or an error).
+    /// Card record matching the card number (or null if not found) or an error if the request failed.
     /// </returns>
-    let GetCard (controller: Controller, card: uint32, timeout: int, options: Options) =
-        let request = Encode.get_card_request controller.controller card
+    let GetCard (controller: uint32, card: uint32, timeout: int, options: Options) =
+        let request = Encode.get_card_request controller card
 
-        match (exec controller request Decode.get_card_response timeout options) with
-        | Ok response when response.card = 0u -> Error "card not found"
-        | Ok response -> Ok response
+        match exec2 controller request Decode.get_card_response timeout options with
+        | Ok response when response.card = 0u -> // not found
+            Ok(Nullable())
+        | Ok response ->
+            Ok(
+                Nullable
+                    { card = response.card
+                      startdate = response.startdate
+                      enddate = response.enddate
+                      door1 = response.door1
+                      door2 = response.door2
+                      door3 = response.door3
+                      door4 = response.door4
+                      PIN = response.PIN }
+            )
         | Error err -> Error err
 
 

@@ -16,7 +16,7 @@ let PROTOCOL = Some("udp")
 let TIMEOUT = 1000
 let MODE = 2uy
 let DELAY = 7uy
-let CARD = 10058400u
+let CARD = 1u
 let CARD_INDEX = 1u
 
 let OPTIONS: Options =
@@ -307,27 +307,31 @@ let get_cards args =
     | Error err -> Error(err)
 
 let get_card args =
-    let controller =
-        { controller = argparse args "--controller" CONTROLLER
-          address = ADDRESS
-          protocol = PROTOCOL }
-
+    let controller = argparse args "--controller" CONTROLLER
     let card = argparse args "--card" CARD
+    let timeout = TIMEOUT
+
+    let options =
+        { OPTIONS with
+            destination = ADDRESS
+            protocol = PROTOCOL }
 
     match Uhppoted.GetCard(controller, card, TIMEOUT, OPTIONS) with
-    | Ok response ->
+    | Ok v when v.HasValue ->
+        let card = v.Value
         printfn "get-card"
-        printfn "  controller %u" response.controller
-        printfn "        card %u" response.card
-        printfn "  start date %s" (YYYYMMDD(response.startdate))
-        printfn "    end date %s" (YYYYMMDD(response.enddate))
-        printfn "      door 1 %u" response.door1
-        printfn "      door 2 %u" response.door2
-        printfn "      door 3 %u" response.door3
-        printfn "      door 4 %u" response.door4
-        printfn "         PIN %u" response.PIN
+        printfn "  controller %u" controller
+        printfn "        card %u" card.card
+        printfn "  start date %s" (YYYYMMDD(card.startdate))
+        printfn "    end date %s" (YYYYMMDD(card.enddate))
+        printfn "      door 1 %u" card.door1
+        printfn "      door 2 %u" card.door2
+        printfn "      door 3 %u" card.door3
+        printfn "      door 4 %u" card.door4
+        printfn "         PIN %u" card.PIN
         printfn ""
         Ok()
+    | Ok _ -> Error "card not found"
     | Error err -> Error(err)
 
 let get_card_at_index args =
@@ -343,6 +347,7 @@ let get_card_at_index args =
     match Uhppoted.GetCardAtIndex(controller, index, timeout, options) with
     | Ok v when v.HasValue ->
         let card = v.Value
+
         printfn "get-card-at-index"
         printfn "  controller %u" controller
         printfn "        card %u" card.card

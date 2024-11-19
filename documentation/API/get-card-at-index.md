@@ -11,9 +11,10 @@ Retrieves the card record (if any) at the index in the cards list stored on the 
 ### Returns
 Returns `Ok` with a Nullable `Card` if the request was processed or an error otherwise. 
 
-The `Ok` value is a card record if a card record was found at the index
-- `null` if there was no record at the index
-- `null` if the record at the index was deleted
+The `Ok` value is:
+- A card record if a card record was found at the index.
+- `null` if there was no record at the index.
+- `null` if the record at the index was deleted.
 
 ### Examples
 

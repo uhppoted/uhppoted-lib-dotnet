@@ -486,39 +486,35 @@ class Commands
 
     public static void GetCard(string[] args)
     {
-        try
+        var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
+        var card = CARD;
+        var timeout = TIMEOUT;
+        var options = OPTIONS;
+        var result = Uhppoted.GetCard(controller, card, timeout, options);
+
+        if (result.IsOk && result.ResultValue.HasValue)
         {
-            var controller = new uhppoted.ControllerBuilder(CONTROLLER)
-                                         .With(IPEndPoint.Parse("192.168.1.100:60000"))
-                                         .With("udp")
-                                         .build();
-            var card = CARD;
-            var result = Uhppoted.GetCard(controller, card, TIMEOUT, OPTIONS);
+            var record = result.ResultValue.Value;
 
-            if (result.IsOk)
-            {
-                var response = result.ResultValue;
-
-                WriteLine("get-card");
-                WriteLine("  controller {0}", response.controller);
-                WriteLine("        card {0}", response.card);
-                WriteLine("  start date {0}", (YYYYMMDD(response.startdate)));
-                WriteLine("    end date {0}", (YYYYMMDD(response.enddate)));
-                WriteLine("      door 1 {0}", response.door1);
-                WriteLine("      door 2 {0}", response.door2);
-                WriteLine("      door 3 {0}", response.door3);
-                WriteLine("      door 4 {0}", response.door4);
-                WriteLine("         PIN {0}", response.PIN);
-                WriteLine();
-            }
-            else if (result.IsError)
-            {
-                throw new Exception(result.ErrorValue);
-            }
+            WriteLine("get-card");
+            WriteLine("  controller {0}", controller);
+            WriteLine("        card {0}", record.card);
+            WriteLine("  start date {0}", (YYYYMMDD(record.startdate)));
+            WriteLine("    end date {0}", (YYYYMMDD(record.enddate)));
+            WriteLine("      door 1 {0}", record.door1);
+            WriteLine("      door 2 {0}", record.door2);
+            WriteLine("      door 3 {0}", record.door3);
+            WriteLine("      door 4 {0}", record.door4);
+            WriteLine("         PIN {0}", record.PIN);
+            WriteLine();
         }
-        catch (Exception err)
+        else if (result.IsOk)
         {
-            WriteLine("** ERROR  {0}", err.Message);
+            throw new Exception("card not found");
+        }
+        else if (result.IsError)
+        {
+            throw new Exception(result.ErrorValue);
         }
     }
 
@@ -532,18 +528,18 @@ class Commands
 
         if (result.IsOk && result.ResultValue.HasValue)
         {
-            var card = result.ResultValue.Value;
+            var record = result.ResultValue.Value;
 
             WriteLine("get-card-at-index");
             WriteLine("  controller {0}", controller);
-            WriteLine("        card {0}", card.card);
-            WriteLine("  start date {0}", (YYYYMMDD(card.startdate)));
-            WriteLine("    end date {0}", (YYYYMMDD(card.enddate)));
-            WriteLine("      door 1 {0}", card.door1);
-            WriteLine("      door 2 {0}", card.door2);
-            WriteLine("      door 3 {0}", card.door3);
-            WriteLine("      door 4 {0}", card.door4);
-            WriteLine("         PIN {0}", card.PIN);
+            WriteLine("        card {0}", record.card);
+            WriteLine("  start date {0}", (YYYYMMDD(record.startdate)));
+            WriteLine("    end date {0}", (YYYYMMDD(record.enddate)));
+            WriteLine("      door 1 {0}", record.door1);
+            WriteLine("      door 2 {0}", record.door2);
+            WriteLine("      door 3 {0}", record.door3);
+            WriteLine("      door 4 {0}", record.door4);
+            WriteLine("         PIN {0}", record.PIN);
             WriteLine();
         }
         else if (result.IsOk)

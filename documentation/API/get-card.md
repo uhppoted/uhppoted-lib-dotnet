@@ -1,66 +1,73 @@
 ## `GetCard`
 
-Retrieves a card record from a controller by card number.
+Retrieves the card record (if any) at the index in the cards list stored on the controller.
 
 ### Parameters
-- **`controller`**: Controller ID and (optionally) address and transport protocol.
-- **`card`**: Card number.
+- **`controller`**: Controller ID.
+- **`card`**: Card nummber.
 - **`timeout`**: Operation timeout (ms).
 - **`options`**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 ### Returns
-Returns `Ok` with a `GetCardResponse` if the request was processed, an error otherwise. Returns
-a "card not found" error if a record matching the card number does not exist on the controller.
+Returns `Ok` with a Nullable `Card` record if the request was processed or an error otherwise. 
+
+The `Ok` value is:
+- A `Card` record if a card record was found for the card number.
+- `null` if there was no record for the card number.
 
 ### Examples
 
 ```fsharp
-let controller = { controller = 405419896u; address = None; protocol = None }
+let controller = 405419896u
 let card = 10058400u
 let timeout = 5000
-let options = { broadcast = IPAddress.Broadcast; debug = true }
+let options = { broadcast = IPAddress.Broadcast; destination=None; protocol=None; debug = true }
 
-match GetCard controller card timeout options with
-| Ok response -> printfn "get-card: ok %A" response
+match GetCardAt controller card timeout options with
+| Ok response when response.HasValue -> printfn "get-card: ok %A" response.Value
+| Ok _ -> printfn "get-card: not found"
 | Error err -> printfn "get-card: error %A" err
 ```
 
 ```csharp
-var controller = new ControllerBuilder(405419896).build();
-var card = 10058400u
-var timeout = 5000
+var controller = 405419896u;
+var card = 10058400u;
+var timeout = 5000;
 var options = new OptionsBuilder().build();
-
 var result = GetCard(controller, card, timeout, options);
 
-if (result.IsOk)
+if (result.IsOk && result.ResultValue.HasValue)
 {
-    Console.WriteLine($"get-card: ok {result.ResultValue}");
+    Console.WriteLine($"get-card: ok {result.ResultValue.Value}");
+}
+else if (result.IsOk)
+{
+    Console.WriteLine($"get-card: error 'not found'");
 }
 else
 {
-    Console.WriteLine($"get-card: error {result.ErrorValue}");
+    Console.WriteLine($"get-card: error '{result.ErrorValue}'");
 }
 ```
 
 ```vb
-Dim controller As New ControllerBuilder(405419896u).build()
-Dim card = 10058400u
+Dim controller = 405419896
+Dim card = 10058400
 Dim timeout = 5000
 Dim options As New OptionsBuilder().build()
-
 Dim result = GetCard(controller, card, timeout, options)
 
-If result.IsOk Then
-    Console.WriteLine($"get-card: ok {result.ResultValue}")
+If (result.IsOk And result.Value.HasValue) Then
+    Console.WriteLine($"get-card: ok {result.ResultValue.Value}")
+Els If (result.IsOk) Then
+    Console.WriteLine($"get-card: error 'not found'")
 Else
-    Console.WriteLine($"get-card: error {result.ErrorValue}")
+    Console.WriteLine($"get-card: error '{result.ErrorValue}'")
 End If
 ```
 
 ### Notes
-- The `GetCardResponse` record includes the following fields:
-  - `controller` (`uint32`): The controller identifier.
+- The `Card` record is defined as:
   - `card` (`uint32`): Card number.
   - `startdate` (`DateOnly`): Date from which card is valid.
   - `enddate` (`DateOnly`): Date after which card is no longer valid.

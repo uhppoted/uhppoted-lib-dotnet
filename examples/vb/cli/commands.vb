@@ -381,33 +381,29 @@ Module Commands
     End Sub
 
     Sub GetCard(args As String())
-        Try
-            Dim controller = New ControllerBuilder(405419896).
-                                 With(IPEndPoint.Parse("192.168.1.100:60000")).
-                                 With("udp").build()
-            Dim card = 10058400
-            Dim result = UHPPOTE.GetCard(controller, card, TIMEOUT, OPTIONS)
+        Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
+        Dim card = 10058400
+        Dim result = UHPPOTE.GetCard(controller, card, TIMEOUT, OPTIONS)
 
-            If (result.IsOk)
-                Dim response = result.ResultValue
-                WriteLine("get-card")
-                WriteLine("  controller {0}", response.controller)
-                WriteLine("        card {0}", response.card)
-                WriteLine("  start date {0}", (YYYYMMDD(response.startdate)))
-                WriteLine("    end date {0}", (YYYYMMDD(response.enddate)))
-                WriteLine("      door 1 {0}", response.door1)
-                WriteLine("      door 2 {0}", response.door2)
-                WriteLine("      door 3 {0}", response.door3)
-                WriteLine("      door 4 {0}", response.door4)
-                WriteLine("         PIN {0}", response.PIN)
-                WriteLine()
-            Else If (result.IsError)
-                Throw New Exception(result.ErrorValue)
-            End If
+        If (result.IsOk And result.ResultValue.HasValue)
+            Dim record = result.ResultValue.Value
 
-        Catch Err As Exception
-            WriteLine("Exception  {0}", err.Message)
-        End Try
+            WriteLine("get-card")
+            WriteLine("  controller {0}", controller)
+            WriteLine("        card {0}", record.card)
+            WriteLine("  start date {0}", (YYYYMMDD(record.startdate)))
+            WriteLine("    end date {0}", (YYYYMMDD(record.enddate)))
+            WriteLine("      door 1 {0}", record.door1)
+            WriteLine("      door 2 {0}", record.door2)
+            WriteLine("      door 3 {0}", record.door3)
+            WriteLine("      door 4 {0}", record.door4)
+            WriteLine("         PIN {0}", record.PIN)
+            WriteLine()
+        Else If (result.IsOk)
+            Throw New Exception("card not found")
+        Else If (result.IsError)
+            Throw New Exception(result.ErrorValue)
+        End If
     End Sub
 
     Sub GetCardAtIndex(args As String())
@@ -416,18 +412,18 @@ Module Commands
         Dim result = UHPPOTE.GetCardAtIndex(controller, index, TIMEOUT, OPTIONS)
 
         If (result.IsOk And result.ResultValue.HasValue)
-            Dim card = result.ResultValue.Value
+            Dim record = result.ResultValue.Value
 
             WriteLine("get-card-at-index")
             WriteLine("  controller {0}", controller)
-            WriteLine("        card {0}", card.card)
-            WriteLine("  start date {0}", (YYYYMMDD(card.startdate)))
-            WriteLine("    end date {0}", (YYYYMMDD(card.enddate)))
-            WriteLine("      door 1 {0}", card.door1)
-            WriteLine("      door 2 {0}", card.door2)
-            WriteLine("      door 3 {0}", card.door3)
-            WriteLine("      door 4 {0}", card.door4)
-            WriteLine("         PIN {0}", card.PIN)
+            WriteLine("        card {0}", record.card)
+            WriteLine("  start date {0}", (YYYYMMDD(record.startdate)))
+            WriteLine("    end date {0}", (YYYYMMDD(record.enddate)))
+            WriteLine("      door 1 {0}", record.door1)
+            WriteLine("      door 2 {0}", record.door2)
+            WriteLine("      door 3 {0}", record.door3)
+            WriteLine("      door 4 {0}", record.door4)
+            WriteLine("         PIN {0}", record.PIN)
             WriteLine()
         Else If (result.IsOk)
             Throw New Exception("card not found")

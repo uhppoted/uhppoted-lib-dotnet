@@ -1,5 +1,7 @@
 CLI = dotnet run --project ../examples/fs/cli --framework net7.0
 CONTROLLER ?= 405419896
+CARD ?= 10058400
+MISSING_CARD ?= 10058399
 
 .PHONY: format
 .PHONY: build
@@ -21,9 +23,9 @@ release: build test integration-tests
 	cd uhppoted && make release
 
 debug: build
-	dotnet run --project ../examples/fs/cli --framework net7.0 delete-all-cards --controller $(CONTROLLER)
-	dotnet run --project ../examples/cs/cli --framework net7.0 delete-all-cards --controller $(CONTROLLER)
-	dotnet run --project ../examples/vb/cli --framework net7.0 delete-all-cards --controller $(CONTROLLER)
+	dotnet run --project ../examples/fs/cli --framework net7.0 get-card --controller $(CONTROLLER) --card $(CARD)
+	dotnet run --project ../examples/cs/cli --framework net7.0 get-card --controller $(CONTROLLER) --card $(CARD)
+	dotnet run --project ../examples/vb/cli --framework net7.0 get-card --controller $(CONTROLLER) --card $(CARD)
 
 find-controllers: build
 	$(CLI) find-controllers
@@ -65,7 +67,8 @@ get-cards: build
 	$(CLI) get-cards --controller $(CONTROLLER)
 
 get-card: build
-	$(CLI) get-card --controller $(CONTROLLER) --card 10058399
+	$(CLI) get-card --controller $(CONTROLLER) --card $(CARD)
+	$(CLI) get-card --controller $(CONTROLLER) --card $(MISSING_CARD)
 
 get-card-at-index: build
 	$(CLI) get-card-at-index --controller $(CONTROLLER)
