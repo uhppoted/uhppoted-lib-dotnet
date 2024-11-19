@@ -249,3 +249,14 @@ module internal Encode =
         Array.blit (packU32 card) 0 packet 8 4
 
         packet
+
+    let delete_all_cards_request (controller: uint32) =
+        let packet: byte array = Array.zeroCreate 64
+
+        Array.set packet 0 (byte messages.SOM)
+        Array.set packet 1 (byte messages.DELETE_ALL_CARDS)
+
+        Array.blit (packU32 controller) 0 packet 4 4
+        Array.blit (packU32 MAGIC_WORD) 0 packet 8 4
+
+        packet

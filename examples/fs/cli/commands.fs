@@ -333,7 +333,6 @@ let get_card args =
 let get_card_at_index args =
     let controller = argparse args "--controller" CONTROLLER
     let index = CARD_INDEX
-
     let timeout = TIMEOUT
 
     let options =
@@ -369,7 +368,6 @@ let put_card args =
     let door3 = 17uy
     let door4 = 1uy
     let PIN = 7531u
-
     let timeout = TIMEOUT
 
     let options =
@@ -390,7 +388,6 @@ let put_card args =
 let delete_card args =
     let controller = argparse args "--controller" CONTROLLER
     let card = argparse args "--card" CARD
-
     let timeout = TIMEOUT
 
     let options =
@@ -403,6 +400,24 @@ let delete_card args =
         printfn "delete-card"
         printfn "  controller %u" controller
         printfn "        card %u" card
+        printfn "          ok %b" ok
+        printfn ""
+        Ok()
+    | Error err -> Error(err)
+
+let delete_all_cards args =
+    let controller = argparse args "--controller" CONTROLLER
+    let timeout = TIMEOUT
+
+    let options =
+        { OPTIONS with
+            destination = ADDRESS
+            protocol = PROTOCOL }
+
+    match Uhppoted.DeleteAllCards(controller, timeout, options) with
+    | Ok ok ->
+        printfn "delete-all-cards"
+        printfn "  controller %u" controller
         printfn "          ok %b" ok
         printfn ""
         Ok()
@@ -475,4 +490,8 @@ let commands =
 
       { command = "delete-card"
         description = "Deletes a card record from a controller"
-        f = delete_card } ]
+        f = delete_card }
+
+      { command = "delete-all-cards"
+        description = "Deletes all card records from a controller"
+        f = delete_all_cards } ]

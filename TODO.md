@@ -8,12 +8,9 @@
 - [x] integration tests
 - [x] verify controller ID in response
 - [x] README
+- [x] github _nightly_ build
 - [x] Add .NET 8 as a target framework on github
 - [ ] Add .NET 9 as a target framework
-- [x] github _nightly_ build
-      - [x] Fix version
-      - [x] Fix missing README
-      - [x] Upload artifacts
 
 - [ ] function signature file
 - (?) Cross-platform builds
@@ -74,7 +71,8 @@
       - [x] get-card-at-index
       - [x] put-card
       - [x] delete-card
-      - [ ] delete-all-cards
+      - [x] delete-all-cards
+      - [ ] get-events
             - [ ] API function
             - [ ] CLI
                   - [ ] F#
@@ -84,7 +82,6 @@
             - [ ] API doc
             - [ ] README
       
-      - [ ] get-events
       - [ ] get-event
       - [ ] get-event-index
       - [ ] set-event-index

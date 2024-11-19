@@ -46,7 +46,8 @@ Module Commands
            New Command("get-card", "Retrieves a card record from the controller", AddressOf GetCard),
            New Command("get-card-at-index", "Retrieves the card record stored at the index from the controller", AddressOf GetCardAtIndex),
            New Command("put-card", "Adds or updates a card record on controller", AddressOf PutCard),
-           New Command("delete-card", "Deletes a card record from a controller", AddressOf DeleteCard)
+           New Command("delete-card", "Deletes a card record from a controller", AddressOf DeleteCard),
+           New Command("delete-all-cards", "Deletes all card records from a controller", AddressOf DeleteAllCards)
        }
 
     Sub FindControllers(args As String())
@@ -473,6 +474,23 @@ Module Commands
             WriteLine("delete-card")
             WriteLine("  controller {0}", controller)
             WriteLine("        card {0}", card)
+            WriteLine("          ok {0}", ok)
+            WriteLine()
+        Else If (result.IsError)
+            Throw New Exception(result.ErrorValue)
+        End If
+    End Sub
+
+    Sub DeleteAllCards(args As String())
+        Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
+
+        Dim result = UHPPOTE.DeleteAllCards(controller, TIMEOUT, OPTIONS)
+
+        If (result.IsOk)
+            Dim ok = result.ResultValue
+
+            WriteLine("delete-all-cards")
+            WriteLine("  controller {0}", controller)
             WriteLine("          ok {0}", ok)
             WriteLine()
         Else If (result.IsError)

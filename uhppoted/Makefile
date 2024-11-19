@@ -21,9 +21,9 @@ release: build test integration-tests
 	cd uhppoted && make release
 
 debug: build
-	dotnet run --project ../examples/fs/cli --framework net7.0 get-controller
-	dotnet run --project ../examples/cs/cli --framework net7.0 get-controller
-	dotnet run --project ../examples/vb/cli --framework net7.0 get-controller
+	dotnet run --project ../examples/fs/cli --framework net7.0 delete-all-cards --controller $(CONTROLLER)
+	dotnet run --project ../examples/cs/cli --framework net7.0 delete-all-cards --controller $(CONTROLLER)
+	dotnet run --project ../examples/vb/cli --framework net7.0 delete-all-cards --controller $(CONTROLLER)
 
 find-controllers: build
 	$(CLI) find-controllers
@@ -75,4 +75,8 @@ put-card: build
 
 delete-card: build
 	$(CLI) delete-card --controller $(CONTROLLER)
+
+delete-all-cards: build
+	$(CLI) delete-all-cards --controller $(CONTROLLER)
+
 

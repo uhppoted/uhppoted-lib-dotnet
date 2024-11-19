@@ -281,3 +281,13 @@ module internal Decode =
             Ok
                 { controller = unpackU32 packet[4..]
                   ok = unpack_bool (packet[8..]) }
+
+    let delete_all_cards_response (packet: byte array) : Result<DeleteAllCardsResponse, string> =
+        if packet[0] <> messages.SOM then
+            Error("invalid controller response")
+        else if packet[1] <> messages.DELETE_ALL_CARDS then
+            Error("invalid delete-all-cards response")
+        else
+            Ok
+                { controller = unpackU32 packet[4..]
+                  ok = unpack_bool (packet[8..]) }

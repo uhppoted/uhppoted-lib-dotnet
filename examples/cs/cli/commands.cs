@@ -51,6 +51,7 @@ class Commands
           new Command ( "get-card-at-index","Retrieves the card record stored at the index from the controller",GetCardAtIndex),
           new Command ( "put-card","Adds or updates a card record on controller",PutCard),
           new Command ( "delete-card", "Deletes a card record from a controller", DeleteCard),
+          new Command ( "delete-all-cards", "Deletes all card records from a controller", DeleteAllCards),
     };
 
     public static void FindControllers(string[] args)
@@ -603,6 +604,28 @@ class Commands
             WriteLine("delete-card");
             WriteLine("  controller {0}", controller);
             WriteLine("        card {0}", card);
+            WriteLine("          ok {0}", ok);
+            WriteLine();
+        }
+        else if (result.IsError)
+        {
+            throw new Exception(result.ErrorValue);
+        }
+    }
+
+    public static void DeleteAllCards(string[] args)
+    {
+        var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
+        var timeout = TIMEOUT;
+        var options = OPTIONS;
+        var result = Uhppoted.DeleteAllCards(controller, timeout, options);
+
+        if (result.IsOk)
+        {
+            var ok = result.ResultValue;
+
+            WriteLine("delete-all-cards");
+            WriteLine("  controller {0}", controller);
             WriteLine("          ok {0}", ok);
             WriteLine();
         }

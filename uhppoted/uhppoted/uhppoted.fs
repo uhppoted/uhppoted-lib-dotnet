@@ -484,7 +484,7 @@ module Uhppoted =
     /// Deletes a card record from a controller.
     /// </summary>
     /// <param name="controller">Controller ID.</param>
-    /// <param name="card">Card number to retrieve.</param>
+    /// <param name="card">Card number to delete.</param>
     /// <param name="timeout">Operation timeout (ms).</param>
     /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
     /// <returns>
@@ -494,5 +494,21 @@ module Uhppoted =
         let request = Encode.delete_card_request controller card
 
         match exec2 controller request Decode.delete_card_response timeout options with
+        | Ok response -> Ok(response.ok)
+        | Error err -> Error err
+
+    /// <summary>
+    /// Deletes all card records from a controller.
+    /// </summary>
+    /// <param name="controller">Controller ID.</param>
+    /// <param name="timeout">Operation timeout (ms).</param>
+    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <returns>
+    /// Result with the boolean success/fail result or an Error if the request failed.
+    /// </returns>
+    let DeleteAllCards (controller: uint32, timeout: int, options: Options) =
+        let request = Encode.delete_all_cards_request controller
+
+        match exec2 controller request Decode.delete_all_cards_response timeout options with
         | Ok response -> Ok(response.ok)
         | Error err -> Error err

@@ -72,6 +72,10 @@ Adds or updates a card record on a controller.
 ### [`delete-card`](documentation/API/delete-card.md)
 Deletes a card record from a controller.
 
+### [`deletes-all-cards`](documentation/API/delete-all-cards.md)
+Deletes all card records from a controller.
+
+
 ## Notes
 
 ### C# Interop

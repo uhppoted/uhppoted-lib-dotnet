@@ -63,6 +63,9 @@ Adds or updates a card record stored on a controller.
 ### [`DeleteCard`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/delete-card.md))
 Deletes a card record from a controller.
 
+### [`DeleteAllCards`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/delete-all-cards.md))
+Deletes all card records from a controller.
+
 ## Notes
 
 ### C# Interop

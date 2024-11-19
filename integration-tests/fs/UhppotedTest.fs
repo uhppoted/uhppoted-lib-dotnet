@@ -383,3 +383,13 @@ type TestClass() =
             match Uhppoted.DeleteCard(CONTROLLER, CARD, TIMEOUT, opts) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
+
+    [<Test>]
+    member this.TestDeleteAllCards() =
+        let expected = true
+
+        options
+        |> List.iter (fun opts ->
+            match Uhppoted.DeleteAllCards(CONTROLLER, TIMEOUT, opts) with
+            | Ok response -> Assert.That(response, Is.EqualTo(expected))
+            | Error err -> Assert.Fail(err))

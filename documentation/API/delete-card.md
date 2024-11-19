@@ -11,9 +11,9 @@ Deletes a card record from a controller.
 ### Returns
 
 Returns:
-- `Ok` with a `true` if the card was deleted
-- `Ok` with `false` if the card was not deleted (typically because the card is not stored on the controller)
-- `Error` if the request failed
+- `Ok` with a `true` if the card was deleted.
+- `Ok` with `false` if the card was not deleted (typically because the card is not stored on the controller).
+- `Error` if the request failed.
 
 ### Examples
 

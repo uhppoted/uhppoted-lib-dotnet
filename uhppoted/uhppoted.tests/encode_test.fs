@@ -203,3 +203,12 @@ type TestEncoder() =
         let packet = Encode.delete_card_request controller card
 
         Assert.That(packet, Is.EqualTo(expected))
+
+    [<Test>]
+    member this.TestEncodeDeleteAllCards() =
+        let expected = TestRequests.delete_all_cards
+
+        let controller = 405419896u
+        let packet = Encode.delete_all_cards_request controller
+
+        Assert.That(packet, Is.EqualTo(expected))

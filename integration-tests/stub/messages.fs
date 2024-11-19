@@ -91,7 +91,11 @@ module Messages =
 
           { test = "delete-card"
             request = Requests.delete_card
-            responses = [ Responses.delete_card ] } ]
+            responses = [ Responses.delete_card ] }
+
+          { test = "delete-all-cards"
+            request = Requests.delete_all_cards
+            responses = [ Responses.delete_all_cards ] } ]
 
     let find request =
         match messages |> Seq.tryFind (fun (msg) -> msg.request.SequenceEqual(request)) with

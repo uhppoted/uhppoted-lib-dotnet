@@ -23,7 +23,7 @@ module internal messages =
     let DELETE_CARD = 0x52uy
 
     [<Literal>]
-    let DELETE_CARDS = 0x54uy
+    let DELETE_ALL_CARDS = 0x54uy
 
     [<Literal>]
     let GET_CARDS = 0x58uy

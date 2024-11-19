@@ -66,3 +66,6 @@ put-card: build
 delete-card: build
 	$(CLI) delete-card --controller $(CONTROLLER)
 
+delete-all-cards: build
+	$(CLI) delete-all-cards --controller $(CONTROLLER)
+
