@@ -19,18 +19,19 @@ public readonly struct Command
 
 class Commands
 {
-    const uint CONTROLLER = 1u;
-    const uint CARD = 10058400u;
-    const uint CARD_INDEX = 1u;
     const int TIMEOUT = 1000;
     const string PROTOCOL = "udp";
-    static readonly IPEndPoint ADDRESS = IPEndPoint.Parse("192.168.1.100:60000");
-
     static readonly uhppoted.Options OPTIONS = new uhppoted.OptionsBuilder()
-                                                           .WithDestination(ADDRESS)
+                                                           .WithDestination(IPEndPoint.Parse("192.168.1.100:60000"))
                                                            .WithProtocol(PROTOCOL)
                                                            .WithDebug(true)
                                                            .build();
+
+    const uint CONTROLLER = 1u;
+    const uint CARD = 1u;
+    const uint CARD_INDEX = 1u;
+
+    static readonly IPAddress ADDRESS = IPAddress.Parse("192.168.1.10");
 
     public static List<Command> commands = new List<Command>
     {
@@ -111,11 +112,12 @@ class Commands
     public static void SetIPv4(string[] args)
     {
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
-        var address = IPAddress.Parse("192.168.1.100");
+        var address = ArgParse.Parse(args, "--address", ADDRESS);
         var netmask = IPAddress.Parse("255.255.255.0");
         var gateway = IPAddress.Parse("192.168.1.1");
         var timeout = TIMEOUT;
         var options = OPTIONS;
+
         var result = Uhppoted.SetIPv4(controller, address, netmask, gateway, timeout, options);
 
         if (result.IsOk)
@@ -477,7 +479,7 @@ class Commands
     public static void GetCard(string[] args)
     {
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
-        var card = CARD;
+        var card = ArgParse.Parse(args, "--card", CARD);
         var timeout = TIMEOUT;
         var options = OPTIONS;
         var result = Uhppoted.GetCard(controller, card, timeout, options);
@@ -545,7 +547,7 @@ class Commands
     public static void PutCard(string[] args)
     {
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
-        var card = CARD;
+        var card = ArgParse.Parse(args, "--card", CARD);
         var startdate = new DateOnly(2024, 1, 1);
         var enddate = new DateOnly(2024, 12, 31);
         byte door1 = 1;
@@ -577,7 +579,7 @@ class Commands
     public static void DeleteCard(string[] args)
     {
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
-        var card = CARD;
+        var card = ArgParse.Parse(args, "--card", CARD);
 
         var timeout = TIMEOUT;
         var options = OPTIONS;

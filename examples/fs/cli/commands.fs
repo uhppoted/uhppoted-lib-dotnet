@@ -11,9 +11,11 @@ type command =
       f: string list -> Result<unit, string> }
 
 let CONTROLLER = 1u
-let ADDRESS = Some(IPEndPoint(IPAddress.Parse("192.168.1.100"), 60000))
+let ENDPOINT = Some(IPEndPoint(IPAddress.Parse("192.168.1.100"), 60000))
 let PROTOCOL = Some("udp")
 let TIMEOUT = 1000
+
+let ADDRESS = IPAddress.Parse("192.168.1.10")
 let MODE = 2uy
 let DELAY = 7uy
 let CARD = 1u
@@ -67,7 +69,7 @@ let get_controller args =
 
     let options =
         { OPTIONS with
-            destination = ADDRESS
+            destination = ENDPOINT
             protocol = PROTOCOL }
 
     match Uhppoted.GetController(controller, timeout, options) with
@@ -93,7 +95,7 @@ let set_IPv4 args =
 
     let options =
         { OPTIONS with
-            destination = ADDRESS
+            destination = ENDPOINT
             protocol = PROTOCOL }
 
     match Uhppoted.SetIPv4(controller, address, netmask, gateway, timeout, options) with
@@ -107,7 +109,7 @@ let set_IPv4 args =
 let get_listener args =
     let controller =
         { controller = argparse args "--controller" CONTROLLER
-          address = ADDRESS
+          address = ENDPOINT
           protocol = PROTOCOL }
 
     match Uhppoted.get_listener (controller, TIMEOUT, OPTIONS) with
@@ -123,7 +125,7 @@ let get_listener args =
 let set_listener args =
     let controller =
         { controller = argparse args "--controller" CONTROLLER
-          address = ADDRESS
+          address = ENDPOINT
           protocol = PROTOCOL }
 
     let endpoint = IPEndPoint.Parse("192.168.1.100:60001")
@@ -141,7 +143,7 @@ let set_listener args =
 let get_time args =
     let controller =
         { controller = argparse args "--controller" CONTROLLER
-          address = ADDRESS
+          address = ENDPOINT
           protocol = PROTOCOL }
 
     match Uhppoted.get_time (controller, TIMEOUT, OPTIONS) with
@@ -156,7 +158,7 @@ let get_time args =
 let set_time args =
     let controller =
         { controller = argparse args "--controller" CONTROLLER
-          address = ADDRESS
+          address = ENDPOINT
           protocol = PROTOCOL }
 
     let datetime = DateTime.Now
@@ -173,7 +175,7 @@ let set_time args =
 let get_door args =
     let controller =
         { controller = argparse args "--controller" CONTROLLER
-          address = ADDRESS
+          address = ENDPOINT
           protocol = PROTOCOL }
 
     let door = 4uy
@@ -192,7 +194,7 @@ let get_door args =
 let set_door args =
     let controller =
         { controller = argparse args "--controller" CONTROLLER
-          address = ADDRESS
+          address = ENDPOINT
           protocol = PROTOCOL }
 
     let door = 4uy
@@ -213,7 +215,7 @@ let set_door args =
 let set_door_passcodes args =
     let controller =
         { controller = argparse args "--controller" CONTROLLER
-          address = ADDRESS
+          address = ENDPOINT
           protocol = PROTOCOL }
 
     let door = 4uy
@@ -242,7 +244,7 @@ let set_door_passcodes args =
 let open_door args =
     let controller =
         { controller = argparse args "--controller" CONTROLLER
-          address = ADDRESS
+          address = ENDPOINT
           protocol = PROTOCOL }
 
     let door = 4uy
@@ -259,7 +261,7 @@ let open_door args =
 let get_status args =
     let controller =
         { controller = argparse args "--controller" CONTROLLER
-          address = ADDRESS
+          address = ENDPOINT
           protocol = PROTOCOL }
 
     match Uhppoted.get_status (controller, TIMEOUT, OPTIONS) with
@@ -296,7 +298,7 @@ let get_status args =
 let get_cards args =
     let controller =
         { controller = argparse args "--controller" CONTROLLER
-          address = ADDRESS
+          address = ENDPOINT
           protocol = PROTOCOL }
 
     match Uhppoted.get_cards (controller, TIMEOUT, OPTIONS) with
@@ -315,7 +317,7 @@ let get_card args =
 
     let options =
         { OPTIONS with
-            destination = ADDRESS
+            destination = ENDPOINT
             protocol = PROTOCOL }
 
     match Uhppoted.GetCard(controller, card, TIMEOUT, OPTIONS) with
@@ -343,7 +345,7 @@ let get_card_at_index args =
 
     let options =
         { OPTIONS with
-            destination = ADDRESS
+            destination = ENDPOINT
             protocol = PROTOCOL }
 
     match Uhppoted.GetCardAtIndex(controller, index, timeout, options) with
@@ -379,7 +381,7 @@ let put_card args =
 
     let options =
         { OPTIONS with
-            destination = ADDRESS
+            destination = ENDPOINT
             protocol = PROTOCOL }
 
     match Uhppoted.PutCard(controller, card, startdate, enddate, door1, door2, door3, door4, PIN, timeout, options) with
@@ -399,7 +401,7 @@ let delete_card args =
 
     let options =
         { OPTIONS with
-            destination = ADDRESS
+            destination = ENDPOINT
             protocol = PROTOCOL }
 
     match Uhppoted.DeleteCard(controller, card, timeout, options) with
@@ -418,7 +420,7 @@ let delete_all_cards args =
 
     let options =
         { OPTIONS with
-            destination = ADDRESS
+            destination = ENDPOINT
             protocol = PROTOCOL }
 
     match Uhppoted.DeleteAllCards(controller, timeout, options) with

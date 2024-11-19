@@ -1,7 +1,9 @@
 CLI = dotnet run --project ../examples/fs/cli --framework net7.0
+
 CONTROLLER ?= 405419896
 CARD ?= 10058400
 MISSING_CARD ?= 10058399
+ADDRESS ?= 192.168.1.100
 
 .PHONY: format
 .PHONY: build
@@ -23,9 +25,9 @@ release: build test integration-tests
 	cd uhppoted && make release
 
 debug: build
-	dotnet run --project ../examples/fs/cli --framework net7.0 set-IPv4 --controller $(CONTROLLER)
-	dotnet run --project ../examples/cs/cli --framework net7.0 set-IPv4 --controller $(CONTROLLER)
-	dotnet run --project ../examples/vb/cli --framework net7.0 set-IPv4 --controller $(CONTROLLER)
+	dotnet run --project ../examples/fs/cli --framework net7.0 set-IPv4 --controller $(CONTROLLER) --address $(ADDRESS)
+	dotnet run --project ../examples/cs/cli --framework net7.0 set-IPv4 --controller $(CONTROLLER) --address $(ADDRESS)
+	dotnet run --project ../examples/vb/cli --framework net7.0 set-IPv4 --controller $(CONTROLLER) --address $(ADDRESS)
 
 find-controllers: build
 	$(CLI) find-controllers
@@ -33,8 +35,8 @@ find-controllers: build
 get-controller: build
 	$(CLI) get-controller --controller $(CONTROLLER)
 
-set-ip: build
-	$(CLI) set-IPv4 --controller $(CONTROLLER)
+set-IPv4: build
+	$(CLI) set-IPv4 --controller $(CONTROLLER) --address $(ADDRESS)
 
 get-listener: build
 	$(CLI) get-listener --controller $(CONTROLLER)
@@ -74,10 +76,10 @@ get-card-at-index: build
 	$(CLI) get-card-at-index --controller $(CONTROLLER)
 
 put-card: build
-	$(CLI) put-card --controller $(CONTROLLER)
+	$(CLI) put-card --controller $(CONTROLLER) --card $(CARD)
 
 delete-card: build
-	$(CLI) delete-card --controller $(CONTROLLER)
+	$(CLI) delete-card --controller $(CONTROLLER) --card $(CARD)
 
 delete-all-cards: build
 	$(CLI) delete-all-cards --controller $(CONTROLLER)

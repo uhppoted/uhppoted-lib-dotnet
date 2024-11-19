@@ -21,21 +21,14 @@
 
 - [ ] argparse
       - [x] --controller
-      - [ ] --address
-            - [x] F#
-            - [ ] C#
-            - [ ] VB.NET
-
+      - [x] --card
+      - [x] --address
       - [ ] --netmask
             - [x] F#
             - [ ] C#
             - [ ] VB.NET
-      - [ ] --gateway
-            - [x] F#
-            - [ ] C#
-            - [ ] VB.NET
 
-      - [x] --card
+      - [ ] --gateway
             - [x] F#
             - [ ] C#
             - [ ] VB.NET
@@ -54,6 +47,7 @@
       - [ ] --PIN
 
 - [ ] API
+      - [ ] **rename options.destination to endpoint**
       - [x] find-controllers
       - [x] get-controller
       - [x] set-IPv4

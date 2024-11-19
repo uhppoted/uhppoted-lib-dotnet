@@ -1,5 +1,9 @@
 CLI = dotnet run --framework net7.0
+
 CONTROLLER ?= 405419896
+CARD ?= 10058400
+MISSING_CARD ?= 10058399
+ADDRESS ?= 192.168.1.100
 
 .PHONY: format
 
@@ -18,8 +22,8 @@ find-controllers: build
 get-controller: build
 	$(CLI) get-controller --controller $(CONTROLLER)
 
-set-ip: build
-	$(CLI) set-IPv4 --controller $(CONTROLLER)
+set-IPv4: build
+	$(CLI) set-IPv4 --controller $(CONTROLLER) --address $(ADDRESS)
 
 get-listener: build
 	$(CLI) get-listener --controller $(CONTROLLER)
@@ -52,16 +56,17 @@ get-cards: build
 	$(CLI) get-cards --controller $(CONTROLLER)
 
 get-card: build
-	$(CLI) get-card --controller $(CONTROLLER)
+	$(CLI) get-card --controller $(CONTROLLER) --card $(CARD)
+	$(CLI) get-card --controller $(CONTROLLER) --card $(MISSING_CARD)
 
 get-card-at-index: build
 	$(CLI) get-card-at-index --controller $(CONTROLLER)
 
 put-card: build
-	$(CLI) put-card --controller $(CONTROLLER)
+	$(CLI) put-card --controller $(CONTROLLER) --card $(CARD)
 
 delete-card: build
-	$(CLI) delete-card --controller $(CONTROLLER)
+	$(CLI) delete-card --controller $(CONTROLLER) --card $(CARD)
 
 delete-all-cards: build
 	$(CLI) delete-all-cards --controller $(CONTROLLER)

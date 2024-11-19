@@ -19,11 +19,13 @@ End Structure
 
 Module Commands
     Private Const CONTROLLER_ID As UInt32 = 1
-    Private Const CARD_NUMBER As UInt32 = 10058400
+    Private Const CARD_NUMBER As UInt32 = 1
     Private Const CARD_INDEX As UInt32 = 1
     Private Const TIMEOUT = 1000
 
-    Private Dim OPTIONS = New OptionsBuilder().
+    Private ReadOnly Dim IPv4_ADDRESS = IPAddress.Parse("192.168.1.10")
+
+    Private ReadOnly Dim OPTIONS = New OptionsBuilder().
                                 WithDestination(IPEndPoint.Parse("192.168.1.100:60000")).
                                 WithProtocol("udp").
                                 WithDebug(true).
@@ -97,7 +99,7 @@ Module Commands
 
     Sub SetIPv4(args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
-        Dim address = IPAddress.Parse("192.168.1.100")
+        Dim address = ArgParse.Parse(args, "--address", IPv4_ADDRESS)
         Dim netmask = IPAddress.Parse("255.255.255.0")
         Dim gateway = IPAddress.Parse("192.168.1.1")
         Dim result = UHPPOTE.SetIPv4(controller, address, netmask, gateway, TIMEOUT, OPTIONS)
@@ -374,7 +376,7 @@ Module Commands
 
     Sub GetCard(args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
-        Dim card = 10058400
+        Dim card = ArgParse.Parse(args, "--card", CARD_NUMBER)
         Dim result = UHPPOTE.GetCard(controller, card, TIMEOUT, OPTIONS)
 
         If (result.IsOk And result.ResultValue.HasValue)
@@ -426,7 +428,7 @@ Module Commands
 
     Sub PutCard(args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
-        Dim card = CARD_NUMBER
+        Dim card = ArgParse.Parse(args, "--card", CARD_NUMBER)
         Dim startdate = New DateOnly(2024, 1, 1)
         Dim enddate = New DateOnly(2024, 12, 31)
         Dim door1 = 1
@@ -452,8 +454,7 @@ Module Commands
 
     Sub DeleteCard(args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
-        Dim card = CARD_NUMBER
-
+        Dim card = ArgParse.Parse(args, "--card", CARD_NUMBER)
         Dim result = UHPPOTE.DeleteCard(controller, card, TIMEOUT, OPTIONS)
 
         If (result.IsOk)
