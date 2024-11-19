@@ -127,10 +127,10 @@ type TestClass() =
         let netmask = IPAddress.Parse("255.255.255.0")
         let gateway = IPAddress.Parse("192.168.1.1")
 
-        controllers
-        |> List.iter (fun controller ->
-            match Uhppoted.set_IPv4 (controller, address, netmask, gateway, TIMEOUT, OPTIONS) with
-            | Ok response -> Assert.Pass()
+        options
+        |> List.iter (fun opts ->
+            match Uhppoted.SetIPv4(CONTROLLER, address, netmask, gateway, TIMEOUT, OPTIONS) with
+            | Ok _ -> Assert.Pass()
             | Error err -> Assert.Fail(err))
 
     [<Test>]

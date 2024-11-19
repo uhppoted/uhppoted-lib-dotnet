@@ -12,7 +12,7 @@ module Uhppoted =
           protocol = None
           debug = false }
 
-    let private exec
+    let private exex
         (controller: Controller)
         request
         (decode: byte[] -> Result<'b, string>)
@@ -37,7 +37,7 @@ module Uhppoted =
             | Error err -> Error err
         | Error err -> Error err
 
-    let private exec2
+    let private exec
         (controller: uint32)
         request
         (decode: byte[] -> Result<'b, string>)
@@ -112,7 +112,7 @@ module Uhppoted =
     let GetController (controller: uint32, timeout: int, options: Options) =
         let request = Encode.get_controller_request controller
 
-        match exec2 controller request Decode.get_controller_response timeout options with
+        match exec controller request Decode.get_controller_response timeout options with
         | Ok response ->
             let record: ControllerRecord =
                 { controller = response.controller
@@ -126,22 +126,30 @@ module Uhppoted =
             Ok(record)
         | Error err -> Error err
 
-    let set_IPv4
-        (
-            controller: Controller,
-            address: IPAddress,
-            netmask: IPAddress,
-            gateway: IPAddress,
-            timeout: int,
-            options: Options
-        ) =
+    /// <summary>
+    /// Sets the controller IPv4 address, netmask and gateway address..
+    /// </summary>
+    /// <param name="controller">Controller ID.</param>
+    /// <param name="address">Controller IPv4 address.</param>
+    /// <param name="netmask">Controller IPv4 netmask.</param>
+    /// <param name="gateway">Gateway IPv4 address.</param>
+    /// <param name="timeout">Operation timeout (ms).</param>
+    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <returns>A Result with an Ok() if the request was processed, Error otherwise.</returns>
+    /// <remarks>
+    /// The controller does not return a response to this request - provided no network (or other) errors occur,
+    /// it is assumed to be successful.
+    /// </remarks>
+    let SetIPv4
+        (controller: uint32, address: IPAddress, netmask: IPAddress, gateway: IPAddress, timeout: int, options: Options)
+        =
         let bind = options.bind
         let broadcast = options.broadcast
         let debug = options.debug
-        let request = Encode.set_IPv4_request controller.controller address netmask gateway
+        let request = Encode.set_IPv4_request controller address netmask gateway
 
         let result =
-            match controller.address, controller.protocol with
+            match options.destination, options.protocol with
             | None, _ -> UDP.broadcast_to (request, bind, broadcast, timeout, debug)
             | Some(addr), Some("tcp") -> TCP.send_to (request, bind, addr, timeout, debug)
             | Some(addr), _ -> UDP.send_to (request, bind, addr, timeout, debug)
@@ -153,7 +161,7 @@ module Uhppoted =
     let get_listener (controller: Controller, timeout: int, options: Options) =
         let request = Encode.get_listener_request controller.controller
 
-        exec controller request Decode.get_listener_response timeout options
+        exex controller request Decode.get_listener_response timeout options
 
     let set_listener (controller: Controller, endpoint: IPEndPoint, interval: uint8, timeout: int, options: Options) =
         let address = endpoint.Address
@@ -162,27 +170,27 @@ module Uhppoted =
         let request =
             Encode.set_listener_request controller.controller address port interval
 
-        exec controller request Decode.set_listener_response timeout options
+        exex controller request Decode.set_listener_response timeout options
 
     let get_time (controller: Controller, timeout: int, options: Options) =
         let request = Encode.get_time_request controller.controller
 
-        exec controller request Decode.get_time_response timeout options
+        exex controller request Decode.get_time_response timeout options
 
     let set_time (controller: Controller, datetime: DateTime, timeout: int, options: Options) =
         let request = Encode.set_time_request controller.controller datetime
 
-        exec controller request Decode.set_time_response timeout options
+        exex controller request Decode.set_time_response timeout options
 
     let get_door (controller: Controller, door: uint8, timeout: int, options: Options) =
         let request = Encode.get_door_request controller.controller door
 
-        exec controller request Decode.get_door_response timeout options
+        exex controller request Decode.get_door_response timeout options
 
     let set_door (controller: Controller, door: uint8, mode: uint8, delay: uint8, timeout: int, options: Options) =
         let request = Encode.set_door_request controller.controller door mode delay
 
-        exec controller request Decode.set_door_response timeout options
+        exex controller request Decode.set_door_response timeout options
 
     /// <summary>
     /// Sets up to 4 passcodes for a controller door.
@@ -244,7 +252,7 @@ module Uhppoted =
         let request =
             Encode.set_door_passcodes_request controller.controller door passcode1 passcode2 passcode3 passcode4
 
-        exec controller request Decode.set_door_passcodes_response timeout options
+        exex controller request Decode.set_door_passcodes_response timeout options
 
     /// <summary>
     /// Unlocks a door controlled by a controller.
@@ -295,7 +303,7 @@ module Uhppoted =
     let open_door (controller: Controller, door: uint8, timeout: int, options: Options) =
         let request = Encode.open_door_request controller.controller door
 
-        exec controller request Decode.open_door_response timeout options
+        exex controller request Decode.open_door_response timeout options
 
     /// <summary>
     /// Retrieves the current status of a controller.
@@ -342,7 +350,7 @@ module Uhppoted =
     let get_status (controller: Controller, timeout: int, options: Options) =
         let request = Encode.get_status_request controller.controller
 
-        exec controller request Decode.get_status_response timeout options
+        exex controller request Decode.get_status_response timeout options
 
     /// <summary>
     /// Retrieves the number of card records stored on a controller.
@@ -389,7 +397,7 @@ module Uhppoted =
     let get_cards (controller: Controller, timeout: int, options: Options) =
         let request = Encode.get_cards_request controller.controller
 
-        exec controller request Decode.get_cards_response timeout options
+        exex controller request Decode.get_cards_response timeout options
 
     /// <summary>
     /// Retrieves the card record for the requested card number.
@@ -404,7 +412,7 @@ module Uhppoted =
     let GetCard (controller: uint32, card: uint32, timeout: int, options: Options) =
         let request = Encode.get_card_request controller card
 
-        match exec2 controller request Decode.get_card_response timeout options with
+        match exec controller request Decode.get_card_response timeout options with
         | Ok response when response.card = 0u -> // not found
             Ok(Nullable())
         | Ok response ->
@@ -435,7 +443,7 @@ module Uhppoted =
     let GetCardAtIndex (controller: uint32, index: uint32, timeout: int, options: Options) =
         let request = Encode.get_card_at_index_request controller index
 
-        match exec2 controller request Decode.get_card_at_index_response timeout options with
+        match exec controller request Decode.get_card_at_index_response timeout options with
         | Ok response when response.card = 0u -> // not found
             Ok(Nullable())
         | Ok response when response.card = 0xffffffffu -> // deleted
@@ -488,7 +496,7 @@ module Uhppoted =
         let request =
             Encode.put_card_request controller card startdate enddate door1 door2 door3 door4 pin
 
-        match exec2 controller request Decode.put_card_response timeout options with
+        match exec controller request Decode.put_card_response timeout options with
         | Ok response -> Ok(response.ok)
         | Error err -> Error err
 
@@ -505,7 +513,7 @@ module Uhppoted =
     let DeleteCard (controller: uint32, card: uint32, timeout: int, options: Options) =
         let request = Encode.delete_card_request controller card
 
-        match exec2 controller request Decode.delete_card_response timeout options with
+        match exec controller request Decode.delete_card_response timeout options with
         | Ok response -> Ok(response.ok)
         | Error err -> Error err
 
@@ -521,6 +529,6 @@ module Uhppoted =
     let DeleteAllCards (controller: uint32, timeout: int, options: Options) =
         let request = Encode.delete_all_cards_request controller
 
-        match exec2 controller request Decode.delete_all_cards_response timeout options with
+        match exec controller request Decode.delete_all_cards_response timeout options with
         | Ok response -> Ok(response.ok)
         | Error err -> Error err

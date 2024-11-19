@@ -85,16 +85,18 @@ let get_controller args =
     | Error err -> Error err
 
 let set_IPv4 args =
-    let controller =
-        { controller = argparse args "--controller" CONTROLLER
-          address = ADDRESS
-          protocol = PROTOCOL }
-
+    let controller = argparse args "--controller" CONTROLLER
     let address = argparse args "--address" (IPAddress.Parse "192.168.1.100")
     let netmask = argparse args "--netmask" (IPAddress.Parse "255.255.255.0")
     let gateway = argparse args "--gateway" (IPAddress.Parse "192.168.1.1")
+    let timeout = TIMEOUT
 
-    match Uhppoted.set_IPv4 (controller, address, netmask, gateway, TIMEOUT, OPTIONS) with
+    let options =
+        { OPTIONS with
+            destination = ADDRESS
+            protocol = PROTOCOL }
+
+    match Uhppoted.SetIPv4(controller, address, netmask, gateway, timeout, options) with
     | Ok response ->
         printfn "set-IPv4"
         printfn "  ok"

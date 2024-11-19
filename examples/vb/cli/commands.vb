@@ -96,26 +96,18 @@ Module Commands
     End Sub
 
     Sub SetIPv4(args As String())
-        Try
-            Dim controller = New ControllerBuilder(405419896).
-                                 With(IPEndPoint.Parse("192.168.1.100:60000")).
-                                 With("udp").build()
+        Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
+        Dim address = IPAddress.Parse("192.168.1.100")
+        Dim netmask = IPAddress.Parse("255.255.255.0")
+        Dim gateway = IPAddress.Parse("192.168.1.1")
+        Dim result = UHPPOTE.SetIPv4(controller, address, netmask, gateway, TIMEOUT, OPTIONS)
 
-            Dim address = IPAddress.Parse("192.168.1.100")
-            Dim netmask = IPAddress.Parse("255.255.255.0")
-            Dim gateway = IPAddress.Parse("192.168.1.1")
-            Dim result = UHPPOTE.set_IPv4(controller, address, netmask, gateway, TIMEOUT, OPTIONS)
-
-            If (result.IsOk)
-                WriteLine("set-IPv4")
-                WriteLine("  ok")
-            Else If (result.IsError)
-                Throw New Exception(result.ErrorValue)
-            End If
-
-        Catch Err As Exception
-            WriteLine("Exception  {0}", err.Message)
-        End Try
+        If (result.IsOk)
+            WriteLine("set-IPv4")
+            WriteLine("  ok")
+        Else If (result.IsError)
+            Throw New Exception(result.ErrorValue)
+        End If
     End Sub
 
     Sub GetListener(args As String())

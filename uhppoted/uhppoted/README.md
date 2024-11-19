@@ -18,8 +18,8 @@ folder on the github [repository](https://github.com/uhppoted/uhppoted-lib-dotne
 ### [`GetController`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/get-controller.md))
 Retrieves the IPv4 configuration, MAC address and version information for an access controller.
 
-### `set-IPv4`
-Sets a controller IPv4 configuration.
+### [`SetIPv4`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/set-IPv4.md))
+Sets a controller IPv4 address, netmask and gateway address.
 
 ### `get-listener`
 Gets a controller event listener address:port and auto-send interval.

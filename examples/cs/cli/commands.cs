@@ -86,7 +86,6 @@ class Commands
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
         var timeout = TIMEOUT;
         var options = OPTIONS;
-
         var result = Uhppoted.GetController(controller, timeout, options);
 
         if (result.IsOk)
@@ -111,31 +110,22 @@ class Commands
 
     public static void SetIPv4(string[] args)
     {
-        try
+        var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
+        var address = IPAddress.Parse("192.168.1.100");
+        var netmask = IPAddress.Parse("255.255.255.0");
+        var gateway = IPAddress.Parse("192.168.1.1");
+        var timeout = TIMEOUT;
+        var options = OPTIONS;
+        var result = Uhppoted.SetIPv4(controller, address, netmask, gateway, timeout, options);
+
+        if (result.IsOk)
         {
-            var controller = new uhppoted.ControllerBuilder(CONTROLLER)
-                                         .With(IPEndPoint.Parse("192.168.1.100:60000"))
-                                         .With("udp")
-                                         .build();
-
-            var address = IPAddress.Parse("192.168.1.100");
-            var netmask = IPAddress.Parse("255.255.255.0");
-            var gateway = IPAddress.Parse("192.168.1.1");
-            var result = Uhppoted.set_IPv4(controller, address, netmask, gateway, TIMEOUT, OPTIONS);
-
-            if (result.IsOk)
-            {
-                WriteLine("set-IPv4");
-                WriteLine("  ok");
-            }
-            else if (result.IsError)
-            {
-                throw new Exception(result.ErrorValue);
-            }
+            WriteLine("set-IPv4");
+            WriteLine("  ok");
         }
-        catch (Exception err)
+        else if (result.IsError)
         {
-            WriteLine("** ERROR  {0}", err.Message);
+            throw new Exception(result.ErrorValue);
         }
     }
 

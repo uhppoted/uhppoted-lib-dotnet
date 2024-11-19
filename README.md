@@ -21,14 +21,14 @@ illustrate the use of the API can be found in the [examples](examples) folder.
 ### Usage
 
 
-### [`find-controllers`](documentation/API/find-controllers.md)
+### [`FindControllers`](documentation/API/find-controllers.md)
 'Discovers' all controllers accessible via a UDP broadcast on the local LAN.
 
-### [`get-controller`](documentation/API/get-controller.md)
+### [`GetController`](documentation/API/get-controller.md)
 Retrieves the IPv4 configuration, MAC address and version information for an access controller.
 
-### `set-IPv4`
-Sets a controller IPv4 configuration.
+### [`SetIPv4`](documentation/API/set-IPv4.md)
+Sets a controller IPv4 address, netmask and gateway address.
 
 ### `get-listener`
 Gets a controller event listener address:port and auto-send interval.
@@ -60,19 +60,19 @@ Retrieves a controller status record.
 ### `get-cards`
 Retrieves the number of card records stored on a controller.
 
-### [`get-card`](documentation/API/get-card.md)
+### [`GetCard`](documentation/API/get-card.md)
 Retrieves a card record by card number.
 
-### [`get-card-at-index`](documentation/API/get-card-at-index.md)
+### [`GetCardAtIndex`](documentation/API/get-card-at-index.md)
 Retrieves the card record (if any) at the index in the cards list stored on the controller.
 
-### [`put-card`](documentation/API/put-card.md)
+### [`PutCard`](documentation/API/put-card.md)
 Adds or updates a card record on a controller.
 
-### [`delete-card`](documentation/API/delete-card.md)
+### [`DeleteCard`](documentation/API/delete-card.md)
 Deletes a card record from a controller.
 
-### [`deletes-all-cards`](documentation/API/delete-all-cards.md)
+### [`DeleteAllCards`](documentation/API/delete-all-cards.md)
 Deletes all card records from a controller.
 
 
