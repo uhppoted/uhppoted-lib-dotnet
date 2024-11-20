@@ -26,7 +26,7 @@ let OPTIONS: Options =
     { bind = IPEndPoint(IPAddress.Any, 0)
       broadcast = IPEndPoint(IPAddress.Broadcast, 60000)
       listen = IPEndPoint(IPAddress.Any, 60001)
-      destination = None
+      endpoint = None
       protocol = None
       debug = true }
 
@@ -70,7 +70,7 @@ let get_controller args =
 
     let options =
         { OPTIONS with
-            destination = ENDPOINT
+            endpoint = ENDPOINT
             protocol = PROTOCOL }
 
     match Uhppoted.GetController(controller, timeout, options) with
@@ -96,7 +96,7 @@ let set_IPv4 args =
 
     let options =
         { OPTIONS with
-            destination = ENDPOINT
+            endpoint = ENDPOINT
             protocol = PROTOCOL }
 
     match Uhppoted.SetIPv4(controller, address, netmask, gateway, timeout, options) with
@@ -113,7 +113,7 @@ let get_listener args =
 
     let options =
         { OPTIONS with
-            destination = ENDPOINT
+            endpoint = ENDPOINT
             protocol = PROTOCOL }
 
     match Uhppoted.GetListener(controller, TIMEOUT, OPTIONS) with
@@ -321,7 +321,7 @@ let get_card args =
 
     let options =
         { OPTIONS with
-            destination = ENDPOINT
+            endpoint = ENDPOINT
             protocol = PROTOCOL }
 
     match Uhppoted.GetCard(controller, card, TIMEOUT, OPTIONS) with
@@ -350,7 +350,7 @@ let get_card_at_index args =
 
     let options =
         { OPTIONS with
-            destination = ENDPOINT
+            endpoint = ENDPOINT
             protocol = PROTOCOL }
 
     match Uhppoted.GetCardAtIndex(controller, index, timeout, options) with
@@ -386,7 +386,7 @@ let put_card args =
 
     let options =
         { OPTIONS with
-            destination = ENDPOINT
+            endpoint = ENDPOINT
             protocol = PROTOCOL }
 
     match Uhppoted.PutCard(controller, card, startdate, enddate, door1, door2, door3, door4, PIN, timeout, options) with
@@ -406,7 +406,7 @@ let delete_card args =
 
     let options =
         { OPTIONS with
-            destination = ENDPOINT
+            endpoint = ENDPOINT
             protocol = PROTOCOL }
 
     match Uhppoted.DeleteCard(controller, card, timeout, options) with
@@ -425,7 +425,7 @@ let delete_all_cards args =
 
     let options =
         { OPTIONS with
-            destination = ENDPOINT
+            endpoint = ENDPOINT
             protocol = PROTOCOL }
 
     match Uhppoted.DeleteAllCards(controller, timeout, options) with
@@ -444,7 +444,7 @@ let get_event args =
 
     let options =
         { OPTIONS with
-            destination = ENDPOINT
+            endpoint = ENDPOINT
             protocol = PROTOCOL }
 
     match Uhppoted.GetEvent(controller, index, timeout, options) with

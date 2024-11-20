@@ -47,7 +47,6 @@
       - [ ] --PIN
 
 - [ ] API
-      - [ ] **rename options.destination to endpoint**
       - [x] find-controllers
       - [x] get-controller
       - [x] set-IPv4

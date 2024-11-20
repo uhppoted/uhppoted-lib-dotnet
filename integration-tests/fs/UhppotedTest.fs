@@ -31,7 +31,7 @@ type TestClass() =
         { bind = IPEndPoint(IPAddress.Any, 0)
           broadcast = IPEndPoint(IPAddress.Broadcast, 59999)
           listen = IPEndPoint(IPAddress.Any, 60001)
-          destination = None
+          endpoint = None
           protocol = None
           debug = false }
 
@@ -53,14 +53,17 @@ type TestClass() =
             protocol = Some("tcp") } ]
 
     let options =
-        [ { OPTIONS with destination = None }
+        [ { OPTIONS with endpoint = None }
+
           { OPTIONS with
-              destination = Some(ENDPOINT) }
+              endpoint = Some(ENDPOINT) }
+
           { OPTIONS with
-              destination = Some(ENDPOINT)
+              endpoint = Some(ENDPOINT)
               protocol = Some("udp") }
+
           { OPTIONS with
-              destination = Some(ENDPOINT)
+              endpoint = Some(ENDPOINT)
               protocol = Some("tcp") } ]
 
     [<OneTimeSetUp>]

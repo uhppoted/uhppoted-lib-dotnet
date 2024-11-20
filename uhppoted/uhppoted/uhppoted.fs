@@ -8,7 +8,7 @@ module Uhppoted =
         { bind = IPEndPoint(IPAddress.Any, 0)
           broadcast = IPEndPoint(IPAddress.Broadcast, 60000)
           listen = IPEndPoint(IPAddress.Any, 60001)
-          destination = None
+          endpoint = None
           protocol = None
           debug = false }
 
@@ -49,7 +49,7 @@ module Uhppoted =
         let debug = options.debug
 
         let result =
-            match options.destination, options.protocol with
+            match options.endpoint, options.protocol with
             | None, _ -> UDP.broadcast_to (request, bind, broadcast, timeout, debug)
             | Some(addr), Some("tcp") -> TCP.send_to (request, bind, addr, timeout, debug)
             | Some(addr), _ -> UDP.send_to (request, bind, addr, timeout, debug)
@@ -149,7 +149,7 @@ module Uhppoted =
         let request = Encode.set_IPv4_request controller address netmask gateway
 
         let result =
-            match options.destination, options.protocol with
+            match options.endpoint, options.protocol with
             | None, _ -> UDP.broadcast_to (request, bind, broadcast, timeout, debug)
             | Some(addr), Some("tcp") -> TCP.send_to (request, bind, addr, timeout, debug)
             | Some(addr), _ -> UDP.send_to (request, bind, addr, timeout, debug)

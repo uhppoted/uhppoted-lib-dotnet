@@ -27,7 +27,7 @@ Module Commands
     Private ReadOnly Dim IPv4_ADDRESS = IPAddress.Parse("192.168.1.10")
 
     Private ReadOnly Dim OPTIONS = New OptionsBuilder().
-                                WithDestination(IPEndPoint.Parse("192.168.1.100:60000")).
+                                WithEndpoint(IPEndPoint.Parse("192.168.1.100:60000")).
                                 WithProtocol("udp").
                                 WithDebug(true).
                                 build()

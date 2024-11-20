@@ -22,7 +22,7 @@ class Commands
     const int TIMEOUT = 1000;
     const string PROTOCOL = "udp";
     static readonly uhppoted.Options OPTIONS = new uhppoted.OptionsBuilder()
-                                                           .WithDestination(IPEndPoint.Parse("192.168.1.100:60000"))
+                                                           .WithEndpoint(IPEndPoint.Parse("192.168.1.100:60000"))
                                                            .WithProtocol(PROTOCOL)
                                                            .WithDebug(true)
                                                            .build();
