@@ -108,17 +108,20 @@ let set_IPv4 args =
     | Error err -> Error err
 
 let get_listener args =
-    let controller =
-        { controller = argparse args "--controller" CONTROLLER
-          address = ENDPOINT
-          protocol = PROTOCOL }
+    let controller = argparse args "--controller" CONTROLLER
+    let timeout = TIMEOUT
 
-    match Uhppoted.get_listener (controller, TIMEOUT, OPTIONS) with
-    | Ok response ->
+    let options =
+        { OPTIONS with
+            destination = ENDPOINT
+            protocol = PROTOCOL }
+
+    match Uhppoted.GetListener(controller, TIMEOUT, OPTIONS) with
+    | Ok record ->
         printfn "get-listener"
-        printfn "  controller %u" response.controller
-        printfn "    endpoint %A" response.endpoint
-        printfn "    interval %ds" response.interval
+        printfn "  controller %u" controller
+        printfn "    endpoint %A" record.endpoint
+        printfn "    interval %ds" record.interval
         printfn ""
         Ok()
     | Error err -> Error err

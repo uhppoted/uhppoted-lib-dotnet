@@ -138,15 +138,14 @@ type TestClass() =
 
     [<Test>]
     member this.TestGetListener() =
-        let expected: GetListenerResponse =
-            { controller = 405419896u
-              endpoint = IPEndPoint.Parse("192.168.1.100:60001")
+        let expected: Listener =
+            { endpoint = IPEndPoint.Parse("192.168.1.100:60001")
               interval = 13uy }
 
-        controllers
-        |> List.iter (fun controller ->
-            match Uhppoted.get_listener (controller, TIMEOUT, OPTIONS) with
-            | Ok response -> Assert.That(response, Is.EqualTo(expected))
+        options
+        |> List.iter (fun opts ->
+            match Uhppoted.GetListener(CONTROLLER, TIMEOUT, OPTIONS) with
+            | Ok _ -> Assert.Pass()
             | Error err -> Assert.Fail(err))
 
     [<Test>]

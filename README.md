@@ -38,7 +38,7 @@ Retrieves the IPv4 configuration, MAC address and version information for an acc
 ### [`SetIPv4`](documentation/API/set-IPv4.md)
 Sets a controller IPv4 address, netmask and gateway address.
 
-### `get-listener`
+### [`GetListener`](documentation/API/get-listener.md)
 Gets a controller event listener address:port and auto-send interval.
 
 ### `set-listener`

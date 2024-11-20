@@ -107,7 +107,7 @@ module Uhppoted =
     /// <param name="card">Card number to retrieve.</param>
     /// <param name="timeout">Operation timeout (ms).</param>
     /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
-    /// <returns>A Result with a populated Controller record if ok, Error otherwise.</returns>
+    /// <returns>Ok with a Controller record or Error.</returns>
     /// <remarks></remarks>
     let GetController (controller: uint32, timeout: int, options: Options) =
         let request = Encode.get_controller_request controller
@@ -135,7 +135,7 @@ module Uhppoted =
     /// <param name="gateway">Gateway IPv4 address.</param>
     /// <param name="timeout">Operation timeout (ms).</param>
     /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
-    /// <returns>A Result with an Ok() if the request was processed, Error otherwise.</returns>
+    /// <returns>Ok or Error.</returns>
     /// <remarks>
     /// The controller does not return a response to this request - provided no network (or other) errors occur,
     /// it is assumed to be successful.
@@ -158,10 +158,24 @@ module Uhppoted =
         | Ok _ -> Ok()
         | Error err -> Error err
 
-    let get_listener (controller: Controller, timeout: int, options: Options) =
-        let request = Encode.get_listener_request controller.controller
+    /// <summary>
+    /// Retrieves the controller event listener endpoint and auto-send interval.
+    /// </summary>
+    /// <param name="controller">Controller ID.</param>
+    /// <param name="timeout">Operation timeout (ms).</param>
+    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <returns>Ok with an {endpoint,interval} record or Error.</returns>
+    let GetListener (controller: uint32, timeout: int, options: Options) =
+        let request = Encode.get_listener_request controller
 
-        exex controller request Decode.get_listener_response timeout options
+        match exec controller request Decode.get_listener_response timeout options with
+        | Ok response ->
+            let record: Listener =
+                { endpoint = response.endpoint
+                  interval = response.interval }
+
+            Ok(record)
+        | Error err -> Error err
 
     let set_listener (controller: Controller, endpoint: IPEndPoint, interval: uint8, timeout: int, options: Options) =
         let address = endpoint.Address

@@ -78,8 +78,6 @@ Module Commands
 
     Sub GetController(args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
-        Dim card = CARD_NUMBER
-
         Dim result = UHPPOTE.GetController(controller, TIMEOUT, OPTIONS)
 
         If (result.IsOk)
@@ -115,27 +113,20 @@ Module Commands
     End Sub
 
     Sub GetListener(args As String())
-        Try
-            Dim controller = New ControllerBuilder(405419896).
-                                 With(IPEndPoint.Parse("192.168.1.100:60000")).
-                                 With("udp").build()
+        Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
+        Dim result = UHPPOTE.GetListener(controller, TIMEOUT, OPTIONS)
 
-            Dim result = UHPPOTE.get_listener(controller, TIMEOUT, OPTIONS)
+        If (result.IsOk)
+            Dim record = result.ResultValue
 
-            If (result.IsOk)
-                Dim response = result.ResultValue
-                WriteLine("get-listener")
-                WriteLine("  controller {0}", response.controller)
-                WriteLine("    endpoint {0}", response.endpoint)
-                WriteLine("    interval {0}s", response.interval)
-                WriteLine()
-            Else If (result.IsError)
-                Throw New Exception(result.ErrorValue)
-            End If
-
-        Catch Err As Exception
-            WriteLine("Exception  {0}", err.Message)
-        End Try
+            WriteLine("get-listener")
+            WriteLine("  controller {0}", controller)
+            WriteLine("    endpoint {0}", record.endpoint)
+            WriteLine("    interval {0}s", record.interval)
+            WriteLine()
+        Else If (result.IsError)
+            Throw New Exception(result.ErrorValue)
+        End If
     End Sub
 
     Sub SetListener(args As String())

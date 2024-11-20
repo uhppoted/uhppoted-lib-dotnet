@@ -4,7 +4,6 @@ Retrieves the IPv4 configuration, MAC address and version information for an acc
 
 ### Parameters
 - **`controller`**: Controller ID.
-- **`card`**: Card number.
 - **`timeout`**: Operation timeout (ms).
 - **`options`**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 

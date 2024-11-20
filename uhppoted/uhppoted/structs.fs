@@ -36,6 +36,10 @@ type Event =
       card: uint32
       reason: uint8 }
 
+[<Struct>]
+type Listener =
+    { endpoint: IPEndPoint
+      interval: uint8 }
 
 type internal IResponse =
     abstract member controller: uint32

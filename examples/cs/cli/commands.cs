@@ -135,33 +135,24 @@ class Commands
 
     public static void GetListener(string[] args)
     {
-        try
+        var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
+        var timeout = TIMEOUT;
+        var options = OPTIONS;
+        var result = Uhppoted.GetListener(controller, timeout, options);
+
+        if (result.IsOk)
         {
-            var controller = new uhppoted.ControllerBuilder(CONTROLLER)
-                                         .With(IPEndPoint.Parse("192.168.1.100:60000"))
-                                         .With("udp")
-                                         .build();
+            var record = result.ResultValue;
 
-            var result = Uhppoted.get_listener(controller, TIMEOUT, OPTIONS);
-
-            if (result.IsOk)
-            {
-                var response = result.ResultValue;
-
-                WriteLine("get-listener");
-                WriteLine("  controller {0}", response.controller);
-                WriteLine("    endpoint {0}", response.endpoint);
-                WriteLine("    interval {0}s", response.interval);
-                WriteLine();
-            }
-            else if (result.IsError)
-            {
-                throw new Exception(result.ErrorValue);
-            }
+            WriteLine("get-listener");
+            WriteLine("  controller {0}", controller);
+            WriteLine("    endpoint {0}", record.endpoint);
+            WriteLine("    interval {0}s", record.interval);
+            WriteLine();
         }
-        catch (Exception err)
+        else if (result.IsError)
         {
-            WriteLine("** ERROR  {0}", err.Message);
+            throw new Exception(result.ErrorValue);
         }
     }
 

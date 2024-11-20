@@ -21,8 +21,8 @@ Retrieves the IPv4 configuration, MAC address and version information for an acc
 ### [`SetIPv4`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/set-IPv4.md))
 Sets a controller IPv4 address, netmask and gateway address.
 
-### `get-listener`
-Gets a controller event listener address:port and auto-send interval.
+### [`GetListener`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/get-listener.md))
+Gets a controller event listener endpoint and auto-send interval.
 
 ### `set-listener`
 Sets a controller event listener address:port and auto-send interval.
