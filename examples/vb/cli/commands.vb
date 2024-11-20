@@ -25,6 +25,8 @@ Module Commands
     Private Const TIMEOUT = 1000
 
     Private ReadOnly Dim IPv4_ADDRESS = IPAddress.Parse("192.168.1.10")
+    Private ReadOnly Dim IPv4_NETMASK = IPAddress.Parse("255.255.255.0")
+    Private ReadOnly Dim IPv4_GATEWAY = IPAddress.Parse("192.168.1.1")
 
     Private ReadOnly Dim OPTIONS = New OptionsBuilder().
                                 WithEndpoint(IPEndPoint.Parse("192.168.1.100:60000")).
@@ -100,8 +102,8 @@ Module Commands
     Sub SetIPv4(args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
         Dim address = ArgParse.Parse(args, "--address", IPv4_ADDRESS)
-        Dim netmask = IPAddress.Parse("255.255.255.0")
-        Dim gateway = IPAddress.Parse("192.168.1.1")
+        Dim netmask = ArgParse.Parse(args, "--netmask", IPv4_NETMASK)
+        Dim gateway = ArgParse.Parse(args, "--gateway", IPv4_GATEWAY)
         Dim result = UHPPOTE.SetIPv4(controller, address, netmask, gateway, TIMEOUT, OPTIONS)
 
         If (result.IsOk)

@@ -4,6 +4,8 @@ CONTROLLER ?= 405419896
 CARD ?= 10058400
 MISSING_CARD ?= 10058399
 ADDRESS ?= 192.168.1.100
+NETMASK ?= 255.254.253.251
+GATEWAY ?= 192.193.194.195
 EVENT_INDEX ?= 23
 
 .PHONY: format
@@ -26,9 +28,9 @@ release: build test integration-tests
 	cd uhppoted && make release
 
 debug: build
-	dotnet run --project ../examples/fs/cli --framework net7.0 get-listener --controller $(CONTROLLER)
-	dotnet run --project ../examples/cs/cli --framework net7.0 get-listener --controller $(CONTROLLER)
-	dotnet run --project ../examples/vb/cli --framework net7.0 get-listener --controller $(CONTROLLER)
+	dotnet run --project ../examples/fs/cli --framework net7.0 set-IPv4 --controller $(CONTROLLER) --address $(ADDRESS) --netmask $(NETMASK) --gateway $(GATEWAY)
+	dotnet run --project ../examples/cs/cli --framework net7.0 set-IPv4 --controller $(CONTROLLER) --address $(ADDRESS) --netmask $(NETMASK) --gateway $(GATEWAY)
+	dotnet run --project ../examples/vb/cli --framework net7.0 set-IPv4 --controller $(CONTROLLER) --address $(ADDRESS) --netmask $(NETMASK) --gateway $(GATEWAY)
 
 find-controllers: build
 	$(CLI) find-controllers
@@ -37,7 +39,7 @@ get-controller: build
 	$(CLI) get-controller --controller $(CONTROLLER)
 
 set-IPv4: build
-	$(CLI) set-IPv4 --controller $(CONTROLLER) --address $(ADDRESS)
+	$(CLI) set-IPv4 --controller $(CONTROLLER) --address $(ADDRESS) --netmask $(NETMASK) --gateway $(GATEWAY)
 
 get-listener: build
 	$(CLI) get-listener --controller $(CONTROLLER)

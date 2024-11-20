@@ -15,7 +15,10 @@ let ENDPOINT = Some(IPEndPoint(IPAddress.Parse("192.168.1.100"), 60000))
 let PROTOCOL = Some("udp")
 let TIMEOUT = 1000
 
-let ADDRESS = IPAddress.Parse("192.168.1.10")
+let ADDRESS = IPAddress.Parse "192.168.1.10"
+let NETMASK = IPAddress.Parse "255.255.255.0"
+let GATEWAY = IPAddress.Parse "192.168.1.1"
+
 let MODE = 2uy
 let DELAY = 7uy
 let CARD = 1u
@@ -89,9 +92,9 @@ let get_controller args =
 
 let set_IPv4 args =
     let controller = argparse args "--controller" CONTROLLER
-    let address = argparse args "--address" (IPAddress.Parse "192.168.1.100")
-    let netmask = argparse args "--netmask" (IPAddress.Parse "255.255.255.0")
-    let gateway = argparse args "--gateway" (IPAddress.Parse "192.168.1.1")
+    let address = argparse args "--address" ADDRESS
+    let netmask = argparse args "--netmask" NETMASK
+    let gateway = argparse args "--gateway" GATEWAY
     let timeout = TIMEOUT
 
     let options =

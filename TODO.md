@@ -18,22 +18,19 @@
 
 - [ ] translations/enums
       - [ ] door mode
+      - [ ] event types
+      - [ ] event reasons
 
 - [ ] argparse
       - [x] --controller
       - [x] --card
       - [x] --address
-      - [ ] --netmask
-            - [x] F#
-            - [ ] C#
-            - [ ] VB.NET
-
-      - [ ] --gateway
-            - [x] F#
-            - [ ] C#
-            - [ ] VB.NET
-
+      - [x] --netmask
+      - [x] --gateway
       - [ ] --listener
+            - [ ] F#
+            - [ ] C#
+            - [ ] VB.NET
       - [ ] --interval
       - [ ] --time
       - [ ] --door

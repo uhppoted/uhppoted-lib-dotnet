@@ -33,6 +33,8 @@ class Commands
     const uint EVENT_INDEX = 1u;
 
     static readonly IPAddress ADDRESS = IPAddress.Parse("192.168.1.10");
+    static readonly IPAddress NETMASK = IPAddress.Parse("255.255.255.0");
+    static readonly IPAddress GATEWAY = IPAddress.Parse("192.168.1.1");
 
     public static List<Command> commands = new List<Command>
     {
@@ -115,8 +117,8 @@ class Commands
     {
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
         var address = ArgParse.Parse(args, "--address", ADDRESS);
-        var netmask = IPAddress.Parse("255.255.255.0");
-        var gateway = IPAddress.Parse("192.168.1.1");
+        var netmask = ArgParse.Parse(args, "--netmask", NETMASK);
+        var gateway = ArgParse.Parse(args, "--gateway", GATEWAY);
         var timeout = TIMEOUT;
         var options = OPTIONS;
 

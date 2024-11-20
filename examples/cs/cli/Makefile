@@ -4,6 +4,8 @@ CONTROLLER ?= 405419896
 CARD ?= 10058400
 MISSING_CARD ?= 10058399
 ADDRESS ?= 192.168.1.100
+NETMASK ?= 255.255.255.0
+GATEWAY ?= 192.168.1.1
 EVENT_INDEX ?= 23
 
 .PHONY: format
@@ -24,7 +26,7 @@ get-controller: build
 	$(CLI) get-controller --controller $(CONTROLLER)
 
 set-IPv4: build
-	$(CLI) set-IPv4 --controller $(CONTROLLER) --address $(ADDRESS)
+	$(CLI) set-IPv4  --controller $(CONTROLLER) --address $(ADDRESS) --netmask 255.255.255.0 --gateway 192.168.1.1
 
 get-listener: build
 	$(CLI) get-listener --controller $(CONTROLLER)
