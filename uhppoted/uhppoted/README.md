@@ -55,7 +55,7 @@ Retrieves the number of card records stored on a controller.
 Retrieves a card record from a controller by card number.
 
 ### [`GetCardAtIndex`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/get-card-at-index.md))
-Retrieves the card record (if any) at the index in the cards list stored on the controller.
+Retrieves the card record (if any) at the index from a controller.
 
 ### [`PutCard`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/put-card.md))
 Adds or updates a card record stored on a controller.
@@ -65,6 +65,9 @@ Deletes a card record from a controller.
 
 ### [`DeleteAllCards`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/delete-all-cards.md))
 Deletes all card records from a controller.
+
+### [`GetEvent`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/get-event.md))
+Retrieves the event record (if any) at the index from a controller.
 
 ## Notes
 

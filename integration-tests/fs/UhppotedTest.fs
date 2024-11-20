@@ -21,8 +21,11 @@ type TestClass() =
     let CARD = 10058400u
     let MISSING_CARD = 10058399u
     let CARD_INDEX = 135u
-    let MISSING_CARD_INDEX = 136u
-    let DELETED_CARD_INDEX = 137u
+    let CARD_INDEX_NOT_FOUND = 136u
+    let CARD_INDEX_DELETED = 137u
+    let EVENT_INDEX = 13579u
+    let EVENT_INDEX_NOT_FOUND = 24680u
+    let EVENT_INDEX_OVERWRITTEN = 98765u
 
     let OPTIONS: Options =
         { bind = IPEndPoint(IPAddress.Any, 0)
@@ -330,7 +333,7 @@ type TestClass() =
     member this.TestGetCardAtIndexNotFound() =
         options
         |> List.iter (fun opts ->
-            match Uhppoted.GetCardAtIndex(CONTROLLER, MISSING_CARD_INDEX, TIMEOUT, opts) with
+            match Uhppoted.GetCardAtIndex(CONTROLLER, CARD_INDEX_NOT_FOUND, TIMEOUT, opts) with
             | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
             | Ok _ -> Assert.Pass()
             | Error err -> Assert.Fail(err))
@@ -339,7 +342,7 @@ type TestClass() =
     member this.TestGetCardAtIndexDeleted() =
         options
         |> List.iter (fun opts ->
-            match Uhppoted.GetCardAtIndex(CONTROLLER, DELETED_CARD_INDEX, TIMEOUT, opts) with
+            match Uhppoted.GetCardAtIndex(CONTROLLER, CARD_INDEX_DELETED, TIMEOUT, opts) with
             | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
             | Ok _ -> Assert.Pass()
             | Error err -> Assert.Fail(err))
@@ -382,4 +385,40 @@ type TestClass() =
         |> List.iter (fun opts ->
             match Uhppoted.DeleteAllCards(CONTROLLER, TIMEOUT, opts) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
+            | Error err -> Assert.Fail(err))
+
+    [<Test>]
+    member this.TestGetEvent() =
+        let expected: Event =
+            { timestamp = Nullable(DateTime.ParseExact("2024-11-17 12:34:56", "yyyy-MM-dd HH:mm:ss", null))
+              index = 13579u
+              event_type = 2uy
+              access_granted = true
+              door = 4uy
+              direction = 2uy
+              card = 10058400u
+              reason = 21uy }
+
+        options
+        |> List.iter (fun opts ->
+            match Uhppoted.GetEvent(CONTROLLER, EVENT_INDEX, TIMEOUT, opts) with
+            | Ok response -> Assert.That(response.Value, Is.EqualTo(expected))
+            | Error err -> Assert.Fail(err))
+
+    [<Test>]
+    member this.TestGetEventNotFound() =
+        options
+        |> List.iter (fun opts ->
+            match Uhppoted.GetEvent(CONTROLLER, EVENT_INDEX_NOT_FOUND, TIMEOUT, opts) with
+            | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
+            | Ok _ -> Assert.Pass()
+            | Error err -> Assert.Fail(err))
+
+    [<Test>]
+    member this.TestGetEventOverwritten() =
+        options
+        |> List.iter (fun opts ->
+            match Uhppoted.GetEvent(CONTROLLER, EVENT_INDEX_OVERWRITTEN, TIMEOUT, opts) with
+            | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
+            | Ok _ -> Assert.Pass()
             | Error err -> Assert.Fail(err))

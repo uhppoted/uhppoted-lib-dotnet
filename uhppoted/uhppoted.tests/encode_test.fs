@@ -212,3 +212,13 @@ type TestEncoder() =
         let packet = Encode.delete_all_cards_request controller
 
         Assert.That(packet, Is.EqualTo(expected))
+
+    [<Test>]
+    member this.TestEncodeGetEvent() =
+        let expected = TestRequests.get_event
+
+        let controller = 405419896u
+        let index = 13579u
+        let packet = Encode.get_event_request controller index
+
+        Assert.That(packet, Is.EqualTo(expected))

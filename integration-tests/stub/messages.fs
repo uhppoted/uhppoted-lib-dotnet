@@ -95,7 +95,19 @@ module Messages =
 
           { test = "delete-all-cards"
             request = Requests.delete_all_cards
-            responses = [ Responses.delete_all_cards ] } ]
+            responses = [ Responses.delete_all_cards ] }
+
+          { test = "get-event"
+            request = Requests.get_event
+            responses = [ Responses.get_event ] }
+
+          { test = "get-event-not-found"
+            request = Requests.get_event_not_found
+            responses = [ Responses.get_event_not_found ] }
+
+          { test = "get-event-overwritten"
+            request = Requests.get_event_overwritten
+            responses = [ Responses.get_event_overwritten ] } ]
 
     let find request =
         match messages |> Seq.tryFind (fun (msg) -> msg.request.SequenceEqual(request)) with

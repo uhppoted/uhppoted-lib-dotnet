@@ -30,6 +30,7 @@ class Commands
     const uint CONTROLLER = 1u;
     const uint CARD = 1u;
     const uint CARD_INDEX = 1u;
+    const uint EVENT_INDEX = 1u;
 
     static readonly IPAddress ADDRESS = IPAddress.Parse("192.168.1.10");
 
@@ -49,10 +50,11 @@ class Commands
           new Command ( "get-status","Retrieves the current status of the controller",GetStatus),
           new Command ( "get-cards","Retrieves the number of cards stored on the controller",GetCards),
           new Command ( "get-card","Retrieves a card record from the controller",GetCard),
-          new Command ( "get-card-at-index","Retrieves the card record stored at the index from the controller",GetCardAtIndex),
+          new Command ( "get-card-at-index","Retrieves the card record stored at the index from a controller",GetCardAtIndex),
           new Command ( "put-card","Adds or updates a card record on controller",PutCard),
           new Command ( "delete-card", "Deletes a card record from a controller", DeleteCard),
           new Command ( "delete-all-cards", "Deletes all card records from a controller", DeleteAllCards),
+          new Command ( "get-event","Retrieves the event record stored at the index from a controller",GetEvent),
     };
 
     public static void FindControllers(string[] args)
@@ -616,6 +618,40 @@ class Commands
             WriteLine("  controller {0}", controller);
             WriteLine("          ok {0}", ok);
             WriteLine();
+        }
+        else if (result.IsError)
+        {
+            throw new Exception(result.ErrorValue);
+        }
+    }
+
+    public static void GetEvent(string[] args)
+    {
+        var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
+        var index = ArgParse.Parse(args, "--index", EVENT_INDEX);
+        var timeout = TIMEOUT;
+        var options = OPTIONS;
+        var result = Uhppoted.GetEvent(controller, index, timeout, options);
+
+        if (result.IsOk && result.ResultValue.HasValue)
+        {
+            var record = result.ResultValue.Value;
+
+            WriteLine("get-event");
+            WriteLine("  controller {0}", controller);
+            WriteLine("   timestamp {0}", (YYYYMMDDHHmmss(record.timestamp)));
+            WriteLine("       index {0}", record.index);
+            WriteLine("       event {0}", record.event_type);
+            WriteLine("     granted {0}", record.access_granted);
+            WriteLine("        door {0}", record.door);
+            WriteLine("   direction {0}", record.direction);
+            WriteLine("        card {0}", record.card);
+            WriteLine("      reason {0}", record.reason);
+            WriteLine();
+        }
+        else if (result.IsOk)
+        {
+            throw new Exception("event not found");
         }
         else if (result.IsError)
         {

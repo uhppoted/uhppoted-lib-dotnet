@@ -20,7 +20,9 @@ static class ArgParse
                     break;
 
                 case IPAddress:
+#pragma warning disable CS8600
                     if (IPAddress.TryParse(args[ix], out addr)) return (T)(object)addr;
+#pragma warning restore CS8600
                     break;
             }
         }

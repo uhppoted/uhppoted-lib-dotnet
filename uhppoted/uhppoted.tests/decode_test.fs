@@ -275,3 +275,22 @@ type TestDecoder() =
         match Decode.delete_all_cards_response packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)
+
+    [<Test>]
+    member this.TestDecodeGetEventResponse() =
+        let packet = TestResponses.get_event
+
+        let expected: GetEventResponse =
+            { controller = 405419896u
+              index = 13579u
+              timestamp = Nullable(DateTime.ParseExact("2024-11-17 12:34:56", "yyyy-MM-dd HH:mm:ss", null))
+              event = 2uy
+              granted = true
+              door = 4uy
+              direction = 2uy
+              card = 10058400u
+              reason = 21uy }
+
+        match Decode.get_event_response packet with
+        | Ok response -> Assert.That(response, Is.EqualTo(expected))
+        | Error err -> Assert.Fail(err)

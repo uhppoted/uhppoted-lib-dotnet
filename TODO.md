@@ -66,7 +66,8 @@
       - [x] put-card
       - [x] delete-card
       - [x] delete-all-cards
-      - [ ] get-events
+      - [x] get-event
+      - [ ] get-event-index
             - [ ] API function
             - [ ] CLI
                   - [ ] F#
@@ -76,8 +77,6 @@
             - [ ] API doc
             - [ ] README
       
-      - [ ] get-event
-      - [ ] get-event-index
       - [ ] set-event-index
       - [ ] record-special-events
       - [ ] get-time-profile

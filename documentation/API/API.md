@@ -12,6 +12,7 @@
 - [`PutCard`](put-card.md)
 - [`DeleteCard`](delete-card.md)
 - [`DeleteAllCards`](delete-all-cards.md)
+- [`GetEvent`](get-event.md)
 
 
 ## `set_door_passcodes`

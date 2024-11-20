@@ -20,6 +20,7 @@ let MODE = 2uy
 let DELAY = 7uy
 let CARD = 1u
 let CARD_INDEX = 1u
+let EVENT_INDEX = 1u
 
 let OPTIONS: Options =
     { bind = IPEndPoint(IPAddress.Any, 0)
@@ -322,17 +323,18 @@ let get_card args =
 
     match Uhppoted.GetCard(controller, card, TIMEOUT, OPTIONS) with
     | Ok v when v.HasValue ->
-        let card = v.Value
+        let record = v.Value
+
         printfn "get-card"
         printfn "  controller %u" controller
-        printfn "        card %u" card.card
-        printfn "  start date %s" (YYYYMMDD(card.startdate))
-        printfn "    end date %s" (YYYYMMDD(card.enddate))
-        printfn "      door 1 %u" card.door1
-        printfn "      door 2 %u" card.door2
-        printfn "      door 3 %u" card.door3
-        printfn "      door 4 %u" card.door4
-        printfn "         PIN %u" card.PIN
+        printfn "        card %u" record.card
+        printfn "  start date %s" (YYYYMMDD(record.startdate))
+        printfn "    end date %s" (YYYYMMDD(record.enddate))
+        printfn "      door 1 %u" record.door1
+        printfn "      door 2 %u" record.door2
+        printfn "      door 3 %u" record.door3
+        printfn "      door 4 %u" record.door4
+        printfn "         PIN %u" record.PIN
         printfn ""
         Ok()
     | Ok _ -> Error "card not found"
@@ -350,18 +352,18 @@ let get_card_at_index args =
 
     match Uhppoted.GetCardAtIndex(controller, index, timeout, options) with
     | Ok v when v.HasValue ->
-        let card = v.Value
+        let record = v.Value
 
         printfn "get-card-at-index"
         printfn "  controller %u" controller
-        printfn "        card %u" card.card
-        printfn "  start date %s" (YYYYMMDD(card.startdate))
-        printfn "    end date %s" (YYYYMMDD(card.enddate))
-        printfn "      door 1 %u" card.door1
-        printfn "      door 2 %u" card.door2
-        printfn "      door 3 %u" card.door3
-        printfn "      door 4 %u" card.door4
-        printfn "         PIN %u" card.PIN
+        printfn "        card %u" record.card
+        printfn "  start date %s" (YYYYMMDD(record.startdate))
+        printfn "    end date %s" (YYYYMMDD(record.enddate))
+        printfn "      door 1 %u" record.door1
+        printfn "      door 2 %u" record.door2
+        printfn "      door 3 %u" record.door3
+        printfn "      door 4 %u" record.door4
+        printfn "         PIN %u" record.PIN
         printfn ""
         Ok()
     | Ok _ -> Error "card not found"
@@ -432,6 +434,36 @@ let delete_all_cards args =
         Ok()
     | Error err -> Error(err)
 
+let get_event args =
+    let controller = argparse args "--controller" CONTROLLER
+    let index = argparse args "--index" EVENT_INDEX
+    let timeout = TIMEOUT
+
+    let options =
+        { OPTIONS with
+            destination = ENDPOINT
+            protocol = PROTOCOL }
+
+    match Uhppoted.GetEvent(controller, index, timeout, options) with
+    | Ok v when v.HasValue ->
+        let record = v.Value
+
+        printfn "get-event"
+        printfn "  controller %u" controller
+        printfn "   timestamp %s" (YYYYMMDDHHmmss(record.timestamp))
+        printfn "       index %u" record.index
+        printfn "       event %u" record.event_type
+        printfn "     granted %b" record.access_granted
+        printfn "        door %u" record.door
+        printfn "   direction %u" record.direction
+        printfn "        card %u" record.card
+        printfn "      reason %u" record.reason
+        printfn ""
+        Ok()
+    | Ok _ -> Error "event not found"
+    | Error err -> Error(err)
+
+
 let commands =
     [ { command = "find-controllers"
         description = "Retrieves a list of controllers accessible on the local LAN"
@@ -490,7 +522,7 @@ let commands =
         f = get_card }
 
       { command = "get-card-at-index"
-        description = "Retrieves the card record stored at the index from the controller"
+        description = "Retrieves the card record stored at the index from a controller"
         f = get_card_at_index }
 
       { command = "put-card"
@@ -503,4 +535,8 @@ let commands =
 
       { command = "delete-all-cards"
         description = "Deletes all card records from a controller"
-        f = delete_all_cards } ]
+        f = delete_all_cards }
+
+      { command = "get-event"
+        description = "Retrieves the event record stored at the index from a controller"
+        f = get_event } ]

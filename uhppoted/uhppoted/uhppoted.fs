@@ -429,7 +429,6 @@ module Uhppoted =
             )
         | Error err -> Error err
 
-
     /// <summary>
     /// Retrieves the card record at the supplied index.
     /// </summary>
@@ -531,4 +530,37 @@ module Uhppoted =
 
         match exec controller request Decode.delete_all_cards_response timeout options with
         | Ok response -> Ok(response.ok)
+        | Error err -> Error err
+
+    /// <summary>
+    /// Retrieves the event record at the supplied index.
+    /// </summary>
+    /// <param name="controller">Controller ID.</param>
+    /// <param name="index">Index of event to retrieve.</param>
+    /// <param name="timeout">Operation timeout (ms).</param>
+    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <returns>
+    /// Event record at the index (or null if not found or deleted) or an error if the request failed. Returns an Ok(null) if the event
+    // record does not exist or if the event has been overwritten.
+    /// </returns>
+    let GetEvent (controller: uint32, index: uint32, timeout: int, options: Options) =
+        let request = Encode.get_event_request controller index
+
+        match exec controller request Decode.get_event_response timeout options with
+        | Ok response when response.event = 0x00uy -> // not found
+            Ok(Nullable())
+        | Ok response when response.event = 0xffuy -> // overwritten
+            Ok(Nullable())
+        | Ok response ->
+            Ok(
+                Nullable
+                    { timestamp = response.timestamp
+                      index = response.index
+                      event_type = response.event
+                      access_granted = response.granted
+                      door = response.door
+                      direction = response.direction
+                      card = response.card
+                      reason = response.reason }
+            )
         | Error err -> Error err

@@ -291,3 +291,20 @@ module internal Decode =
             Ok
                 { controller = unpackU32 packet[4..]
                   ok = unpack_bool (packet[8..]) }
+
+    let get_event_response (packet: byte array) : Result<GetEventResponse, string> =
+        if packet[0] <> messages.SOM then
+            Error("invalid controller response")
+        else if packet[1] <> messages.GET_EVENT then
+            Error("invalid get-event response")
+        else
+            Ok
+                { controller = unpackU32 packet[4..]
+                  index = unpackU32 packet[8..]
+                  event = unpackU8 (packet[12..])
+                  granted = unpack_bool (packet[13..])
+                  door = unpackU8 (packet[14..])
+                  direction = unpackU8 (packet[15..])
+                  card = unpackU32 (packet[16..])
+                  timestamp = unpack_datetime (packet[20..])
+                  reason = unpackU8 (packet[27..]) }

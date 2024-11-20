@@ -25,6 +25,17 @@ type Card =
       door4: uint8
       PIN: uint32 }
 
+[<Struct>]
+type Event =
+    { timestamp: DateTime Nullable
+      index: uint32
+      event_type: uint8
+      access_granted: bool
+      door: uint8
+      direction: uint8
+      card: uint32
+      reason: uint8 }
+
 
 type internal IResponse =
     abstract member controller: uint32
@@ -183,6 +194,20 @@ type internal DeleteCardResponse =
 type internal DeleteAllCardsResponse =
     { controller: uint32
       ok: bool }
+
+    interface IResponse with
+        member this.controller = this.controller
+
+type internal GetEventResponse =
+    { controller: uint32
+      index: uint32
+      event: uint8
+      granted: bool
+      door: uint8
+      direction: uint8
+      card: uint32
+      timestamp: DateTime Nullable
+      reason: uint8 }
 
     interface IResponse with
         member this.controller = this.controller

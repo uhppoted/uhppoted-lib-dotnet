@@ -1,6 +1,6 @@
 ## `GetCardAtIndex`
 
-Retrieves the card record (if any) at the index in the cards list stored on the controller.
+Retrieves the card record (if any) at the index from the cards list stored on the controller.
 
 ### Parameters
 - **`controller`**: Controller ID.
@@ -9,7 +9,7 @@ Retrieves the card record (if any) at the index in the cards list stored on the 
 - **`options`**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 ### Returns
-Returns `Ok` with a Nullable `Card` if the request was processed or an error otherwise. 
+Returns `Ok` with a Nullable `Card` record if the request was processed or an error otherwise. 
 
 The `Ok` value is:
 - A card record if a card record was found at the index.
@@ -20,7 +20,7 @@ The `Ok` value is:
 
 ```fsharp
 let controller = 405419896u
-let index = 1u
+let index = 135u
 let timeout = 5000
 let options = { broadcast = IPAddress.Broadcast; destination=None; protocol=None; debug = true }
 
@@ -32,7 +32,7 @@ match GetCardAtIndex controller index timeout options with
 
 ```csharp
 var controller = 405419896u;
-var index = 1u;
+var index = 135u;
 var timeout = 5000;
 var options = new OptionsBuilder().build();
 var result = GetCardAtIndex(controller, index, timeout, options);
@@ -53,7 +53,7 @@ else
 
 ```vb
 Dim controller = 405419896
-Dim index = 1
+Dim index = 135
 Dim timeout = 5000
 Dim options As New OptionsBuilder().build()
 Dim result = GetCardAtIndex(controller, index, timeout, options)

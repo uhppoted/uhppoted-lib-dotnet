@@ -21,6 +21,7 @@ Module Commands
     Private Const CONTROLLER_ID As UInt32 = 1
     Private Const CARD_NUMBER As UInt32 = 1
     Private Const CARD_INDEX As UInt32 = 1
+    Private Const EVENT_INDEX As UInt32 = 1
     Private Const TIMEOUT = 1000
 
     Private ReadOnly Dim IPv4_ADDRESS = IPAddress.Parse("192.168.1.10")
@@ -46,10 +47,11 @@ Module Commands
            New Command("get-status", "Retrieves the current status of the controller", AddressOf GetStatus),
            New Command("get-cards", "Retrieves the number of cards stored on the controller", AddressOf GetCards),
            New Command("get-card", "Retrieves a card record from the controller", AddressOf GetCard),
-           New Command("get-card-at-index", "Retrieves the card record stored at the index from the controller", AddressOf GetCardAtIndex),
+           New Command("get-card-at-index", "Retrieves the card record stored at the index from a controller", AddressOf GetCardAtIndex),
            New Command("put-card", "Adds or updates a card record on controller", AddressOf PutCard),
            New Command("delete-card", "Deletes a card record from a controller", AddressOf DeleteCard),
-           New Command("delete-all-cards", "Deletes all card records from a controller", AddressOf DeleteAllCards)
+           New Command("delete-all-cards", "Deletes all card records from a controller", AddressOf DeleteAllCards),
+           New Command("get-event", "Retrieves the event record stored at the index from a controller", AddressOf GetEvent)
        }
 
     Sub FindControllers(args As String())
@@ -482,6 +484,32 @@ Module Commands
             WriteLine("  controller {0}", controller)
             WriteLine("          ok {0}", ok)
             WriteLine()
+        Else If (result.IsError)
+            Throw New Exception(result.ErrorValue)
+        End If
+    End Sub
+
+    Sub GetEvent(args As String())
+        Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
+        Dim index = ArgParse.Parse(args, "--index", EVENT_INDEX)
+        Dim result = UHPPOTE.GetEvent(controller, index, TIMEOUT, OPTIONS)
+
+        If (result.IsOk And result.ResultValue.HasValue)
+            Dim record = result.ResultValue.Value
+
+            WriteLine("get-event")
+            WriteLine("  controller {0}", controller)
+            WriteLine("   timestamp {0}", (YYYYMMDDHHmmss(record.timestamp)))
+            WriteLine("       index {0}", record.index)
+            WriteLine("       event {0}", record.event_type)
+            WriteLine("     granted {0}", record.access_granted)
+            WriteLine("        door {0}", record.door)
+            WriteLine("   direction {0}", record.direction)
+            WriteLine("        card {0}", record.card)
+            WriteLine("      reason {0}", record.reason)
+            WriteLine()
+        Else If (result.IsOk)
+            Throw New Exception("event not found")
         Else If (result.IsError)
             Throw New Exception(result.ErrorValue)
         End If

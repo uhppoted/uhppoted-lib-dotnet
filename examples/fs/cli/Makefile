@@ -4,6 +4,7 @@ CONTROLLER ?= 405419896
 CARD ?= 10058400
 MISSING_CARD ?= 10058399
 ADDRESS ?= 192.168.1.100
+EVENT_INDEX ?= 23
 
 .PHONY: format
 
@@ -73,4 +74,7 @@ delete-card: build
 
 delete-all-cards: build
 	$(CLI) delete-all-cards --controller $(CONTROLLER)
+
+get-event: build
+	$(CLI) get-event --controller $(CONTROLLER) --index $(EVENT_INDEX)
 

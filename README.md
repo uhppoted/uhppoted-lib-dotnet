@@ -12,6 +12,14 @@ illustrate the use of the API can be found in the [examples](examples) folder.
 
 ## Installation
 
+### Building from source
+
+NOTES:
+1. To build with .NET 7 SDK
+```
+export DOTNET7=true
+```
+
 ## Release Notes
 
 #### Current Release
@@ -64,7 +72,7 @@ Retrieves the number of card records stored on a controller.
 Retrieves a card record by card number.
 
 ### [`GetCardAtIndex`](documentation/API/get-card-at-index.md)
-Retrieves the card record (if any) at the index in the cards list stored on the controller.
+Retrieves the card record (if any) at the index from a controller.
 
 ### [`PutCard`](documentation/API/put-card.md)
 Adds or updates a card record on a controller.
@@ -74,6 +82,9 @@ Deletes a card record from a controller.
 
 ### [`DeleteAllCards`](documentation/API/delete-all-cards.md)
 Deletes all card records from a controller.
+
+### [`GetEvent`](documentation/API/get-event.md)
+Retrieves the event record (if any) at the index from a controller.
 
 
 ## Notes
