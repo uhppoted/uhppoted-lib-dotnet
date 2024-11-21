@@ -177,14 +177,25 @@ module Uhppoted =
             Ok(record)
         | Error err -> Error err
 
-    let set_listener (controller: Controller, endpoint: IPEndPoint, interval: uint8, timeout: int, options: Options) =
+    /// <summary>
+    /// Sets the controller event listener IPv4 endpoint and the auto-send interval. The auto-send interval is the interval
+    /// at which the controller sends the current status (including the most recent event) to the configured event listener.
+    /// (events are always sent as the occur).
+    /// </summary>
+    /// <param name="controller">Controller ID.</param>
+    /// <param name="endpoint">IPv4 endpoint of event listener.</param>
+    /// <param name="interval">Auto-send interval (seconds). A zero interval disables auto-send.</param>
+    /// <param name="timeout">Operation timeout (ms).</param>
+    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <returns>Ok with true if the event listener endpoint was updated or Error.</returns>
+    let SetListener (controller: uint32, endpoint: IPEndPoint, interval: uint8, timeout: int, options: Options) =
         let address = endpoint.Address
         let port = uint16 endpoint.Port
+        let request = Encode.set_listener_request controller address port interval
 
-        let request =
-            Encode.set_listener_request controller.controller address port interval
-
-        exex controller request Decode.set_listener_response timeout options
+        match exec controller request Decode.set_listener_response timeout options with
+        | Ok response -> Ok(response.ok)
+        | Error err -> Error err
 
     let get_time (controller: Controller, timeout: int, options: Options) =
         let request = Encode.get_time_request controller.controller

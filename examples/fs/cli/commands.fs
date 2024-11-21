@@ -18,6 +18,8 @@ let TIMEOUT = 1000
 let ADDRESS = IPAddress.Parse "192.168.1.10"
 let NETMASK = IPAddress.Parse "255.255.255.0"
 let GATEWAY = IPAddress.Parse "192.168.1.1"
+let LISTENER = IPEndPoint.Parse("192.168.1.250:60001")
+let INTERVAL = 0uy
 
 let MODE = 2uy
 let DELAY = 7uy
@@ -130,19 +132,15 @@ let get_listener args =
     | Error err -> Error err
 
 let set_listener args =
-    let controller =
-        { controller = argparse args "--controller" CONTROLLER
-          address = ENDPOINT
-          protocol = PROTOCOL }
+    let controller = argparse args "--controller" CONTROLLER
+    let listener = argparse args "--listener" LISTENER
+    let interval = argparse args "--interval" INTERVAL
 
-    let endpoint = IPEndPoint.Parse("192.168.1.100:60001")
-    let interval = 30uy
-
-    match Uhppoted.set_listener (controller, endpoint, interval, TIMEOUT, OPTIONS) with
-    | Ok response ->
+    match Uhppoted.SetListener(controller, listener, interval, TIMEOUT, OPTIONS) with
+    | Ok ok ->
         printfn "set-listener"
-        printfn "  controller %u" response.controller
-        printfn "          ok %A" response.ok
+        printfn "  controller %u" controller
+        printfn "          ok %A" ok
         printfn ""
         Ok()
     | Error err -> Error err

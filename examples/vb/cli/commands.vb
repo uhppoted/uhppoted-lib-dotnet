@@ -19,6 +19,7 @@ End Structure
 
 Module Commands
     Private Const CONTROLLER_ID As UInt32 = 1
+    Private Const EVENT_INTERVAL as Byte = 0
     Private Const CARD_NUMBER As UInt32 = 1
     Private Const CARD_INDEX As UInt32 = 1
     Private Const EVENT_INDEX As UInt32 = 1
@@ -27,6 +28,7 @@ Module Commands
     Private ReadOnly Dim IPv4_ADDRESS = IPAddress.Parse("192.168.1.10")
     Private ReadOnly Dim IPv4_NETMASK = IPAddress.Parse("255.255.255.0")
     Private ReadOnly Dim IPv4_GATEWAY = IPAddress.Parse("192.168.1.1")
+    Private ReadOnly Dim EVENT_LISTENER = IPEndPoint.Parse("192.168.1.250:60001")
 
     Private ReadOnly Dim OPTIONS = New OptionsBuilder().
                                 WithEndpoint(IPEndPoint.Parse("192.168.1.100:60000")).
@@ -133,28 +135,21 @@ Module Commands
     End Sub
 
     Sub SetListener(args As String())
-        Try
-            Dim controller = New ControllerBuilder(405419896).
-                                 With(IPEndPoint.Parse("192.168.1.100:60000")).
-                                 With("udp").build()
+        Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
+        Dim listener = ArgParse.Parse(args, "--listener", EVENT_LISTENER)
+        Dim interval = ArgParse.Parse(args, "--interval", EVENT_INTERVAL)
+        Dim result = UHPPOTE.SetListener(controller, listener, interval, TIMEOUT, OPTIONS)
 
-            Dim endpoint = IPEndPoint.Parse("192.168.1.100:60001")
-            Dim interval = 30
-            Dim result = UHPPOTE.set_listener(controller, endpoint, interval, TIMEOUT, OPTIONS)
+        If (result.IsOk)
+            Dim ok = result.ResultValue
 
-            If (result.IsOk)
-                Dim response = result.ResultValue
-                WriteLine("set-listener")
-                WriteLine("  controller {0}", response.controller)
-                WriteLine("          ok {0}", response.ok)
-                WriteLine()
-            Else If (result.IsError)
-                Throw New Exception(result.ErrorValue)
-            End If
-
-        Catch Err As Exception
-            WriteLine("Exception  {0}", err.Message)
-        End Try
+            WriteLine("set-listener")
+            WriteLine("  controller {0}", controller)
+            WriteLine("          ok {0}", ok)
+            WriteLine()
+        Else If (result.IsError)
+            Throw New Exception(result.ErrorValue)
+        End If
     End Sub
 
     Sub GetTime(args As String())

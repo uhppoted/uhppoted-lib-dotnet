@@ -41,8 +41,8 @@ Sets a controller IPv4 address, netmask and gateway address.
 ### [`GetListener`](documentation/API/get-listener.md)
 Gets a controller event listener address:port and auto-send interval.
 
-### `set-listener`
-Sets a controller event listener address:port and auto-send interval.
+### [`SetListener`](documentation/API/set-listener.md)
+Sets a controller event listener endpoint and auto-send interval.
 
 ### `get-time`
 Gets a controller current date and time.

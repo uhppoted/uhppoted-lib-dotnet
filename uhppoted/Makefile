@@ -6,6 +6,8 @@ MISSING_CARD ?= 10058399
 ADDRESS ?= 192.168.1.100
 NETMASK ?= 255.254.253.251
 GATEWAY ?= 192.193.194.195
+LISTENER ?= 192.168.1.100:60001
+INTERVAL ?= 30
 EVENT_INDEX ?= 23
 
 .PHONY: format
@@ -28,9 +30,9 @@ release: build test integration-tests
 	cd uhppoted && make release
 
 debug: build
-	dotnet run --project ../examples/fs/cli --framework net7.0 get-event-index --controller $(CONTROLLER)
-	dotnet run --project ../examples/cs/cli --framework net7.0 get-event-index --controller $(CONTROLLER)
-	dotnet run --project ../examples/vb/cli --framework net7.0 get-event-index --controller $(CONTROLLER)
+	dotnet run --project ../examples/fs/cli --framework net7.0 set-listener --controller $(CONTROLLER) --listener $(LISTENER) --interval $(INTERVAL)
+	dotnet run --project ../examples/cs/cli --framework net7.0 set-listener --controller $(CONTROLLER) --listener $(LISTENER) --interval $(INTERVAL)
+	dotnet run --project ../examples/vb/cli --framework net7.0 set-listener --controller $(CONTROLLER) --listener $(LISTENER) --interval $(INTERVAL)
 
 find-controllers: build
 	$(CLI) find-controllers
@@ -45,7 +47,7 @@ get-listener: build
 	$(CLI) get-listener --controller $(CONTROLLER)
 
 set-listener: build
-	$(CLI) set-listener --controller $(CONTROLLER)
+	$(CLI) set-listener --controller $(CONTROLLER) --listener $(LISTENER) --interval $(INTERVAL)
 
 get-time: build
 	$(CLI) get-time --controller $(CONTROLLER)

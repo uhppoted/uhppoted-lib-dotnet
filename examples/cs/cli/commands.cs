@@ -28,6 +28,7 @@ class Commands
                                                            .build();
 
     const uint CONTROLLER = 1u;
+    const byte INTERVAL = 0;
     const uint CARD = 1u;
     const uint CARD_INDEX = 1u;
     const uint EVENT_INDEX = 1u;
@@ -35,6 +36,7 @@ class Commands
     static readonly IPAddress ADDRESS = IPAddress.Parse("192.168.1.10");
     static readonly IPAddress NETMASK = IPAddress.Parse("255.255.255.0");
     static readonly IPAddress GATEWAY = IPAddress.Parse("192.168.1.1");
+    static readonly IPEndPoint LISTENER = IPEndPoint.Parse("192.168.1.250:60001");
 
     public static List<Command> commands = new List<Command>
     {
@@ -161,34 +163,23 @@ class Commands
 
     public static void SetListener(string[] args)
     {
-        try
+        var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
+        var listener = ArgParse.Parse(args, "--listener", LISTENER);
+        var interval = ArgParse.Parse(args, "--interval", INTERVAL);
+        var result = Uhppoted.SetListener(controller, listener, interval, TIMEOUT, OPTIONS);
+
+        if (result.IsOk)
         {
-            var controller = new uhppoted.ControllerBuilder(CONTROLLER)
-                                         .With(IPEndPoint.Parse("192.168.1.100:60000"))
-                                         .With("udp")
-                                         .build();
+            var ok = result.ResultValue;
 
-            var endpoint = IPEndPoint.Parse("192.168.1.100:60001");
-            var interval = (byte)30;
-            var result = Uhppoted.set_listener(controller, endpoint, interval, TIMEOUT, OPTIONS);
-
-            if (result.IsOk)
-            {
-                var response = result.ResultValue;
-
-                WriteLine("set-listener");
-                WriteLine("  controller {0}", response.controller);
-                WriteLine("          ok {0}", response.ok);
-                WriteLine();
-            }
-            else if (result.IsError)
-            {
-                throw new Exception(result.ErrorValue);
-            }
+            WriteLine("set-listener");
+            WriteLine("  controller {0}", controller);
+            WriteLine("          ok {0}", ok);
+            WriteLine();
         }
-        catch (Exception err)
+        else if (result.IsError)
         {
-            WriteLine("** ERROR  {0}", err.Message);
+            throw new Exception(result.ErrorValue);
         }
     }
 
