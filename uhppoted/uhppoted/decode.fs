@@ -308,3 +308,13 @@ module internal Decode =
                   card = unpackU32 (packet[16..])
                   timestamp = unpack_datetime (packet[20..])
                   reason = unpackU8 (packet[27..]) }
+
+    let get_event_index_response (packet: byte array) : Result<GetEventIndexResponse, string> =
+        if packet[0] <> messages.SOM then
+            Error("invalid controller response")
+        else if packet[1] <> messages.GET_EVENT_INDEX then
+            Error("invalid get-event-index response")
+        else
+            Ok
+                { controller = unpackU32 packet[4..]
+                  index = unpackU32 packet[8..] }

@@ -77,3 +77,6 @@ delete-all-cards: build
 get-event: build
 	$(CLI) get-event --controller $(CONTROLLER) --index $(EVENT_INDEX)
 
+get-event-index: build
+	$(CLI) get-event-index --controller $(CONTROLLER)
+

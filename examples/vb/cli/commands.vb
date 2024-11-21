@@ -53,7 +53,8 @@ Module Commands
            New Command("put-card", "Adds or updates a card record on controller", AddressOf PutCard),
            New Command("delete-card", "Deletes a card record from a controller", AddressOf DeleteCard),
            New Command("delete-all-cards", "Deletes all card records from a controller", AddressOf DeleteAllCards),
-           New Command("get-event", "Retrieves the event record stored at the index from a controller", AddressOf GetEvent)
+           New Command("get-event", "Retrieves the event record stored at the index from a controller", AddressOf GetEvent),
+           New Command("get-event-index", "Retrieves the current event index from a controller", AddressOf GetEventIndex)
        }
 
     Sub FindControllers(args As String())
@@ -503,6 +504,22 @@ Module Commands
             WriteLine()
         Else If (result.IsOk)
             Throw New Exception("event not found")
+        Else If (result.IsError)
+            Throw New Exception(result.ErrorValue)
+        End If
+    End Sub
+
+    Sub GetEventIndex(args As String())
+        Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
+        Dim result = UHPPOTE.GetEventIndex(controller, TIMEOUT, OPTIONS)
+
+        If (result.IsOk)
+            Dim index = result.ResultValue
+
+            WriteLine("get-event-index")
+            WriteLine("  controller {0}", controller)
+            WriteLine("       index {0}", index)
+            WriteLine()
         Else If (result.IsError)
             Throw New Exception(result.ErrorValue)
         End If

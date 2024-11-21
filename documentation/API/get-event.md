@@ -9,12 +9,23 @@ Retrieves the event record (if any) at the index from the controller.
 - **`options`**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 ### Returns
-Returns `Ok` with a Nullable `Event` record if the request was processed or an error otherwise. 
+Returns `Ok` with a Nullable `Event` record if the request was processed or an `Error` 
 
 The `Ok` value is:
 - An event record if an event was found at the index.
 - `null` if there was no record at the index.
 - `null` if the record at the index was deleted.
+
+The `Event` record has the following fields:
+  - `timestamp` (`DateTime`): Timestamp of event.
+  - `index` (`uint32`): Event index.
+  - `event_type` (`uint8`): Event type.
+  - `access_granted` (`bool`): `true` if access to the door was granted.
+  - `door` (`uint8`): Door [1..4] for event.
+  - `direction` (`uint8`): 1(IN), or 2(OUT).
+  - `card` (`uint32`): Card number.
+  - `reason (`uint8`): Reason code for access granted/denied.
+
 
 ### Examples
 
@@ -68,13 +79,3 @@ End If
 ```
 
 ### Notes
-- The `Event` record is defined as:
-  - `timestamp` (`DateTime`): Timestamp of event.
-  - `index` (`uint32`): Event index.
-  - `event_type` (`uint8`): Event type.
-  - `access_granted` (`bool`): `true` if access to the door was granted.
-  - `door` (`uint8`): Door [1..4] for event.
-  - `direction` (`uint8`): 1(IN), or 2(OUT).
-  - `card` (`uint32`): Card number.
-  - `reason (`uint8`): Reason code for access granted/denied.
-

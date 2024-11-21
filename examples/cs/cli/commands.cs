@@ -57,6 +57,7 @@ class Commands
           new Command ( "delete-card", "Deletes a card record from a controller", DeleteCard),
           new Command ( "delete-all-cards", "Deletes all card records from a controller", DeleteAllCards),
           new Command ( "get-event","Retrieves the event record stored at the index from a controller",GetEvent),
+          new Command ( "get-event-index","Retrieves the current event index from a controller",GetEventIndex),
     };
 
     public static void FindControllers(string[] args)
@@ -645,6 +646,28 @@ class Commands
         else if (result.IsOk)
         {
             throw new Exception("event not found");
+        }
+        else if (result.IsError)
+        {
+            throw new Exception(result.ErrorValue);
+        }
+    }
+
+    public static void GetEventIndex(string[] args)
+    {
+        var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
+        var timeout = TIMEOUT;
+        var options = OPTIONS;
+        var result = Uhppoted.GetEventIndex(controller, timeout, options);
+
+        if (result.IsOk)
+        {
+            var index = result.ResultValue;
+
+            WriteLine("get-event-index");
+            WriteLine("  controller {0}", controller);
+            WriteLine("       index {0}", index);
+            WriteLine();
         }
         else if (result.IsError)
         {

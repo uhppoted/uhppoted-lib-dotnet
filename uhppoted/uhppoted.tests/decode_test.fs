@@ -294,3 +294,15 @@ type TestDecoder() =
         match Decode.get_event_response packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)
+
+    [<Test>]
+    member this.TestDecodeGetEventIndexResponse() =
+        let packet = TestResponses.get_event_index
+
+        let expected: GetEventIndexResponse =
+            { controller = 405419896u
+              index = 13579u }
+
+        match Decode.get_event_index_response packet with
+        | Ok response -> Assert.That(response, Is.EqualTo(expected))
+        | Error err -> Assert.Fail(err)

@@ -215,3 +215,10 @@ type internal GetEventResponse =
 
     interface IResponse with
         member this.controller = this.controller
+
+type internal GetEventIndexResponse =
+    { controller: uint32
+      index: uint32 }
+
+    interface IResponse with
+        member this.controller = this.controller

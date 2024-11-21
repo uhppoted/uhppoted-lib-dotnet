@@ -222,3 +222,12 @@ type TestEncoder() =
         let packet = Encode.get_event_request controller index
 
         Assert.That(packet, Is.EqualTo(expected))
+
+    [<Test>]
+    member this.TestEncodeGetEventIndex() =
+        let expected = TestRequests.get_event_index
+
+        let controller = 405419896u
+        let packet = Encode.get_event_index_request controller
+
+        Assert.That(packet, Is.EqualTo(expected))

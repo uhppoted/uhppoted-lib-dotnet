@@ -578,3 +578,19 @@ module Uhppoted =
                       reason = response.reason }
             )
         | Error err -> Error err
+
+    /// <summary>
+    /// Retrieves the current event index from the controller.
+    /// </summary>
+    /// <param name="controller">Controller ID.</param>
+    /// <param name="timeout">Operation timeout (ms).</param>
+    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <returns>
+    /// Ok with current controller event indexEvent record at the index or Error.
+    /// </returns>
+    let GetEventIndex (controller: uint32, timeout: int, options: Options) =
+        let request = Encode.get_event_index_request controller
+
+        match exec controller request Decode.get_event_index_response timeout options with
+        | Ok response -> Ok(response.index)
+        | Error err -> Error err

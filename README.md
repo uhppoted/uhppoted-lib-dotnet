@@ -14,7 +14,7 @@ illustrate the use of the API can be found in the [examples](examples) folder.
 
 ### Building from source
 
-NOTES:
+NTS:
 1. To build with .NET 7 SDK
 ```
 export DOTNET7=true
@@ -85,6 +85,9 @@ Deletes all card records from a controller.
 
 ### [`GetEvent`](documentation/API/get-event.md)
 Retrieves the event record (if any) at the index from a controller.
+
+### [`GetEventIndex`](documentation/API/get-event-index.md)
+Retrieves the current event index from a controller.
 
 
 ## Notes

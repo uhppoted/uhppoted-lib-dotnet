@@ -28,9 +28,9 @@ release: build test integration-tests
 	cd uhppoted && make release
 
 debug: build
-	dotnet run --project ../examples/fs/cli --framework net7.0 set-IPv4 --controller $(CONTROLLER) --address $(ADDRESS) --netmask $(NETMASK) --gateway $(GATEWAY)
-	dotnet run --project ../examples/cs/cli --framework net7.0 set-IPv4 --controller $(CONTROLLER) --address $(ADDRESS) --netmask $(NETMASK) --gateway $(GATEWAY)
-	dotnet run --project ../examples/vb/cli --framework net7.0 set-IPv4 --controller $(CONTROLLER) --address $(ADDRESS) --netmask $(NETMASK) --gateway $(GATEWAY)
+	dotnet run --project ../examples/fs/cli --framework net7.0 get-event-index --controller $(CONTROLLER)
+	dotnet run --project ../examples/cs/cli --framework net7.0 get-event-index --controller $(CONTROLLER)
+	dotnet run --project ../examples/vb/cli --framework net7.0 get-event-index --controller $(CONTROLLER)
 
 find-controllers: build
 	$(CLI) find-controllers
@@ -89,4 +89,7 @@ delete-all-cards: build
 
 get-event: build
 	$(CLI) get-event --controller $(CONTROLLER) --index $(EVENT_INDEX)
+
+get-event-index: build
+	$(CLI) get-event-index --controller $(CONTROLLER)
 

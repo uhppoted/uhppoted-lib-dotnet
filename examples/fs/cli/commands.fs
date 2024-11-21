@@ -469,6 +469,23 @@ let get_event args =
     | Ok _ -> Error "event not found"
     | Error err -> Error(err)
 
+let get_event_index args =
+    let controller = argparse args "--controller" CONTROLLER
+    let timeout = TIMEOUT
+
+    let options =
+        { OPTIONS with
+            endpoint = ENDPOINT
+            protocol = PROTOCOL }
+
+    match Uhppoted.GetEventIndex(controller, timeout, options) with
+    | Ok index ->
+        printfn "get-event-index"
+        printfn "  controller %u" controller
+        printfn "       index %u" index
+        printfn ""
+        Ok()
+    | Error err -> Error(err)
 
 let commands =
     [ { command = "find-controllers"
@@ -545,4 +562,8 @@ let commands =
 
       { command = "get-event"
         description = "Retrieves the event record stored at the index from a controller"
-        f = get_event } ]
+        f = get_event }
+
+      { command = "get-event-index"
+        description = "Retrieves the current event index from a controller"
+        f = get_event_index } ]

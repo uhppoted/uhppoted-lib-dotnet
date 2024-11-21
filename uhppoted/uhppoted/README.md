@@ -69,6 +69,9 @@ Deletes all card records from a controller.
 ### [`GetEvent`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/get-event.md))
 Retrieves the event record (if any) at the index from a controller.
 
+### [`GetEventIndex`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/get-event-index.md))
+Retrieves the current event index from a controller.
+
 ## Notes
 
 ### C# Interop

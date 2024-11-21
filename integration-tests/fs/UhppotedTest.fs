@@ -424,3 +424,13 @@ type TestClass() =
             | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
             | Ok _ -> Assert.Pass()
             | Error err -> Assert.Fail(err))
+
+    [<Test>]
+    member this.TestGetEventIndex() =
+        let expected: uint32 = 13579u
+
+        options
+        |> List.iter (fun opts ->
+            match Uhppoted.GetEventIndex(CONTROLLER, TIMEOUT, opts) with
+            | Ok response -> Assert.That(response, Is.EqualTo(expected))
+            | Error err -> Assert.Fail(err))
