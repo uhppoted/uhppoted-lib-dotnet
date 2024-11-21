@@ -27,12 +27,12 @@
       - [x] --address
       - [x] --netmask
       - [x] --gateway
-      - [ ] --listener
+      - [x] --listener
+      - [x] --interval
+      - [ ] --time
             - [ ] F#
             - [ ] C#
             - [ ] VB.NET
-      - [ ] --interval
-      - [ ] --time
       - [ ] --door
       - [ ] --mode
       - [ ] --delay

@@ -8,8 +8,18 @@ let (|UInt32|_|) (value: string) =
     | true, v -> Some(v)
     | _ -> None
 
+let (|Byte|_|) (value: string) =
+    match Byte.TryParse value with
+    | true, v -> Some(v)
+    | _ -> None
+
 let (|IPAddress|_|) (value: string) =
     match IPAddress.TryParse value with
+    | true, v -> Some(v)
+    | _ -> None
+
+let (|IPEndPoint|_|) (value: string) =
+    match IPEndPoint.TryParse value with
     | true, v -> Some(v)
     | _ -> None
 
@@ -18,9 +28,9 @@ let rec argparse (args: string list) flag (defval: 'T) : 'T =
     | arg :: value :: rest when arg = flag ->
         match box defval, value with
         | :? uint32, UInt32 parsed -> unbox parsed
-
+        | :? byte, Byte parsed -> unbox parsed
         | :? IPAddress, IPAddress parsed -> unbox parsed
-
+        | :? IPEndPoint, IPEndPoint parsed -> unbox parsed
         | _ -> defval
 
     | _ :: rest -> argparse rest flag defval
