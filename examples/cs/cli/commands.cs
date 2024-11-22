@@ -186,32 +186,21 @@ class Commands
 
     public static void GetTime(string[] args)
     {
-        try
+        var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
+        var result = Uhppoted.GetTime(controller, TIMEOUT, OPTIONS);
+
+        if (result.IsOk)
         {
-            var controller = new uhppoted.ControllerBuilder(CONTROLLER)
-                                         .With(IPEndPoint.Parse("192.168.1.100:60000"))
-                                         .With("udp")
-                                         .build();
+            var datetime = result.ResultValue;
 
-            var result = Uhppoted.get_time(controller, TIMEOUT, OPTIONS);
-
-            if (result.IsOk)
-            {
-                var response = result.ResultValue;
-
-                WriteLine("get-time");
-                WriteLine("  controller {0}", response.controller);
-                WriteLine("    datetime {0}", YYYYMMDDHHmmss(response.datetime));
-                WriteLine();
-            }
-            else if (result.IsError)
-            {
-                throw new Exception(result.ErrorValue);
-            }
+            WriteLine("get-time");
+            WriteLine("  controller {0}", controller);
+            WriteLine("    datetime {0}", YYYYMMDDHHmmss(datetime));
+            WriteLine();
         }
-        catch (Exception err)
+        else if (result.IsError)
         {
-            WriteLine("** ERROR  {0}", err.Message);
+            throw new Exception(result.ErrorValue);
         }
     }
 

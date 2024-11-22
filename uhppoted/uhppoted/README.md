@@ -27,7 +27,7 @@ Gets a controller event listener endpoint and auto-send interval.
 ### [`SetListener`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/get-listener.md))
 Sets a controller event listener endpoint and auto-send interval.
 
-### `get-time`
+### [`GetTime`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/get-time.md))
 Gets a controller current date and time.
 
 ### `set-time`

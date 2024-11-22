@@ -154,26 +154,19 @@ Module Commands
     End Sub
 
     Sub GetTime(args As String())
-        Try
-            Dim controller = New ControllerBuilder(405419896).
-                                 With(IPEndPoint.Parse("192.168.1.100:60000")).
-                                 With("udp").build()
+        Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
+        Dim result = UHPPOTE.GetTime(controller, TIMEOUT, OPTIONS)
 
-            Dim result = UHPPOTE.get_time(controller, TIMEOUT, OPTIONS)
+        If (result.IsOk)
+            Dim datetime = result.ResultValue
 
-            If (result.IsOk)
-                Dim response = result.ResultValue
-                WriteLine("get-time")
-                WriteLine("  controller {0}", response.controller)
-                WriteLine("    datetime {0}", YYYYMMDDHHmmss(response.datetime))
-                WriteLine()
-            Else If (result.IsError)
-                Throw New Exception(result.ErrorValue)
-            End If
-
-        Catch Err As Exception
-            WriteLine("Exception  {0}", err.Message)
-        End Try
+            WriteLine("get-time")
+            WriteLine("  controller {0}", controller)
+            WriteLine("    datetime {0}", YYYYMMDDHHmmss(datetime))
+            WriteLine()
+        Else If (result.IsError)
+            Throw New Exception(result.ErrorValue)
+        End If
     End Sub
 
     Sub SetTime(args As String())

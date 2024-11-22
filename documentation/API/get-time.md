@@ -1,6 +1,6 @@
-## `GetCards`
+## `GetTime`
 
-Retrieves the number of card records stored on the controller.
+Retrieves the controller date and time.
 
 ### Parameters
 - **`controller`**: Controller ID.
@@ -8,7 +8,7 @@ Retrieves the number of card records stored on the controller.
 - **`options`**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 ### Returns
-Returns `Ok` with the number of cards stored on the controller or `Error`. 
+Returns `Ok` with the controller date and time or `Error`. 
 
 ### Examples
 
@@ -17,24 +17,24 @@ let controller = 405419896u
 let timeout = 5000
 let options = { broadcast = IPAddress.Broadcast; destination=None; protocol=None; debug = true }
 
-match GetCards controller timeout options with
-| Ok cards -> printfn "get-cards: ok %A" cards
-| Error err -> printfn "get-cards: error %A" err
+match GetTime controller timeout options with
+| Ok datetime -> printfn "get-time: ok %A" datetime
+| Error err -> printfn "get-time: error %A" err
 ```
 
 ```csharp
 var controller = 405419896u;
 var timeout = 5000;
 var options = new OptionsBuilder().build();
-var result = GetCards(controller, timeout, options);
+var result = GetTime(controller, timeout, options);
 
 if (result.IsOk)
 {
-    Console.WriteLine($"get-cards: ok {result.ResultValue}");
+    Console.WriteLine($"get-time: ok {result.ResultValue}");
 }
 else
 {
-    Console.WriteLine($"get-cards: error '{result.ErrorValue}'");
+    Console.WriteLine($"get-time: error '{result.ErrorValue}'");
 }
 ```
 
@@ -42,10 +42,10 @@ else
 Dim controller = 405419896
 Dim timeout = 5000
 Dim options As New OptionsBuilder().build()
-Dim result = GetCards(controller, timeout, options)
+Dim result = GetTime(controller, timeout, options)
 
 If (result.IsOk) Then
-    Console.WriteLine($"get-cards: ok {result.ResultValue}")
+    Console.WriteLine($"get-time: ok {result.ResultValue}")
 Else
     Console.WriteLine($"get-cards: error '{result.ErrorValue}'")
 End If

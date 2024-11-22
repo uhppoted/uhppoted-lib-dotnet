@@ -29,6 +29,7 @@
       - [x] --gateway
       - [x] --listener
       - [x] --interval
+      - [x] --index
       - [ ] --time
             - [ ] F#
             - [ ] C#
@@ -37,7 +38,6 @@
       - [ ] --mode
       - [ ] --delay
       - [ ] --passcode
-      - [ ] --index
       - [ ] --start-date
       - [ ] --end-date
       - [ ] --permissions

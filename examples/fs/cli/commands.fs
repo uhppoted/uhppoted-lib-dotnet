@@ -146,16 +146,13 @@ let set_listener args =
     | Error err -> Error err
 
 let get_time args =
-    let controller =
-        { controller = argparse args "--controller" CONTROLLER
-          address = ENDPOINT
-          protocol = PROTOCOL }
+    let controller = argparse args "--controller" CONTROLLER
 
-    match Uhppoted.get_time (controller, TIMEOUT, OPTIONS) with
-    | Ok response ->
+    match Uhppoted.GetTime(controller, TIMEOUT, OPTIONS) with
+    | Ok datetime ->
         printfn "get-time"
-        printfn "  controller %u" response.controller
-        printfn "    datetime %s" (YYYYMMDDHHmmss response.datetime)
+        printfn "  controller %u" controller
+        printfn "    datetime %s" (YYYYMMDDHHmmss datetime)
         printfn ""
         Ok()
     | Error err -> Error err

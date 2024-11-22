@@ -123,7 +123,7 @@ module Uhppoted =
                   version = response.version
                   date = response.date }
 
-            Ok(record)
+            Ok record
         | Error err -> Error err
 
     /// <summary>
@@ -164,7 +164,7 @@ module Uhppoted =
     /// <param name="controller">Controller ID.</param>
     /// <param name="timeout">Operation timeout (ms).</param>
     /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
-    /// <returns>Ok with an {endpoint,interval} record or Error.</returns>
+    /// <returns>Ok with an Listener record or Error.</returns>
     let GetListener (controller: uint32, timeout: int, options: Options) =
         let request = Encode.get_listener_request controller
 
@@ -174,7 +174,7 @@ module Uhppoted =
                 { endpoint = response.endpoint
                   interval = response.interval }
 
-            Ok(record)
+            Ok record
         | Error err -> Error err
 
     /// <summary>
@@ -194,13 +194,22 @@ module Uhppoted =
         let request = Encode.set_listener_request controller address port interval
 
         match exec controller request Decode.set_listener_response timeout options with
-        | Ok response -> Ok(response.ok)
+        | Ok response -> Ok response.ok
         | Error err -> Error err
 
-    let get_time (controller: Controller, timeout: int, options: Options) =
-        let request = Encode.get_time_request controller.controller
+    /// <summary>
+    /// Retrieves the controller current date and time.
+    /// </summary>
+    /// <param name="controller">Controller ID.</param>
+    /// <param name="timeout">Operation timeout (ms).</param>
+    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <returns>Ok with a DateTime value or Error.</returns>
+    let GetTime (controller: uint32, timeout: int, options: Options) =
+        let request = Encode.get_time_request controller
 
-        exex controller request Decode.get_time_response timeout options
+        match exec controller request Decode.get_time_response timeout options with
+        | Ok response -> Ok response.datetime
+        | Error err -> Error err
 
     let set_time (controller: Controller, datetime: DateTime, timeout: int, options: Options) =
         let request = Encode.set_time_request controller.controller datetime
@@ -390,7 +399,7 @@ module Uhppoted =
         let request = Encode.get_cards_request controller
 
         match exec controller request Decode.get_cards_response timeout options with
-        | Ok response -> Ok(response.cards)
+        | Ok response -> Ok response.cards
         | Error err -> Error err
 
     /// <summary>
@@ -490,7 +499,7 @@ module Uhppoted =
             Encode.put_card_request controller card startdate enddate door1 door2 door3 door4 pin
 
         match exec controller request Decode.put_card_response timeout options with
-        | Ok response -> Ok(response.ok)
+        | Ok response -> Ok response.ok
         | Error err -> Error err
 
     /// <summary>
@@ -507,7 +516,7 @@ module Uhppoted =
         let request = Encode.delete_card_request controller card
 
         match exec controller request Decode.delete_card_response timeout options with
-        | Ok response -> Ok(response.ok)
+        | Ok response -> Ok response.ok
         | Error err -> Error err
 
     /// <summary>
@@ -523,7 +532,7 @@ module Uhppoted =
         let request = Encode.delete_all_cards_request controller
 
         match exec controller request Decode.delete_all_cards_response timeout options with
-        | Ok response -> Ok(response.ok)
+        | Ok response -> Ok response.ok
         | Error err -> Error err
 
     /// <summary>
@@ -572,7 +581,7 @@ module Uhppoted =
         let request = Encode.get_event_index_request controller
 
         match exec controller request Decode.get_event_index_response timeout options with
-        | Ok response -> Ok(response.index)
+        | Ok response -> Ok response.index
         | Error err -> Error err
 
     /// <summary>
@@ -589,5 +598,5 @@ module Uhppoted =
         let request = Encode.set_event_index_request controller index
 
         match exec controller request Decode.set_event_index_response timeout options with
-        | Ok response -> Ok(response.ok)
+        | Ok response -> Ok response.ok
         | Error err -> Error err

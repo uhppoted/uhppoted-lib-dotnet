@@ -5,6 +5,7 @@
 - [`SetIPv4`](set-IPv4.md)
 - [`GetListener`](get-listener.md)
 - [`SetListener`](set-listener.md)
+- [`GetTime`](get-time.md)
 - [`set_door_passcodes`](#set_door_passcodes)
 - [`open_door`](#open_door)
 - [`get_status`](#get_status)

@@ -44,7 +44,7 @@ Gets a controller event listener address:port and auto-send interval.
 ### [`SetListener`](documentation/API/set-listener.md)
 Sets a controller event listener endpoint and auto-send interval.
 
-### `get-time`
+### [`GetTime`](documentation/API/get-time.md)
 Gets a controller current date and time.
 
 ### `set-time`
