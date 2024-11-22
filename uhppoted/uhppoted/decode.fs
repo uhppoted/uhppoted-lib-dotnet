@@ -318,3 +318,13 @@ module internal Decode =
             Ok
                 { controller = unpackU32 packet[4..]
                   index = unpackU32 packet[8..] }
+
+    let set_event_index_response (packet: byte array) : Result<SetEventIndexResponse, string> =
+        if packet[0] <> messages.SOM then
+            Error("invalid controller response")
+        else if packet[1] <> messages.SET_EVENT_INDEX then
+            Error("invalid set-event-index response")
+        else
+            Ok
+                { controller = unpackU32 packet[4..]
+                  ok = unpack_bool packet[8..] }

@@ -485,33 +485,52 @@ let get_event_index args =
         Ok()
     | Error err -> Error(err)
 
+let set_event_index args =
+    let controller = argparse args "--controller" CONTROLLER
+    let index = argparse args "--index" EVENT_INDEX
+    let timeout = TIMEOUT
+
+    let options =
+        { OPTIONS with
+            endpoint = ENDPOINT
+            protocol = PROTOCOL }
+
+    match Uhppoted.SetEventIndex(controller, index, timeout, options) with
+    | Ok ok ->
+        printfn "set-event-index"
+        printfn "  controller %u" controller
+        printfn "          ok %b" ok
+        printfn ""
+        Ok()
+    | Error err -> Error(err)
+
 let commands =
     [ { command = "find-controllers"
         description = "Retrieves a list of controllers accessible on the local LAN"
         f = find_controllers }
 
       { command = "get-controller"
-        description = "Retrieves the controller information for a specific controller"
+        description = "Retrieves the controller information from a controller"
         f = get_controller }
 
       { command = "set-IPv4"
-        description = "Sets the controller IPv4 address, netmask and gateway"
+        description = "Sets a controller IPv4 address, netmask and gateway"
         f = set_IPv4 }
 
       { command = "get-listener"
-        description = "Retrieves the controller event listener address:port and auto-send interval"
+        description = "Retrieves a controller event listener address:port and auto-send interval"
         f = get_listener }
 
       { command = "set-listener"
-        description = "Sets the controller event listener address:port and auto-send interval"
+        description = "Sets a controller event listener address:port and auto-send interval"
         f = set_listener }
 
       { command = "get-time"
-        description = "Retrieves the controller system date and time"
+        description = "Retrieves a controller system date and time"
         f = get_time }
 
       { command = "set-time"
-        description = "Sets the controller system date and time"
+        description = "Sets a controller system date and time"
         f = set_time }
 
       { command = "get-door"
@@ -531,15 +550,15 @@ let commands =
         f = open_door }
 
       { command = "get-status"
-        description = "Retrieves the current status of the controller"
+        description = "Retrieves the current status of a controller"
         f = get_status }
 
       { command = "get-cards"
-        description = "Retrieves the number of cards stored on the controller"
+        description = "Retrieves the number of cards stored on a controller"
         f = get_cards }
 
       { command = "get-card"
-        description = "Retrieves a card record from the controller"
+        description = "Retrieves a card record from a controller"
         f = get_card }
 
       { command = "get-card-at-index"
@@ -547,7 +566,7 @@ let commands =
         f = get_card_at_index }
 
       { command = "put-card"
-        description = "Adds or updates a card record on controller"
+        description = "Adds or updates a card record on a controller"
         f = put_card }
 
       { command = "delete-card"
@@ -564,4 +583,8 @@ let commands =
 
       { command = "get-event-index"
         description = "Retrieves the current event index from a controller"
-        f = get_event_index } ]
+        f = get_event_index }
+
+      { command = "set-event-index"
+        description = "Sets a controller event index"
+        f = set_event_index } ]

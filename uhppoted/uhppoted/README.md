@@ -72,6 +72,9 @@ Retrieves the event record (if any) at the index from a controller.
 ### [`GetEventIndex`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/get-event-index.md))
 Retrieves the current event index from a controller.
 
+### [`SetEventIndex`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/set-event-index.md))
+Set a controller event index.
+
 ## Notes
 
 ### C# Interop

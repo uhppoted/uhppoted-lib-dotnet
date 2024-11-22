@@ -89,6 +89,8 @@ Retrieves the event record (if any) at the index from a controller.
 ### [`GetEventIndex`](documentation/API/get-event-index.md)
 Retrieves the current event index from a controller.
 
+### [`SetEventIndex`](documentation/API/set-event-index.md)
+Sets a controller event index.
 
 ## Notes
 

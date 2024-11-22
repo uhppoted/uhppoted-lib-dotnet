@@ -281,3 +281,15 @@ module internal Encode =
         Array.blit (packU32 controller) 0 packet 4 4
 
         packet
+
+    let set_event_index_request (controller: uint32) (index: uint32) =
+        let packet: byte array = Array.zeroCreate 64
+
+        Array.set packet 0 (byte messages.SOM)
+        Array.set packet 1 (byte messages.SET_EVENT_INDEX)
+
+        Array.blit (packU32 controller) 0 packet 4 4
+        Array.blit (packU32 index) 0 packet 8 4
+        Array.blit (packU32 MAGIC_WORD) 0 packet 12 4
+
+        packet

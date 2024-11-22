@@ -111,7 +111,11 @@ module Messages =
 
           { test = "get-event-index"
             request = Requests.get_event_index
-            responses = [ Responses.get_event_index ] } ]
+            responses = [ Responses.get_event_index ] }
+
+          { test = "set-event-index"
+            request = Requests.set_event_index
+            responses = [ Responses.set_event_index ] } ]
 
     let find request =
         match messages |> Seq.tryFind (fun (msg) -> msg.request.SequenceEqual(request)) with

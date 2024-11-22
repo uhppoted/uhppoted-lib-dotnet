@@ -38,25 +38,26 @@ Module Commands
 
     Public Dim commands As New List(Of Command) From {
            New Command("find-controllers", "Retrieves a list of controllers accessible on the local LAN", AddressOf FindControllers),
-           New Command("get-controller", "Retrieves the controller information for a specific controller", AddressOf GetController),
-           New Command("set-IPv4", "Sets the controller IPv4 address, netmask and gateway", AddressOf SetIPv4),
-           New Command("get-listener", "Retrieves the controller event listener address:port and auto-send interval", AddressOf GetListener),
-           New Command("set-listener", "Sets the controller event listener address:port and auto-send interval", AddressOf SetListener),
-           New Command("get-time", "Retrieves the controller system date and time", AddressOf GetTime),
-           New Command("set-time", "Sets the controller system date and time", AddressOf SetTime),
+           New Command("get-controller", "Retrieves the controller information from a controller", AddressOf GetController),
+           New Command("set-IPv4", "Sets a controller IPv4 address, netmask and gateway", AddressOf SetIPv4),
+           New Command("get-listener", "Retrieves a controller event listener address:port and auto-send interval", AddressOf GetListener),
+           New Command("set-listener", "Sets a controller event listener address:port and auto-send interval", AddressOf SetListener),
+           New Command("get-time", "Retrieves a controller system date and time", AddressOf GetTime),
+           New Command("set-time", "Sets a controller system date and time", AddressOf SetTime),
            New Command("get-door", "Retrieves a controller door mode and delay settings", AddressOf GetDoor),
            New Command("set-door", "Sets a controller door mode and delay", AddressOf SetDoor),
            New Command("set-door-passcodes", "Sets the supervisor passcodes for a controller door", AddressOf SetDoorPasscodes),
            New Command("open-door", "Unlocks a door controlled by a controller", AddressOf OpenDoor),
-           New Command("get-status", "Retrieves the current status of the controller", AddressOf GetStatus),
-           New Command("get-cards", "Retrieves the number of cards stored on the controller", AddressOf GetCards),
-           New Command("get-card", "Retrieves a card record from the controller", AddressOf GetCard),
+           New Command("get-status", "Retrieves the current status of a controller", AddressOf GetStatus),
+           New Command("get-cards", "Retrieves the number of cards stored on a controller", AddressOf GetCards),
+           New Command("get-card", "Retrieves a card record from a controller", AddressOf GetCard),
            New Command("get-card-at-index", "Retrieves the card record stored at the index from a controller", AddressOf GetCardAtIndex),
            New Command("put-card", "Adds or updates a card record on controller", AddressOf PutCard),
            New Command("delete-card", "Deletes a card record from a controller", AddressOf DeleteCard),
            New Command("delete-all-cards", "Deletes all card records from a controller", AddressOf DeleteAllCards),
            New Command("get-event", "Retrieves the event record stored at the index from a controller", AddressOf GetEvent),
-           New Command("get-event-index", "Retrieves the current event index from a controller", AddressOf GetEventIndex)
+           New Command("get-event-index", "Retrieves the current event index from a controller", AddressOf GetEventIndex),
+           New Command("set-event-index", "Sets a controller event index", AddressOf SetEventIndex)
        }
 
     Sub FindControllers(args As String())
@@ -514,6 +515,23 @@ Module Commands
             WriteLine("get-event-index")
             WriteLine("  controller {0}", controller)
             WriteLine("       index {0}", index)
+            WriteLine()
+        Else If (result.IsError)
+            Throw New Exception(result.ErrorValue)
+        End If
+    End Sub
+
+    Sub SetEventIndex(args As String())
+        Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
+        Dim index = ArgParse.Parse(args, "--index", EVENT_INDEX)
+        Dim result = UHPPOTE.SetEventIndex(controller, index, TIMEOUT, OPTIONS)
+
+        If (result.IsOk)
+            Dim ok = result.ResultValue
+
+            WriteLine("set-event-index")
+            WriteLine("  controller {0}", controller)
+            WriteLine("          ok {0}", ok)
             WriteLine()
         Else If (result.IsError)
             Throw New Exception(result.ErrorValue)

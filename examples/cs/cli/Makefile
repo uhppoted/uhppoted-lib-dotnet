@@ -82,3 +82,6 @@ get-event: build
 get-event-index: build
 	$(CLI) get-event-index --controller $(CONTROLLER)
 
+set-event-index: build
+	$(CLI) set-event-index --controller $(CONTROLLER) --index $(EVENT_INDEX)
+

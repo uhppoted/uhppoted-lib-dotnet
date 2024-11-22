@@ -222,3 +222,10 @@ type internal GetEventIndexResponse =
 
     interface IResponse with
         member this.controller = this.controller
+
+type internal SetEventIndexResponse =
+    { controller: uint32
+      ok: bool }
+
+    interface IResponse with
+        member this.controller = this.controller

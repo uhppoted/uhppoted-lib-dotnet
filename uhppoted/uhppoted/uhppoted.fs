@@ -605,3 +605,20 @@ module Uhppoted =
         match exec controller request Decode.get_event_index_response timeout options with
         | Ok response -> Ok(response.index)
         | Error err -> Error err
+
+    /// <summary>
+    /// Sets the controller event index.
+    /// </summary>
+    /// <param name="controller">Controller ID.</param>
+    /// <param name="index">Event index.</param>
+    /// <param name="timeout">Operation timeout (ms).</param>
+    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <returns>
+    /// Ok with true if the event index was updated (false if it was unchanged) or Error.
+    /// </returns>
+    let SetEventIndex (controller: uint32, index: uint32, timeout: int, options: Options) =
+        let request = Encode.set_event_index_request controller index
+
+        match exec controller request Decode.set_event_index_response timeout options with
+        | Ok response -> Ok(response.ok)
+        | Error err -> Error err

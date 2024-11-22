@@ -433,3 +433,13 @@ type TestClass() =
             match Uhppoted.GetEventIndex(CONTROLLER, TIMEOUT, opts) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
+
+    [<Test>]
+    member this.TestSetEventIndex() =
+        let expected: bool = true
+
+        options
+        |> List.iter (fun opts ->
+            match Uhppoted.SetEventIndex(CONTROLLER, EVENT_INDEX, TIMEOUT, opts) with
+            | Ok response -> Assert.That(response, Is.EqualTo(expected))
+            | Error err -> Assert.Fail(err))

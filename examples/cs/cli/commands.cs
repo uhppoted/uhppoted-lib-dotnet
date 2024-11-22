@@ -41,25 +41,26 @@ class Commands
     public static List<Command> commands = new List<Command>
     {
           new Command ( "find-controllers","Retrieves a list of controllers accessible on the local LAN", FindControllers),
-          new Command ( "get-controller","Retrieves the controller information for a specific controller", GetController),
-          new Command ( "set-IPv4","Sets the controller IPv4 address, netmask and gateway", SetIPv4),
-          new Command ( "get-listener","Retrieves the controller event listener address:port and auto-send interval", GetListener),
-          new Command ( "set-listener","Sets the controller event listener address:port and auto-send interval", SetListener),
-          new Command ( "get-time","Retrieves the controller system date and time", GetTime),
-          new Command ( "set-time","Sets the controller system date and time",SetTime),
+          new Command ( "get-controller","Retrieves the controller information from a controller", GetController),
+          new Command ( "set-IPv4","Sets a controller IPv4 address, netmask and gateway", SetIPv4),
+          new Command ( "get-listener","Retrieves a controller event listener address:port and auto-send interval", GetListener),
+          new Command ( "set-listener","Sets a controller event listener address:port and auto-send interval", SetListener),
+          new Command ( "get-time","Retrieves a controller system date and time", GetTime),
+          new Command ( "set-time","Sets a controller system date and time",SetTime),
           new Command ( "get-door","Retrieves a controller door mode and delay settings", GetDoor),
           new Command ( "set-door","Sets a controller door mode and delay",SetDoor),
           new Command ( "set-door-passcodes","Sets the supervisor passcodes for a controller door",SetDoorPasscodes),
           new Command ( "open-door","Unlocks a door controlled by a controller",OpenDoor),
-          new Command ( "get-status","Retrieves the current status of the controller",GetStatus),
-          new Command ( "get-cards","Retrieves the number of cards stored on the controller",GetCards),
-          new Command ( "get-card","Retrieves a card record from the controller",GetCard),
+          new Command ( "get-status","Retrieves the current status of a controller",GetStatus),
+          new Command ( "get-cards","Retrieves the number of cards stored on a controller",GetCards),
+          new Command ( "get-card","Retrieves a card record from a controller",GetCard),
           new Command ( "get-card-at-index","Retrieves the card record stored at the index from a controller",GetCardAtIndex),
           new Command ( "put-card","Adds or updates a card record on controller",PutCard),
           new Command ( "delete-card", "Deletes a card record from a controller", DeleteCard),
           new Command ( "delete-all-cards", "Deletes all card records from a controller", DeleteAllCards),
           new Command ( "get-event","Retrieves the event record stored at the index from a controller",GetEvent),
           new Command ( "get-event-index","Retrieves the current event index from a controller",GetEventIndex),
+          new Command ( "set-event-index","Sets a controller event index",SetEventIndex),
     };
 
     public static void FindControllers(string[] args)
@@ -658,6 +659,29 @@ class Commands
             WriteLine("get-event-index");
             WriteLine("  controller {0}", controller);
             WriteLine("       index {0}", index);
+            WriteLine();
+        }
+        else if (result.IsError)
+        {
+            throw new Exception(result.ErrorValue);
+        }
+    }
+
+    public static void SetEventIndex(string[] args)
+    {
+        var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
+        var index = ArgParse.Parse(args, "--index", EVENT_INDEX);
+        var timeout = TIMEOUT;
+        var options = OPTIONS;
+        var result = Uhppoted.SetEventIndex(controller, index, timeout, options);
+
+        if (result.IsOk)
+        {
+            var ok = result.ResultValue;
+
+            WriteLine("set-event-index");
+            WriteLine("  controller {0}", controller);
+            WriteLine("          ok {0}", ok);
             WriteLine();
         }
         else if (result.IsError)

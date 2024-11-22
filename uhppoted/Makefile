@@ -30,9 +30,9 @@ release: build test integration-tests
 	cd uhppoted && make release
 
 debug: build
-	dotnet run --project ../examples/fs/cli --framework net7.0 set-listener --controller $(CONTROLLER) --listener $(LISTENER) --interval $(INTERVAL)
-	dotnet run --project ../examples/cs/cli --framework net7.0 set-listener --controller $(CONTROLLER) --listener $(LISTENER) --interval $(INTERVAL)
-	dotnet run --project ../examples/vb/cli --framework net7.0 set-listener --controller $(CONTROLLER) --listener $(LISTENER) --interval $(INTERVAL)
+	dotnet run --project ../examples/fs/cli --framework net7.0 set-event-index --controller $(CONTROLLER) --index $(EVENT_INDEX)
+	dotnet run --project ../examples/cs/cli --framework net7.0 set-event-index --controller $(CONTROLLER) --index $(EVENT_INDEX)
+	dotnet run --project ../examples/vb/cli --framework net7.0 set-event-index --controller $(CONTROLLER) --index $(EVENT_INDEX)
 
 find-controllers: build
 	$(CLI) find-controllers
@@ -94,4 +94,7 @@ get-event: build
 
 get-event-index: build
 	$(CLI) get-event-index --controller $(CONTROLLER)
+
+set-event-index: build
+	$(CLI) set-event-index --controller $(CONTROLLER) --index $(EVENT_INDEX)
 
