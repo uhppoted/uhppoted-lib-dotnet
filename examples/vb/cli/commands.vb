@@ -344,26 +344,19 @@ Module Commands
     End Sub
 
     Sub GetCards(args As String())
-        Try
-            Dim controller = New ControllerBuilder(405419896).
-                                 With(IPEndPoint.Parse("192.168.1.100:60000")).
-                                 With("udp").build()
+        Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
+        Dim result = UHPPOTE.GetCards(controller, TIMEOUT, OPTIONS)
 
-            Dim result = UHPPOTE.get_cards(controller, TIMEOUT, OPTIONS)
+        If (result.IsOk)
+            Dim cards = result.ResultValue
 
-            If (result.IsOk)
-                Dim response = result.ResultValue
-                WriteLine("get-cards")
-                WriteLine("  controller {0}", response.controller)
-                WriteLine("       cards {0}", response.cards)
-                WriteLine()
-            Else If (result.IsError)
-                Throw New Exception(result.ErrorValue)
-            End If
-
-        Catch Err As Exception
-            WriteLine("Exception  {0}", err.Message)
-        End Try
+            WriteLine("get-cards")
+            WriteLine("  controller {0}", controller)
+            WriteLine("       cards {0}", cards)
+            WriteLine()
+        Else If (result.IsError)
+            Throw New Exception(result.ErrorValue)
+        End If
     End Sub
 
     Sub GetCard(args As String())

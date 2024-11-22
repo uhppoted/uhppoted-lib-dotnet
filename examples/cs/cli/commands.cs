@@ -436,31 +436,24 @@ class Commands
 
     public static void GetCards(string[] args)
     {
-        try
+        var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
+        var card = ArgParse.Parse(args, "--card", CARD);
+        var timeout = TIMEOUT;
+        var options = OPTIONS;
+        var result = Uhppoted.GetCards(controller, timeout, options);
+
+        if (result.IsOk)
         {
-            var controller = new uhppoted.ControllerBuilder(CONTROLLER)
-                                         .With(IPEndPoint.Parse("192.168.1.100:60000"))
-                                         .With("udp")
-                                         .build();
-            var result = Uhppoted.get_cards(controller, TIMEOUT, OPTIONS);
+            var cards = result.ResultValue;
 
-            if (result.IsOk)
-            {
-                var response = result.ResultValue;
-
-                WriteLine("get-cards");
-                WriteLine("  controller {0}", response.controller);
-                WriteLine("       cards {0}", response.cards);
-                WriteLine();
-            }
-            else if (result.IsError)
-            {
-                throw new Exception(result.ErrorValue);
-            }
+            WriteLine("get-cards");
+            WriteLine("  controller {0}", controller);
+            WriteLine("       cards {0}", cards);
+            WriteLine();
         }
-        catch (Exception err)
+        else if (result.IsError)
         {
-            WriteLine("** ERROR  {0}", err.Message);
+            throw new Exception(result.ErrorValue);
         }
     }
 

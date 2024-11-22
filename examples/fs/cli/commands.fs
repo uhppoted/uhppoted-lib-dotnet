@@ -301,16 +301,19 @@ let get_status args =
     | Error err -> Error err
 
 let get_cards args =
-    let controller =
-        { controller = argparse args "--controller" CONTROLLER
-          address = ENDPOINT
-          protocol = PROTOCOL }
+    let controller = argparse args "--controller" CONTROLLER
+    let timeout = TIMEOUT
 
-    match Uhppoted.get_cards (controller, TIMEOUT, OPTIONS) with
-    | Ok response ->
+    let options =
+        { OPTIONS with
+            endpoint = ENDPOINT
+            protocol = PROTOCOL }
+
+    match Uhppoted.GetCards(controller, TIMEOUT, OPTIONS) with
+    | Ok cards ->
         printfn "get-cards"
-        printfn "  controller %u" response.controller
-        printfn "       cards %u" response.cards
+        printfn "  controller %u" controller
+        printfn "       cards %u" cards
         printfn ""
         Ok()
     | Error err -> Error(err)

@@ -48,7 +48,7 @@ Unlocks a door controlled by a controller.
 ### `get-status`
 Retrieves a controller status record.
 
-### `get-cards`
+### [`GetCards`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/get-cards.md))
 Retrieves the number of card records stored on a controller.
 
 ### [`GetCard`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/get-card.md))

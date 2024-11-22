@@ -65,7 +65,7 @@ Unlocks a door controlled by a controller.
 ### `get-status`
 Retrieves a controller status record.
 
-### `get-cards`
+### [`GetCards`](documentation/API/get-cards.md)
 Retrieves the number of card records stored on a controller.
 
 ### [`GetCard`](documentation/API/get-card.md)

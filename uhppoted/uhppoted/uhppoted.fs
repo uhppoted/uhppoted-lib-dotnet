@@ -384,45 +384,14 @@ module Uhppoted =
     /// <param name="timeout">Operation timeout (ms).</param>
     /// <param name="options">Optional bind, broadcast and listen addresses.</param>
     /// <returns>
-    /// Number of cards stored on the controller (or an error).
+    /// Ok with the number of cards stored on the controller or Error.
     /// </returns>
-    /// <example>
-    /// <code language="fsharp">
-    /// let controller = { controller = 405419896u; address = None; protocol = None }
-    /// let options = { broadcast = IPAddress.Broadcast; debug = true }
-    /// let result = get_cards controller 5000 options
-    /// match result with
-    /// | Ok response -> printfn "get-cards: ok %A" response
-    /// | Error e -> printfn "get-cards: error %A" e
-    /// </code>
-    /// <code language="csharp">
-    /// var controller = new ControllerBuilder(405419896).build();
-    /// var options = new OptionsBuilder().build();
-    /// var result = get_cards(controller, 5000, options);
-    /// if (result.IsOk)
-    /// {
-    ///     Console.WriteLine("get-cards: {0}",result.Value.ok);
-    /// }
-    /// else
-    /// {
-    ///     Console.WriteLine("get-cards: error {0}",result.Error);
-    /// }
-    /// </code>
-    /// <code language="vbnet">
-    /// Dim controller As New ControllerBuilder(405419896u).build()
-    /// Dim options As New OptionsBuilder().build()
-    /// Dim result = get_cards(controller, 5000, options)
-    /// If result.IsOk Then
-    ///     Console.WriteLine("get-cards: {0}",result.Value.ok)
-    /// Else
-    ///     Console.WriteLine("get-cards: error {0}",result.Error);
-    /// End If
-    /// </code>
-    /// </example>
-    let get_cards (controller: Controller, timeout: int, options: Options) =
-        let request = Encode.get_cards_request controller.controller
+    let GetCards (controller: uint32, timeout: int, options: Options) =
+        let request = Encode.get_cards_request controller
 
-        exex controller request Decode.get_cards_response timeout options
+        match exec controller request Decode.get_cards_response timeout options with
+        | Ok response -> Ok(response.cards)
+        | Error err -> Error err
 
     /// <summary>
     /// Retrieves the card record for the requested card number.

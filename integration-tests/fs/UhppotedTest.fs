@@ -274,14 +274,12 @@ type TestClass() =
 
     [<Test>]
     member this.TestGetCards() =
-        let expected: GetCardsResponse =
-            { controller = 405419896u
-              cards = 13579u }
+        let expected: uint32 = 13579u
 
-        controllers
-        |> List.iter (fun controller ->
-            match Uhppoted.get_cards (controller, TIMEOUT, OPTIONS) with
-            | Ok response -> Assert.That(response, Is.EqualTo(expected))
+        options
+        |> List.iter (fun opts ->
+            match Uhppoted.GetCards(CONTROLLER, TIMEOUT, opts) with
+            | Ok cards -> Assert.That(cards, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
     [<Test>]
