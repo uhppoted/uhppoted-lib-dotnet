@@ -1,4 +1,5 @@
-.PHONY: format
+clean:
+	dotnet clean
 
 format:
 	dotnet fantomas .

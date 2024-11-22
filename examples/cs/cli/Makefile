@@ -10,7 +10,8 @@ LISTENER ?= 192.168.1.100:60001
 INTERVAL ?= 30
 EVENT_INDEX ?= 23
 
-.PHONY: format
+clean:
+	dotnet clean
 
 format:
 	dotnet format

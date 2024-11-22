@@ -10,8 +10,12 @@ LISTENER ?= 192.168.1.100:60001
 INTERVAL ?= 30
 EVENT_INDEX ?= 23
 
-.PHONY: format
-.PHONY: integration-tests
+clean:
+	cd uhppoted && make clean
+	cd integration-tests && make clean
+	cd examples/fs/cli && make clean
+	cd examples/cs/cli && make clean
+	cd examples/vb/cli && make clean
 
 build-all:
 	cd uhppoted        && make build && make test

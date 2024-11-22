@@ -20,6 +20,11 @@
       - [ ] door mode
       - [ ] event types
       - [ ] event reasons
+      - [ ] event direction
+      - https://stackoverflow.com/questions/2689446/how-to-manage-resources-in-an-f-project
+      - https://fsprojects.github.io/FSharp.Configuration/ResXProvider.html
+      - https://poeditor.com/kb/resx-editor
+      - https://localizely.com/getting-started
 
 - [ ] argparse
       - [x] --controller

@@ -62,7 +62,6 @@ module Uhppoted =
             | Error err -> Error err
         | Error err -> Error err
 
-
     /// <summary>
     /// Retrieves a list of controllers on the local LAN accessible via a UDP broadcast.
     /// </summary>
