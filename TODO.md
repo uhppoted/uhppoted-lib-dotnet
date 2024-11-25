@@ -1,15 +1,5 @@
 # TODO
 
-- [x] dump
-- [x] `Controller` record
-- [x] Options
-- [x] decode
-- [x] bind to bind-addr
-- [x] integration tests
-- [x] verify controller ID in response
-- [x] README
-- [x] github _nightly_ build
-- [x] Add .NET 8 as a target framework on github
 - [ ] Add .NET 9 as a target framework
 
 - [ ] function signature file

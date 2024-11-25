@@ -12,8 +12,55 @@
     <resheader name="writer">
         <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
     </resheader>
+
+    <!-- door modes -->
+    <data name="door.mode.unknown">
+        <value>unknown</value>
+    </data>
+   <data name="door.mode.1">
+        <value>normally open</value>
+    </data>
+   <data name="door.mode.2">
+        <value>normally closed</value>
+    </data>
+    <data name="door.mode.3">
+        <value>controlled</value>
+    </data>
+
+    <!-- event types -->
+    <data name="event.type.unknown">
+        <value>unknown</value>
+    </data>
+   <data name="event.type.0">
+        <value>not found</value>
+    </data>
+   <data name="event.type.1">
+        <value>card swipe</value>
+    </data>
+    <data name="event.type.2">
+        <value>door</value>
+    </data>
+    <data name="event.type.3">
+        <value>alarm</value>
+    </data>
+    <data name="event.type.255">
+        <value>overwritten</value>
+    </data>
+
+    <!-- event direction -->
+    <data name="event.direction.unknown">
+        <value>unknown</value>
+    </data>
+   <data name="event.direction.1">
+        <value>in</value>
+    </data>
+   <data name="event.direction.2">
+        <value>out</value>
+    </data>
+
+    <!-- event reasons -->
     <data name="event.reason.1">
-        <value>swipe xxx</value>
+        <value>swipe</value>
         <comment></comment>
     </data>
     <data name="event.reason.2">
@@ -22,18 +69,109 @@
     </data>
     <data name="event.reason.3">
         <value>swipe closed</value>
-        <comment>This is a description of a key so that the translator better understands the context</comment>
     </data>
     <data name="event.reason.5">
         <value>swipe:denied (system)</value>
-        <comment></comment>
+        <comment>Access is managed by the system not the controller</comment>
     </data>
     <data name="event.reason.6">
         <value>no access rights</value>
-        <comment></comment>
+        <comment>Access denied</comment>
+    </data>
+    <data name="event.reason.7">
+        <value>incorrect password</value>
+        <comment>Access denied</comment>
+    </data>
+    <data name="event.reason.8">
+        <value>anti-passback</value>
+        <comment>Access denied</comment>
+    </data>
+    <data name="event.reason.9">
+        <value>more cards</value>
+        <comment>Access denied (absolutely no idea what this means)</comment>
+    </data>
+    <data name="event.reason.10">
+        <value>first card open</value>
+        <comment>Access denied (absolutely no idea what this means either)</comment>
+    </data>
+    <data name="event.reason.11">
+        <value>door is normally closed</value>
+        <comment>Access denied</comment>
+    </data>
+    <data name="event.reason.12">
+        <value>interlock</value>
+        <comment>Access denied</comment>
+    </data>
+    <data name="event.reason.13">
+        <value>not allowed in time period</value>
+        <comment>Access denied</comment>
+    </data>
+    <data name="event.reason.15">
+        <value>invalid timezone</value>
+        <comment>Access denied (absolutely no idea what this means either)</comment>
+    </data>
+    <data name="event.reason.18">
+        <value>access denied</value>
+        <comment>Access denied</comment>
+    </data>
+    <data name="event.reason.20">
+        <value>pushbutton ok</value>
+    </data>
+    <data name="event.reason.23">
+        <value>door opened</value>
+    </data>
+    <data name="event.reason.24">
+        <value>door closed</value>
+    </data>
+    <data name="event.reason.25">
+        <value>door opened (supervisor password)</value>
+    </data>
+    <data name="event.reason.28">
+        <value>controller power on</value>
+    </data>
+    <data name="event.reason.29">
+        <value>controller reset</value>
+    </data>
+    <data name="event.reason.31">
+        <value>pushbutton denied (door locked)</value>
+    </data>
+    <data name="event.reason.32">
+        <value>pushbutton denied (offline)</value>
+    </data>
+    <data name="event.reason.33">
+        <value>pushbutton denied (interlock)</value>
+    </data>
+    <data name="event.reason.34">
+        <value>pushbutton denied (threat)</value>
+    </data>
+    <data name="event.reason.37">
+        <value>door open too long</value>
+    </data>
+    <data name="event.reason.38">
+        <value>door forced open</value>
+    </data>
+    <data name="event.reason.39">
+        <value>fire</value>
+    </data>
+    <data name="event.reason.40">
+        <value>door forced closed</value>
+    </data>
+    <data name="event.reason.41">
+        <value>tamper detect</value>
+    </data>
+    <data name="event.reason.42">
+        <value>24x7 zone</value>
+    </data>
+    <data name="event.reason.43">
+        <value>emergency</value>
+    </data>
+    <data name="event.reason.44">
+        <value>remote open door</value>
+    </data>
+    <data name="event.reason.45">
+        <value>remote open door (USB reader)</value>
     </data>
     <data name="event.reason.unknown">
         <value>unknown</value>
-        <comment></comment>
     </data>
 </root>
