@@ -208,33 +208,23 @@ class Commands
 
     public static void SetTime(string[] args)
     {
-        try
+        var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
+        var now = ArgParse.Parse(args, "--datetime", DateTime.Now);
+
+        var result = Uhppoted.SetTime(controller, now, TIMEOUT, OPTIONS);
+
+        if (result.IsOk)
         {
-            var controller = new uhppoted.ControllerBuilder(CONTROLLER)
-                                         .With(IPEndPoint.Parse("192.168.1.100:60000"))
-                                         .With("udp")
-                                         .build();
-            var datetime = DateTime.Now;
+            var datetime = result.ResultValue;
 
-            var result = Uhppoted.set_time(controller, datetime, TIMEOUT, OPTIONS);
-
-            if (result.IsOk)
-            {
-                var response = result.ResultValue;
-
-                WriteLine("set-time");
-                WriteLine("  controller {0}", response.controller);
-                WriteLine("    datetime {0}", YYYYMMDDHHmmss(response.datetime));
-                WriteLine();
-            }
-            else if (result.IsError)
-            {
-                throw new Exception(result.ErrorValue);
-            }
+            WriteLine("set-time");
+            WriteLine("  controller {0}", controller);
+            WriteLine("    datetime {0}", YYYYMMDDHHmmss(datetime));
+            WriteLine();
         }
-        catch (Exception err)
+        else if (result.IsError)
         {
-            WriteLine("** ERROR  {0}", err.Message);
+            throw new Exception(result.ErrorValue);
         }
     }
 

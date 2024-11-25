@@ -47,7 +47,7 @@ Sets a controller event listener endpoint and auto-send interval.
 ### [`GetTime`](documentation/API/get-time.md)
 Gets a controller current date and time.
 
-### `set-time`
+### [`SetTime`](documentation/API/set-time.md)
 Sets a controller current date and time.
 
 ### `get-door`

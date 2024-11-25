@@ -173,26 +173,20 @@ Module Commands
     End Sub
 
     Sub SetTime(args As String())
-        Try
-            Dim controller = New ControllerBuilder(405419896).
-                                 With(IPEndPoint.Parse("192.168.1.100:60000")).
-                                 With("udp").build()
-            Dim now = DateTime.Now
-            Dim result = UHPPOTE.set_time(controller, now, TIMEOUT, OPTIONS)
+        Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
+        Dim now = ArgParse.Parse(args, "--datetime", DateTime.Now)
+        Dim result = UHPPOTE.SetTime(controller, now, TIMEOUT, OPTIONS)
 
-            If (result.IsOk)
-                Dim response = result.ResultValue
-                WriteLine("set-time")
-                WriteLine("  controller {0}", response.controller)
-                WriteLine("    datetime {0}", YYYYMMDDHHmmss(response.datetime))
-                WriteLine()
-            Else If (result.IsError)
-                Throw New Exception(result.ErrorValue)
-            End If
+        If (result.IsOk)
+            Dim datetime = result.ResultValue
 
-        Catch Err As Exception
-            WriteLine("Exception  {0}", err.Message)
-        End Try
+            WriteLine("set-time")
+            WriteLine("  controller {0}", controller)
+            WriteLine("    datetime {0}", YYYYMMDDHHmmss(datetime))
+            WriteLine()
+        Else If (result.IsError)
+            Throw New Exception(result.ErrorValue)
+        End If
     End Sub
 
     Sub GetDoor(args As String())

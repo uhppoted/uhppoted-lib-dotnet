@@ -210,10 +210,20 @@ module Uhppoted =
         | Ok response -> Ok response.datetime
         | Error err -> Error err
 
-    let set_time (controller: Controller, datetime: DateTime, timeout: int, options: Options) =
-        let request = Encode.set_time_request controller.controller datetime
+    /// <summary>
+    /// Sets the controller date and time.
+    /// </summary>
+    /// <param name="controller">Controller ID.</param>
+    /// <param name="datetime">Date and time to set.</param>
+    /// <param name="timeout">Operation timeout (ms).</param>
+    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <returns>Ok with the DateTime value from the controller or Error.</returns>
+    let SetTime (controller: uint32, datetime: DateTime, timeout: int, options: Options) =
+        let request = Encode.set_time_request controller datetime
 
-        exex controller request Decode.set_time_response timeout options
+        match exec controller request Decode.set_time_response timeout options with
+        | Ok response -> Ok response.datetime
+        | Error err -> Error err
 
     let get_door (controller: Controller, door: uint8, timeout: int, options: Options) =
         let request = Encode.get_door_request controller.controller door

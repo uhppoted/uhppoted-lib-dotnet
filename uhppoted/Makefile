@@ -31,9 +31,9 @@ release: build test integration-tests
 	cd uhppoted && make release
 
 debug: build
-	dotnet run --project ../examples/fs/cli --framework net7.0 record-special-events --controller $(CONTROLLER) --enable $(RECORD_SPECIAL_EVENTS)
-	dotnet run --project ../examples/cs/cli --framework net7.0 record-special-events --controller $(CONTROLLER) --enable $(RECORD_SPECIAL_EVENTS)
-	dotnet run --project ../examples/vb/cli --framework net7.0 record-special-events --controller $(CONTROLLER) --enable $(RECORD_SPECIAL_EVENTS)
+	dotnet run --project ../examples/fs/cli --framework net7.0 set-time --controller $(CONTROLLER)
+	dotnet run --project ../examples/cs/cli --framework net7.0 set-time --controller $(CONTROLLER)
+	dotnet run --project ../examples/vb/cli --framework net7.0 set-time --controller $(CONTROLLER)
 
 find-controllers: build
 	$(CLI) find-controllers

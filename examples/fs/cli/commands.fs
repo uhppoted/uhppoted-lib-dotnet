@@ -159,18 +159,14 @@ let get_time args =
     | Error err -> Error err
 
 let set_time args =
-    let controller =
-        { controller = argparse args "--controller" CONTROLLER
-          address = ENDPOINT
-          protocol = PROTOCOL }
+    let controller = argparse args "--controller" CONTROLLER
+    let now = argparse args "--datetime" DateTime.Now
 
-    let datetime = DateTime.Now
-
-    match Uhppoted.set_time (controller, datetime, TIMEOUT, OPTIONS) with
-    | Ok response ->
+    match Uhppoted.SetTime(controller, now, TIMEOUT, OPTIONS) with
+    | Ok datetime ->
         printfn "set-time"
-        printfn "  controller %u" response.controller
-        printfn "    datetime %s" (YYYYMMDDHHmmss response.datetime)
+        printfn "  controller %u" controller
+        printfn "    datetime %s" (YYYYMMDDHHmmss datetime)
         printfn ""
         Ok()
     | Error err -> Error err
