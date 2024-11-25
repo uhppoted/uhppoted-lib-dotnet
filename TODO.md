@@ -35,11 +35,12 @@
       - [x] --listener
       - [x] --interval
       - [x] --index
-      - [ ] --time
+      - [x] --time
+      - [x] --enable
+      - [ ] --door
             - [ ] F#
             - [ ] C#
             - [ ] VB.NET
-      - [ ] --door
       - [ ] --mode
       - [ ] --delay
       - [ ] --passcode
@@ -47,7 +48,6 @@
       - [ ] --end-date
       - [ ] --permissions
       - [ ] --PIN
-      - [ ] -enable
 
 - [ ] API
       - [x] find-controllers

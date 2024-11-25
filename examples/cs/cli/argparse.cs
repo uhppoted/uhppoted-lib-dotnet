@@ -12,6 +12,7 @@ static class ArgParse
         bool b;
         IPAddress address;
         IPEndPoint endpoint;
+        DateTime datetime;
 
         if (ix >= 0 && ix + 1 < args.Length)
         {
@@ -40,6 +41,10 @@ static class ArgParse
 #pragma warning disable CS8600
                     if (IPEndPoint.TryParse(args[ix], out endpoint)) return (T)(object)endpoint;
 #pragma warning restore CS8600
+                    break;
+
+                case DateTime:
+                    if (DateTime.TryParse(args[ix], out datetime)) return (T)(object)datetime;
                     break;
             }
         }

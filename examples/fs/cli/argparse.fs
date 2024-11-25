@@ -28,6 +28,11 @@ let (|IPEndPoint|_|) (value: string) =
     | true, v -> Some(v)
     | _ -> None
 
+let (|DateTime|_|) (value: string) =
+    match DateTime.TryParse value with
+    | true, v -> Some(v)
+    | _ -> None
+
 let rec argparse (args: string list) flag (defval: 'T) : 'T =
     match args with
     | arg :: value :: rest when arg = flag ->
@@ -37,6 +42,7 @@ let rec argparse (args: string list) flag (defval: 'T) : 'T =
         | :? bool, Boolean parsed -> unbox parsed
         | :? IPAddress, IPAddress parsed -> unbox parsed
         | :? IPEndPoint, IPEndPoint parsed -> unbox parsed
+        | :? DateTime, DateTime parsed -> unbox parsed
         | _ -> defval
 
     | _ :: rest -> argparse rest flag defval
