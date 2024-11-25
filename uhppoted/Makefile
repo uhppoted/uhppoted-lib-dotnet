@@ -9,6 +9,7 @@ GATEWAY ?= 192.193.194.195
 LISTENER ?= 192.168.1.100:60001
 INTERVAL ?= 30
 EVENT_INDEX ?= 23
+RECORD_SPECIAL_EVENTS ?= true
 
 clean:
 	dotnet clean
@@ -30,9 +31,9 @@ release: build test integration-tests
 	cd uhppoted && make release
 
 debug: build
-	dotnet run --project ../examples/fs/cli --framework net7.0 get-time --controller $(CONTROLLER)
-	dotnet run --project ../examples/cs/cli --framework net7.0 get-time --controller $(CONTROLLER)
-	dotnet run --project ../examples/vb/cli --framework net7.0 get-time --controller $(CONTROLLER)
+	dotnet run --project ../examples/fs/cli --framework net7.0 record-special-events --controller $(CONTROLLER) --enable $(RECORD_SPECIAL_EVENTS)
+	dotnet run --project ../examples/cs/cli --framework net7.0 record-special-events --controller $(CONTROLLER) --enable $(RECORD_SPECIAL_EVENTS)
+	dotnet run --project ../examples/vb/cli --framework net7.0 record-special-events --controller $(CONTROLLER) --enable $(RECORD_SPECIAL_EVENTS)
 
 find-controllers: build
 	$(CLI) find-controllers
@@ -97,4 +98,7 @@ get-event-index: build
 
 set-event-index: build
 	$(CLI) set-event-index --controller $(CONTROLLER) --index $(EVENT_INDEX)
+
+record-special-events:build
+	$(CLI) record-special-events --controller $(CONTROLLER) --enable $(RECORD_SPECIAL_EVENTS)
 

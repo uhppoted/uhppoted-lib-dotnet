@@ -47,6 +47,7 @@
       - [ ] --end-date
       - [ ] --permissions
       - [ ] --PIN
+      - [ ] -enable
 
 - [ ] API
       - [x] find-controllers
@@ -70,7 +71,8 @@
       - [x] get-event
       - [x] get-event-index
       - [x] set-event-index
-      - [ ] record-special-events
+      - [x] record-special-events
+      - [ ] get-time-profile
             - [ ] API function
             - [ ] CLI
                   - [ ] F#
@@ -80,7 +82,6 @@
             - [ ] API doc
             - [ ] README
       
-      - [ ] get-time-profile
       - [ ] set-time-profile
       - [ ] clear-time-profiles
       - [ ] clear-task-list

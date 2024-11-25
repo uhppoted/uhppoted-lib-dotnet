@@ -92,6 +92,10 @@ Retrieves the current event index from a controller.
 ### [`SetEventIndex`](documentation/API/set-event-index.md)
 Sets a controller event index.
 
+### [`RecordSpecialEvents`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/record-special-events.md))
+Enables (or disables) events for door open/close, button press, etc.
+
+
 ## Notes
 
 ### C# Interop

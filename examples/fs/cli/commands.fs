@@ -26,6 +26,7 @@ let DELAY = 7uy
 let CARD = 1u
 let CARD_INDEX = 1u
 let EVENT_INDEX = 1u
+let ENABLE = true
 
 let OPTIONS: Options =
     { bind = IPEndPoint(IPAddress.Any, 0)
@@ -504,6 +505,25 @@ let set_event_index args =
         Ok()
     | Error err -> Error(err)
 
+let record_special_events args =
+    let controller = argparse args "--controller" CONTROLLER
+    let enable = argparse args "--enable" ENABLE
+    let timeout = TIMEOUT
+
+    let options =
+        { OPTIONS with
+            endpoint = ENDPOINT
+            protocol = PROTOCOL }
+
+    match Uhppoted.RecordSpecialEvents(controller, enable, timeout, options) with
+    | Ok ok ->
+        printfn "record-special-events"
+        printfn "  controller %u" controller
+        printfn "          ok %b" ok
+        printfn ""
+        Ok()
+    | Error err -> Error(err)
+
 let commands =
     [ { command = "find-controllers"
         description = "Retrieves a list of controllers accessible on the local LAN"
@@ -587,4 +607,8 @@ let commands =
 
       { command = "set-event-index"
         description = "Sets a controller event index"
-        f = set_event_index } ]
+        f = set_event_index }
+
+      { command = "record-special-events"
+        description = "Enables events for door open/close, button press, etc"
+        f = record_special_events } ]

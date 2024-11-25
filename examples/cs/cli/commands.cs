@@ -32,6 +32,7 @@ class Commands
     const uint CARD = 1u;
     const uint CARD_INDEX = 1u;
     const uint EVENT_INDEX = 1u;
+    const bool ENABLE = true;
 
     static readonly IPAddress ADDRESS = IPAddress.Parse("192.168.1.10");
     static readonly IPAddress NETMASK = IPAddress.Parse("255.255.255.0");
@@ -61,6 +62,7 @@ class Commands
           new Command ( "get-event","Retrieves the event record stored at the index from a controller",GetEvent),
           new Command ( "get-event-index","Retrieves the current event index from a controller",GetEventIndex),
           new Command ( "set-event-index","Sets a controller event index",SetEventIndex),
+          new Command ( "record-special-events","Enables events for door open/close, button press, etc",RecordSpecialEvents),
     };
 
     public static void FindControllers(string[] args)
@@ -662,6 +664,29 @@ class Commands
             var ok = result.ResultValue;
 
             WriteLine("set-event-index");
+            WriteLine("  controller {0}", controller);
+            WriteLine("          ok {0}", ok);
+            WriteLine();
+        }
+        else if (result.IsError)
+        {
+            throw new Exception(result.ErrorValue);
+        }
+    }
+
+    public static void RecordSpecialEvents(string[] args)
+    {
+        var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
+        var enable = ArgParse.Parse(args, "--enable", ENABLE);
+        var timeout = TIMEOUT;
+        var options = OPTIONS;
+        var result = Uhppoted.RecordSpecialEvents(controller, enable, timeout, options);
+
+        if (result.IsOk)
+        {
+            var ok = result.ResultValue;
+
+            WriteLine("record-special-events");
             WriteLine("  controller {0}", controller);
             WriteLine("          ok {0}", ok);
             WriteLine();

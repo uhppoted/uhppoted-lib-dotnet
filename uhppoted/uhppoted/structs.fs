@@ -229,3 +229,10 @@ type internal SetEventIndexResponse =
 
     interface IResponse with
         member this.controller = this.controller
+
+type internal RecordSpecialEventsResponse =
+    { controller: uint32
+      ok: bool }
+
+    interface IResponse with
+        member this.controller = this.controller

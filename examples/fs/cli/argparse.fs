@@ -13,6 +13,11 @@ let (|Byte|_|) (value: string) =
     | true, v -> Some(v)
     | _ -> None
 
+let (|Boolean|_|) (value: string) =
+    match Boolean.TryParse value with
+    | true, v -> Some(v)
+    | _ -> None
+
 let (|IPAddress|_|) (value: string) =
     match IPAddress.TryParse value with
     | true, v -> Some(v)
@@ -29,6 +34,7 @@ let rec argparse (args: string list) flag (defval: 'T) : 'T =
         match box defval, value with
         | :? uint32, UInt32 parsed -> unbox parsed
         | :? byte, Byte parsed -> unbox parsed
+        | :? bool, Boolean parsed -> unbox parsed
         | :? IPAddress, IPAddress parsed -> unbox parsed
         | :? IPEndPoint, IPEndPoint parsed -> unbox parsed
         | _ -> defval

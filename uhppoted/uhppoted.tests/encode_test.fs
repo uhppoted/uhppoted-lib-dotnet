@@ -241,3 +241,13 @@ type TestEncoder() =
         let packet = Encode.set_event_index_request controller index
 
         Assert.That(packet, Is.EqualTo(expected))
+
+    [<Test>]
+    member this.TestRecordSpecialEvents() =
+        let expected = TestRequests.record_special_events
+
+        let controller = 405419896u
+        let enabled = true
+        let packet = Encode.record_special_events_request controller enabled
+
+        Assert.That(packet, Is.EqualTo(expected))

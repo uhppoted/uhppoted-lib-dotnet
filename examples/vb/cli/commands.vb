@@ -18,12 +18,14 @@ Public Structure Command
 End Structure
 
 Module Commands
+    Private Const TIMEOUT = 1000
+
     Private Const CONTROLLER_ID As UInt32 = 1
     Private Const EVENT_INTERVAL as Byte = 0
     Private Const CARD_NUMBER As UInt32 = 1
     Private Const CARD_INDEX As UInt32 = 1
     Private Const EVENT_INDEX As UInt32 = 1
-    Private Const TIMEOUT = 1000
+    Private Const ENABLE as Boolean = true
 
     Private ReadOnly Dim IPv4_ADDRESS = IPAddress.Parse("192.168.1.10")
     Private ReadOnly Dim IPv4_NETMASK = IPAddress.Parse("255.255.255.0")
@@ -57,7 +59,8 @@ Module Commands
            New Command("delete-all-cards", "Deletes all card records from a controller", AddressOf DeleteAllCards),
            New Command("get-event", "Retrieves the event record stored at the index from a controller", AddressOf GetEvent),
            New Command("get-event-index", "Retrieves the current event index from a controller", AddressOf GetEventIndex),
-           New Command("set-event-index", "Sets a controller event index", AddressOf SetEventIndex)
+           New Command("set-event-index", "Sets a controller event index", AddressOf SetEventIndex),
+           New Command("record-special-events", "Enables events for door open/close, button press, etc", AddressOf RecordSpecialEvents)
        }
 
     Sub FindControllers(args As String())
@@ -516,6 +519,23 @@ Module Commands
             Dim ok = result.ResultValue
 
             WriteLine("set-event-index")
+            WriteLine("  controller {0}", controller)
+            WriteLine("          ok {0}", ok)
+            WriteLine()
+        Else If (result.IsError)
+            Throw New Exception(result.ErrorValue)
+        End If
+    End Sub
+
+    Sub RecordSpecialEvents(args As String())
+        Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
+        Dim enable As Boolean = ArgParse.Parse(args, "--enable", ENABLE)
+        Dim result = UHPPOTE.RecordSpecialEvents(controller, enable, TIMEOUT, OPTIONS)
+
+        If (result.IsOk)
+            Dim ok = result.ResultValue
+
+            WriteLine("record-special-events")
             WriteLine("  controller {0}", controller)
             WriteLine("          ok {0}", ok)
             WriteLine()

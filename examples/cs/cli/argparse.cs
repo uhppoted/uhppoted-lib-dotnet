@@ -9,6 +9,7 @@ static class ArgParse
         int ix = Array.IndexOf(args, arg);
         uint u32;
         byte u8;
+        bool b;
         IPAddress address;
         IPEndPoint endpoint;
 
@@ -23,6 +24,10 @@ static class ArgParse
 
                 case byte:
                     if (Byte.TryParse(args[ix], out u8)) return (T)(object)u8;
+                    break;
+
+                case bool:
+                    if (Boolean.TryParse(args[ix], out b)) return (T)(object)b;
                     break;
 
                 case IPAddress:

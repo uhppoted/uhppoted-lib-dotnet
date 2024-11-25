@@ -599,3 +599,20 @@ module Uhppoted =
         match exec controller request Decode.set_event_index_response timeout options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
+
+    /// <summary>
+    /// Enbales or disables events for door open and close, button presses, etc.
+    /// </summary>
+    /// <param name="controller">Controller ID.</param>
+    /// <param name="enable">true to enabled 'special events'.</param>
+    /// <param name="timeout">Operation timeout (ms).</param>
+    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <returns>
+    /// Ok with true if the 'special events' mode was set or Error.
+    /// </returns>
+    let RecordSpecialEvents (controller: uint32, enable: bool, timeout: int, options: Options) =
+        let request = Encode.record_special_events_request controller enable
+
+        match exec controller request Decode.record_special_events_response timeout options with
+        | Ok response -> Ok response.ok
+        | Error err -> Error err

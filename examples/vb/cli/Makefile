@@ -8,6 +8,7 @@ GATEWAY ?= 192.168.1.1
 LISTENER ?= 192.168.1.100:60001
 INTERVAL ?= 30
 EVENT_INDEX ?= 23
+RECORD_SPECIAL_EVENTS ?= true
 
 clean:
 	dotnet clean
@@ -84,4 +85,7 @@ get-event-index: build
 
 set-event-index: build
 	$(CLI) set-event-index --controller $(CONTROLLER) --index $(EVENT_INDEX)
+
+record-special-events:build
+	$(CLI) record-special-events --controller $(CONTROLLER) --enable $(RECORD_SPECIAL_EVENTS)
 

@@ -18,6 +18,7 @@
 - [`GetEvent`](get-event.md)
 - [`GetEventIndex`](get-event-index.md)
 - [`SetEventIndex`](set-event-index.md)
+- [`RecordSpecialEvents`](record-special-events.md)
 
 
 ## `set_door_passcodes`

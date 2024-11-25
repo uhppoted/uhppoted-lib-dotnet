@@ -7,6 +7,7 @@ Module ArgParse
         Dim ix As Integer = Array.IndexOf(args, arg)
         Dim u32 As UInteger
         Dim u8 As Byte
+        Dim bool As Boolean
         Dim address As IPAddress
         Dim endpoint As IPEndPoint
 
@@ -21,6 +22,11 @@ Module ArgParse
                 Case "Byte"
                     If Byte.TryParse(args(ix), u8) Then
                         Return CType(CObj(u8), T)
+                    End If
+
+                Case "Boolean"
+                    If Boolean.TryParse(args(ix), bool) Then
+                        Return CType(CObj(bool), T)
                     End If
 
                 Case "IPAddress"
