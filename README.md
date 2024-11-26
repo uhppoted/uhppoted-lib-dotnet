@@ -50,7 +50,7 @@ Gets a controller current date and time.
 ### [`SetTime`](documentation/API/set-time.md)
 Sets a controller current date and time.
 
-### `get-door`
+### [`GetDoor`](documentation/API/get-door.md)
 Gets a controller door operational mode and unlocked delay.
 
 ### `set-door`

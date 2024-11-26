@@ -169,11 +169,10 @@ module Uhppoted =
 
         match exec controller request Decode.get_listener_response timeout options with
         | Ok response ->
-            let record: Listener =
+            Ok
                 { endpoint = response.endpoint
                   interval = response.interval }
 
-            Ok record
         | Error err -> Error err
 
     /// <summary>
@@ -225,10 +224,27 @@ module Uhppoted =
         | Ok response -> Ok response.datetime
         | Error err -> Error err
 
-    let get_door (controller: Controller, door: uint8, timeout: int, options: Options) =
-        let request = Encode.get_door_request controller.controller door
+    /// <summary>
+    /// Retrieves the mode and unlocked delay for a door.
+    /// </summary>
+    /// <param name="controller">Controller ID.</param>
+    /// <param name="door">Door ID [1..4].</param>
+    /// <param name="timeout">Operation timeout (ms).</param>
+    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <returns>Ok with the door mode and unlock delay (or null) or Error.</returns>
+    let GetDoor (controller: uint32, door: uint8, timeout: int, options: Options) =
+        let request = Encode.get_door_request controller door
 
-        exex controller request Decode.get_door_response timeout options
+        match exec controller request Decode.get_door_response timeout options with
+        | Ok response when response.door <> door -> // incorrect door
+            Ok(Nullable())
+        | Ok response ->
+            Ok(
+                Nullable
+                    { mode = response.mode
+                      delay = response.delay }
+            )
+        | Error err -> Error err
 
     let set_door (controller: Controller, door: uint8, mode: uint8, delay: uint8, timeout: int, options: Options) =
         let request = Encode.set_door_request controller.controller door mode delay

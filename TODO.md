@@ -27,11 +27,11 @@
       - [x] --index
       - [x] --time
       - [x] --enable
-      - [ ] --door
+      - [x] --door
+      - [ ] --mode
             - [ ] F#
             - [ ] C#
             - [ ] VB.NET
-      - [ ] --mode
       - [ ] --delay
       - [ ] --passcode
       - [ ] --start-date

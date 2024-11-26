@@ -29,6 +29,9 @@ class Commands
 
     const uint CONTROLLER = 1u;
     const byte INTERVAL = 0;
+    const byte DOOR = 1;
+    const byte MODE = 3;
+    const byte DELAY = 5;
     const uint CARD = 1u;
     const uint CARD_INDEX = 1u;
     const uint EVENT_INDEX = 1u;
@@ -232,35 +235,28 @@ class Commands
 
     public static void GetDoor(string[] args)
     {
-        try
+        var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
+        var door = ArgParse.Parse(args, "--door", DOOR);
+        var result = Uhppoted.GetDoor(controller, door, TIMEOUT, OPTIONS);
+
+        if (result.IsOk && result.ResultValue.HasValue)
         {
-            var controller = new uhppoted.ControllerBuilder(CONTROLLER)
-                                         .With(IPEndPoint.Parse("192.168.1.100:60000"))
-                                         .With("udp")
-                                         .build();
-            byte door = 4;
+            var record = result.ResultValue.Value;
 
-            var result = Uhppoted.get_door(controller, door, TIMEOUT, OPTIONS);
-
-            if (result.IsOk)
-            {
-                var response = result.ResultValue;
-
-                WriteLine("get-door");
-                WriteLine("  controller {0}", response.controller);
-                WriteLine("        door {0}", response.door);
-                WriteLine("        mode {0}", response.mode);
-                WriteLine("       delay {0}s", response.delay);
-                WriteLine();
-            }
-            else if (result.IsError)
-            {
-                throw new Exception(result.ErrorValue);
-            }
+            WriteLine("get-door");
+            WriteLine("  controller {0}", controller);
+            WriteLine("        door {0}", door);
+            WriteLine("        mode {0}", record.mode);
+            WriteLine("       delay {0}s", record.delay);
+            WriteLine();
         }
-        catch (Exception err)
+        else if (result.IsOk)
         {
-            WriteLine("** ERROR  {0}", err.Message);
+            throw new Exception("door does not exist");
+        }
+        else if (result.IsError)
+        {
+            throw new Exception(result.ErrorValue);
         }
     }
 

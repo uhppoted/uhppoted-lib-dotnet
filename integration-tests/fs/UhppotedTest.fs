@@ -16,6 +16,7 @@ type TestClass() =
     let ENDPOINT = IPEndPoint.Parse("127.0.0.1:59999")
     let TIMEOUT = 500
     let DOOR = 4uy
+    let DOOR_NOT_FOUND = 5uy
     let MODE = 2uy
     let DELAY = 17uy
     let CARD = 10058400u
@@ -192,16 +193,21 @@ type TestClass() =
 
     [<Test>]
     member this.TestGetDoor() =
-        let expected: GetDoorResponse =
-            { controller = 405419896u
-              door = 4uy
-              mode = 3uy
-              delay = 7uy }
+        let expected: Door = { mode = 3uy; delay = 7uy }
 
-        controllers
-        |> List.iter (fun controller ->
-            match Uhppoted.get_door (controller, DOOR, TIMEOUT, OPTIONS) with
-            | Ok response -> Assert.That(response, Is.EqualTo(expected))
+        options
+        |> List.iter (fun opts ->
+            match Uhppoted.GetDoor(CONTROLLER, DOOR, TIMEOUT, OPTIONS) with
+            | Ok _ -> Assert.Pass()
+            | Error err -> Assert.Fail(err))
+
+    [<Test>]
+    member this.TestGetDoorNotFound() =
+        options
+        |> List.iter (fun opts ->
+            match Uhppoted.GetDoor(CONTROLLER, DOOR_NOT_FOUND, TIMEOUT, opts) with
+            | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
+            | Ok _ -> Assert.Pass()
             | Error err -> Assert.Fail(err))
 
     [<Test>]

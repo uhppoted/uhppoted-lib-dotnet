@@ -45,6 +45,10 @@ module Messages =
             request = Requests.get_door
             responses = [ Responses.get_door ] }
 
+          { test = "get-door-not-found"
+            request = Requests.get_door_not_found
+            responses = [ Responses.get_door_not_found ] }
+
           { test = "set-door"
             request = Requests.set_door
             responses = [ Responses.set_door ] }

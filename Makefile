@@ -1,6 +1,7 @@
 CLI = dotnet run --project ./examples/fs/cli --framework net7.0 --controller $(CONTROLLER)
 
 CONTROLLER ?= 405419896
+DOOR ?= 3
 CARD ?= 10058400
 MISSING_CARD ?= 10058399
 ADDRESS ?= 192.168.1.100
@@ -53,7 +54,7 @@ set-time:
 	$(CLI) set-time --controller $(CONTROLLER)
 
 get-door:
-	$(CLI) get-door --controller $(CONTROLLER)
+	$(CLI) get-door --controller $(CONTROLLER) --door $(DOOR)
 
 set-door:
 	$(CLI) set-door --controller $(CONTROLLER)

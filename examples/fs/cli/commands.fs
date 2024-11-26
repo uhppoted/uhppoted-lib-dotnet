@@ -21,8 +21,9 @@ let GATEWAY = IPAddress.Parse "192.168.1.1"
 let LISTENER = IPEndPoint.Parse("192.168.1.250:60001")
 let INTERVAL = 0uy
 
-let MODE = 2uy
-let DELAY = 7uy
+let DOOR = 1uy
+let MODE = 3uy
+let DELAY = 5uy
 let CARD = 1u
 let CARD_INDEX = 1u
 let EVENT_INDEX = 1u
@@ -179,22 +180,22 @@ let set_time args =
     | Error err -> Error err
 
 let get_door args =
-    let controller =
-        { controller = argparse args "--controller" CONTROLLER
-          address = ENDPOINT
-          protocol = PROTOCOL }
+    let controller = argparse args "--controller" CONTROLLER
+    let door = argparse args "--door" DOOR
 
-    let door = 4uy
+    match Uhppoted.GetDoor(controller, door, TIMEOUT, OPTIONS) with
+    | Ok v when v.HasValue ->
+        let record = v.Value
 
-    match Uhppoted.get_door (controller, door, TIMEOUT, OPTIONS) with
-    | Ok response ->
         printfn "get-door"
-        printfn "  controller %u" response.controller
-        printfn "        door %d" response.door
-        printfn "        mode %d" response.mode
-        printfn "       delay %ds" response.delay
+        printfn "  controller %u" controller
+        printfn "        door %d" door
+        printfn "        mode %d" record.mode
+        printfn "       delay %ds" record.delay
+        printfn ""
         printfn ""
         Ok()
+    | Ok _ -> Error "door does not exist"
     | Error err -> Error err
 
 let set_door args =

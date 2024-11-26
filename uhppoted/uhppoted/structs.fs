@@ -14,6 +14,10 @@ type ControllerRecord =
       version: string
       date: DateOnly Nullable }
 
+
+[<Struct>]
+type Door = { mode: uint8; delay: uint8 }
+
 [<Struct>]
 type Card =
     { card: uint32

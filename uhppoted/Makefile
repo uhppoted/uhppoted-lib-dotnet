@@ -1,6 +1,7 @@
 CLI = dotnet run --project ../examples/fs/cli --framework net7.0
 
 CONTROLLER ?= 405419896
+DOOR ?= 3
 CARD ?= 10058400
 MISSING_CARD ?= 10058399
 ADDRESS ?= 192.168.1.100
@@ -32,9 +33,9 @@ release: build test integration-tests
 	cd uhppoted && make release
 
 debug: build
-	dotnet run --project ../examples/fs/cli --framework net7.0 get-time-profile --controller $(CONTROLLER) --profile $(TIME_PROFILE)
-	dotnet run --project ../examples/cs/cli --framework net7.0 get-time-profile --controller $(CONTROLLER) --profile $(TIME_PROFILE)
-	dotnet run --project ../examples/vb/cli --framework net7.0 get-time-profile --controller $(CONTROLLER) --profile $(TIME_PROFILE)
+	dotnet run --project ../examples/fs/cli --framework net7.0 get-door --controller $(CONTROLLER) --door $(DOOR)
+	dotnet run --project ../examples/cs/cli --framework net7.0 get-door --controller $(CONTROLLER) --door $(DOOR)
+	dotnet run --project ../examples/vb/cli --framework net7.0 get-door --controller $(CONTROLLER) --door $(DOOR)
 
 find-controllers: build
 	$(CLI) find-controllers
@@ -58,7 +59,7 @@ set-time: build
 	$(CLI) set-time --controller $(CONTROLLER)
 
 get-door: build
-	$(CLI) get-door --controller $(CONTROLLER)
+	$(CLI) get-door --controller $(CONTROLLER) --door $(DOOR)
 
 set-door: build
 	$(CLI) set-door --controller $(CONTROLLER)

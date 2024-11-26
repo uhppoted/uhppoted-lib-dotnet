@@ -22,6 +22,9 @@ Module Commands
 
     Private Const CONTROLLER_ID As UInt32 = 1
     Private Const EVENT_INTERVAL as Byte = 0
+    Private Const DOOR As Byte = 1
+    Private Const MODE As Byte = 3
+    Private Const DELAY As Byte = 5
     Private Const CARD_NUMBER As UInt32 = 1
     Private Const CARD_INDEX As UInt32 = 1
     Private Const EVENT_INDEX As UInt32 = 1
@@ -192,28 +195,24 @@ Module Commands
     End Sub
 
     Sub GetDoor(args As String())
-        Try
-            Dim controller = New ControllerBuilder(405419896).
-                                 With(IPEndPoint.Parse("192.168.1.100:60000")).
-                                 With("udp").build()
-            Dim door = 4
-            Dim result = UHPPOTE.get_door(controller, door, TIMEOUT, OPTIONS)
+        Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
+        Dim door As Byte = ArgParse.Parse(args, "--door", DOOR)
+        Dim result = UHPPOTE.GetDoor(controller, door, TIMEOUT, OPTIONS)
 
-            If (result.IsOk)
-                Dim response = result.ResultValue
-                WriteLine("get-door")
-                WriteLine("  controller {0}", response.controller)
-                WriteLine("        door {0}", response.door)
-                WriteLine("        mode {0}", response.mode)
-                WriteLine("       delay {0}s", response.delay)
-                WriteLine()
-            Else If (result.IsError)
-                Throw New Exception(result.ErrorValue)
-            End If
+        If (result.IsOk And result.ResultValue.HasValue)
+            Dim record = result.ResultValue.Value
 
-        Catch Err As Exception
-            WriteLine("Exception  {0}", err.Message)
-        End Try
+            WriteLine("get-door")
+            WriteLine("  controller {0}", controller)
+            WriteLine("        door {0}", door)
+            WriteLine("        mode {0}", record.mode)
+            WriteLine("       delay {0}s", record.delay)
+            WriteLine()
+        Else If (result.IsOk)
+            Throw New Exception("door does not exist")
+        Else If (result.IsError)
+            Throw New Exception(result.ErrorValue)
+        End If
     End Sub
 
     Sub SetDoor(args As String())
