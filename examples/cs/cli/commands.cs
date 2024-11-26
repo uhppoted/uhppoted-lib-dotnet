@@ -33,6 +33,7 @@ class Commands
     const uint CARD_INDEX = 1u;
     const uint EVENT_INDEX = 1u;
     const bool ENABLE = true;
+    const byte TIME_PROFILE_ID = 2;
 
     static readonly IPAddress ADDRESS = IPAddress.Parse("192.168.1.10");
     static readonly IPAddress NETMASK = IPAddress.Parse("255.255.255.0");
@@ -41,28 +42,29 @@ class Commands
 
     public static List<Command> commands = new List<Command>
     {
-          new Command ( "find-controllers","Retrieves a list of controllers accessible on the local LAN", FindControllers),
-          new Command ( "get-controller","Retrieves the controller information from a controller", GetController),
-          new Command ( "set-IPv4","Sets a controller IPv4 address, netmask and gateway", SetIPv4),
-          new Command ( "get-listener","Retrieves a controller event listener address:port and auto-send interval", GetListener),
-          new Command ( "set-listener","Sets a controller event listener address:port and auto-send interval", SetListener),
-          new Command ( "get-time","Retrieves a controller system date and time", GetTime),
-          new Command ( "set-time","Sets a controller system date and time",SetTime),
-          new Command ( "get-door","Retrieves a controller door mode and delay settings", GetDoor),
-          new Command ( "set-door","Sets a controller door mode and delay",SetDoor),
-          new Command ( "set-door-passcodes","Sets the supervisor passcodes for a controller door",SetDoorPasscodes),
-          new Command ( "open-door","Unlocks a door controlled by a controller",OpenDoor),
-          new Command ( "get-status","Retrieves the current status of a controller",GetStatus),
-          new Command ( "get-cards","Retrieves the number of cards stored on a controller",GetCards),
-          new Command ( "get-card","Retrieves a card record from a controller",GetCard),
-          new Command ( "get-card-at-index","Retrieves the card record stored at the index from a controller",GetCardAtIndex),
-          new Command ( "put-card","Adds or updates a card record on controller",PutCard),
-          new Command ( "delete-card", "Deletes a card record from a controller", DeleteCard),
-          new Command ( "delete-all-cards", "Deletes all card records from a controller", DeleteAllCards),
-          new Command ( "get-event","Retrieves the event record stored at the index from a controller",GetEvent),
-          new Command ( "get-event-index","Retrieves the current event index from a controller",GetEventIndex),
-          new Command ( "set-event-index","Sets a controller event index",SetEventIndex),
-          new Command ( "record-special-events","Enables events for door open/close, button press, etc",RecordSpecialEvents),
+          new Command ("find-controllers","Retrieves a list of controllers accessible on the local LAN", FindControllers),
+          new Command ("get-controller","Retrieves the controller information from a controller", GetController),
+          new Command ("set-IPv4","Sets a controller IPv4 address, netmask and gateway", SetIPv4),
+          new Command ("get-listener","Retrieves a controller event listener address:port and auto-send interval", GetListener),
+          new Command ("set-listener","Sets a controller event listener address:port and auto-send interval", SetListener),
+          new Command ("get-time","Retrieves a controller system date and time", GetTime),
+          new Command ("set-time","Sets a controller system date and time",SetTime),
+          new Command ("get-door","Retrieves a controller door mode and delay settings", GetDoor),
+          new Command ("set-door","Sets a controller door mode and delay",SetDoor),
+          new Command ("set-door-passcodes","Sets the supervisor passcodes for a controller door",SetDoorPasscodes),
+          new Command ("open-door","Unlocks a door controlled by a controller",OpenDoor),
+          new Command ("get-status","Retrieves the current status of a controller",GetStatus),
+          new Command ("get-cards","Retrieves the number of cards stored on a controller",GetCards),
+          new Command ("get-card","Retrieves a card record from a controller",GetCard),
+          new Command ("get-card-at-index","Retrieves the card record stored at the index from a controller",GetCardAtIndex),
+          new Command ("put-card","Adds or updates a card record on controller",PutCard),
+          new Command ("delete-card", "Deletes a card record from a controller", DeleteCard),
+          new Command ("delete-all-cards", "Deletes all card records from a controller", DeleteAllCards),
+          new Command ("get-event","Retrieves the event record stored at the index from a controller", GetEvent),
+          new Command ("get-event-index","Retrieves the current event index from a controller", GetEventIndex),
+          new Command ("set-event-index","Sets a controller event index", SetEventIndex),
+          new Command ("record-special-events","Enables events for door open/close, button press, etc", RecordSpecialEvents),
+          new Command ("get-time-profile","Retrieves an access time profile from a controller", GetTimeProfile),
     };
 
     public static void FindControllers(string[] args)
@@ -453,8 +455,8 @@ class Commands
             WriteLine("get-card");
             WriteLine("  controller {0}", controller);
             WriteLine("        card {0}", record.card);
-            WriteLine("  start date {0}", (YYYYMMDD(record.startdate)));
-            WriteLine("    end date {0}", (YYYYMMDD(record.enddate)));
+            WriteLine("  start date {0}", (YYYYMMDD(record.start_date)));
+            WriteLine("    end date {0}", (YYYYMMDD(record.end_date)));
             WriteLine("      door 1 {0}", record.door1);
             WriteLine("      door 2 {0}", record.door2);
             WriteLine("      door 3 {0}", record.door3);
@@ -487,8 +489,8 @@ class Commands
             WriteLine("get-card-at-index");
             WriteLine("  controller {0}", controller);
             WriteLine("        card {0}", record.card);
-            WriteLine("  start date {0}", (YYYYMMDD(record.startdate)));
-            WriteLine("    end date {0}", (YYYYMMDD(record.enddate)));
+            WriteLine("  start date {0}", (YYYYMMDD(record.start_date)));
+            WriteLine("    end date {0}", (YYYYMMDD(record.end_date)));
             WriteLine("      door 1 {0}", record.door1);
             WriteLine("      door 2 {0}", record.door2);
             WriteLine("      door 3 {0}", record.door3);
@@ -687,6 +689,49 @@ class Commands
         }
     }
 
+    public static void GetTimeProfile(string[] args)
+    {
+        var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
+        var profile = ArgParse.Parse(args, "--profile", TIME_PROFILE_ID);
+        var timeout = TIMEOUT;
+        var options = OPTIONS;
+        var result = Uhppoted.GetTimeProfile(controller, profile, timeout, options);
+
+        if (result.IsOk && result.ResultValue.HasValue)
+        {
+            var record = result.ResultValue.Value;
+
+            WriteLine("get-time-profile");
+            WriteLine("          controller {0}", controller);
+            WriteLine("             profile {0}", record.profile);
+            WriteLine("          start date {0}", YYYYMMDD(record.start_date));
+            WriteLine("            end date {0}", YYYYMMDD(record.end_date));
+            WriteLine("              monday {0}", record.monday);
+            WriteLine("             tuesday {0}", record.tuesday);
+            WriteLine("           wednesday {0}", record.wednesday);
+            WriteLine("            thursday {0}", record.thursday);
+            WriteLine("              friday {0}", record.friday);
+            WriteLine("            saturday {0}", record.saturday);
+            WriteLine("              sunday {0}", record.sunday);
+            WriteLine("   segment 1 - start {0}", HHmm(record.segment1_start));
+            WriteLine("                 end {0}", HHmm(record.segment1_end));
+            WriteLine("   segment 2 - start {0}", HHmm(record.segment2_start));
+            WriteLine("                 end {0}", HHmm(record.segment2_end));
+            WriteLine("   segment 3 - start {0}", HHmm(record.segment3_start));
+            WriteLine("                 end {0}", HHmm(record.segment3_end));
+            WriteLine("      linked profile {0}", record.linked_profile);
+            WriteLine();
+        }
+        else if (result.IsOk)
+        {
+            throw new Exception("time profile does not exist");
+        }
+        else if (result.IsError)
+        {
+            throw new Exception(result.ErrorValue);
+        }
+    }
+
     private static string YYYYMMDD(DateOnly? date)
     {
         return date.HasValue ? date.Value.ToString("yyyy-MM-dd") : "---";
@@ -696,6 +741,13 @@ class Commands
     {
         return datetime.HasValue
             ? datetime.Value.ToString("yyyy-MM-dd HH:mm:ss")
+            : "---";
+    }
+
+    public static string HHmm(TimeOnly? time)
+    {
+        return time.HasValue
+            ? time.Value.ToString("HH:mm")
             : "---";
     }
 }

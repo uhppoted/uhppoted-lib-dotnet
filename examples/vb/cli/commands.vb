@@ -26,6 +26,7 @@ Module Commands
     Private Const CARD_INDEX As UInt32 = 1
     Private Const EVENT_INDEX As UInt32 = 1
     Private Const ENABLE as Boolean = true
+    Private Const TIME_PROFILE_ID as Byte = 2
 
     Private ReadOnly Dim IPv4_ADDRESS = IPAddress.Parse("192.168.1.10")
     Private ReadOnly Dim IPv4_NETMASK = IPAddress.Parse("255.255.255.0")
@@ -60,7 +61,8 @@ Module Commands
            New Command("get-event", "Retrieves the event record stored at the index from a controller", AddressOf GetEvent),
            New Command("get-event-index", "Retrieves the current event index from a controller", AddressOf GetEventIndex),
            New Command("set-event-index", "Sets a controller event index", AddressOf SetEventIndex),
-           New Command("record-special-events", "Enables events for door open/close, button press, etc", AddressOf RecordSpecialEvents)
+           New Command("record-special-events", "Enables events for door open/close, button press, etc", AddressOf RecordSpecialEvents),
+           New Command("get-time-profile", "Retrieves an access time profile from a controller", AddressOf GetTimeProfile)
        }
 
     Sub FindControllers(args As String())
@@ -360,8 +362,8 @@ Module Commands
             WriteLine("get-card")
             WriteLine("  controller {0}", controller)
             WriteLine("        card {0}", record.card)
-            WriteLine("  start date {0}", (YYYYMMDD(record.startdate)))
-            WriteLine("    end date {0}", (YYYYMMDD(record.enddate)))
+            WriteLine("  start date {0}", (YYYYMMDD(record.start_date)))
+            WriteLine("    end date {0}", (YYYYMMDD(record.end_date)))
             WriteLine("      door 1 {0}", record.door1)
             WriteLine("      door 2 {0}", record.door2)
             WriteLine("      door 3 {0}", record.door3)
@@ -386,8 +388,8 @@ Module Commands
             WriteLine("get-card-at-index")
             WriteLine("  controller {0}", controller)
             WriteLine("        card {0}", record.card)
-            WriteLine("  start date {0}", (YYYYMMDD(record.startdate)))
-            WriteLine("    end date {0}", (YYYYMMDD(record.enddate)))
+            WriteLine("  start date {0}", (YYYYMMDD(record.start_date)))
+            WriteLine("    end date {0}", (YYYYMMDD(record.end_date)))
             WriteLine("      door 1 {0}", record.door1)
             WriteLine("      door 2 {0}", record.door2)
             WriteLine("      door 3 {0}", record.door3)
@@ -538,6 +540,41 @@ Module Commands
         End If
     End Sub
 
+    Sub GetTimeProfile(args As String())
+        Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
+        Dim profile = ArgParse.Parse(args, "--profile", TIME_PROFILE_ID)
+        Dim result = UHPPOTE.GetTimeProfile(controller, profile, TIMEOUT, OPTIONS)
+
+        If (result.IsOk And result.ResultValue.HasValue)
+            Dim record = result.ResultValue.Value
+
+            WriteLine("get-time-profile")
+            WriteLine("          controller {0}", controller)
+            WriteLine("             profile {0}", record.profile)
+            WriteLine("          start date {0}", YYYYMMDD(record.start_date))
+            WriteLine("            end date {0}", YYYYMMDD(record.end_date))
+            WriteLine("              monday {0}", record.monday)
+            WriteLine("             tuesday {0}", record.tuesday)
+            WriteLine("           wednesday {0}", record.wednesday)
+            WriteLine("            thursday {0}", record.thursday)
+            WriteLine("              friday {0}", record.friday)
+            WriteLine("            saturday {0}", record.saturday)
+            WriteLine("              sunday {0}", record.sunday)
+            WriteLine("   segment 1 - start {0}", HHmm(record.segment1_start))
+            WriteLine("                 end {0}", HHmm(record.segment1_end))
+            WriteLine("   segment 2 - start {0}", HHmm(record.segment2_start))
+            WriteLine("                 end {0}", HHmm(record.segment2_end))
+            WriteLine("   segment 3 - start {0}", HHmm(record.segment3_start))
+            WriteLine("                 end {0}", HHmm(record.segment3_end))
+            WriteLine("      linked profile {0}", record.linked_profile)
+            WriteLine()
+        Else If (result.IsOk)
+            Throw New Exception("time profile does not exist")
+        Else If (result.IsError)
+            Throw New Exception(result.ErrorValue)
+        End If
+    End Sub
+
     Private Function YYYYMMDD(v As Nullable(Of DateOnly)) As String
         If v.HasValue Then
             Return v.Value.ToString("yyyy-MM-dd")
@@ -549,6 +586,14 @@ Module Commands
     Public Function YYYYMMDDHHmmss(datetime As DateTime?) As String
         If datetime.HasValue Then
             Return datetime.Value.ToString("yyyy-MM-dd HH:mm:ss")
+        Else
+            Return "---"
+        End If
+    End Function
+
+    Public Function HHmm(time As TimeOnly?) As String
+        If time.HasValue Then
+            Return time.Value.ToString("HH:mm")
         Else
             Return "---"
         End If

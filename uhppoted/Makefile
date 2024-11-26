@@ -10,6 +10,7 @@ LISTENER ?= 192.168.1.100:60001
 INTERVAL ?= 30
 EVENT_INDEX ?= 23
 RECORD_SPECIAL_EVENTS ?= true
+TIME_PROFILE ?= 29
 
 clean:
 	dotnet clean
@@ -31,9 +32,9 @@ release: build test integration-tests
 	cd uhppoted && make release
 
 debug: build
-	dotnet run --project ../examples/fs/cli --framework net7.0 record-special-events --controller $(CONTROLLER) --enable false
-	dotnet run --project ../examples/cs/cli --framework net7.0 record-special-events --controller $(CONTROLLER) --enable false
-	dotnet run --project ../examples/vb/cli --framework net7.0 record-special-events --controller $(CONTROLLER) --enable false
+	dotnet run --project ../examples/fs/cli --framework net7.0 get-time-profile --controller $(CONTROLLER) --profile $(TIME_PROFILE)
+	dotnet run --project ../examples/cs/cli --framework net7.0 get-time-profile --controller $(CONTROLLER) --profile $(TIME_PROFILE)
+	dotnet run --project ../examples/vb/cli --framework net7.0 get-time-profile --controller $(CONTROLLER) --profile $(TIME_PROFILE)
 
 find-controllers: build
 	$(CLI) find-controllers
@@ -101,4 +102,7 @@ set-event-index: build
 
 record-special-events:build
 	$(CLI) record-special-events --controller $(CONTROLLER) --enable $(RECORD_SPECIAL_EVENTS)
+
+get-time-profile:build
+	$(CLI) get-time-profile --controller $(CONTROLLER) --profile $(TIME_PROFILE)
 

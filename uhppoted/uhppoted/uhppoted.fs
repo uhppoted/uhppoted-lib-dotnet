@@ -431,8 +431,8 @@ module Uhppoted =
             Ok(
                 Nullable
                     { card = response.card
-                      startdate = response.startdate
-                      enddate = response.enddate
+                      start_date = response.start_date
+                      end_date = response.end_date
                       door1 = response.door1
                       door2 = response.door2
                       door3 = response.door3
@@ -463,8 +463,8 @@ module Uhppoted =
             Ok(
                 Nullable
                     { card = response.card
-                      startdate = response.startdate
-                      enddate = response.enddate
+                      start_date = response.start_date
+                      end_date = response.end_date
                       door1 = response.door1
                       door2 = response.door2
                       door3 = response.door3
@@ -625,4 +625,45 @@ module Uhppoted =
 
         match exec controller request Decode.record_special_events_response timeout options with
         | Ok response -> Ok response.ok
+        | Error err -> Error err
+
+    /// <summary>
+    /// Retrieves a time profile from a controller.
+    /// </summary>
+    /// <param name="controller">Controller ID.</param>
+    /// <param name="profile">Time profile ID [2..254].</param>
+    /// <param name="timeout">Operation timeout (ms).</param>
+    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <returns>
+    /// Ok with time profile, Ok(null) if the requested profile does not exist or Error if the request failed.
+    /// </returns>
+    let GetTimeProfile (controller: uint32, profile: uint8, timeout: int, options: Options) =
+        let request = Encode.get_time_profile_request controller profile
+
+        match exec controller request Decode.get_time_profile_response timeout options with
+        | Ok response when response.profile = 0x00uy -> // not found
+            Ok(Nullable())
+        | Ok response when response.profile <> profile -> // incorrect profile
+            Ok(Nullable())
+        | Ok response ->
+            Ok(
+                Nullable
+                    { profile = response.profile
+                      start_date = response.start_date
+                      end_date = response.end_date
+                      monday = response.monday
+                      tuesday = response.tuesday
+                      wednesday = response.wednesday
+                      thursday = response.thursday
+                      friday = response.friday
+                      saturday = response.saturday
+                      sunday = response.sunday
+                      segment1_start = response.segment1_start
+                      segment1_end = response.segment1_end
+                      segment2_start = response.segment2_start
+                      segment2_end = response.segment2_end
+                      segment3_start = response.segment3_start
+                      segment3_end = response.segment3_end
+                      linked_profile = response.linked_profile }
+            )
         | Error err -> Error err

@@ -119,7 +119,15 @@ module Messages =
 
           { test = "record-special-events"
             request = Requests.record_special_events
-            responses = [ Responses.record_special_events ] } ]
+            responses = [ Responses.record_special_events ] }
+
+          { test = "get-time-profile"
+            request = Requests.get_time_profile
+            responses = [ Responses.get_time_profile ] }
+
+          { test = "get-time-profile-not-found"
+            request = Requests.get_time_profile_not_found
+            responses = [ Responses.get_time_profile_not_found ] } ]
 
     let find request =
         match messages |> Seq.tryFind (fun (msg) -> msg.request.SequenceEqual(request)) with

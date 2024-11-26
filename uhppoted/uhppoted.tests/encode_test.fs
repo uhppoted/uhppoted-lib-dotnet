@@ -8,14 +8,14 @@ open uhppoted
 [<TestFixture>]
 type TestEncoder() =
     [<Test>]
-    member this.TestEncodeGetControllerWithZeroControllerID() =
+    member this.TestEncodeGetControllerRequestWithZeroControllerID() =
         let expected = TestRequests.get_all_controllers
         let packet = Encode.get_controller_request 0u
 
         Assert.That(packet, Is.EqualTo(expected))
 
     [<Test>]
-    member this.TestEncodeGetControllerWithValidControllerID() =
+    member this.TestEncodeGetControllerRequestWithValidControllerID() =
         let expected = TestRequests.get_controller
 
         let controller = 405419896u
@@ -24,7 +24,7 @@ type TestEncoder() =
         Assert.That(packet, Is.EqualTo(expected))
 
     [<Test>]
-    member this.TestEncodeSetIPv4() =
+    member this.TestEncodeSetIPv4Request() =
         let expected = TestRequests.set_IPv4
 
         let controller = 405419896u
@@ -36,7 +36,7 @@ type TestEncoder() =
         Assert.That(packet, Is.EqualTo(expected))
 
     [<Test>]
-    member this.TestEncodeGetListener() =
+    member this.TestEncodeGetListenerRequest() =
         let expected = TestRequests.get_listener
 
         let controller = 405419896u
@@ -45,7 +45,7 @@ type TestEncoder() =
         Assert.That(packet, Is.EqualTo(expected))
 
     [<Test>]
-    member this.TestEncodeSetListener() =
+    member this.TestEncodeSetListenerRequest() =
         let expected = TestRequests.set_listener
 
         let controller = 405419896u
@@ -57,7 +57,7 @@ type TestEncoder() =
         Assert.That(packet, Is.EqualTo(expected))
 
     [<Test>]
-    member this.TestEncodeGetTime() =
+    member this.TestEncodeGetTimeRequest() =
         let expected = TestRequests.get_time
 
         let controller = 405419896u
@@ -66,7 +66,7 @@ type TestEncoder() =
         Assert.That(packet, Is.EqualTo(expected))
 
     [<Test>]
-    member this.TestEncodeSetTime() =
+    member this.TestEncodeSetTimeRequest() =
         let expected = TestRequests.set_time
 
         let controller = 405419896u
@@ -79,7 +79,7 @@ type TestEncoder() =
         Assert.That(packet, Is.EqualTo(expected))
 
     [<Test>]
-    member this.TestEncodeGetDoor() =
+    member this.TestEncodeGetDoorRequest() =
         let expected = TestRequests.get_door
 
         let controller = 405419896u
@@ -89,7 +89,7 @@ type TestEncoder() =
         Assert.That(packet, Is.EqualTo(expected))
 
     [<Test>]
-    member this.TestEncodeSetDoor() =
+    member this.TestEncodeSetDoorRequest() =
         let expected = TestRequests.set_door
 
         let controller = 405419896u
@@ -101,7 +101,7 @@ type TestEncoder() =
         Assert.That(packet, Is.EqualTo(expected))
 
     [<Test>]
-    member this.TestEncodeSetDoorPasscodes() =
+    member this.TestEncodeSetDoorPasscodesRequest() =
         let expected = TestRequests.set_door_passcodes
 
         let controller = 405419896u
@@ -114,7 +114,7 @@ type TestEncoder() =
         Assert.That(packet, Is.EqualTo(expected))
 
     [<Test>]
-    member this.TestEncodeSetDoorPasscodesWithInvalidPasscode() =
+    member this.TestEncodeSetDoorPasscodesRequestWithInvalidPasscode() =
         let expected = TestRequests.set_door_passcodes_with_invalid_passcode
 
         let controller = 405419896u
@@ -127,7 +127,7 @@ type TestEncoder() =
         Assert.That(packet, Is.EqualTo(expected))
 
     [<Test>]
-    member this.TestEncodeOpenDoor() =
+    member this.TestEncodeOpenDoorRequest() =
         let expected = TestRequests.open_door
 
         let controller = 405419896u
@@ -138,7 +138,7 @@ type TestEncoder() =
         Assert.That(packet, Is.EqualTo(expected))
 
     [<Test>]
-    member this.TestEncodeGetStatus() =
+    member this.TestEncodeGetStatusRequest() =
         let expected = TestRequests.get_status
 
         let controller = 405419896u
@@ -147,7 +147,7 @@ type TestEncoder() =
         Assert.That(packet, Is.EqualTo(expected))
 
     [<Test>]
-    member this.TestEncodeGetCards() =
+    member this.TestEncodeGetCardsRequest() =
         let expected = TestRequests.get_cards
 
         let controller = 405419896u
@@ -156,7 +156,7 @@ type TestEncoder() =
         Assert.That(packet, Is.EqualTo(expected))
 
     [<Test>]
-    member this.TestEncodeGetCard() =
+    member this.TestEncodeGetCardRequest() =
         let expected = TestRequests.get_card
 
         let controller = 405419896u
@@ -166,7 +166,7 @@ type TestEncoder() =
         Assert.That(packet, Is.EqualTo(expected))
 
     [<Test>]
-    member this.TestEncodeGetCardAtIndex() =
+    member this.TestEncodeGetCardAtIndexRequest() =
         let expected = TestRequests.get_card_at_index
 
         let controller = 405419896u
@@ -176,7 +176,7 @@ type TestEncoder() =
         Assert.That(packet, Is.EqualTo(expected))
 
     [<Test>]
-    member this.TestEncodePutCard() =
+    member this.TestEncodePutCardRequest() =
         let expected = TestRequests.put_card
 
         let controller = 405419896u
@@ -195,7 +195,7 @@ type TestEncoder() =
         Assert.That(packet, Is.EqualTo(expected))
 
     [<Test>]
-    member this.TestEncodeDeleteCard() =
+    member this.TestEncodeDeleteCardRequest() =
         let expected = TestRequests.delete_card
 
         let controller = 405419896u
@@ -205,7 +205,7 @@ type TestEncoder() =
         Assert.That(packet, Is.EqualTo(expected))
 
     [<Test>]
-    member this.TestEncodeDeleteAllCards() =
+    member this.TestEncodeDeleteAllCardsRequest() =
         let expected = TestRequests.delete_all_cards
 
         let controller = 405419896u
@@ -214,7 +214,7 @@ type TestEncoder() =
         Assert.That(packet, Is.EqualTo(expected))
 
     [<Test>]
-    member this.TestEncodeGetEvent() =
+    member this.TestEncodeGetEventRequest() =
         let expected = TestRequests.get_event
 
         let controller = 405419896u
@@ -224,7 +224,7 @@ type TestEncoder() =
         Assert.That(packet, Is.EqualTo(expected))
 
     [<Test>]
-    member this.TestEncodeGetEventIndex() =
+    member this.TestEncodeGetEventIndexRequest() =
         let expected = TestRequests.get_event_index
 
         let controller = 405419896u
@@ -233,7 +233,7 @@ type TestEncoder() =
         Assert.That(packet, Is.EqualTo(expected))
 
     [<Test>]
-    member this.TestEncodeSetEventIndex() =
+    member this.TestEncodeSetEventIndexRequest() =
         let expected = TestRequests.set_event_index
 
         let controller = 405419896u
@@ -243,11 +243,21 @@ type TestEncoder() =
         Assert.That(packet, Is.EqualTo(expected))
 
     [<Test>]
-    member this.TestRecordSpecialEvents() =
+    member this.TestRecordSpecialEventsRequest() =
         let expected = TestRequests.record_special_events
 
         let controller = 405419896u
         let enabled = true
         let packet = Encode.record_special_events_request controller enabled
+
+        Assert.That(packet, Is.EqualTo(expected))
+
+    [<Test>]
+    member this.TestGetTimeProfileRequest() =
+        let expected = TestRequests.get_time_profile
+
+        let controller = 405419896u
+        let profile = 37uy
+        let packet = Encode.get_time_profile_request controller profile
 
         Assert.That(packet, Is.EqualTo(expected))

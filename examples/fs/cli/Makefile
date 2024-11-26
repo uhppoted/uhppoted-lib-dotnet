@@ -10,6 +10,7 @@ LISTENER ?= 192.168.1.100:60001
 INTERVAL ?= 30
 EVENT_INDEX ?= 23
 RECORD_SPECIAL_EVENTS ?= true
+TIME_PROFILE ?= 29
 
 clean:
 	dotnet clean
@@ -92,4 +93,7 @@ set-event-index: build
 
 record-special-events:build
 	$(CLI) record-special-events --controller $(CONTROLLER) --enable $(RECORD_SPECIAL_EVENTS)
+
+get-time-profile:build
+	$(CLI) get-time-profile --controller $(CONTROLLER) --profile $(TIME_PROFILE)
 

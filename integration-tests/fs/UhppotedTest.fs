@@ -26,6 +26,8 @@ type TestClass() =
     let EVENT_INDEX = 13579u
     let EVENT_INDEX_NOT_FOUND = 24680u
     let EVENT_INDEX_OVERWRITTEN = 98765u
+    let TIME_PROFILE_ID = 37uy
+    let TIME_PROFILE_ID_NOT_FOUND = 80uy
 
     let OPTIONS: Options =
         { bind = IPEndPoint(IPAddress.Any, 0)
@@ -284,8 +286,8 @@ type TestClass() =
     member this.TestGetCard() =
         let expected: Card =
             { card = 10058400u
-              startdate = Nullable(DateOnly(2024, 1, 1))
-              enddate = Nullable(DateOnly(2024, 12, 31))
+              start_date = Nullable(DateOnly(2024, 1, 1))
+              end_date = Nullable(DateOnly(2024, 12, 31))
               door1 = 1uy
               door2 = 0uy
               door3 = 17uy
@@ -312,8 +314,8 @@ type TestClass() =
     member this.TestGetCardAtIndex() =
         let expected: Card =
             { card = 10058400u
-              startdate = Nullable(DateOnly(2024, 1, 1))
-              enddate = Nullable(DateOnly(2024, 12, 31))
+              start_date = Nullable(DateOnly(2024, 1, 1))
+              end_date = Nullable(DateOnly(2024, 12, 31))
               door1 = 1uy
               door2 = 0uy
               door3 = 17uy
@@ -448,4 +450,40 @@ type TestClass() =
         |> List.iter (fun opts ->
             match Uhppoted.RecordSpecialEvents(CONTROLLER, true, TIMEOUT, opts) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
+            | Error err -> Assert.Fail(err))
+
+    [<Test>]
+    member this.TestGetTimeProfile() =
+        let expected: TimeProfile =
+            { profile = 37uy
+              start_date = Nullable(DateOnly(2024, 11, 26))
+              end_date = Nullable(DateOnly(2024, 12, 29))
+              monday = true
+              tuesday = true
+              wednesday = false
+              thursday = true
+              friday = false
+              saturday = true
+              sunday = true
+              segment1_start = Nullable(TimeOnly(8, 30))
+              segment1_end = Nullable(TimeOnly(09, 45))
+              segment2_start = Nullable(TimeOnly(11, 35))
+              segment2_end = Nullable(TimeOnly(13, 15))
+              segment3_start = Nullable(TimeOnly(14, 01))
+              segment3_end = Nullable(TimeOnly(17, 59))
+              linked_profile = 19uy }
+
+        options
+        |> List.iter (fun opts ->
+            match Uhppoted.GetTimeProfile(CONTROLLER, TIME_PROFILE_ID, TIMEOUT, opts) with
+            | Ok response -> Assert.That(response.Value, Is.EqualTo(expected))
+            | Error err -> Assert.Fail(err))
+
+    [<Test>]
+    member this.TestGetTimeProfileNotFound() =
+        options
+        |> List.iter (fun opts ->
+            match Uhppoted.GetTimeProfile(CONTROLLER, TIME_PROFILE_ID_NOT_FOUND, TIMEOUT, opts) with
+            | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
+            | Ok _ -> Assert.Pass()
             | Error err -> Assert.Fail(err))

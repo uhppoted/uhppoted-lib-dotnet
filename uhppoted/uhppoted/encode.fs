@@ -11,12 +11,12 @@ module internal Encode =
     [<Literal>]
     let MAGIC_WORD = 0x55aaaa55u
 
-    let pack_U8 (v: uint8) = [| (byte ((v >>> 0) &&& 0x00ffuy)) |]
+    let pack_u8 (v: uint8) = [| (byte ((v >>> 0) &&& 0x00ffuy)) |]
 
-    let pack_U16 (v: uint16) =
+    let pack_u16 (v: uint16) =
         [| (byte ((v >>> 0) &&& 0x00ffus)); (byte ((v >>> 8) &&& 0x00ffus)) |]
 
-    let pack_U32 (v: uint32) =
+    let pack_u32 (v: uint32) =
         [| (byte ((v >>> 0) &&& 0x00ffu))
            (byte ((v >>> 8) &&& 0x00ffu))
            (byte ((v >>> 16) &&& 0x00ffu))
@@ -48,7 +48,7 @@ module internal Encode =
         Array.set packet 0 (byte messages.SOM)
         Array.set packet 1 (byte messages.GET_CONTROLLER)
 
-        Array.blit (pack_U32 controller) 0 packet 4 4
+        Array.blit (pack_u32 controller) 0 packet 4 4
 
         packet
 
@@ -58,11 +58,11 @@ module internal Encode =
         Array.set packet 0 (byte messages.SOM)
         Array.set packet 1 (byte messages.SET_IPv4)
 
-        Array.blit (pack_U32 controller) 0 packet 4 4
+        Array.blit (pack_u32 controller) 0 packet 4 4
         Array.blit (pack_IPv4 address) 0 packet 8 4
         Array.blit (pack_IPv4 netmask) 0 packet 12 4
         Array.blit (pack_IPv4 gateway) 0 packet 16 4
-        Array.blit (pack_U32 MAGIC_WORD) 0 packet 20 4
+        Array.blit (pack_u32 MAGIC_WORD) 0 packet 20 4
 
         packet
 
@@ -72,7 +72,7 @@ module internal Encode =
         Array.set packet 0 (byte messages.SOM)
         Array.set packet 1 (byte messages.GET_LISTENER)
 
-        Array.blit (pack_U32 controller) 0 packet 4 4
+        Array.blit (pack_u32 controller) 0 packet 4 4
 
         packet
 
@@ -82,10 +82,10 @@ module internal Encode =
         Array.set packet 0 (byte messages.SOM)
         Array.set packet 1 (byte messages.SET_LISTENER)
 
-        Array.blit (pack_U32 controller) 0 packet 4 4
+        Array.blit (pack_u32 controller) 0 packet 4 4
         Array.blit (pack_IPv4 address) 0 packet 8 4
-        Array.blit (pack_U16 port) 0 packet 12 2
-        Array.blit (pack_U8 interval) 0 packet 14 1
+        Array.blit (pack_u16 port) 0 packet 12 2
+        Array.blit (pack_u8 interval) 0 packet 14 1
 
         packet
 
@@ -95,7 +95,7 @@ module internal Encode =
         Array.set packet 0 (byte messages.SOM)
         Array.set packet 1 (byte messages.GET_TIME)
 
-        Array.blit (pack_U32 controller) 0 packet 4 4
+        Array.blit (pack_u32 controller) 0 packet 4 4
 
         packet
 
@@ -105,7 +105,7 @@ module internal Encode =
         Array.set packet 0 (byte messages.SOM)
         Array.set packet 1 (byte messages.SET_TIME)
 
-        Array.blit (pack_U32 controller) 0 packet 4 4
+        Array.blit (pack_u32 controller) 0 packet 4 4
         Array.blit (pack_datetime datetime) 0 packet 8 7
 
         packet
@@ -116,8 +116,8 @@ module internal Encode =
         Array.set packet 0 (byte messages.SOM)
         Array.set packet 1 (byte messages.GET_DOOR)
 
-        Array.blit (pack_U32 controller) 0 packet 4 4
-        Array.blit (pack_U8 door) 0 packet 8 1
+        Array.blit (pack_u32 controller) 0 packet 4 4
+        Array.blit (pack_u8 door) 0 packet 8 1
 
         packet
 
@@ -127,10 +127,10 @@ module internal Encode =
         Array.set packet 0 (byte messages.SOM)
         Array.set packet 1 (byte messages.SET_DOOR)
 
-        Array.blit (pack_U32 controller) 0 packet 4 4
-        Array.blit (pack_U8 door) 0 packet 8 1
-        Array.blit (pack_U8 mode) 0 packet 9 1
-        Array.blit (pack_U8 delay) 0 packet 10 1
+        Array.blit (pack_u32 controller) 0 packet 4 4
+        Array.blit (pack_u8 door) 0 packet 8 1
+        Array.blit (pack_u8 mode) 0 packet 9 1
+        Array.blit (pack_u8 delay) 0 packet 10 1
 
         packet
 
@@ -147,20 +147,20 @@ module internal Encode =
         Array.set packet 0 (byte messages.SOM)
         Array.set packet 1 (byte messages.SET_DOOR_PASSCODES)
 
-        Array.blit (pack_U32 controller) 0 packet 4 4
-        Array.blit (pack_U8 door) 0 packet 8 1
+        Array.blit (pack_u32 controller) 0 packet 4 4
+        Array.blit (pack_u8 door) 0 packet 8 1
 
         if passcode1 <= 999999u then
-            Array.blit (pack_U32 passcode1) 0 packet 12 4
+            Array.blit (pack_u32 passcode1) 0 packet 12 4
 
         if passcode2 <= 999999u then
-            Array.blit (pack_U32 passcode2) 0 packet 16 4
+            Array.blit (pack_u32 passcode2) 0 packet 16 4
 
         if passcode3 <= 999999u then
-            Array.blit (pack_U32 passcode3) 0 packet 20 4
+            Array.blit (pack_u32 passcode3) 0 packet 20 4
 
         if passcode4 <= 999999u then
-            Array.blit (pack_U32 passcode4) 0 packet 24 4
+            Array.blit (pack_u32 passcode4) 0 packet 24 4
 
         packet
 
@@ -170,8 +170,8 @@ module internal Encode =
         Array.set packet 0 (byte messages.SOM)
         Array.set packet 1 (byte messages.OPEN_DOOR)
 
-        Array.blit (pack_U32 controller) 0 packet 4 4
-        Array.blit (pack_U8 door) 0 packet 8 1
+        Array.blit (pack_u32 controller) 0 packet 4 4
+        Array.blit (pack_u8 door) 0 packet 8 1
 
         packet
 
@@ -181,7 +181,7 @@ module internal Encode =
         Array.set packet 0 (byte messages.SOM)
         Array.set packet 1 (byte messages.GET_STATUS)
 
-        Array.blit (pack_U32 controller) 0 packet 4 4
+        Array.blit (pack_u32 controller) 0 packet 4 4
 
         packet
 
@@ -191,7 +191,7 @@ module internal Encode =
         Array.set packet 0 (byte messages.SOM)
         Array.set packet 1 (byte messages.GET_CARDS)
 
-        Array.blit (pack_U32 controller) 0 packet 4 4
+        Array.blit (pack_u32 controller) 0 packet 4 4
 
         packet
 
@@ -201,8 +201,8 @@ module internal Encode =
         Array.set packet 0 (byte messages.SOM)
         Array.set packet 1 (byte messages.GET_CARD)
 
-        Array.blit (pack_U32 controller) 0 packet 4 4
-        Array.blit (pack_U32 card) 0 packet 8 4
+        Array.blit (pack_u32 controller) 0 packet 4 4
+        Array.blit (pack_u32 card) 0 packet 8 4
 
         packet
 
@@ -212,8 +212,8 @@ module internal Encode =
         Array.set packet 0 (byte messages.SOM)
         Array.set packet 1 (byte messages.GET_CARD_AT_INDEX)
 
-        Array.blit (pack_U32 controller) 0 packet 4 4
-        Array.blit (pack_U32 index) 0 packet 8 4
+        Array.blit (pack_u32 controller) 0 packet 4 4
+        Array.blit (pack_u32 index) 0 packet 8 4
 
         packet
 
@@ -233,15 +233,15 @@ module internal Encode =
         Array.set packet 0 (byte messages.SOM)
         Array.set packet 1 (byte messages.PUT_CARD)
 
-        Array.blit (pack_U32 controller) 0 packet 4 4
-        Array.blit (pack_U32 card) 0 packet 8 4
+        Array.blit (pack_u32 controller) 0 packet 4 4
+        Array.blit (pack_u32 card) 0 packet 8 4
         Array.blit (pack_date startdate) 0 packet 12 4
         Array.blit (pack_date enddate) 0 packet 16 4
-        Array.blit (pack_U8 door1) 0 packet 20 1
-        Array.blit (pack_U8 door2) 0 packet 21 1
-        Array.blit (pack_U8 door3) 0 packet 22 1
-        Array.blit (pack_U8 door4) 0 packet 23 1
-        Array.blit (pack_U32 pin) 0 packet 24 4
+        Array.blit (pack_u8 door1) 0 packet 20 1
+        Array.blit (pack_u8 door2) 0 packet 21 1
+        Array.blit (pack_u8 door3) 0 packet 22 1
+        Array.blit (pack_u8 door4) 0 packet 23 1
+        Array.blit (pack_u32 pin) 0 packet 24 4
 
         packet
 
@@ -251,8 +251,8 @@ module internal Encode =
         Array.set packet 0 (byte messages.SOM)
         Array.set packet 1 (byte messages.DELETE_CARD)
 
-        Array.blit (pack_U32 controller) 0 packet 4 4
-        Array.blit (pack_U32 card) 0 packet 8 4
+        Array.blit (pack_u32 controller) 0 packet 4 4
+        Array.blit (pack_u32 card) 0 packet 8 4
 
         packet
 
@@ -262,8 +262,8 @@ module internal Encode =
         Array.set packet 0 (byte messages.SOM)
         Array.set packet 1 (byte messages.DELETE_ALL_CARDS)
 
-        Array.blit (pack_U32 controller) 0 packet 4 4
-        Array.blit (pack_U32 MAGIC_WORD) 0 packet 8 4
+        Array.blit (pack_u32 controller) 0 packet 4 4
+        Array.blit (pack_u32 MAGIC_WORD) 0 packet 8 4
 
         packet
 
@@ -273,8 +273,8 @@ module internal Encode =
         Array.set packet 0 (byte messages.SOM)
         Array.set packet 1 (byte messages.GET_EVENT)
 
-        Array.blit (pack_U32 controller) 0 packet 4 4
-        Array.blit (pack_U32 index) 0 packet 8 4
+        Array.blit (pack_u32 controller) 0 packet 4 4
+        Array.blit (pack_u32 index) 0 packet 8 4
 
         packet
 
@@ -284,7 +284,7 @@ module internal Encode =
         Array.set packet 0 (byte messages.SOM)
         Array.set packet 1 (byte messages.GET_EVENT_INDEX)
 
-        Array.blit (pack_U32 controller) 0 packet 4 4
+        Array.blit (pack_u32 controller) 0 packet 4 4
 
         packet
 
@@ -294,9 +294,9 @@ module internal Encode =
         Array.set packet 0 (byte messages.SOM)
         Array.set packet 1 (byte messages.SET_EVENT_INDEX)
 
-        Array.blit (pack_U32 controller) 0 packet 4 4
-        Array.blit (pack_U32 index) 0 packet 8 4
-        Array.blit (pack_U32 MAGIC_WORD) 0 packet 12 4
+        Array.blit (pack_u32 controller) 0 packet 4 4
+        Array.blit (pack_u32 index) 0 packet 8 4
+        Array.blit (pack_u32 MAGIC_WORD) 0 packet 12 4
 
         packet
 
@@ -306,7 +306,18 @@ module internal Encode =
         Array.set packet 0 (byte messages.SOM)
         Array.set packet 1 (byte messages.RECORD_SPECIAL_EVENTS)
 
-        Array.blit (pack_U32 controller) 0 packet 4 4
+        Array.blit (pack_u32 controller) 0 packet 4 4
         Array.blit (pack_bool enabled) 0 packet 8 1
+
+        packet
+
+    let get_time_profile_request (controller: uint32) (profile: uint8) =
+        let packet: byte array = Array.zeroCreate 64
+
+        Array.set packet 0 (byte messages.SOM)
+        Array.set packet 1 (byte messages.GET_TIME_PROFILE)
+
+        Array.blit (pack_u32 controller) 0 packet 4 4
+        Array.blit (pack_u8 profile) 0 packet 8 1
 
         packet

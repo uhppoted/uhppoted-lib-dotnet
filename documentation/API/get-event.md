@@ -12,7 +12,7 @@ Retrieves the event record (if any) at the index from the controller.
 Returns `Ok` with a Nullable `Event` record if the request was processed or an `Error` 
 
 The `Ok` value is:
-- An event record if an event was found at the index.
+- An `Event` record if an event was found at the index.
 - `null` if there was no record at the index.
 - `null` if the record at the index was deleted.
 

@@ -6,7 +6,7 @@
 - (?) Cross-platform builds
       - https://stackoverflow.com/questions/69393627/create-nuget-package-for-different-platforms-architectures-and-net-versions
 
-- [ ] translations/enums
+- [ ] translations & enums
       - [ ] door mode
       - [ ] event types
       - [ ] event reasons
@@ -62,7 +62,8 @@
       - [x] get-event-index
       - [x] set-event-index
       - [x] record-special-events
-      - [ ] get-time-profile
+      - [x] get-time-profile
+      - [ ] set-time-profile
             - [ ] API function
             - [ ] CLI
                   - [ ] F#
@@ -72,7 +73,6 @@
             - [ ] API doc
             - [ ] README
       
-      - [ ] set-time-profile
       - [ ] clear-time-profiles
       - [ ] clear-task-list
       - [ ] add-task

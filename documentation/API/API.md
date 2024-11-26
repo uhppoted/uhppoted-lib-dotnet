@@ -20,6 +20,7 @@
 - [`GetEventIndex`](get-event-index.md)
 - [`SetEventIndex`](set-event-index.md)
 - [`RecordSpecialEvents`](record-special-events.md)
+- [`GetTimeProfile`](get-time-profile.md)
 
 
 ## `set_door_passcodes`

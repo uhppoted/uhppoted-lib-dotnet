@@ -27,6 +27,7 @@ let CARD = 1u
 let CARD_INDEX = 1u
 let EVENT_INDEX = 1u
 let ENABLE = true
+let TIME_PROFILE_ID = 2uy
 
 let OPTIONS: Options =
     { bind = IPEndPoint(IPAddress.Any, 0)
@@ -45,6 +46,12 @@ let YYYYMMDD (date: Nullable<DateOnly>) =
 let YYYYMMDDHHmmss (datetime: Nullable<DateTime>) =
     if datetime.HasValue then
         datetime.Value.ToString("yyyy-MM-dd HH:mm:ss")
+    else
+        "---"
+
+let HHmm (time: Nullable<TimeOnly>) =
+    if time.HasValue then
+        time.Value.ToString("HH:mm")
     else
         "---"
 
@@ -329,8 +336,8 @@ let get_card args =
         printfn "get-card"
         printfn "  controller %u" controller
         printfn "        card %u" record.card
-        printfn "  start date %s" (YYYYMMDD(record.startdate))
-        printfn "    end date %s" (YYYYMMDD(record.enddate))
+        printfn "  start date %s" (YYYYMMDD(record.start_date))
+        printfn "    end date %s" (YYYYMMDD(record.end_date))
         printfn "      door 1 %u" record.door1
         printfn "      door 2 %u" record.door2
         printfn "      door 3 %u" record.door3
@@ -358,8 +365,8 @@ let get_card_at_index args =
         printfn "get-card-at-index"
         printfn "  controller %u" controller
         printfn "        card %u" record.card
-        printfn "  start date %s" (YYYYMMDD(record.startdate))
-        printfn "    end date %s" (YYYYMMDD(record.enddate))
+        printfn "  start date %s" (YYYYMMDD(record.start_date))
+        printfn "    end date %s" (YYYYMMDD(record.end_date))
         printfn "      door 1 %u" record.door1
         printfn "      door 2 %u" record.door2
         printfn "      door 3 %u" record.door3
@@ -520,6 +527,44 @@ let record_special_events args =
         Ok()
     | Error err -> Error(err)
 
+let get_time_profile args =
+    let controller = argparse args "--controller" CONTROLLER
+    let profile = argparse args "--profile" TIME_PROFILE_ID
+    let timeout = TIMEOUT
+
+    let options =
+        { OPTIONS with
+            endpoint = ENDPOINT
+            protocol = PROTOCOL }
+
+    match Uhppoted.GetTimeProfile(controller, profile, timeout, options) with
+    | Ok v when v.HasValue ->
+        let record = v.Value
+
+        printfn "get-time-profile"
+        printfn "          controller %u" controller
+        printfn "             profile %u" record.profile
+        printfn "          start date %s" (YYYYMMDD record.start_date)
+        printfn "            end date %s" (YYYYMMDD record.end_date)
+        printfn "              monday %b" record.monday
+        printfn "             tuesday %b" record.tuesday
+        printfn "           wednesday %b" record.wednesday
+        printfn "            thursday %b" record.thursday
+        printfn "              friday %b" record.friday
+        printfn "            saturday %b" record.saturday
+        printfn "              sunday %b" record.sunday
+        printfn "   segment 1 - start %s" (HHmm record.segment1_start)
+        printfn "                 end %s" (HHmm record.segment1_end)
+        printfn "   segment 2 - start %s" (HHmm record.segment2_start)
+        printfn "                 end %s" (HHmm record.segment2_end)
+        printfn "   segment 3 - start %s" (HHmm record.segment3_start)
+        printfn "                 end %s" (HHmm record.segment3_end)
+        printfn "      linked profile %u" record.linked_profile
+        printfn ""
+        Ok()
+    | Ok _ -> Error "time profile does not exist"
+    | Error err -> Error(err)
+
 let commands =
     [ { command = "find-controllers"
         description = "Retrieves a list of controllers accessible on the local LAN"
@@ -607,4 +652,8 @@ let commands =
 
       { command = "record-special-events"
         description = "Enables events for door open/close, button press, etc"
-        f = record_special_events } ]
+        f = record_special_events }
+
+      { command = "get-time-profile"
+        description = "Retrieves an access time profile from a controller"
+        f = get_time_profile } ]

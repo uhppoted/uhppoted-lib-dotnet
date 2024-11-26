@@ -17,8 +17,8 @@ type ControllerRecord =
 [<Struct>]
 type Card =
     { card: uint32
-      startdate: DateOnly Nullable
-      enddate: DateOnly Nullable
+      start_date: DateOnly Nullable
+      end_date: DateOnly Nullable
       door1: uint8
       door2: uint8
       door3: uint8
@@ -37,9 +37,30 @@ type Event =
       reason: uint8 }
 
 [<Struct>]
+type TimeProfile =
+    { profile: uint8
+      start_date: DateOnly Nullable
+      end_date: DateOnly Nullable
+      monday: bool
+      tuesday: bool
+      wednesday: bool
+      thursday: bool
+      friday: bool
+      saturday: bool
+      sunday: bool
+      segment1_start: TimeOnly Nullable
+      segment1_end: TimeOnly Nullable
+      segment2_start: TimeOnly Nullable
+      segment2_end: TimeOnly Nullable
+      segment3_start: TimeOnly Nullable
+      segment3_end: TimeOnly Nullable
+      linked_profile: uint8 }
+
+[<Struct>]
 type Listener =
     { endpoint: IPEndPoint
       interval: uint8 }
+
 
 type internal IResponse =
     abstract member controller: uint32
@@ -156,8 +177,8 @@ type GetCardsResponse =
 type GetCardResponse =
     { controller: uint32
       card: uint32
-      startdate: DateOnly Nullable
-      enddate: DateOnly Nullable
+      start_date: DateOnly Nullable
+      end_date: DateOnly Nullable
       door1: uint8
       door2: uint8
       door3: uint8
@@ -170,8 +191,8 @@ type GetCardResponse =
 type internal GetCardAtIndexResponse =
     { controller: uint32
       card: uint32
-      startdate: DateOnly Nullable
-      enddate: DateOnly Nullable
+      start_date: DateOnly Nullable
+      end_date: DateOnly Nullable
       door1: uint8
       door2: uint8
       door3: uint8
@@ -233,6 +254,29 @@ type internal SetEventIndexResponse =
 type internal RecordSpecialEventsResponse =
     { controller: uint32
       ok: bool }
+
+    interface IResponse with
+        member this.controller = this.controller
+
+type internal GetTimeProfileResponse =
+    { controller: uint32
+      profile: uint8
+      start_date: DateOnly Nullable
+      end_date: DateOnly Nullable
+      monday: bool
+      tuesday: bool
+      wednesday: bool
+      thursday: bool
+      friday: bool
+      saturday: bool
+      sunday: bool
+      segment1_start: TimeOnly Nullable
+      segment1_end: TimeOnly Nullable
+      segment2_start: TimeOnly Nullable
+      segment2_end: TimeOnly Nullable
+      segment3_start: TimeOnly Nullable
+      segment3_end: TimeOnly Nullable
+      linked_profile: uint8 }
 
     interface IResponse with
         member this.controller = this.controller

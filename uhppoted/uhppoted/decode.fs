@@ -10,15 +10,15 @@ open System.Runtime.CompilerServices
 do ()
 
 module internal Decode =
-    let unpack_U8 (slice: byte array) = slice[0]
+    let unpack_u8 (slice: byte array) = slice[0]
 
-    let unpack_U16 (slice: byte array) =
+    let unpack_u16 (slice: byte array) =
         let u16 = uint16 0
         let u16 = u16 + uint16 slice[0]
         let u16 = u16 + (uint16 slice[1] <<< 8)
         u16
 
-    let unpack_U32 (slice: byte array) =
+    let unpack_u32 (slice: byte array) =
         let u32 = uint32 0
         let u32 = u32 + uint32 slice[0]
         let u32 = u32 + (uint32 slice[1] <<< 8)
@@ -66,6 +66,13 @@ module internal Decode =
         | true, date -> Nullable date
         | false, _ -> Nullable()
 
+    let unpack_HHmm (slice: byte array) =
+        let bcd = $"%02x{slice[0]}:%02x{slice[1]}"
+
+        match TimeOnly.TryParseExact(bcd, "HH:mm") with
+        | true, time -> Nullable time
+        | false, _ -> Nullable()
+
     let unpack_HHmmss (slice: byte array) =
         let bcd = $"%02x{slice[0]}:%02x{slice[1]}:%02x{slice[2]}"
 
@@ -80,7 +87,7 @@ module internal Decode =
             Error("invalid get-controller response")
         else
             Ok
-                { controller = unpack_U32 packet[4..]
+                { controller = unpack_u32 packet[4..]
                   address = unpackIPv4 packet[8..]
                   netmask = unpackIPv4 packet[12..]
                   gateway = unpackIPv4 packet[16..]
@@ -94,10 +101,10 @@ module internal Decode =
         else if packet[1] <> messages.GET_LISTENER then
             Error("invalid get-listener response")
         else
-            let controller = unpack_U32 packet[4..]
+            let controller = unpack_u32 packet[4..]
             let address = unpackIPv4 packet[8..]
-            let port = unpack_U16 packet[12..]
-            let interval = unpack_U8 packet[14..]
+            let port = unpack_u16 packet[12..]
+            let interval = unpack_u8 packet[14..]
 
             Ok
                 { controller = controller
@@ -111,7 +118,7 @@ module internal Decode =
             Error("invalid set-listener response")
         else
             Ok
-                { controller = unpack_U32 packet[4..]
+                { controller = unpack_u32 packet[4..]
                   ok = unpack_bool packet[8..] }
 
     let get_time_response (packet: byte array) : Result<GetTimeResponse, string> =
@@ -121,7 +128,7 @@ module internal Decode =
             Error("invalid get-time response")
         else
             Ok
-                { controller = unpack_U32 packet[4..]
+                { controller = unpack_u32 packet[4..]
                   datetime = unpack_datetime (packet[8..]) }
 
     let set_time_response (packet: byte array) : Result<SetTimeResponse, string> =
@@ -131,7 +138,7 @@ module internal Decode =
             Error("invalid set-time response")
         else
             Ok
-                { controller = unpack_U32 packet[4..]
+                { controller = unpack_u32 packet[4..]
                   datetime = unpack_datetime (packet[8..]) }
 
     let get_door_response (packet: byte array) : Result<GetDoorResponse, string> =
@@ -141,10 +148,10 @@ module internal Decode =
             Error("invalid get-door response")
         else
             Ok
-                { controller = unpack_U32 packet[4..]
-                  door = unpack_U8 (packet[8..])
-                  mode = unpack_U8 (packet[9..])
-                  delay = unpack_U8 (packet[10..]) }
+                { controller = unpack_u32 packet[4..]
+                  door = unpack_u8 (packet[8..])
+                  mode = unpack_u8 (packet[9..])
+                  delay = unpack_u8 (packet[10..]) }
 
     let set_door_response (packet: byte array) : Result<SetDoorResponse, string> =
         if packet[0] <> messages.SOM then
@@ -153,10 +160,10 @@ module internal Decode =
             Error("invalid set-door response")
         else
             Ok
-                { controller = unpack_U32 packet[4..]
-                  door = unpack_U8 (packet[8..])
-                  mode = unpack_U8 (packet[9..])
-                  delay = unpack_U8 (packet[10..]) }
+                { controller = unpack_u32 packet[4..]
+                  door = unpack_u8 (packet[8..])
+                  mode = unpack_u8 (packet[9..])
+                  delay = unpack_u8 (packet[10..]) }
 
     let set_door_passcodes_response (packet: byte array) : Result<SetDoorPasscodesResponse, string> =
         if packet[0] <> messages.SOM then
@@ -165,7 +172,7 @@ module internal Decode =
             Error("invalid set-door-passcodes response")
         else
             Ok
-                { controller = unpack_U32 packet[4..]
+                { controller = unpack_u32 packet[4..]
                   ok = unpack_bool (packet[8..]) }
 
     let open_door_response (packet: byte array) : Result<OpenDoorResponse, string> =
@@ -175,7 +182,7 @@ module internal Decode =
             Error("invalid open-door response")
         else
             Ok
-                { controller = unpack_U32 packet[4..]
+                { controller = unpack_u32 packet[4..]
                   ok = unpack_bool (packet[8..]) }
 
     let get_status_response (packet: byte array) : Result<GetStatusResponse, string> =
@@ -193,7 +200,7 @@ module internal Decode =
                 | _, _ -> Nullable()
 
             Ok
-                { controller = unpack_U32 packet[4..]
+                { controller = unpack_u32 packet[4..]
                   door1_open = unpack_bool packet[28..]
                   door2_open = unpack_bool packet[29..]
                   door3_open = unpack_bool packet[30..]
@@ -202,21 +209,21 @@ module internal Decode =
                   door2_button = unpack_bool packet[33..]
                   door3_button = unpack_bool packet[34..]
                   door4_button = unpack_bool packet[35..]
-                  system_error = unpack_U8 packet[36..]
+                  system_error = unpack_u8 packet[36..]
                   system_datetime = sysdatetime
-                  sequence_number = unpack_U32 packet[40..]
-                  special_info = unpack_U8 packet[48..]
-                  relays = unpack_U8 packet[49..]
-                  inputs = unpack_U8 packet[50..]
+                  sequence_number = unpack_u32 packet[40..]
+                  special_info = unpack_u8 packet[48..]
+                  relays = unpack_u8 packet[49..]
+                  inputs = unpack_u8 packet[50..]
                   evt =
-                    {| index = unpack_U32 packet[8..]
-                       event_type = unpack_U8 packet[12..]
+                    {| index = unpack_u32 packet[8..]
+                       event_type = unpack_u8 packet[12..]
                        granted = unpack_bool packet[13..]
-                       door = unpack_U8 packet[14..]
-                       direction = unpack_U8 packet[15..]
-                       card = unpack_U32 packet[16..]
+                       door = unpack_u8 packet[14..]
+                       direction = unpack_u8 packet[15..]
+                       card = unpack_u32 packet[16..]
                        timestamp = unpack_datetime (packet[20..])
-                       reason = unpack_U8 packet[27..] |} }
+                       reason = unpack_u8 packet[27..] |} }
 
     let get_cards_response (packet: byte array) : Result<GetCardsResponse, string> =
         if packet[0] <> messages.SOM then
@@ -225,8 +232,8 @@ module internal Decode =
             Error("invalid get-cards response")
         else
             Ok
-                { controller = unpack_U32 packet[4..]
-                  cards = unpack_U32 packet[8..] }
+                { controller = unpack_u32 packet[4..]
+                  cards = unpack_u32 packet[8..] }
 
     let get_card_response (packet: byte array) : Result<GetCardResponse, string> =
         if packet[0] <> messages.SOM then
@@ -235,15 +242,15 @@ module internal Decode =
             Error("invalid get-card response")
         else
             Ok
-                { controller = unpack_U32 packet[4..]
-                  card = unpack_U32 packet[8..]
-                  startdate = unpack_date (packet[12..])
-                  enddate = unpack_date (packet[16..])
-                  door1 = unpack_U8 (packet[20..])
-                  door2 = unpack_U8 (packet[21..])
-                  door3 = unpack_U8 (packet[22..])
-                  door4 = unpack_U8 (packet[23..])
-                  PIN = unpack_U32 (packet[24..]) }
+                { controller = unpack_u32 packet[4..]
+                  card = unpack_u32 packet[8..]
+                  start_date = unpack_date (packet[12..])
+                  end_date = unpack_date (packet[16..])
+                  door1 = unpack_u8 (packet[20..])
+                  door2 = unpack_u8 (packet[21..])
+                  door3 = unpack_u8 (packet[22..])
+                  door4 = unpack_u8 (packet[23..])
+                  PIN = unpack_u32 (packet[24..]) }
 
     let get_card_at_index_response (packet: byte array) : Result<GetCardAtIndexResponse, string> =
         if packet[0] <> messages.SOM then
@@ -252,15 +259,15 @@ module internal Decode =
             Error("invalid get-card-at-index response")
         else
             Ok
-                { controller = unpack_U32 packet[4..]
-                  card = unpack_U32 packet[8..]
-                  startdate = unpack_date (packet[12..])
-                  enddate = unpack_date (packet[16..])
-                  door1 = unpack_U8 (packet[20..])
-                  door2 = unpack_U8 (packet[21..])
-                  door3 = unpack_U8 (packet[22..])
-                  door4 = unpack_U8 (packet[23..])
-                  PIN = unpack_U32 (packet[24..]) }
+                { controller = unpack_u32 packet[4..]
+                  card = unpack_u32 packet[8..]
+                  start_date = unpack_date (packet[12..])
+                  end_date = unpack_date (packet[16..])
+                  door1 = unpack_u8 (packet[20..])
+                  door2 = unpack_u8 (packet[21..])
+                  door3 = unpack_u8 (packet[22..])
+                  door4 = unpack_u8 (packet[23..])
+                  PIN = unpack_u32 (packet[24..]) }
 
     let put_card_response (packet: byte array) : Result<PutCardResponse, string> =
         if packet[0] <> messages.SOM then
@@ -269,7 +276,7 @@ module internal Decode =
             Error("invalid put-card response")
         else
             Ok
-                { controller = unpack_U32 packet[4..]
+                { controller = unpack_u32 packet[4..]
                   ok = unpack_bool (packet[8..]) }
 
     let delete_card_response (packet: byte array) : Result<DeleteCardResponse, string> =
@@ -279,7 +286,7 @@ module internal Decode =
             Error("invalid delete-card response")
         else
             Ok
-                { controller = unpack_U32 packet[4..]
+                { controller = unpack_u32 packet[4..]
                   ok = unpack_bool (packet[8..]) }
 
     let delete_all_cards_response (packet: byte array) : Result<DeleteAllCardsResponse, string> =
@@ -289,7 +296,7 @@ module internal Decode =
             Error("invalid delete-all-cards response")
         else
             Ok
-                { controller = unpack_U32 packet[4..]
+                { controller = unpack_u32 packet[4..]
                   ok = unpack_bool (packet[8..]) }
 
     let get_event_response (packet: byte array) : Result<GetEventResponse, string> =
@@ -299,15 +306,15 @@ module internal Decode =
             Error("invalid get-event response")
         else
             Ok
-                { controller = unpack_U32 packet[4..]
-                  index = unpack_U32 packet[8..]
-                  event = unpack_U8 (packet[12..])
+                { controller = unpack_u32 packet[4..]
+                  index = unpack_u32 packet[8..]
+                  event = unpack_u8 (packet[12..])
                   granted = unpack_bool (packet[13..])
-                  door = unpack_U8 (packet[14..])
-                  direction = unpack_U8 (packet[15..])
-                  card = unpack_U32 (packet[16..])
+                  door = unpack_u8 (packet[14..])
+                  direction = unpack_u8 (packet[15..])
+                  card = unpack_u32 (packet[16..])
                   timestamp = unpack_datetime (packet[20..])
-                  reason = unpack_U8 (packet[27..]) }
+                  reason = unpack_u8 (packet[27..]) }
 
     let get_event_index_response (packet: byte array) : Result<GetEventIndexResponse, string> =
         if packet[0] <> messages.SOM then
@@ -316,8 +323,8 @@ module internal Decode =
             Error("invalid get-event-index response")
         else
             Ok
-                { controller = unpack_U32 packet[4..]
-                  index = unpack_U32 packet[8..] }
+                { controller = unpack_u32 packet[4..]
+                  index = unpack_u32 packet[8..] }
 
     let set_event_index_response (packet: byte array) : Result<SetEventIndexResponse, string> =
         if packet[0] <> messages.SOM then
@@ -326,7 +333,7 @@ module internal Decode =
             Error("invalid set-event-index response")
         else
             Ok
-                { controller = unpack_U32 packet[4..]
+                { controller = unpack_u32 packet[4..]
                   ok = unpack_bool packet[8..] }
 
     let record_special_events_response (packet: byte array) : Result<RecordSpecialEventsResponse, string> =
@@ -336,5 +343,31 @@ module internal Decode =
             Error("invalid record-special-events response")
         else
             Ok
-                { controller = unpack_U32 packet[4..]
+                { controller = unpack_u32 packet[4..]
                   ok = unpack_bool packet[8..] }
+
+    let get_time_profile_response (packet: byte array) : Result<GetTimeProfileResponse, string> =
+        if packet[0] <> messages.SOM then
+            Error("invalid controller response")
+        else if packet[1] <> messages.GET_TIME_PROFILE then
+            Error("invalid get-time-profile response")
+        else
+            Ok
+                { controller = unpack_u32 packet[4..]
+                  profile = unpack_u8 packet[8..]
+                  start_date = unpack_date (packet[9..])
+                  end_date = unpack_date (packet[13..])
+                  monday = unpack_bool (packet[17..])
+                  tuesday = unpack_bool (packet[18..])
+                  wednesday = unpack_bool (packet[19..])
+                  thursday = unpack_bool (packet[20..])
+                  friday = unpack_bool (packet[21..])
+                  saturday = unpack_bool (packet[22..])
+                  sunday = unpack_bool (packet[23..])
+                  segment1_start = unpack_HHmm (packet[24..])
+                  segment1_end = unpack_HHmm (packet[26..])
+                  segment2_start = unpack_HHmm (packet[28..])
+                  segment2_end = unpack_HHmm (packet[30..])
+                  segment3_start = unpack_HHmm (packet[32..])
+                  segment3_end = unpack_HHmm (packet[34..])
+                  linked_profile = unpack_u8 packet[36..] }
