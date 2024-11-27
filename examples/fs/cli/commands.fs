@@ -566,6 +566,46 @@ let get_time_profile args =
     | Ok _ -> Error "time profile does not exist"
     | Error err -> Error(err)
 
+
+let set_time_profile args =
+    let controller = argparse args "--controller" CONTROLLER
+
+    let profile =
+        { profile = argparse args "--profile" TIME_PROFILE_ID
+          start_date = argparse args "--start-date" (Nullable(DateOnly(2024, 1, 1)))
+          end_date = argparse args "--end-date" (Nullable(DateOnly(2024, 12, 31)))
+          monday = true
+          tuesday = true
+          wednesday = false
+          thursday = true
+          friday = false
+          saturday = true
+          sunday = true
+          segment1_start = Nullable(TimeOnly(8, 30))
+          segment1_end = Nullable(TimeOnly(9, 45))
+          segment2_start = Nullable(TimeOnly(12, 15))
+          segment2_end = Nullable(TimeOnly(13, 15))
+          segment3_start = Nullable(TimeOnly(14, 0))
+          segment3_end = Nullable(TimeOnly(18, 0))
+          linked_profile = argparse args "--linked" 0uy }
+
+    let timeout = TIMEOUT
+
+    let options =
+        { OPTIONS with
+            endpoint = ENDPOINT
+            protocol = PROTOCOL }
+
+    match Uhppoted.SetTimeProfile(controller, profile, timeout, options) with
+    | Ok ok ->
+        printfn "set-time-profile"
+        printfn "  controller %u" controller
+        printfn "     profile %u" profile.profile
+        printfn "          ok %b" ok
+        printfn ""
+        Ok()
+    | Error err -> Error(err)
+
 let commands =
     [ { command = "find-controllers"
         description = "Retrieves a list of controllers accessible on the local LAN"
@@ -657,4 +697,8 @@ let commands =
 
       { command = "get-time-profile"
         description = "Retrieves an access time profile from a controller"
-        f = get_time_profile } ]
+        f = get_time_profile }
+
+      { command = "set-time-profile"
+        description = "Adds or updates an access time profile on a controller"
+        f = set_time_profile } ]

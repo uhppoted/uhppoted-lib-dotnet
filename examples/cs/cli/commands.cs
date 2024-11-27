@@ -17,6 +17,40 @@ public readonly struct Command
     }
 }
 
+public readonly struct Weekdays
+{
+    public readonly bool monday;
+    public readonly bool tuesday;
+    public readonly bool wednesday;
+    public readonly bool thursday;
+    public readonly bool friday;
+    public readonly bool saturday;
+    public readonly bool sunday;
+
+    public Weekdays(bool monday, bool tuesday, bool wednesday, bool thursday, bool friday, bool saturday, bool sunday)
+    {
+        this.monday = monday;
+        this.tuesday = tuesday;
+        this.wednesday = wednesday;
+        this.thursday = thursday;
+        this.friday = friday;
+        this.saturday = saturday;
+        this.sunday = sunday;
+    }
+}
+
+public readonly struct TimeSegment
+{
+    public readonly TimeOnly start;
+    public readonly TimeOnly end;
+
+    public TimeSegment(TimeOnly start, TimeOnly end)
+    {
+        this.start = start;
+        this.end = end;
+    }
+}
+
 class Commands
 {
     const int TIMEOUT = 1000;
@@ -68,6 +102,7 @@ class Commands
           new Command ("set-event-index","Sets a controller event index", SetEventIndex),
           new Command ("record-special-events","Enables events for door open/close, button press, etc", RecordSpecialEvents),
           new Command ("get-time-profile","Retrieves an access time profile from a controller", GetTimeProfile),
+          new Command ("set-time-profile","Adds or updates an access time profile on a controller", SetTimeProfile),
     };
 
     public static void FindControllers(string[] args)
@@ -721,6 +756,58 @@ class Commands
         else if (result.IsOk)
         {
             throw new Exception("time profile does not exist");
+        }
+        else if (result.IsError)
+        {
+            throw new Exception(result.ErrorValue);
+        }
+    }
+
+    public static void SetTimeProfile(string[] args)
+    {
+        var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
+        var profile_id = ArgParse.Parse(args, "--profile", TIME_PROFILE_ID);
+        var linked = ArgParse.Parse(args, "--linked", (byte)0);
+        var start_date = ArgParse.Parse(args, "--start_date", DateOnly.Parse("2024-01-01"));
+        var end_date = ArgParse.Parse(args, "--end_date", DateOnly.Parse("2024-12-31"));
+        var weekdays = ArgParse.Parse(args, "--weekdays", new Weekdays(true, true, false, false, true, false, false));
+        var segments = ArgParse.Parse(args, "--segments", new TimeSegment[] {
+            new TimeSegment(TimeOnly.Parse("08:30"), TimeOnly.Parse("09:45")),
+            new TimeSegment(TimeOnly.Parse("12:15"), TimeOnly.Parse("13:15")),
+            new TimeSegment(TimeOnly.Parse("14:00"), TimeOnly.Parse("18:00")),
+            });
+
+        bool monday = weekdays.monday;
+        bool tuesday = weekdays.tuesday;
+        bool wednesday = weekdays.wednesday;
+        bool thursday = weekdays.thursday;
+        bool friday = weekdays.friday;
+        bool saturday = weekdays.saturday;
+        bool sunday = weekdays.sunday;
+
+        var profile = new uhppoted.TimeProfileBuilder(profile_id)
+                                  .WithStartDate(start_date)
+                                  .WithEndDate(end_date)
+                                  .WithWeekdays(monday, tuesday, wednesday, thursday, friday, saturday, sunday)
+                                  .WithSegment1(segments[0].start, segments[0].end)
+                                  .WithSegment2(segments[1].start, segments[1].end)
+                                  .WithSegment3(segments[2].start, segments[2].end)
+                                  .WithLinkedProfile(linked)
+                                  .build();
+
+        var timeout = TIMEOUT;
+        var options = OPTIONS;
+        var result = Uhppoted.SetTimeProfile(controller, profile, timeout, options);
+
+        if (result.IsOk)
+        {
+            var ok = result.ResultValue;
+
+            WriteLine("set-time-profile");
+            WriteLine("  controller {0}", controller);
+            WriteLine("     profile {0}", profile.profile);
+            WriteLine("          ok {0}", ok);
+            WriteLine();
         }
         else if (result.IsError)
         {

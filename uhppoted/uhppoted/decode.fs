@@ -371,3 +371,13 @@ module internal Decode =
                   segment3_start = unpack_HHmm (packet[32..])
                   segment3_end = unpack_HHmm (packet[34..])
                   linked_profile = unpack_u8 packet[36..] }
+
+    let set_time_profile_response (packet: byte array) : Result<SetTimeProfileResponse, string> =
+        if packet[0] <> messages.SOM then
+            Error("invalid controller response")
+        else if packet[1] <> messages.SET_TIME_PROFILE then
+            Error("invalid set-time-profile response")
+        else
+            Ok
+                { controller = unpack_u32 packet[4..]
+                  ok = unpack_bool packet[8..] }

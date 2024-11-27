@@ -38,6 +38,8 @@
       - [ ] --end-date
       - [ ] --permissions
       - [ ] --PIN
+      - [ ] --weekdays
+      - [ ] --segments
 
 - [ ] API
       - [x] find-controllers
@@ -56,6 +58,7 @@
       - [x] get-card
       - [x] get-card-at-index
       - [x] put-card
+            - [ ] rework to take `Card` struct
       - [x] delete-card
       - [x] delete-all-cards
       - [x] get-event
@@ -63,7 +66,8 @@
       - [x] set-event-index
       - [x] record-special-events
       - [x] get-time-profile
-      - [ ] set-time-profile
+      - [x] set-time-profile
+      - [ ] clear-time-profiles
             - [ ] API function
             - [ ] CLI
                   - [ ] F#
@@ -73,7 +77,6 @@
             - [ ] API doc
             - [ ] README
       
-      - [ ] clear-time-profiles
       - [ ] clear-task-list
       - [ ] add-task
       - [ ] refresh-task-list

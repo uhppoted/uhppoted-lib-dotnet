@@ -17,6 +17,36 @@ Public Structure Command
     End Sub
 End Structure
 
+Public Structure Weekdays
+    Public ReadOnly monday As Boolean
+    Public ReadOnly tuesday As Boolean
+    Public ReadOnly wednesday As Boolean
+    Public ReadOnly thursday As Boolean
+    Public ReadOnly friday As Boolean
+    Public ReadOnly saturday As Boolean
+    Public ReadOnly sunday As Boolean
+
+    Public Sub New(monday As Boolean, tuesday As Boolean, wednesday As Boolean, thursday As Boolean, friday As Boolean, saturday As Boolean, sunday As Boolean)
+        Me.monday = monday
+        Me.tuesday = tuesday
+        Me.wednesday = wednesday
+        Me.thursday = thursday
+        Me.friday = friday
+        Me.saturday = saturday
+        Me.sunday = sunday
+    End Sub
+End Structure
+
+Public Structure TimeSegment
+    Public ReadOnly StartTime As TimeOnly
+    Public ReadOnly EndTime As TimeOnly
+
+    Public Sub New(startTime As TimeOnly, endTime As TimeOnly)
+        Me.StartTime = startTime
+        Me.EndTime = endTime
+    End Sub
+End Structure
+
 Module Commands
     Private Const TIMEOUT = 1000
 
@@ -65,7 +95,8 @@ Module Commands
            New Command("get-event-index", "Retrieves the current event index from a controller", AddressOf GetEventIndex),
            New Command("set-event-index", "Sets a controller event index", AddressOf SetEventIndex),
            New Command("record-special-events", "Enables events for door open/close, button press, etc", AddressOf RecordSpecialEvents),
-           New Command("get-time-profile", "Retrieves an access time profile from a controller", AddressOf GetTimeProfile)
+           New Command("get-time-profile", "Retrieves an access time profile from a controller", AddressOf GetTimeProfile),
+           New Command("set-time-profile", "Adds or updates an access time profile on a controller", AddressOf SetTimeProfile)
        }
 
     Sub FindControllers(args As String())
@@ -573,6 +604,53 @@ Module Commands
             Throw New Exception(result.ErrorValue)
         End If
     End Sub
+
+    Sub SetTimeProfile(args As String())
+        Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
+        Dim profile_id = ArgParse.Parse(args, "--profile", TIME_PROFILE_ID)
+        Dim linked As Byte = ArgParse.Parse(args, "--linked", 0)
+        Dim start_date = ArgParse.Parse(args, "--start_date", DateOnly.Parse("2024-01-01"))
+        Dim end_date = ArgParse.Parse(args, "--end_date", DateOnly.Parse("2024-12-31"))
+        Dim weekdays = ArgParse.Parse(args, "--weekdays", New Weekdays(true, true, false, false, true, false, false))
+        Dim segments = ArgParse.Parse(args, "--segments", New TimeSegment() {
+            New TimeSegment(TimeOnly.Parse("08:30"), TimeOnly.Parse("09:45")),
+            New TimeSegment(TimeOnly.Parse("12:15"), TimeOnly.Parse("13:15")),
+            New TimeSegment(TimeOnly.Parse("14:00"), TimeOnly.Parse("18:00"))
+        })
+
+        Dim monday = weekdays.monday
+        Dim tuesday = weekdays.tuesday
+        Dim wednesday = weekdays.wednesday
+        Dim thursday = weekdays.thursday
+        Dim friday = weekdays.friday
+        Dim saturday = weekdays.saturday
+        Dim sunday = weekdays.sunday
+
+        Dim profile = New uhppoted.TimeProfileBuilder(profile_id).
+                                   WithStartDate(start_date).
+                                   WithEndDate(end_date).
+                                   WithWeekdays(monday, tuesday, wednesday, thursday, friday, saturday, sunday).
+                                   WithSegment1(segments(0).StartTime, segments(0).EndTime).
+                                   WithSegment2(segments(1).StartTime, segments(1).EndTime).
+                                   WithSegment3(segments(2).StartTime, segments(2).EndTime).
+                                   WithLinkedProfile(linked).
+                                   build()
+
+        Dim result = UHPPOTE.SetTimeProfile(controller, profile, TIMEOUT, OPTIONS)
+
+        If (result.IsOk)
+            Dim ok = result.ResultValue
+
+            WriteLine("set-time-profile")
+            WriteLine("  controller {0}", controller)
+            WriteLine("     profile {0}", profile.profile)
+            WriteLine("          ok {0}", ok)
+            WriteLine()
+        Else If (result.IsError)
+            Throw New Exception(result.ErrorValue)
+        End If
+    End Sub
+
 
     Private Function YYYYMMDD(v As Nullable(Of DateOnly)) As String
         If v.HasValue Then

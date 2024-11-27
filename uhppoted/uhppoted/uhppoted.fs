@@ -627,7 +627,7 @@ module Uhppoted =
         | Error err -> Error err
 
     /// <summary>
-    /// Enbales or disables events for door open and close, button presses, etc.
+    /// Enables or disables events for door open and close, button presses, etc.
     /// </summary>
     /// <param name="controller">Controller ID.</param>
     /// <param name="enable">true to enabled 'special events'.</param>
@@ -682,4 +682,21 @@ module Uhppoted =
                       segment3_end = response.segment3_end
                       linked_profile = response.linked_profile }
             )
+        | Error err -> Error err
+
+    /// <summary>
+    /// Adds or updates an access time profile on a controller.
+    /// </summary>
+    /// <param name="controller">Controller ID.</param>
+    /// <param name="profile">Access time profile to add or update.</param>
+    /// <param name="timeout">Operation timeout (ms).</param>
+    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <returns>
+    /// Ok with true if the time profile was added or updated or Error.
+    /// </returns>
+    let SetTimeProfile (controller: uint32, profile: TimeProfile, timeout: int, options: Options) =
+        let request = Encode.set_time_profile_request controller profile
+
+        match exec controller request Decode.set_time_profile_response timeout options with
+        | Ok response -> Ok response.ok
         | Error err -> Error err

@@ -81,6 +81,9 @@ Enables (or disables) events for door open/close, button press, etc.
 ### [`GetTimeProfile`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/get-time-profile.md))
 Retrieves an access time profile from a controller.
 
+### [`SetTimeProfile`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/set-time-profile.md))
+Adds or updates an access time profile on a controller.
+
 ## Notes
 
 ### C# Interop

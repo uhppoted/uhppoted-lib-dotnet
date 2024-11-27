@@ -493,3 +493,32 @@ type TestClass() =
             | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
             | Ok _ -> Assert.Pass()
             | Error err -> Assert.Fail(err))
+
+    [<Test>]
+    member this.TestSetTimeProfile() =
+        let expected: bool = true
+
+        let profile: TimeProfile =
+            { profile = 37uy
+              start_date = Nullable(DateOnly(2024, 11, 26))
+              end_date = Nullable(DateOnly(2024, 12, 29))
+              monday = true
+              tuesday = true
+              wednesday = false
+              thursday = true
+              friday = false
+              saturday = true
+              sunday = true
+              segment1_start = Nullable(TimeOnly(8, 30))
+              segment1_end = Nullable(TimeOnly(09, 45))
+              segment2_start = Nullable(TimeOnly(11, 35))
+              segment2_end = Nullable(TimeOnly(13, 15))
+              segment3_start = Nullable(TimeOnly(14, 01))
+              segment3_end = Nullable(TimeOnly(17, 59))
+              linked_profile = 19uy }
+
+        options
+        |> List.iter (fun opts ->
+            match Uhppoted.SetTimeProfile(CONTROLLER, profile, TIMEOUT, opts) with
+            | Ok response -> Assert.That(response, Is.EqualTo(expected))
+            | Error err -> Assert.Fail(err))

@@ -4,7 +4,7 @@ let usage () =
     printfn "Usage: dotnet run <command>\n"
     printfn "  Supported commands:\n"
 
-    commands |> List.iter (fun v -> printfn "  - %-19s  %s" v.command v.description)
+    commands |> List.iter (fun v -> printfn "  - %-21s  %s" v.command v.description)
 
     printfn ""
 

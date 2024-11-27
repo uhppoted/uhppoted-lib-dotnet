@@ -131,7 +131,11 @@ module Messages =
 
           { test = "get-time-profile-not-found"
             request = Requests.get_time_profile_not_found
-            responses = [ Responses.get_time_profile_not_found ] } ]
+            responses = [ Responses.get_time_profile_not_found ] }
+
+          { test = "set-time-profile"
+            request = Requests.set_time_profile
+            responses = [ Responses.set_time_profile ] } ]
 
     let find request =
         match messages |> Seq.tryFind (fun (msg) -> msg.request.SequenceEqual(request)) with

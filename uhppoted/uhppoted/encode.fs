@@ -11,6 +11,8 @@ module internal Encode =
     [<Literal>]
     let MAGIC_WORD = 0x55aaaa55u
 
+    let bcd (v: string) = Convert.FromHexString v
+
     let pack_u8 (v: uint8) = [| (byte ((v >>> 0) &&& 0x00ffuy)) |]
 
     let pack_u16 (v: uint16) =
@@ -30,17 +32,17 @@ module internal Encode =
 
     let pack_IPv4 (v: IPAddress) = v.MapToIPv4().GetAddressBytes()
 
-    let pack_date (v: DateOnly) =
-        let bcd = v.ToString("yyyyMMdd")
-        let bytes = Convert.FromHexString bcd
+    let pack_date (v: Nullable<DateOnly>) =
+        match v.HasValue with
+        | true -> bcd (v.Value.ToString "yyyyMMdd")
+        | false -> [| 0uy; 0uy; 0uy; 0uy; 0uy |]
 
-        bytes
+    let pack_datetime (v: DateTime) = bcd (v.ToString "yyyyMMddHHmmss")
 
-    let pack_datetime (v: DateTime) =
-        let bcd = v.ToString("yyyyMMddHHmmss")
-        let bytes = Convert.FromHexString bcd
-
-        bytes
+    let pack_HHmm (v: Nullable<TimeOnly>) =
+        match v.HasValue with
+        | true -> bcd (v.Value.ToString "HHmm")
+        | false -> [| 0uy; 0uy |]
 
     let get_controller_request (controller: uint32) =
         let packet: byte array = Array.zeroCreate 64
@@ -220,8 +222,8 @@ module internal Encode =
     let put_card_request
         (controller: uint32)
         (card: uint32)
-        (startdate: DateOnly)
-        (enddate: DateOnly)
+        (start_date: DateOnly)
+        (end_date: DateOnly)
         (door1: uint8)
         (door2: uint8)
         (door3: uint8)
@@ -235,8 +237,8 @@ module internal Encode =
 
         Array.blit (pack_u32 controller) 0 packet 4 4
         Array.blit (pack_u32 card) 0 packet 8 4
-        Array.blit (pack_date startdate) 0 packet 12 4
-        Array.blit (pack_date enddate) 0 packet 16 4
+        Array.blit (pack_date (Nullable start_date)) 0 packet 12 4
+        Array.blit (pack_date (Nullable end_date)) 0 packet 16 4
         Array.blit (pack_u8 door1) 0 packet 20 1
         Array.blit (pack_u8 door2) 0 packet 21 1
         Array.blit (pack_u8 door3) 0 packet 22 1
@@ -319,5 +321,32 @@ module internal Encode =
 
         Array.blit (pack_u32 controller) 0 packet 4 4
         Array.blit (pack_u8 profile) 0 packet 8 1
+
+        packet
+
+    let set_time_profile_request (controller: uint32) (profile: TimeProfile) =
+        let packet: byte array = Array.zeroCreate 64
+
+        Array.set packet 0 (byte messages.SOM)
+        Array.set packet 1 (byte messages.SET_TIME_PROFILE)
+
+        Array.blit (pack_u32 controller) 0 packet 4 4
+        Array.blit (pack_u8 profile.profile) 0 packet 8 1
+        Array.blit (pack_date profile.start_date) 0 packet 9 4
+        Array.blit (pack_date profile.end_date) 0 packet 13 4
+        Array.blit (pack_bool profile.monday) 0 packet 17 1
+        Array.blit (pack_bool profile.tuesday) 0 packet 18 1
+        Array.blit (pack_bool profile.wednesday) 0 packet 19 1
+        Array.blit (pack_bool profile.thursday) 0 packet 20 1
+        Array.blit (pack_bool profile.friday) 0 packet 21 1
+        Array.blit (pack_bool profile.saturday) 0 packet 22 1
+        Array.blit (pack_bool profile.sunday) 0 packet 23 1
+        Array.blit (pack_HHmm profile.segment1_start) 0 packet 24 2
+        Array.blit (pack_HHmm profile.segment1_end) 0 packet 26 2
+        Array.blit (pack_HHmm profile.segment2_start) 0 packet 28 2
+        Array.blit (pack_HHmm profile.segment2_end) 0 packet 30 2
+        Array.blit (pack_HHmm profile.segment3_start) 0 packet 32 2
+        Array.blit (pack_HHmm profile.segment3_end) 0 packet 34 2
+        Array.blit (pack_u8 profile.linked_profile) 0 packet 36 1
 
         packet

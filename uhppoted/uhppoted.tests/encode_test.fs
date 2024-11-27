@@ -261,3 +261,32 @@ type TestEncoder() =
         let packet = Encode.get_time_profile_request controller profile
 
         Assert.That(packet, Is.EqualTo(expected))
+
+    [<Test>]
+    member this.TestSetTimeProfileRequest() =
+        let expected = TestRequests.set_time_profile
+
+        let controller = 405419896u
+
+        let profile: TimeProfile =
+            { profile = 37uy
+              start_date = Nullable(DateOnly(2024, 11, 26))
+              end_date = Nullable(DateOnly(2024, 12, 29))
+              monday = true
+              tuesday = true
+              wednesday = false
+              thursday = true
+              friday = false
+              saturday = true
+              sunday = true
+              segment1_start = Nullable(TimeOnly(8, 30))
+              segment1_end = Nullable(TimeOnly(09, 45))
+              segment2_start = Nullable(TimeOnly(11, 35))
+              segment2_end = Nullable(TimeOnly(13, 15))
+              segment3_start = Nullable(TimeOnly(14, 01))
+              segment3_end = Nullable(TimeOnly(17, 59))
+              linked_profile = 19uy }
+
+        let packet = Encode.set_time_profile_request controller profile
+
+        Assert.That(packet, Is.EqualTo(expected))

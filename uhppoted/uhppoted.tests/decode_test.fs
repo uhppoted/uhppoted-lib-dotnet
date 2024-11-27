@@ -354,3 +354,13 @@ type TestDecoder() =
         match Decode.get_time_profile_response packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)
+
+    [<Test>]
+    member this.TestDecodeSetTimeProfileResponse() =
+        let packet = TestResponses.set_time_profile
+
+        let expected: SetTimeProfileResponse = { controller = 405419896u; ok = true }
+
+        match Decode.set_time_profile_response packet with
+        | Ok response -> Assert.That(response, Is.EqualTo(expected))
+        | Error err -> Assert.Fail(err)
