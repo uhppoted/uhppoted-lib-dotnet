@@ -57,7 +57,7 @@ get-door:
 	$(CLI) get-door --controller $(CONTROLLER) --door $(DOOR)
 
 set-door:
-	$(CLI) set-door --controller $(CONTROLLER)
+	$(CLI) set-door --controller $(CONTROLLER) --door $(DOOR) --mode controlled --delay 7  
 
 set-door-passcodes:
 	$(CLI) set-door-passcodes --controller $(CONTROLLER)

@@ -33,9 +33,9 @@ release: build test integration-tests
 	cd uhppoted && make release
 
 debug: build
-	dotnet run --project ../examples/fs/cli --framework net7.0 clear-time-profiles --controller $(CONTROLLER)
-	dotnet run --project ../examples/cs/cli --framework net7.0 clear-time-profiles --controller $(CONTROLLER)
-	dotnet run --project ../examples/vb/cli --framework net7.0 clear-time-profiles --controller $(CONTROLLER)
+	dotnet run --project ../examples/fs/cli --framework net7.0 set-door --controller $(CONTROLLER) --door $(DOOR) --mode normally-closed --delay 7
+	dotnet run --project ../examples/cs/cli --framework net7.0 set-door --controller $(CONTROLLER) --door $(DOOR) --mode normally-closed --delay 7
+	dotnet run --project ../examples/vb/cli --framework net7.0 set-door --controller $(CONTROLLER) --door $(DOOR) --mode normally-closed --delay 7
 
 find-controllers: build
 	$(CLI) find-controllers
@@ -62,7 +62,7 @@ get-door: build
 	$(CLI) get-door --controller $(CONTROLLER) --door $(DOOR)
 
 set-door: build
-	$(CLI) set-door --controller $(CONTROLLER)
+	$(CLI) set-door --controller $(CONTROLLER) --door $(DOOR) --mode controlled --delay 7  
 
 set-door-passcodes: build
 	$(CLI) set-door-passcodes --controller $(CONTROLLER)

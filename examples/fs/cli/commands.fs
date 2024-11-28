@@ -199,24 +199,23 @@ let get_door args =
     | Error err -> Error err
 
 let set_door args =
-    let controller =
-        { controller = argparse args "--controller" CONTROLLER
-          address = ENDPOINT
-          protocol = PROTOCOL }
+    let controller = argparse args "--controller" CONTROLLER
+    let door = argparse args "--door" DOOR
+    let mode = argparse args "--mode" MODE
+    let delay = argparse args "--delay" DELAY
 
-    let door = 4uy
-    let mode = MODE
-    let delay = DELAY
+    match Uhppoted.SetDoor(controller, door, mode, delay, TIMEOUT, OPTIONS) with
+    | Ok v when v.HasValue ->
+        let record = v.Value
 
-    match Uhppoted.set_door (controller, door, mode, delay, TIMEOUT, OPTIONS) with
-    | Ok response ->
         printfn "set-door"
-        printfn "  controller %u" response.controller
-        printfn "        door %d" response.door
-        printfn "        mode %d" response.mode
-        printfn "       delay %ds" response.delay
+        printfn "  controller %u" controller
+        printfn "        door %d" door
+        printfn "        mode %d" record.mode
+        printfn "       delay %ds" record.delay
         printfn ""
         Ok()
+    | Ok _ -> Error "door not updated"
     | Error err -> Error err
 
 let set_door_passcodes args =

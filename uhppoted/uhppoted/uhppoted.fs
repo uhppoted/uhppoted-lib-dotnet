@@ -225,7 +225,7 @@ module Uhppoted =
         | Error err -> Error err
 
     /// <summary>
-    /// Retrieves the mode and unlocked delay for a door.
+    /// Retrieves the control mode and unlocked delay for a door.
     /// </summary>
     /// <param name="controller">Controller ID.</param>
     /// <param name="door">Door ID [1..4].</param>
@@ -246,10 +246,27 @@ module Uhppoted =
             )
         | Error err -> Error err
 
-    let set_door (controller: Controller, door: uint8, mode: uint8, delay: uint8, timeout: int, options: Options) =
-        let request = Encode.set_door_request controller.controller door mode delay
+    /// <summary>
+    /// Sets the control mode and unlocked delay for a door.
+    /// </summary>
+    /// <param name="controller">Controller ID.</param>
+    /// <param name="door">Door ID [1..4].</param>
+    /// <param name="timeout">Operation timeout (ms).</param>
+    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <returns>Ok with the door mode and unlock delay (or null) or Error.</returns>
+    let SetDoor (controller: uint32, door: uint8, mode: uint8, delay: uint8, timeout: int, options: Options) =
+        let request = Encode.set_door_request controller door mode delay
 
-        exex controller request Decode.set_door_response timeout options
+        match exec controller request Decode.set_door_response timeout options with
+        | Ok response when response.door <> door -> // incorrect door
+            Ok(Nullable())
+        | Ok response ->
+            Ok(
+                Nullable
+                    { mode = response.mode
+                      delay = response.delay }
+            )
+        | Error err -> Error err
 
     /// <summary>
     /// Sets up to 4 passcodes for a controller door.
@@ -263,40 +280,8 @@ module Uhppoted =
     /// <param name="timeout">Operation timeout (ms).</param>
     /// <param name="options">Optional bind, broadcast and listen addresses.</param>
     /// <returns>
-    /// Returns Ok if the request was processed, error otherwise. The Ok response should be
-    /// checked for 'true'
+    /// Returns Ok with true value if the passcodes were updated or Error.
     /// </returns>
-    /// <example>
-    /// <code language="fsharp">
-    /// let controller = { controller = 405419896u; address = None; protocol = None }
-    /// let options = { broadcast = IPAddress.Broadcast; debug = true }
-    /// match set_door_passcodes controller 4uy 12345u 54321u 0u 999999u 5000 options with
-    /// | Ok response -> printfn "set door passcodes %A" response.ok
-    /// | Error err -> printfn "error setting door passcodes: %A" err
-    /// </code>
-    /// <code language="csharp">
-    /// var controller = new ControllerBuilder(405419896).build();
-    /// var options = new OptionsBuilder().build();
-    /// var result = set_door_passcodes(controller, 4, 12345, 54321, 0, 999999, 5000, options);
-    /// if (result.IsOk)
-    /// {
-    ///     Console.WriteLine($"set-door-passcodes: {result.ResultValue.ok}");
-    /// }
-    /// else
-    /// {
-    ///     Console.WriteLine($"set-door-passcodes: error {result.ErrorValue}");
-    /// }
-    /// </code>
-    /// <code language="vbnet">
-    /// Dim controller As New ControllerBuilder(405419896u).build()
-    /// Dim options As New OptionsBuilder().build()
-    /// Dim result = set_door_passcodes(controller, 4, 12345UI, 54321UI, 0UI, 999999UI, 5000, options)
-    /// If result.IsOk Then
-    ///     Console.WriteLine($"set-door-passcodes: {result.ResultValue.ok}")
-    /// Else
-    ///     Console.WriteLine($"set-door-passcodes: error {result.ErrorValue}")
-    /// End If
-    /// </code>
     let set_door_passcodes
         (
             controller: Controller,

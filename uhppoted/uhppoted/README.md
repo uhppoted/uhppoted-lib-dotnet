@@ -36,7 +36,7 @@ Sets a controller current date and time.
 ### [`GetDoor`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/get-door.md))
 Gets a controller door operational mode and unlocked delay.
 
-### `set-door`
+### [`SetDoor`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/set-door.md))
 Sets a controller door operational mode and unlocked delay.
 
 ### `set-door-passcodes`

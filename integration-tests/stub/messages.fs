@@ -53,6 +53,10 @@ module Messages =
             request = Requests.set_door
             responses = [ Responses.set_door ] }
 
+          { test = "set-door-not-found"
+            request = Requests.set_door_not_found
+            responses = [ Responses.set_door_not_found ] }
+
           { test = "set-door-passcodes"
             request = Requests.set_door_passcodes
             responses = [ Responses.set_door_passcodes ] }

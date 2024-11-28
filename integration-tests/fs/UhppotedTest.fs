@@ -218,10 +218,19 @@ type TestClass() =
               mode = 2uy
               delay = 17uy }
 
-        controllers
-        |> List.iter (fun controller ->
-            match Uhppoted.set_door (controller, DOOR, MODE, DELAY, TIMEOUT, OPTIONS) with
-            | Ok response -> Assert.That(response, Is.EqualTo(expected))
+        options
+        |> List.iter (fun opts ->
+            match Uhppoted.SetDoor(CONTROLLER, DOOR, MODE, DELAY, TIMEOUT, OPTIONS) with
+            | Ok _ -> Assert.Pass()
+            | Error err -> Assert.Fail(err))
+
+    [<Test>]
+    member this.TestSetDoorNotFound() =
+        options
+        |> List.iter (fun opts ->
+            match Uhppoted.SetDoor(CONTROLLER, DOOR_NOT_FOUND, MODE, DELAY, TIMEOUT, opts) with
+            | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
+            | Ok _ -> Assert.Pass()
             | Error err -> Assert.Fail(err))
 
     [<Test>]

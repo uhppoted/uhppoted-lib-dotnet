@@ -248,30 +248,26 @@ Module Commands
     End Sub
 
     Sub SetDoor(args As String())
-        Try
-            Dim controller = New ControllerBuilder(405419896).
-                                 With(IPEndPoint.Parse("192.168.1.100:60000")).
-                                 With("udp").build()
-            Dim door = 4
-            Dim mode = 2
-            Dim delay = 7
-            Dim result = UHPPOTE.set_door(controller, door, mode, delay, TIMEOUT, OPTIONS)
+        Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
+        Dim door As Byte = ArgParse.Parse(args, "--door", DOOR)
+        Dim mode As Byte = ArgParse.Parse(args, "--mode", MODE)
+        Dim delay As Byte = ArgParse.Parse(args, "--delay", DELAY)
+        Dim result = UHPPOTE.SetDoor(controller, door, mode, delay, TIMEOUT, OPTIONS)
 
-            If (result.IsOk)
-                Dim response = result.ResultValue
-                WriteLine("set-door")
-                WriteLine("  controller {0}", response.controller)
-                WriteLine("        door {0}", response.door)
-                WriteLine("        mode {0}", response.mode)
-                WriteLine("       delay {0}s", response.delay)
-                WriteLine()
-            Else If (result.IsError)
-                Throw New Exception(result.ErrorValue)
-            End If
+        If (result.IsOk And result.ResultValue.HasValue)
+            Dim record = result.ResultValue.Value
 
-        Catch Err As Exception
-            WriteLine("Exception  {0}", err.Message)
-        End Try
+            WriteLine("set-door")
+            WriteLine("  controller {0}", controller)
+            WriteLine("        door {0}", door)
+            WriteLine("        mode {0}", record.mode)
+            WriteLine("       delay {0}s", record.delay)
+            WriteLine()
+        Else If (result.IsOk)
+            Throw New Exception("door not updated")
+        Else If (result.IsError)
+            Throw New Exception(result.ErrorValue)
+        End If
     End Sub
 
     Sub SetDoorPasscodes(args As String())
