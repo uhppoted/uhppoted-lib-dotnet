@@ -103,6 +103,7 @@ class Commands
           new Command ("record-special-events","Enables events for door open/close, button press, etc", RecordSpecialEvents),
           new Command ("get-time-profile","Retrieves an access time profile from a controller", GetTimeProfile),
           new Command ("set-time-profile","Adds or updates an access time profile on a controller", SetTimeProfile),
+          new Command ("clear-time-profiles", "Clears all access time profiles stored on a controller", ClearTimeProfiles),
     };
 
     public static void FindControllers(string[] args)
@@ -806,6 +807,28 @@ class Commands
             WriteLine("set-time-profile");
             WriteLine("  controller {0}", controller);
             WriteLine("     profile {0}", profile.profile);
+            WriteLine("          ok {0}", ok);
+            WriteLine();
+        }
+        else if (result.IsError)
+        {
+            throw new Exception(result.ErrorValue);
+        }
+    }
+
+    public static void ClearTimeProfiles(string[] args)
+    {
+        var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
+        var timeout = TIMEOUT;
+        var options = OPTIONS;
+        var result = Uhppoted.ClearTimeProfiles(controller, timeout, options);
+
+        if (result.IsOk)
+        {
+            var ok = result.ResultValue;
+
+            WriteLine("clear-time-profiles");
+            WriteLine("  controller {0}", controller);
             WriteLine("          ok {0}", ok);
             WriteLine();
         }

@@ -33,7 +33,7 @@
             - [ ] C#
             - [ ] VB.NET
       - [ ] --delay
-      - [ ] --passcode
+      - [ ] --passcodes
       - [ ] --start-date
       - [ ] --end-date
       - [ ] --permissions
@@ -67,7 +67,8 @@
       - [x] record-special-events
       - [x] get-time-profile
       - [x] set-time-profile
-      - [ ] clear-time-profiles
+      - [x] clear-time-profiles
+      - [ ] add-task
             - [ ] API function
             - [ ] CLI
                   - [ ] F#
@@ -78,7 +79,6 @@
             - [ ] README
       
       - [ ] clear-task-list
-      - [ ] add-task
       - [ ] refresh-task-list
       - [ ] set-task-list
       - [ ] set-pc-control

@@ -606,6 +606,24 @@ let set_time_profile args =
         Ok()
     | Error err -> Error(err)
 
+let clear_time_profiles args =
+    let controller = argparse args "--controller" CONTROLLER
+    let timeout = TIMEOUT
+
+    let options =
+        { OPTIONS with
+            endpoint = ENDPOINT
+            protocol = PROTOCOL }
+
+    match Uhppoted.ClearTimeProfiles(controller, timeout, options) with
+    | Ok ok ->
+        printfn "clear-time-profiles"
+        printfn "  controller %u" controller
+        printfn "          ok %b" ok
+        printfn ""
+        Ok()
+    | Error err -> Error(err)
+
 let commands =
     [ { command = "find-controllers"
         description = "Retrieves a list of controllers accessible on the local LAN"
@@ -701,4 +719,8 @@ let commands =
 
       { command = "set-time-profile"
         description = "Adds or updates an access time profile on a controller"
-        f = set_time_profile } ]
+        f = set_time_profile }
+
+      { command = "clear-time-profiles"
+        description = "Clears all access time profiles stored on a controller"
+        f = clear_time_profiles } ]

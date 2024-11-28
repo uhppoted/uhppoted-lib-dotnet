@@ -101,3 +101,6 @@ set-time-profile:build
                                                        --segments 08:30-11:30,12:15-16:45,19:30-21:15 \
                                                        --linked 37
 
+clear-time-profiles:build
+	$(CLI) clear-time-profile --controller $(CONTROLLER)
+

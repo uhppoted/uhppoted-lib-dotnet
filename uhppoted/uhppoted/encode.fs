@@ -350,3 +350,14 @@ module internal Encode =
         Array.blit (pack_u8 profile.linked_profile) 0 packet 36 1
 
         packet
+
+    let clear_time_profiles_request (controller: uint32) =
+        let packet: byte array = Array.zeroCreate 64
+
+        Array.set packet 0 (byte messages.SOM)
+        Array.set packet 1 (byte messages.CLEAR_TIME_PROFILES)
+
+        Array.blit (pack_u32 controller) 0 packet 4 4
+        Array.blit (pack_u32 MAGIC_WORD) 0 packet 8 4
+
+        packet

@@ -522,3 +522,13 @@ type TestClass() =
             match Uhppoted.SetTimeProfile(CONTROLLER, profile, TIMEOUT, opts) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
+
+    [<Test>]
+    member this.TestClearTimeProfiles() =
+        let expected = true
+
+        options
+        |> List.iter (fun opts ->
+            match Uhppoted.ClearTimeProfiles(CONTROLLER, TIMEOUT, opts) with
+            | Ok response -> Assert.That(response, Is.EqualTo(expected))
+            | Error err -> Assert.Fail(err))

@@ -33,24 +33,9 @@ release: build test integration-tests
 	cd uhppoted && make release
 
 debug: build
-	dotnet run --project ../examples/fs/cli --framework net7.0 set-time-profile --controller $(CONTROLLER) \
-                                                                            --profile $(TIME_PROFILE) \
-                                                                            --start 2024-01-01 --end 2024-12-31 \
-                                                                            --weekdays Mon,Tues,Fri \
-                                                                            --segments 08:30-11:30,12:15-16:45,19:30-21:15 \
-                                                                            --linked 37
-	dotnet run --project ../examples/cs/cli --framework net7.0 set-time-profile --controller $(CONTROLLER) \
-                                                                            --profile $(TIME_PROFILE) \
-                                                                            --start 2024-01-01 --end 2024-12-31 \
-                                                                            --weekdays Mon,Tues,Fri \
-                                                                            --segments 08:30-11:30,12:15-16:45,19:30-21:15 \
-                                                                            --linked 37
-	dotnet run --project ../examples/vb/cli --framework net7.0 set-time-profile --controller $(CONTROLLER) \
-                                                                            --profile $(TIME_PROFILE) \
-                                                                            --start 2024-01-01 --end 2024-12-31 \
-                                                                            --weekdays Mon,Tues,Fri \
-                                                                            --segments 08:30-11:30,12:15-16:45,19:30-21:15 \
-                                                                            --linked 37
+	dotnet run --project ../examples/fs/cli --framework net7.0 clear-time-profiles --controller $(CONTROLLER)
+	dotnet run --project ../examples/cs/cli --framework net7.0 clear-time-profiles --controller $(CONTROLLER)
+	dotnet run --project ../examples/vb/cli --framework net7.0 clear-time-profiles --controller $(CONTROLLER)
 
 find-controllers: build
 	$(CLI) find-controllers
@@ -128,4 +113,7 @@ set-time-profile:build
                                                        --weekdays Mon,Tues,Fri \
                                                        --segments 08:30-11:30,12:15-16:45,19:30-21:15 \
                                                        --linked 37
+
+clear-time-profiles:build
+	$(CLI) clear-time-profile --controller $(CONTROLLER)
 

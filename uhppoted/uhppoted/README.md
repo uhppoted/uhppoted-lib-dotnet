@@ -84,6 +84,9 @@ Retrieves an access time profile from a controller.
 ### [`SetTimeProfile`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/set-time-profile.md))
 Adds or updates an access time profile on a controller.
 
+### [`ClearTimeProfiles`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/clear-time-profiles.md))
+Clears all access time profiles stored on a controller.
+
 ## Notes
 
 ### C# Interop

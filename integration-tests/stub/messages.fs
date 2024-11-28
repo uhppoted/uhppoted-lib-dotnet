@@ -135,7 +135,12 @@ module Messages =
 
           { test = "set-time-profile"
             request = Requests.set_time_profile
-            responses = [ Responses.set_time_profile ] } ]
+            responses = [ Responses.set_time_profile ] }
+
+          { test = "clear-time-profiles"
+            request = Requests.clear_time_profiles
+            responses = [ Responses.clear_time_profiles ] } ]
+
 
     let find request =
         match messages |> Seq.tryFind (fun (msg) -> msg.request.SequenceEqual(request)) with

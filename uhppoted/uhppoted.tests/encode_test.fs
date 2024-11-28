@@ -290,3 +290,12 @@ type TestEncoder() =
         let packet = Encode.set_time_profile_request controller profile
 
         Assert.That(packet, Is.EqualTo(expected))
+
+    [<Test>]
+    member this.TestClearTimeProfilesRequest() =
+        let expected = TestRequests.clear_time_profiles
+
+        let controller = 405419896u
+        let packet = Encode.clear_time_profiles_request controller
+
+        Assert.That(packet, Is.EqualTo(expected))

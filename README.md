@@ -101,6 +101,9 @@ Retrieves an access time profile from a controller.
 ### [`GetTimeProfile`](documentation/API/set-time-profile.md))
 Adds or updates an access time profile on a controller.
 
+### [`ClearTimeProfiles`](documentation/API/clear-time-profiles.md))
+Clears all access time profiles stored on a controller.
+
 ## Notes
 
 ### C# Interop

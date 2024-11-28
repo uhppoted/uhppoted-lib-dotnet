@@ -96,7 +96,8 @@ Module Commands
            New Command("set-event-index", "Sets a controller event index", AddressOf SetEventIndex),
            New Command("record-special-events", "Enables events for door open/close, button press, etc", AddressOf RecordSpecialEvents),
            New Command("get-time-profile", "Retrieves an access time profile from a controller", AddressOf GetTimeProfile),
-           New Command("set-time-profile", "Adds or updates an access time profile on a controller", AddressOf SetTimeProfile)
+           New Command("set-time-profile", "Adds or updates an access time profile on a controller", AddressOf SetTimeProfile),
+           New Command("clear-time-profiles", "Clears all access time profiles stored on a controller", AddressOf ClearTimeProfiles)
        }
 
     Sub FindControllers(args As String())
@@ -651,6 +652,22 @@ Module Commands
         End If
     End Sub
 
+    Sub ClearTimeProfiles(args As String())
+        Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
+
+        Dim result = UHPPOTE.ClearTimeProfiles(controller, TIMEOUT, OPTIONS)
+
+        If (result.IsOk)
+            Dim ok = result.ResultValue
+
+            WriteLine("clear-time-profiles")
+            WriteLine("  controller {0}", controller)
+            WriteLine("          ok {0}", ok)
+            WriteLine()
+        Else If (result.IsError)
+            Throw New Exception(result.ErrorValue)
+        End If
+    End Sub
 
     Private Function YYYYMMDD(v As Nullable(Of DateOnly)) As String
         If v.HasValue Then

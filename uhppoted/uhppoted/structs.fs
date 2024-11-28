@@ -374,3 +374,10 @@ type internal SetTimeProfileResponse =
 
     interface IResponse with
         member this.controller = this.controller
+
+type internal ClearTimeProfilesResponse =
+    { controller: uint32
+      ok: bool }
+
+    interface IResponse with
+        member this.controller = this.controller

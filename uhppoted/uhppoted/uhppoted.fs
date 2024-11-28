@@ -700,3 +700,19 @@ module Uhppoted =
         match exec controller request Decode.set_time_profile_response timeout options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
+
+    /// <summary>
+    /// Clears all access time profiles stored on a controller.
+    /// </summary>
+    /// <param name="controller">Controller ID.</param>
+    /// <param name="timeout">Operation timeout (ms).</param>
+    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <returns>
+    /// Result with the boolean success/fail result or an Error if the request failed.
+    /// </returns>
+    let ClearTimeProfiles (controller: uint32, timeout: int, options: Options) =
+        let request = Encode.clear_time_profiles_request controller
+
+        match exec controller request Decode.clear_time_profiles_response timeout options with
+        | Ok response -> Ok response.ok
+        | Error err -> Error err
