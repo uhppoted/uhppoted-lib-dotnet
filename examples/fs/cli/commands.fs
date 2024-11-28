@@ -22,7 +22,7 @@ let LISTENER = IPEndPoint.Parse("192.168.1.250:60001")
 let INTERVAL = 0uy
 
 let DOOR = 1uy
-let MODE = 3uy
+let MODE = DoorMode.Controlled
 let DELAY = 5uy
 let CARD = 1u
 let CARD_INDEX = 1u

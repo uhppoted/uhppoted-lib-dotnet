@@ -254,7 +254,7 @@ module Uhppoted =
     /// <param name="timeout">Operation timeout (ms).</param>
     /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
     /// <returns>Ok with the door mode and unlock delay (or null) or Error.</returns>
-    let SetDoor (controller: uint32, door: uint8, mode: uint8, delay: uint8, timeout: int, options: Options) =
+    let SetDoor (controller: uint32, door: uint8, mode: DoorMode, delay: uint8, timeout: int, options: Options) =
         let request = Encode.set_door_request controller door mode delay
 
         match exec controller request Decode.set_door_response timeout options with

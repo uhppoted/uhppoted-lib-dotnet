@@ -27,7 +27,7 @@ The `Door` record has the following fields:
 ```fsharp
 let controller = 405419896u
 let door = 3uy
-let mode = NormallyClosed
+let mode = DoorMode.NormallyClosed
 let delay = 5
 let timeout = 5000
 let options = { broadcast = IPAddress.Broadcast; destination=None; protocol=None; debug = true }
@@ -41,7 +41,7 @@ match SetDoor controller door mode delay timeout options with
 ```csharp
 var controller = 405419896u;
 var door = 3u;
-var mode = NormallyClosed;
+var mode = DoorMode.NormallyClosed;
 var delay = 5;
 var timeout = 5000;
 var options = new OptionsBuilder().build();
@@ -64,7 +64,7 @@ else
 ```vb
 Dim controller = 405419896
 Dim door = 3
-Dim mode = NormallyClosed
+Dim mode = DoorMode.NormallyClosed
 Dim delay = 5
 Dim timeout = 5000
 Dim options As New OptionsBuilder().build()

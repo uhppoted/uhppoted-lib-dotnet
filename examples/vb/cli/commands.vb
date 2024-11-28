@@ -4,6 +4,7 @@ Imports System.Net
 Imports UHPPOTE = uhppoted.Uhppoted
 Imports ControllerBuilder = uhppoted.ControllerBuilder
 Imports OptionsBuilder = uhppoted.OptionsBuilder
+Imports DoorMode = uhppoted.DoorMode
 
 Public Structure Command
     Public ReadOnly command As String
@@ -53,7 +54,7 @@ Module Commands
     Private Const CONTROLLER_ID As UInt32 = 1
     Private Const EVENT_INTERVAL as Byte = 0
     Private Const DOOR As Byte = 1
-    Private Const MODE As Byte = 3
+    Private Const MODE As Uhppoted.DoorMode = Uhppoted.DoorMode.Controlled
     Private Const DELAY As Byte = 5
     Private Const CARD_NUMBER As UInt32 = 1
     Private Const CARD_INDEX As UInt32 = 1
@@ -250,7 +251,7 @@ Module Commands
     Sub SetDoor(args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
         Dim door As Byte = ArgParse.Parse(args, "--door", DOOR)
-        Dim mode As Byte = ArgParse.Parse(args, "--mode", MODE)
+        Dim mode As DoorMode = ArgParse.Parse(args, "--mode", MODE)
         Dim delay As Byte = ArgParse.Parse(args, "--delay", DELAY)
         Dim result = UHPPOTE.SetDoor(controller, door, mode, delay, TIMEOUT, OPTIONS)
 

@@ -64,7 +64,7 @@ class Commands
     const uint CONTROLLER = 1u;
     const byte INTERVAL = 0;
     const byte DOOR = 1;
-    const byte MODE = 3;
+    const DoorMode MODE = DoorMode.Controlled;
     const byte DELAY = 5;
     const uint CARD = 1u;
     const uint CARD_INDEX = 1u;

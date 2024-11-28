@@ -94,7 +94,7 @@ type TestEncoder() =
 
         let controller = 405419896u
         let door = 3uy
-        let mode = 2uy
+        let mode = DoorMode.NormallyClosed
         let delay = 17uy
         let packet = Encode.set_door_request controller door mode delay
 

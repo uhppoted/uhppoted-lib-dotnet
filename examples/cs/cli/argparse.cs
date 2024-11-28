@@ -1,6 +1,7 @@
 using System.Net;
 
 using static System.Console;
+using uhppoted;
 
 static class ArgParse
 {
@@ -45,6 +46,20 @@ static class ArgParse
 
                 case DateTime:
                     if (DateTime.TryParse(args[ix], out datetime)) return (T)(object)datetime;
+                    break;
+
+                case DoorMode:
+                    switch (args[ix])
+                    {
+                        case "normally-open":
+                            return (T)(object)DoorMode.NormallyOpen;
+
+                        case "normally-closed":
+                            return (T)(object)DoorMode.NormallyClosed;
+
+                        case "controlled":
+                            return (T)(object)DoorMode.Controlled;
+                    }
                     break;
             }
         }

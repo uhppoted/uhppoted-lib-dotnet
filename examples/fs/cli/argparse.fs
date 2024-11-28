@@ -2,35 +2,43 @@ module argparse
 
 open System
 open System.Net
+open uhppoted
 
 let (|UInt32|_|) (value: string) =
     match UInt32.TryParse value with
-    | true, v -> Some(v)
+    | true, v -> Some v
     | _ -> None
 
 let (|Byte|_|) (value: string) =
     match Byte.TryParse value with
-    | true, v -> Some(v)
+    | true, v -> Some v
     | _ -> None
 
 let (|Boolean|_|) (value: string) =
     match Boolean.TryParse value with
-    | true, v -> Some(v)
+    | true, v -> Some v
     | _ -> None
 
 let (|IPAddress|_|) (value: string) =
     match IPAddress.TryParse value with
-    | true, v -> Some(v)
+    | true, v -> Some v
     | _ -> None
 
 let (|IPEndPoint|_|) (value: string) =
     match IPEndPoint.TryParse value with
-    | true, v -> Some(v)
+    | true, v -> Some v
     | _ -> None
 
 let (|DateTime|_|) (value: string) =
     match DateTime.TryParse value with
-    | true, v -> Some(v)
+    | true, v -> Some v
+    | _ -> None
+
+let (|DoorMode|_|) (value: string) =
+    match value.ToLowerInvariant() with
+    | "normally-open" -> Some DoorMode.NormallyOpen
+    | "normally-closed" -> Some DoorMode.NormallyClosed
+    | "controlled" -> Some DoorMode.Controlled
     | _ -> None
 
 let rec argparse (args: string list) flag (defval: 'T) : 'T =
@@ -43,6 +51,7 @@ let rec argparse (args: string list) flag (defval: 'T) : 'T =
         | :? IPAddress, IPAddress parsed -> unbox parsed
         | :? IPEndPoint, IPEndPoint parsed -> unbox parsed
         | :? DateTime, DateTime parsed -> unbox parsed
+        | :? DoorMode, DoorMode parsed -> unbox parsed
         | _ -> defval
 
     | _ :: rest -> argparse rest flag defval

@@ -123,7 +123,7 @@ module internal Encode =
 
         packet
 
-    let set_door_request (controller: uint32) (door: uint8) (mode: uint8) (delay: uint8) =
+    let set_door_request (controller: uint32) (door: uint8) (mode: DoorMode) (delay: uint8) =
         let packet: byte array = Array.zeroCreate 64
 
         Array.set packet 0 (byte messages.SOM)
@@ -131,7 +131,7 @@ module internal Encode =
 
         Array.blit (pack_u32 controller) 0 packet 4 4
         Array.blit (pack_u8 door) 0 packet 8 1
-        Array.blit (pack_u8 mode) 0 packet 9 1
+        Array.blit (pack_u8 (uint8 mode)) 0 packet 9 1
         Array.blit (pack_u8 delay) 0 packet 10 1
 
         packet

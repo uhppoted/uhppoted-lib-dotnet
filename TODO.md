@@ -28,12 +28,12 @@
       - [x] --time
       - [x] --enable
       - [x] --door
-      - [ ] --mode
+      - [x] --mode
+      - [x] --delay
+      - [ ] --passcodes
             - [ ] F#
             - [ ] C#
             - [ ] VB.NET
-      - [ ] --delay
-      - [ ] --passcodes
       - [ ] --start-date
       - [ ] --end-date
       - [ ] --permissions
@@ -50,6 +50,7 @@
       - [x] get-time
       - [x] set-time
       - [x] get-door
+            - [ ] DoorMode
       - [x] set-door
       - [x] set-door-passcodes
       - [x] open-door

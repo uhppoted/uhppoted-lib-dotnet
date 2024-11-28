@@ -1,5 +1,6 @@
 Imports System.Console
 Imports System.Net
+Imports DoorMode = uhppoted.DoorMode
 
 Module ArgParse
 
@@ -14,6 +15,7 @@ Module ArgParse
 
         If ix >= 0 AndAlso ix + 1 < args.Length Then
             ix += 1
+
             Select Case TypeName(defval)
                 Case "UInteger"
                     If UInt32.TryParse(args(ix), u32) Then
@@ -48,6 +50,18 @@ Module ArgParse
                     If DateTime.TryParse(args(ix), dt) Then
                         Return CType(CObj(dt), T)
                     End If
+
+                Case "DoorMode" :
+                    Select Case args(ix).ToLowerInvariant()
+                        Case "normally-open"
+                            Return CType(CObj(DoorMode.NormallyOpen), T)
+
+                        Case "normally-closed"
+                            Return CType(CObj(DoorMode.NormallyClosed), T)
+
+                        Case "controlled"
+                            Return CType(CObj(DoorMode.Controlled), T)
+                    End Select
 
             End Select
         End If
