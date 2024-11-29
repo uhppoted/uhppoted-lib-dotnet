@@ -75,3 +75,58 @@ type TimeProfileBuilder(profile: uint8) =
           segment3_start = segment3_start
           segment3_end = segment3_end
           linked_profile = linked }
+
+
+type TaskBuilder(task: uint8, door: uint8) =
+    let mutable start_date: Nullable<DateOnly> = Nullable()
+    let mutable end_date: Nullable<DateOnly> = Nullable()
+    let mutable start_time: Nullable<TimeOnly> = Nullable()
+    let mutable monday: bool = false
+    let mutable tuesday: bool = false
+    let mutable wednesday: bool = false
+    let mutable thursday: bool = false
+    let mutable friday: bool = false
+    let mutable saturday: bool = false
+    let mutable sunday: bool = false
+    let mutable more_cards: uint8 = 0uy
+
+    member this.WithStartDate(v: DateOnly) =
+        start_date <- Nullable(v)
+        this
+
+    member this.WithEndDate(v: DateOnly) =
+        end_date <- Nullable(v)
+        this
+
+    member this.WithStartTime(time: TimeOnly) =
+        start_time <- Nullable(time)
+        this
+
+    member this.WithWeekdays(mon: bool, tue: bool, wed: bool, thurs: bool, fri: bool, sat: bool, sun: bool) =
+        monday <- mon
+        tuesday <- tue
+        wednesday <- wed
+        thursday <- thurs
+        friday <- fri
+        saturday <- sat
+        sunday <- sun
+        this
+
+    member this.WithMoreCards(v: uint8) =
+        more_cards <- v
+        this
+
+    member this.build() =
+        { task = task
+          door = door
+          start_date = start_date
+          end_date = end_date
+          start_time = start_time
+          monday = monday
+          tuesday = tuesday
+          wednesday = wednesday
+          thursday = thursday
+          friday = friday
+          saturday = saturday
+          sunday = sunday
+          more_cards = more_cards }

@@ -29,6 +29,7 @@ let CARD_INDEX = 1u
 let EVENT_INDEX = 1u
 let ENABLE = true
 let TIME_PROFILE_ID = 2uy
+let TASK_ID = 0uy
 
 let OPTIONS: Options =
     { bind = IPEndPoint(IPAddress.Any, 0)
@@ -565,7 +566,6 @@ let get_time_profile args =
     | Ok _ -> Error "time profile does not exist"
     | Error err -> Error(err)
 
-
 let set_time_profile args =
     let controller = argparse args "--controller" CONTROLLER
 
@@ -618,6 +618,42 @@ let clear_time_profiles args =
     | Ok ok ->
         printfn "clear-time-profiles"
         printfn "  controller %u" controller
+        printfn "          ok %b" ok
+        printfn ""
+        Ok()
+    | Error err -> Error(err)
+
+let add_task args =
+    let controller = argparse args "--controller" CONTROLLER
+
+    let task =
+        { task = argparse args "--task" TASK_ID
+          door = argparse args "--door" DOOR
+          start_date = argparse args "--start-date" (Nullable(DateOnly(2024, 1, 1)))
+          end_date = argparse args "--end-date" (Nullable(DateOnly(2024, 12, 31)))
+          start_time = Nullable(TimeOnly(8, 30))
+          monday = true
+          tuesday = true
+          wednesday = false
+          thursday = true
+          friday = false
+          saturday = true
+          sunday = true
+          more_cards = argparse args "--more-cards" 0uy }
+
+    let timeout = TIMEOUT
+
+    let options =
+        { OPTIONS with
+            endpoint = ENDPOINT
+            protocol = PROTOCOL }
+
+    match Uhppoted.AddTask(controller, task, timeout, options) with
+    | Ok ok ->
+        printfn "add-task"
+        printfn "  controller %u" controller
+        printfn "        task %u" task.task
+        printfn "        door %u" task.door
         printfn "          ok %b" ok
         printfn ""
         Ok()
@@ -722,4 +758,8 @@ let commands =
 
       { command = "clear-time-profiles"
         description = "Clears all access time profiles stored on a controller"
-        f = clear_time_profiles } ]
+        f = clear_time_profiles }
+
+      { command = "add-task"
+        description = "Adds or updates a scheduled task stored on a controller"
+        f = add_task } ]

@@ -92,17 +92,21 @@ Retrieves the current event index from a controller.
 ### [`SetEventIndex`](documentation/API/set-event-index.md)
 Sets a controller event index.
 
-### [`RecordSpecialEvents`](documentation/API/record-special-events.md))
+### [`RecordSpecialEvents`](documentation/API/record-special-events.md)
 Enables (or disables) events for door open/close, button press, etc.
 
-### [`GetTimeProfile`](documentation/API/get-time-profile.md))
+### [`GetTimeProfile`](documentation/API/get-time-profile.md)
 Retrieves an access time profile from a controller.
 
-### [`GetTimeProfile`](documentation/API/set-time-profile.md))
+### [`GetTimeProfile`](documentation/API/set-time-profile.md)
 Adds or updates an access time profile on a controller.
 
-### [`ClearTimeProfiles`](documentation/API/clear-time-profiles.md))
+### [`ClearTimeProfiles`](documentation/API/clear-time-profiles.md)
 Clears all access time profiles stored on a controller.
+
+### [`AddTask`](documentation/API/add-task.md)
+Adds or updates a scheduled task on a controller.
+
 
 ## Notes
 

@@ -11,6 +11,7 @@
       - [ ] event types
       - [ ] event reasons
       - [ ] event direction
+      - [ ] tasks
       - https://stackoverflow.com/questions/2689446/how-to-manage-resources-in-an-f-project
       - https://fsprojects.github.io/FSharp.Configuration/ResXProvider.html
       - https://poeditor.com/kb/resx-editor
@@ -40,6 +41,7 @@
       - [ ] --PIN
       - [ ] --weekdays
       - [ ] --segments
+      - [ ] --task
 
 - [ ] API
       - [x] find-controllers
@@ -69,7 +71,8 @@
       - [x] get-time-profile
       - [x] set-time-profile
       - [x] clear-time-profiles
-      - [ ] add-task
+      - [x] add-task
+      - [ ] clear-task-list
             - [ ] API function
             - [ ] CLI
                   - [ ] F#
@@ -79,7 +82,6 @@
             - [ ] API doc
             - [ ] README
       
-      - [ ] clear-task-list
       - [ ] refresh-task-list
       - [ ] set-task-list
       - [ ] set-pc-control

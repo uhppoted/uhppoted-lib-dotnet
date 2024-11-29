@@ -25,6 +25,7 @@
 - [`GetTimeProfile`](get-time-profile.md)
 - [`SetTimeProfile`](set-time-profile.md)
 - [`ClearTimeProfiles`](clear-time-profiles.md)
+- [`AddTask`](add-task.md)
 
 
 ## `set_door_passcodes`

@@ -70,7 +70,8 @@ class Commands
     const uint CARD_INDEX = 1u;
     const uint EVENT_INDEX = 1u;
     const bool ENABLE = true;
-    const byte TIME_PROFILE_ID = 2;
+    const byte TIME_PROFILE_ID = 0;
+    const byte TASK_ID = 0;
 
     static readonly IPAddress ADDRESS = IPAddress.Parse("192.168.1.10");
     static readonly IPAddress NETMASK = IPAddress.Parse("255.255.255.0");
@@ -104,6 +105,7 @@ class Commands
           new Command ("get-time-profile","Retrieves an access time profile from a controller", GetTimeProfile),
           new Command ("set-time-profile","Adds or updates an access time profile on a controller", SetTimeProfile),
           new Command ("clear-time-profiles", "Clears all access time profiles stored on a controller", ClearTimeProfiles),
+          new Command ("add-task", "Adds or updates a scheduled task stored on a controller", AddTask),
     };
 
     public static void FindControllers(string[] args)
@@ -823,6 +825,54 @@ class Commands
 
             WriteLine("clear-time-profiles");
             WriteLine("  controller {0}", controller);
+            WriteLine("          ok {0}", ok);
+            WriteLine();
+        }
+        else if (result.IsError)
+        {
+            throw new Exception(result.ErrorValue);
+        }
+    }
+
+    public static void AddTask(string[] args)
+    {
+        var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
+        var task_id = ArgParse.Parse(args, "--task", TASK_ID);
+        var door = ArgParse.Parse(args, "--door", DOOR);
+        var start_date = ArgParse.Parse(args, "--start_date", DateOnly.Parse("2024-01-01"));
+        var end_date = ArgParse.Parse(args, "--end_date", DateOnly.Parse("2024-12-31"));
+        var start_time = ArgParse.Parse(args, "--start-time", TimeOnly.Parse("00:00"));
+        var weekdays = ArgParse.Parse(args, "--weekdays", new Weekdays(true, true, false, false, true, false, false));
+        var more_cards = ArgParse.Parse(args, "--more-cards", (byte)0);
+
+        bool monday = weekdays.monday;
+        bool tuesday = weekdays.tuesday;
+        bool wednesday = weekdays.wednesday;
+        bool thursday = weekdays.thursday;
+        bool friday = weekdays.friday;
+        bool saturday = weekdays.saturday;
+        bool sunday = weekdays.sunday;
+
+        var task = new uhppoted.TaskBuilder(task_id, door)
+                                  .WithStartDate(start_date)
+                                  .WithEndDate(end_date)
+                                  .WithStartTime(start_time)
+                                  .WithWeekdays(monday, tuesday, wednesday, thursday, friday, saturday, sunday)
+                                  .WithMoreCards(more_cards)
+                                  .build();
+
+        var timeout = TIMEOUT;
+        var options = OPTIONS;
+        var result = Uhppoted.AddTask(controller, task, timeout, options);
+
+        if (result.IsOk)
+        {
+            var ok = result.ResultValue;
+
+            WriteLine("add-task");
+            WriteLine("  controller {0}", controller);
+            WriteLine("        task {0}", task.task);
+            WriteLine("        door {0}", task.door);
             WriteLine("          ok {0}", ok);
             WriteLine();
         }

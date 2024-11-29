@@ -280,7 +280,7 @@ type TestEncoder() =
               saturday = true
               sunday = true
               segment1_start = Nullable(TimeOnly(8, 30))
-              segment1_end = Nullable(TimeOnly(09, 45))
+              segment1_end = Nullable(TimeOnly(9, 45))
               segment2_start = Nullable(TimeOnly(11, 35))
               segment2_end = Nullable(TimeOnly(13, 15))
               segment3_start = Nullable(TimeOnly(14, 01))
@@ -297,5 +297,30 @@ type TestEncoder() =
 
         let controller = 405419896u
         let packet = Encode.clear_time_profiles_request controller
+
+        Assert.That(packet, Is.EqualTo(expected))
+
+    [<Test>]
+    member this.TestAddTaskRequest() =
+        let expected = TestRequests.add_task
+
+        let controller = 405419896u
+
+        let task: Task =
+            { task = 4uy
+              door = 3uy
+              start_date = Nullable(DateOnly(2024, 11, 26))
+              end_date = Nullable(DateOnly(2024, 12, 29))
+              monday = true
+              tuesday = true
+              wednesday = false
+              thursday = true
+              friday = false
+              saturday = true
+              sunday = true
+              start_time = Nullable(TimeOnly(8, 45))
+              more_cards = 7uy }
+
+        let packet = Encode.add_task_request controller task
 
         Assert.That(packet, Is.EqualTo(expected))

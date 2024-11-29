@@ -677,7 +677,7 @@ module Uhppoted =
     /// <param name="timeout">Operation timeout (ms).</param>
     /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
     /// <returns>
-    /// Ok with true if the time profile was added or updated or Error.
+    /// Ok with true if the time profile was added/updated, or Error.
     /// </returns>
     let SetTimeProfile (controller: uint32, profile: TimeProfile, timeout: int, options: Options) =
         let request = Encode.set_time_profile_request controller profile
@@ -699,5 +699,22 @@ module Uhppoted =
         let request = Encode.clear_time_profiles_request controller
 
         match exec controller request Decode.clear_time_profiles_response timeout options with
+        | Ok response -> Ok response.ok
+        | Error err -> Error err
+
+    /// <summary>
+    /// Adds or updates a scheduled task on a controller.
+    /// </summary>
+    /// <param name="controller">Controller ID.</param>
+    /// <param name="task">Task definition to add or update.</param>
+    /// <param name="timeout">Operation timeout (ms).</param>
+    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <returns>
+    /// Ok with true if the task was added/updated, or Error.
+    /// </returns>
+    let AddTask (controller: uint32, task: Task, timeout: int, options: Options) =
+        let request = Encode.add_task_request controller task
+
+        match exec controller request Decode.add_task_response timeout options with
         | Ok response -> Ok response.ok
         | Error err -> Error err

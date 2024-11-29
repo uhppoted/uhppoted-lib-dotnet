@@ -374,3 +374,13 @@ type TestDecoder() =
         match Decode.clear_time_profiles_response packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)
+
+    [<Test>]
+    member this.TestDecodeAddTaskResponse() =
+        let packet = TestResponses.add_task
+
+        let expected: AddTaskResponse = { controller = 405419896u; ok = true }
+
+        match Decode.add_task_response packet with
+        | Ok response -> Assert.That(response, Is.EqualTo(expected))
+        | Error err -> Assert.Fail(err)

@@ -386,7 +386,17 @@ module internal Decode =
         if packet[0] <> messages.SOM then
             Error("invalid controller response")
         else if packet[1] <> messages.CLEAR_TIME_PROFILES then
-            Error("invalid clear_time_profiles response")
+            Error("invalid clear-time-profiles response")
+        else
+            Ok
+                { controller = unpack_u32 packet[4..]
+                  ok = unpack_bool (packet[8..]) }
+
+    let add_task_response (packet: byte array) : Result<AddTaskResponse, string> =
+        if packet[0] <> messages.SOM then
+            Error("invalid controller response")
+        else if packet[1] <> messages.ADD_TASK then
+            Error("invalid add-task response")
         else
             Ok
                 { controller = unpack_u32 packet[4..]

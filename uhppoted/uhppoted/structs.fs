@@ -61,6 +61,22 @@ type TimeProfile =
       linked_profile: uint8 }
 
 [<Struct>]
+type Task =
+    { task: uint8
+      door: uint8
+      start_date: DateOnly Nullable
+      end_date: DateOnly Nullable
+      start_time: TimeOnly Nullable
+      monday: bool
+      tuesday: bool
+      wednesday: bool
+      thursday: bool
+      friday: bool
+      saturday: bool
+      sunday: bool
+      more_cards: uint8 }
+
+[<Struct>]
 type Listener =
     { endpoint: IPEndPoint
       interval: uint8 }
@@ -292,6 +308,13 @@ type internal SetTimeProfileResponse =
         member this.controller = this.controller
 
 type internal ClearTimeProfilesResponse =
+    { controller: uint32
+      ok: bool }
+
+    interface IResponse with
+        member this.controller = this.controller
+
+type internal AddTaskResponse =
     { controller: uint32
       ok: bool }
 

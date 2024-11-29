@@ -12,6 +12,7 @@ INTERVAL ?= 30
 EVENT_INDEX ?= 23
 RECORD_SPECIAL_EVENTS ?= true
 TIME_PROFILE ?= 29
+TASK ?= 4
 
 clean:
 	cd uhppoted && make clean
@@ -111,4 +112,12 @@ set-time-profile:build
 
 clear-time-profiles:build
 	$(CLI) clear-time-profile --controller $(CONTROLLER)
+
+add-task:build
+	$(CLI) add-task --controller $(CONTROLLER) \
+                    --task $(TASK) \
+                    --door $(DOOR) \
+                    --start-date 2024-01-01 --end-date 2024-12-31 --start-time 09:45 \
+                    --weekdays Mon,Tue,Fri \
+                    --more-cards 7
 

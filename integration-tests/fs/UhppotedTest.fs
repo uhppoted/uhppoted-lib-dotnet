@@ -541,3 +541,28 @@ type TestClass() =
             match Uhppoted.ClearTimeProfiles(CONTROLLER, TIMEOUT, opts) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
+
+    [<Test>]
+    member this.TestAddTask() =
+        let expected: bool = true
+
+        let task: Task =
+            { task = 4uy
+              door = 3uy
+              start_date = Nullable(DateOnly(2024, 11, 26))
+              end_date = Nullable(DateOnly(2024, 12, 29))
+              monday = true
+              tuesday = true
+              wednesday = false
+              thursday = true
+              friday = false
+              saturday = true
+              sunday = true
+              start_time = Nullable(TimeOnly(8, 45))
+              more_cards = 7uy }
+
+        options
+        |> List.iter (fun opts ->
+            match Uhppoted.AddTask(CONTROLLER, task, TIMEOUT, opts) with
+            | Ok response -> Assert.That(response, Is.EqualTo(expected))
+            | Error err -> Assert.Fail(err))

@@ -361,3 +361,26 @@ module internal Encode =
         Array.blit (pack_u32 MAGIC_WORD) 0 packet 8 4
 
         packet
+
+    let add_task_request (controller: uint32) (task: Task) =
+        let packet: byte array = Array.zeroCreate 64
+
+        Array.set packet 0 (byte messages.SOM)
+        Array.set packet 1 (byte messages.ADD_TASK)
+
+        Array.blit (pack_u32 controller) 0 packet 4 4
+        Array.blit (pack_date task.start_date) 0 packet 8 4
+        Array.blit (pack_date task.end_date) 0 packet 12 4
+        Array.blit (pack_bool task.monday) 0 packet 16 1
+        Array.blit (pack_bool task.tuesday) 0 packet 17 1
+        Array.blit (pack_bool task.wednesday) 0 packet 18 1
+        Array.blit (pack_bool task.thursday) 0 packet 19 1
+        Array.blit (pack_bool task.friday) 0 packet 20 1
+        Array.blit (pack_bool task.saturday) 0 packet 21 1
+        Array.blit (pack_bool task.sunday) 0 packet 22 1
+        Array.blit (pack_HHmm task.start_time) 0 packet 23 2
+        Array.blit (pack_u8 task.door) 0 packet 25 1
+        Array.blit (pack_u8 task.task) 0 packet 26 1
+        Array.blit (pack_u8 task.more_cards) 0 packet 27 1
+
+        packet

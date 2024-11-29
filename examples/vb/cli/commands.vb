@@ -60,7 +60,8 @@ Module Commands
     Private Const CARD_INDEX As UInt32 = 1
     Private Const EVENT_INDEX As UInt32 = 1
     Private Const ENABLE as Boolean = true
-    Private Const TIME_PROFILE_ID as Byte = 2
+    Private Const TIME_PROFILE_ID as Byte = 0
+    Private Const TASK_ID as Byte = 0
 
     Private ReadOnly Dim IPv4_ADDRESS = IPAddress.Parse("192.168.1.10")
     Private ReadOnly Dim IPv4_NETMASK = IPAddress.Parse("255.255.255.0")
@@ -98,7 +99,8 @@ Module Commands
            New Command("record-special-events", "Enables events for door open/close, button press, etc", AddressOf RecordSpecialEvents),
            New Command("get-time-profile", "Retrieves an access time profile from a controller", AddressOf GetTimeProfile),
            New Command("set-time-profile", "Adds or updates an access time profile on a controller", AddressOf SetTimeProfile),
-           New Command("clear-time-profiles", "Clears all access time profiles stored on a controller", AddressOf ClearTimeProfiles)
+           New Command("clear-time-profiles", "Clears all access time profiles stored on a controller", AddressOf ClearTimeProfiles),
+           New Command("add-task", "Adds or updates a scheduled task stored on a controller", AddressOf AddTask)
        }
 
     Sub FindControllers(args As String())
@@ -606,7 +608,7 @@ Module Commands
     Sub SetTimeProfile(args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
         Dim profile_id = ArgParse.Parse(args, "--profile", TIME_PROFILE_ID)
-        Dim linked As Byte = ArgParse.Parse(args, "--linked", 0)
+        Dim linked As Byte = ArgParse.Parse(args, "--linked", CType(0, Byte))
         Dim start_date = ArgParse.Parse(args, "--start_date", DateOnly.Parse("2024-01-01"))
         Dim end_date = ArgParse.Parse(args, "--end_date", DateOnly.Parse("2024-12-31"))
         Dim weekdays = ArgParse.Parse(args, "--weekdays", New Weekdays(true, true, false, false, true, false, false))
@@ -659,6 +661,48 @@ Module Commands
 
             WriteLine("clear-time-profiles")
             WriteLine("  controller {0}", controller)
+            WriteLine("          ok {0}", ok)
+            WriteLine()
+        Else If (result.IsError)
+            Throw New Exception(result.ErrorValue)
+        End If
+    End Sub
+
+    Sub AddTask(args As String())
+        Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
+        Dim _task_id As Byte = ArgParse.Parse(args, "--task", TASK_ID)
+        Dim door_id As Byte = ArgParse.Parse(args, "--door", DOOR)
+        Dim start_date = ArgParse.Parse(args, "--start_date", DateOnly.Parse("2024-01-01"))
+        Dim end_date = ArgParse.Parse(args, "--end_date", DateOnly.Parse("2024-12-31"))
+        Dim start_time = ArgParse.Parse(args, "--start_time", TimeOnly.Parse("00:00"))
+        Dim weekdays = ArgParse.Parse(args, "--weekdays", New Weekdays(true, true, false, false, true, false, false))
+        Dim more_cards As Byte = ArgParse.Parse(args, "--more-cards", CType(0, Byte))
+
+        Dim monday = weekdays.monday
+        Dim tuesday = weekdays.tuesday
+        Dim wednesday = weekdays.wednesday
+        Dim thursday = weekdays.thursday
+        Dim friday = weekdays.friday
+        Dim saturday = weekdays.saturday
+        Dim sunday = weekdays.sunday
+
+        Dim task = New uhppoted.TaskBuilder(_task_id, door_id).
+                                WithStartDate(start_date).
+                                WithEndDate(end_date).
+                                WithStartTime(start_time).
+                                WithWeekdays(monday, tuesday, wednesday, thursday, friday, saturday, sunday).
+                                WithMoreCards(more_cards).
+                                build()
+
+        Dim result = UHPPOTE.AddTask(controller, task, TIMEOUT, OPTIONS)
+
+        If (result.IsOk)
+            Dim ok = result.ResultValue
+
+            WriteLine("add-task")
+            WriteLine("  controller {0}", controller)
+            WriteLine("        task {0}", task.task)
+            WriteLine("        door {0}", task.door)
             WriteLine("          ok {0}", ok)
             WriteLine()
         Else If (result.IsError)

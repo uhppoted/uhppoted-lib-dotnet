@@ -143,7 +143,11 @@ module Messages =
 
           { test = "clear-time-profiles"
             request = Requests.clear_time_profiles
-            responses = [ Responses.clear_time_profiles ] } ]
+            responses = [ Responses.clear_time_profiles ] }
+
+          { test = "add-task"
+            request = Requests.add_task
+            responses = [ Responses.add_task ] } ]
 
 
     let find request =
