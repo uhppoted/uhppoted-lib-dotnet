@@ -274,27 +274,22 @@ Module Commands
     End Sub
 
     Sub SetDoorPasscodes(args As String())
-        Try
-            Dim controller = New ControllerBuilder(405419896).
-                                 With(IPEndPoint.Parse("192.168.1.100:60000")).
-                                 With("udp").build()
-            Dim door = 4
-            Dim passcodes As UInteger() = {12345, 54321, 0, 999999}
-            Dim result = UHPPOTE.set_door_passcodes(controller, door, passcodes(0), passcodes(1), passcodes(2), passcodes(3), TIMEOUT, OPTIONS)
+        Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
+        Dim door As Byte = ArgParse.Parse(args, "--door", DOOR)
+        Dim passcodes As UInteger() = ArgParse.Parse(args, "--passcodes", new UInteger() {0, 0, 0, 0})
+        Dim result = UHPPOTE.SetDoorPasscodes(controller, door, passcodes(0), passcodes(1), passcodes(2), passcodes(3), TIMEOUT, OPTIONS)
 
-            If (result.IsOk)
-                Dim response = result.ResultValue
-                WriteLine("set-door-passcodes")
-                WriteLine("  controller {0}", response.controller)
-                WriteLine("          ok {0}", response.ok)
-                WriteLine()
-            Else If (result.IsError)
-                Throw New Exception(result.ErrorValue)
-            End If
+        If (result.IsOk)
+            Dim ok = result.ResultValue
 
-        Catch Err As Exception
-            WriteLine("Exception  {0}", err.Message)
-        End Try
+            WriteLine("set-door-passcodes")
+            WriteLine("  controller {0}", controller)
+            WriteLine("        door {0}", door)
+            WriteLine("          ok {0}", ok)
+            WriteLine()
+        Else If (result.IsError)
+            Throw New Exception(result.ErrorValue)
+        End If
     End Sub
 
     Sub OpenDoor(args As String())

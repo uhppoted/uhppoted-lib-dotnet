@@ -330,34 +330,25 @@ class Commands
 
     public static void SetDoorPasscodes(string[] args)
     {
-        try
+        var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
+        var door = ArgParse.Parse(args, "--door", DOOR);
+        var mode = ArgParse.Parse(args, "--mode", MODE);
+        var passcodes = ArgParse.Parse(args, "--passcodes", new uint[] { 0u, 0u, 0u, 0u });
+        var result = Uhppoted.SetDoorPasscodes(controller, door, passcodes[0], passcodes[1], passcodes[2], passcodes[3], TIMEOUT, OPTIONS);
+
+        if (result.IsOk)
         {
-            var controller = new uhppoted.ControllerBuilder(CONTROLLER)
-                                         .With(IPEndPoint.Parse("192.168.1.100:60000"))
-                                         .With("udp")
-                                         .build();
-            byte door = 4;
-            uint[] passcodes = { 12345, 54321, 0, 999999 };
+            var ok = result.ResultValue;
 
-            var result = Uhppoted.set_door_passcodes(controller, door, passcodes[0], passcodes[1], passcodes[2], passcodes[3], TIMEOUT, OPTIONS);
-
-            if (result.IsOk)
-            {
-                var response = result.ResultValue;
-
-                WriteLine("set-door-passcodes");
-                WriteLine("  controller {0}", response.controller);
-                WriteLine("          ok {0}", response.ok);
-                WriteLine();
-            }
-            else if (result.IsError)
-            {
-                throw new Exception(result.ErrorValue);
-            }
+            WriteLine("set-door-passcodes");
+            WriteLine("  controller {0}", controller);
+            WriteLine("        door {0}", door);
+            WriteLine("          ok {0}", ok);
+            WriteLine();
         }
-        catch (Exception err)
+        else if (result.IsError)
         {
-            WriteLine("** ERROR  {0}", err.Message);
+            throw new Exception(result.ErrorValue);
         }
     }
 

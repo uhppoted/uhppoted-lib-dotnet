@@ -282,9 +282,9 @@ module Uhppoted =
     /// <returns>
     /// Returns Ok with true value if the passcodes were updated or Error.
     /// </returns>
-    let set_door_passcodes
+    let SetDoorPasscodes
         (
-            controller: Controller,
+            controller: uint32,
             door: uint8,
             passcode1: uint32,
             passcode2: uint32,
@@ -294,9 +294,11 @@ module Uhppoted =
             options: Options
         ) =
         let request =
-            Encode.set_door_passcodes_request controller.controller door passcode1 passcode2 passcode3 passcode4
+            Encode.set_door_passcodes_request controller door passcode1 passcode2 passcode3 passcode4
 
-        exex controller request Decode.set_door_passcodes_response timeout options
+        match exec controller request Decode.set_door_passcodes_response timeout options with
+        | Ok response -> Ok response.ok
+        | Error err -> Error err
 
     /// <summary>
     /// Unlocks a door controlled by a controller.

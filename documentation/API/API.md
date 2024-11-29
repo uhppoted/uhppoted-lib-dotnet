@@ -9,7 +9,7 @@
 - [`SetTime`](set-time.md)
 - [`GetDoor`](get-door.md)
 - [`SetDoor`](set-door.md)
-- [`set_door_passcodes`](#set_door_passcodes)
+- [`SetDoorPasscodes`](set-door-passcodes.md)
 - [`open_door`](#open_door)
 - [`get_status`](#get_status)
 - [`GetCards`](get-cards.md)
@@ -27,55 +27,6 @@
 - [`ClearTimeProfiles`](clear-time-profiles.md)
 - [`AddTask`](add-task.md)
 
-
-## `set_door_passcodes`
-
-Sets up to 4 passcodes for a controller door.
-
-### Parameters
-- **`controller`**: Controller ID and (optionally) address and transport protocol.
-- **`door`**: Door number `[1..4]`.
-- **`passcode1`**: Passcode `[0..999999]` (0 is 'none').
-- **`passcode2`**: Passcode `[0..999999]` (0 is 'none').
-- **`passcode3`**: Passcode `[0..999999]` (0 is 'none').
-- **`passcode4`**: Passcode `[0..999999]` (0 is 'none').
-- **`timeout`**: Operation timeout (ms).
-- **`options`**: Optional bind, broadcast, and listen addresses.
-
-### Returns
-Returns `Ok` if the request was processed, or an error otherwise. The `Ok` response should be checked for `true`.
-
-### Examples
-```fsharp
-let controller = { controller = 405419896u; address = None; protocol = None }
-let options = { broadcast = IPAddress.Broadcast; debug = true }
-match set_door_passcodes controller 4uy 12345u 54321u 0u 999999u 5000 options with
-| Ok response -> printfn "set door passcodes %A" response.ok
-| Error err -> printfn "error setting door passcodes: %A" err
-```
-```csharp
-var controller = new ControllerBuilder(405419896).build();
-var options = new OptionsBuilder().build();
-var result = set_door_passcodes(controller, 4, 12345, 54321, 0, 999999, 5000, options);
-if (result.IsOk)
-{
-    Console.WriteLine($"set-door-passcodes: ok {result.ResultValue.ok}");
-}
-else
-{
-    Console.WriteLine($"set-door-passcodes: error {result.ErrorValue}");
-}
-```
-```vb
-Dim controller As New ControllerBuilder(405419896u).build()
-Dim options As New OptionsBuilder().build()
-Dim result = set_door_passcodes(controller, 4, 12345UI, 54321UI, 0UI, 999999UI, 5000, options)
-If result.IsOk Then
-    Console.WriteLine($"set-door-passcodes: ok {result.ResultValue.ok}")
-Else
-    Console.WriteLine($"set-door-passcodes: error {result.ErrorValue}")
-End If
-```
 
 ## **`open_door`**
 

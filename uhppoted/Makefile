@@ -34,24 +34,9 @@ release: build test integration-tests
 	cd uhppoted && make release
 
 debug: build
-	dotnet run --project ../examples/fs/cli --framework net7.0 add-task --controller $(CONTROLLER) \
-                                                                        --task $(TASK) \
-                                                                        --door $(DOOR) \
-                                                                        --start-date 2024-01-01 --end-date 2024-12-31 --start-time 09:45 \
-                                                                        --weekdays Mon,Tue,Fri \
-                                                                        --more-cards 7
-	dotnet run --project ../examples/cs/cli --framework net7.0 add-task --controller $(CONTROLLER) \
-                                                                        --task $(TASK) \
-                                                                        --door $(DOOR) \
-                                                                        --start-date 2024-01-01 --end-date 2024-12-31 --start-time 09:45 \
-                                                                        --weekdays Mon,Tue,Fri \
-                                                                        --more-cards 7
-	dotnet run --project ../examples/vb/cli --framework net7.0 add-task --controller $(CONTROLLER) \
-                                                                        --task $(TASK) \
-                                                                        --door $(DOOR) \
-                                                                        --start-date 2024-01-01 --end-date 2024-12-31 --start-time 09:45 \
-                                                                        --weekdays Mon,Tue,Fri \
-                                                                        --more-cards 7
+	dotnet run --project ../examples/fs/cli --framework net7.0 set-door-passcodes --controller $(CONTROLLER) --door $(DOOR) --passcodes 12345,54321,999999
+	dotnet run --project ../examples/cs/cli --framework net7.0 set-door-passcodes --controller $(CONTROLLER) --door $(DOOR) --passcodes 12345,54321,999999
+	dotnet run --project ../examples/vb/cli --framework net7.0 set-door-passcodes --controller $(CONTROLLER) --door $(DOOR) --passcodes 12345,54321,999999
 
 find-controllers: build
 	$(CLI) find-controllers
@@ -81,7 +66,7 @@ set-door: build
 	$(CLI) set-door --controller $(CONTROLLER) --door $(DOOR) --mode controlled --delay 7  
 
 set-door-passcodes: build
-	$(CLI) set-door-passcodes --controller $(CONTROLLER)
+	$(CLI) set-door-passcodes --controller $(CONTROLLER) --door $(DOOR) --passcodes 12345,54321,999999
 
 open-door: build
 	$(CLI) open-door --controller $(CONTROLLER)

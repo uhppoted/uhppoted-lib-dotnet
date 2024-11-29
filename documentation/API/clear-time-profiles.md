@@ -46,7 +46,6 @@ else
 Dim controller = 405419896
 Dim timeout = 5000
 Dim options As New OptionsBuilder().build()
-
 Dim result = ClearTimeProfiles(controller, timeout, options)
 
 If result.IsOk Then

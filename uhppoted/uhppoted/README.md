@@ -39,7 +39,7 @@ Gets a controller door operational mode and unlocked delay.
 ### [`SetDoor`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/set-door.md)
 Sets a controller door operational mode and unlocked delay.
 
-### `set-door-passcodes`
+### [`SetDoorPasscodes`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/set-door-passcodes.md)
 Sets up to 4 passcodes for a controller door.
 
 ### `open-door`

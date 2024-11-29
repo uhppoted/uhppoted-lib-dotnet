@@ -151,7 +151,7 @@ type TestClass() =
         options
         |> List.iter (fun opts ->
             match Uhppoted.GetListener(CONTROLLER, TIMEOUT, OPTIONS) with
-            | Ok _ -> Assert.Pass()
+            | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
     [<Test>]
@@ -163,7 +163,7 @@ type TestClass() =
         options
         |> List.iter (fun opts ->
             match Uhppoted.SetListener(CONTROLLER, listener, interval, TIMEOUT, OPTIONS) with
-            | Ok _ -> Assert.Pass()
+            | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
     [<Test>]
@@ -174,7 +174,7 @@ type TestClass() =
         options
         |> List.iter (fun opts ->
             match Uhppoted.GetTime(CONTROLLER, TIMEOUT, OPTIONS) with
-            | Ok _ -> Assert.Pass()
+            | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
     [<Test>]
@@ -188,7 +188,7 @@ type TestClass() =
         options
         |> List.iter (fun opts ->
             match Uhppoted.SetTime(CONTROLLER, datetime, TIMEOUT, OPTIONS) with
-            | Ok _ -> Assert.Pass()
+            | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
     [<Test>]
@@ -198,7 +198,7 @@ type TestClass() =
         options
         |> List.iter (fun opts ->
             match Uhppoted.GetDoor(CONTROLLER, DOOR, TIMEOUT, OPTIONS) with
-            | Ok _ -> Assert.Pass()
+            | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
     [<Test>]
@@ -212,16 +212,12 @@ type TestClass() =
 
     [<Test>]
     member this.TestSetDoor() =
-        let expected: SetDoorResponse =
-            { controller = 405419896u
-              door = 4uy
-              mode = 2uy
-              delay = 17uy }
+        let expected: Door = { mode = 2uy; delay = 17uy }
 
         options
         |> List.iter (fun opts ->
             match Uhppoted.SetDoor(CONTROLLER, DOOR, MODE, DELAY, TIMEOUT, OPTIONS) with
-            | Ok _ -> Assert.Pass()
+            | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
     [<Test>]
@@ -235,11 +231,11 @@ type TestClass() =
 
     [<Test>]
     member this.TestSetDoorPasscodes() =
-        let expected: SetDoorPasscodesResponse = { controller = 405419896u; ok = true }
+        let expected = true
 
-        controllers
-        |> List.iter (fun controller ->
-            match Uhppoted.set_door_passcodes (controller, DOOR, 12345u, 54321u, 0u, 999999u, TIMEOUT, OPTIONS) with
+        options
+        |> List.iter (fun opts ->
+            match Uhppoted.SetDoorPasscodes(CONTROLLER, DOOR, 12345u, 54321u, 0u, 999999u, TIMEOUT, opts) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 

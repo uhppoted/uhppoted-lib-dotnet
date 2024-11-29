@@ -220,16 +220,12 @@ let set_door args =
     | Error err -> Error err
 
 let set_door_passcodes args =
-    let controller =
-        { controller = argparse args "--controller" CONTROLLER
-          address = ENDPOINT
-          protocol = PROTOCOL }
-
-    let door = 4uy
-    let passcodes = [| 1234u; 545321u; 0u; 999999u |]
+    let controller = argparse args "--controller" CONTROLLER
+    let door = argparse args "--door" DOOR
+    let passcodes = argparse args "--passcodes" [| 0u; 0u; 0u; 0u |]
 
     match
-        Uhppoted.set_door_passcodes (
+        Uhppoted.SetDoorPasscodes(
             controller,
             door,
             passcodes[0],
@@ -240,10 +236,11 @@ let set_door_passcodes args =
             OPTIONS
         )
     with
-    | Ok response ->
+    | Ok ok ->
         printfn "set-door-passcodes"
-        printfn "  controller %u" response.controller
-        printfn "          ok %b" response.ok
+        printfn "  controller %u" controller
+        printfn "        door %u" door
+        printfn "          ok %b" ok
         printfn ""
         Ok()
     | Error err -> Error err
