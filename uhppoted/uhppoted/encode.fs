@@ -13,132 +13,198 @@ module internal Encode =
 
     let bcd (v: string) = Convert.FromHexString v
 
-    let pack_u8x (packet: byte array) (offset: int) (v: uint8) =
+    let pack_u32 (packet: byte array) (offset: int) (v: uint32) =
+        let bytes =
+            [| (byte ((v >>> 0) &&& 0x00ffu))
+               (byte ((v >>> 8) &&& 0x00ffu))
+               (byte ((v >>> 16) &&& 0x00ffu))
+               (byte ((v >>> 24) &&& 0x00ffu)) |]
+
+        Array.blit bytes 0 packet offset 4
+
+    let pack_u16 (packet: byte array) (offset: int) (v: uint16) =
+        let bytes = [| (byte ((v >>> 0) &&& 0x00ffus)); (byte ((v >>> 8) &&& 0x00ffus)) |]
+        Array.blit bytes 0 packet offset 2
+
+    let pack_u8 (packet: byte array) (offset: int) (v: uint8) =
         let bytes = [| (byte ((v >>> 0) &&& 0x00ffuy)) |]
+        Array.blit bytes 0 packet offset 1
+
+    let pack_bool (packet: byte array) (offset: int) (v: bool) =
+        let bytes =
+            match v with
+            | true -> [| 0x01uy |]
+            | false -> [| 0x00uy |]
 
         Array.blit bytes 0 packet offset 1
-        packet
 
-    let pack_u8 (v: uint8) = [| (byte ((v >>> 0) &&& 0x00ffuy)) |]
+    let pack_IPv4 (packet: byte array) (offset: int) (v: IPAddress) =
+        let bytes = v.MapToIPv4().GetAddressBytes()
+        Array.blit bytes 0 packet offset 4
 
-    let pack_u16 (v: uint16) =
-        [| (byte ((v >>> 0) &&& 0x00ffus)); (byte ((v >>> 8) &&& 0x00ffus)) |]
+    let pack_datetime (packet: byte array) (offset: int) (v: DateTime) =
+        let bytes = bcd (v.ToString "yyyyMMddHHmmss")
+        Array.blit bytes 0 packet offset 7
 
-    let pack_u32 (v: uint32) =
-        [| (byte ((v >>> 0) &&& 0x00ffu))
-           (byte ((v >>> 8) &&& 0x00ffu))
-           (byte ((v >>> 16) &&& 0x00ffu))
-           (byte ((v >>> 24) &&& 0x00ffu)) |]
+    let pack_date (packet: byte array) (offset: int) (v: Nullable<DateOnly>) =
+        let bytes =
+            match v.HasValue with
+            | true -> bcd (v.Value.ToString "yyyyMMdd")
+            | false -> [| 0uy; 0uy; 0uy; 0uy; 0uy |]
 
-    let pack_bool (v: bool) =
+        Array.blit bytes 0 packet offset 4
+
+    let pack_HHmm (packet: byte array) (offset: int) (v: Nullable<TimeOnly>) =
+        let bytes =
+            match v.HasValue with
+            | true -> bcd (v.Value.ToString "HHmm")
+            | false -> [| 0uy; 0uy |]
+
+        Array.blit bytes 0 packet offset 2
+
+
+    let (|Uint32|_|) (v: obj) =
         match v with
-        | true -> [| 0x01uy |]
-        | false -> [| 0x00uy |]
+        | :? uint32 as u32 -> Some u32
+        | _ -> None
+
+    let (|Uint16|_|) (v: obj) =
+        match v with
+        | :? uint16 as u16 -> Some u16
+        | _ -> None
+
+    let (|Uint8|_|) (v: obj) =
+        match v with
+        | :? uint8 as u8 -> Some u8
+        | _ -> None
+
+    let (|Bool|_|) (v: obj) =
+        match v with
+        | :? bool as b -> Some b
+        | _ -> None
+
+    let (|IPv4|_|) (v: obj) =
+        match v with
+        | :? IPAddress as addr -> Some addr
+        | _ -> None
+
+    let (|DateTime|_|) (v: obj) =
+        match v with
+        | :? DateTime as datetime -> Some datetime
+        | _ -> None
+
+    let (|DateOnly|_|) (v: obj) =
+        match v with
+        | :? Nullable<DateOnly> as date -> Some date
+        | _ -> None
+
+    let (|TimeOnly|_|) (v: obj) =
+        match v with
+        | :? Nullable<TimeOnly> as time -> Some time
+        | _ -> None
 
 
-    let pack_IPv4 (v: IPAddress) = v.MapToIPv4().GetAddressBytes()
-
-    let pack_date (v: Nullable<DateOnly>) =
-        match v.HasValue with
-        | true -> bcd (v.Value.ToString "yyyyMMdd")
-        | false -> [| 0uy; 0uy; 0uy; 0uy; 0uy |]
-
-    let pack_datetime (v: DateTime) = bcd (v.ToString "yyyyMMddHHmmss")
-
-    let pack_HHmm (v: Nullable<TimeOnly>) =
-        match v.HasValue with
-        | true -> bcd (v.Value.ToString "HHmm")
-        | false -> [| 0uy; 0uy |]
+    let pack (packet: byte array) (offset: int) (v: 'T) =
+        match box v with
+        | Uint32 u32 -> pack_u32 packet offset u32
+        | Uint16 u16 -> pack_u16 packet offset u16
+        | Uint8 u8 -> pack_u8 packet offset u8
+        | Bool b -> pack_bool packet offset b
+        | IPv4 addr -> pack_IPv4 packet offset addr
+        | DateTime datetime -> pack_datetime packet offset datetime
+        | DateOnly date -> pack_date packet offset date
+        | TimeOnly time -> pack_HHmm packet offset time
+        | _ -> ()
 
     let get_controller_request (controller: uint32) =
         let packet: byte array = Array.zeroCreate 64
 
-        Array.set packet 0 (byte messages.SOM)
-        Array.set packet 1 (byte messages.GET_CONTROLLER)
+        pack packet 0 (byte messages.SOM)
+        pack packet 1 (byte messages.GET_CONTROLLER)
 
-        Array.blit (pack_u32 controller) 0 packet 4 4
+        pack packet 4 controller
 
         packet
 
     let set_IPv4_request (controller: uint32) address netmask gateway =
         let packet: byte array = Array.zeroCreate 64
 
-        Array.set packet 0 (byte messages.SOM)
-        Array.set packet 1 (byte messages.SET_IPv4)
+        pack packet 0 (byte messages.SOM)
+        pack packet 1 (byte messages.SET_IPv4)
 
-        Array.blit (pack_u32 controller) 0 packet 4 4
-        Array.blit (pack_IPv4 address) 0 packet 8 4
-        Array.blit (pack_IPv4 netmask) 0 packet 12 4
-        Array.blit (pack_IPv4 gateway) 0 packet 16 4
-        Array.blit (pack_u32 MAGIC_WORD) 0 packet 20 4
+        pack packet 4 controller
+        pack packet 8 address
+        pack packet 12 netmask
+        pack packet 16 gateway
+        pack packet 20 MAGIC_WORD
 
         packet
 
     let get_listener_request (controller: uint32) =
         let packet: byte array = Array.zeroCreate 64
 
-        Array.set packet 0 (byte messages.SOM)
-        Array.set packet 1 (byte messages.GET_LISTENER)
+        pack packet 0 (byte messages.SOM)
+        pack packet 1 (byte messages.GET_LISTENER)
 
-        Array.blit (pack_u32 controller) 0 packet 4 4
+        pack packet 4 controller
 
         packet
 
     let set_listener_request (controller: uint32) (address: IPAddress) (port: uint16) (interval: uint8) =
         let packet: byte array = Array.zeroCreate 64
 
-        Array.set packet 0 (byte messages.SOM)
-        Array.set packet 1 (byte messages.SET_LISTENER)
+        pack packet 0 (byte messages.SOM)
+        pack packet 1 (byte messages.SET_LISTENER)
 
-        Array.blit (pack_u32 controller) 0 packet 4 4
-        Array.blit (pack_IPv4 address) 0 packet 8 4
-        Array.blit (pack_u16 port) 0 packet 12 2
-        Array.blit (pack_u8 interval) 0 packet 14 1
+        pack packet 4 controller
+        pack packet 8 address
+        pack packet 12 port
+        pack packet 14 interval
 
         packet
 
     let get_time_request (controller: uint32) =
         let packet: byte array = Array.zeroCreate 64
 
-        Array.set packet 0 (byte messages.SOM)
-        Array.set packet 1 (byte messages.GET_TIME)
+        pack packet 0 (byte messages.SOM)
+        pack packet 1 (byte messages.GET_TIME)
 
-        Array.blit (pack_u32 controller) 0 packet 4 4
+        pack packet 4 controller
 
         packet
 
     let set_time_request (controller: uint32) (datetime: DateTime) =
         let packet: byte array = Array.zeroCreate 64
 
-        Array.set packet 0 (byte messages.SOM)
-        Array.set packet 1 (byte messages.SET_TIME)
+        pack packet 0 (byte messages.SOM)
+        pack packet 1 (byte messages.SET_TIME)
 
-        Array.blit (pack_u32 controller) 0 packet 4 4
-        Array.blit (pack_datetime datetime) 0 packet 8 7
+        pack packet 4 controller
+        pack packet 8 datetime
 
         packet
 
     let get_door_request (controller: uint32) (door: uint8) =
         let packet: byte array = Array.zeroCreate 64
 
-        Array.set packet 0 (byte messages.SOM)
-        Array.set packet 1 (byte messages.GET_DOOR)
+        pack packet 0 (byte messages.SOM)
+        pack packet 1 (byte messages.GET_DOOR)
 
-        Array.blit (pack_u32 controller) 0 packet 4 4
-        Array.blit (pack_u8 door) 0 packet 8 1
+        pack packet 4 controller
+        pack packet 8 door
 
         packet
 
     let set_door_request (controller: uint32) (door: uint8) (mode: DoorMode) (delay: uint8) =
         let packet: byte array = Array.zeroCreate 64
 
-        Array.set packet 0 (byte messages.SOM)
-        Array.set packet 1 (byte messages.SET_DOOR)
+        pack packet 0 (byte messages.SOM)
+        pack packet 1 (byte messages.SET_DOOR)
 
-        Array.blit (pack_u32 controller) 0 packet 4 4
-        Array.blit (pack_u8 door) 0 packet 8 1
-        Array.blit (pack_u8 (uint8 mode)) 0 packet 9 1
-        Array.blit (pack_u8 delay) 0 packet 10 1
+        pack packet 4 controller
+        pack packet 8 door
+        pack packet 9 (uint8 mode)
+        pack packet 10 delay
 
         packet
 
@@ -152,76 +218,76 @@ module internal Encode =
         =
         let packet: byte array = Array.zeroCreate 64
 
-        Array.set packet 0 (byte messages.SOM)
-        Array.set packet 1 (byte messages.SET_DOOR_PASSCODES)
+        pack packet 0 (byte messages.SOM)
+        pack packet 1 (byte messages.SET_DOOR_PASSCODES)
 
-        Array.blit (pack_u32 controller) 0 packet 4 4
-        Array.blit (pack_u8 door) 0 packet 8 1
+        pack packet 4 controller
+        pack packet 8 door
 
         if passcode1 <= 999999u then
-            Array.blit (pack_u32 passcode1) 0 packet 12 4
+            pack packet 12 passcode1
 
         if passcode2 <= 999999u then
-            Array.blit (pack_u32 passcode2) 0 packet 16 4
+            pack packet 16 passcode2
 
         if passcode3 <= 999999u then
-            Array.blit (pack_u32 passcode3) 0 packet 20 4
+            pack packet 20 passcode3
 
         if passcode4 <= 999999u then
-            Array.blit (pack_u32 passcode4) 0 packet 24 4
+            pack packet 24 passcode4
 
         packet
 
     let open_door_request (controller: uint32) (door: uint8) =
         let packet: byte array = Array.zeroCreate 64
 
-        Array.set packet 0 (byte messages.SOM)
-        Array.set packet 1 (byte messages.OPEN_DOOR)
+        pack packet 0 (byte messages.SOM)
+        pack packet 1 (byte messages.OPEN_DOOR)
 
-        Array.blit (pack_u32 controller) 0 packet 4 4
-        Array.blit (pack_u8 door) 0 packet 8 1
+        pack packet 4 controller
+        pack packet 8 door
 
         packet
 
     let get_status_request (controller: uint32) =
         let packet: byte array = Array.zeroCreate 64
 
-        Array.set packet 0 (byte messages.SOM)
-        Array.set packet 1 (byte messages.GET_STATUS)
+        pack packet 0 (byte messages.SOM)
+        pack packet 1 (byte messages.GET_STATUS)
 
-        Array.blit (pack_u32 controller) 0 packet 4 4
+        pack packet 4 controller
 
         packet
 
     let get_cards_request (controller: uint32) =
         let packet: byte array = Array.zeroCreate 64
 
-        Array.set packet 0 (byte messages.SOM)
-        Array.set packet 1 (byte messages.GET_CARDS)
+        pack packet 0 (byte messages.SOM)
+        pack packet 1 (byte messages.GET_CARDS)
 
-        Array.blit (pack_u32 controller) 0 packet 4 4
+        pack packet 4 controller
 
         packet
 
     let get_card_request (controller: uint32) (card: uint32) =
         let packet: byte array = Array.zeroCreate 64
 
-        Array.set packet 0 (byte messages.SOM)
-        Array.set packet 1 (byte messages.GET_CARD)
+        pack packet 0 (byte messages.SOM)
+        pack packet 1 (byte messages.GET_CARD)
 
-        Array.blit (pack_u32 controller) 0 packet 4 4
-        Array.blit (pack_u32 card) 0 packet 8 4
+        pack packet 4 controller
+        pack packet 8 card
 
         packet
 
     let get_card_at_index_request (controller: uint32) (index: uint32) =
         let packet: byte array = Array.zeroCreate 64
 
-        Array.set packet 0 (byte messages.SOM)
-        Array.set packet 1 (byte messages.GET_CARD_AT_INDEX)
+        pack packet 0 (byte messages.SOM)
+        pack packet 1 (byte messages.GET_CARD_AT_INDEX)
 
-        Array.blit (pack_u32 controller) 0 packet 4 4
-        Array.blit (pack_u32 index) 0 packet 8 4
+        pack packet 4 controller
+        pack packet 8 index
 
         packet
 
@@ -238,158 +304,155 @@ module internal Encode =
         =
         let packet: byte array = Array.zeroCreate 64
 
-        Array.set packet 0 (byte messages.SOM)
-        Array.set packet 1 (byte messages.PUT_CARD)
+        pack packet 0 (byte messages.SOM)
+        pack packet 1 (byte messages.PUT_CARD)
 
-        Array.blit (pack_u32 controller) 0 packet 4 4
-        Array.blit (pack_u32 card) 0 packet 8 4
-        Array.blit (pack_date (Nullable start_date)) 0 packet 12 4
-        Array.blit (pack_date (Nullable end_date)) 0 packet 16 4
-        Array.blit (pack_u8 door1) 0 packet 20 1
-        Array.blit (pack_u8 door2) 0 packet 21 1
-        Array.blit (pack_u8 door3) 0 packet 22 1
-        Array.blit (pack_u8 door4) 0 packet 23 1
-        Array.blit (pack_u32 pin) 0 packet 24 4
+        pack packet 4 controller
+        pack packet 8 card
+        pack packet 12 (Nullable start_date)
+        pack packet 16 (Nullable end_date)
+        pack packet 20 door1
+        pack packet 21 door2
+        pack packet 22 door3
+        pack packet 23 door4
+        pack packet 24 pin
 
         packet
 
     let delete_card_request (controller: uint32) (card: uint32) =
         let packet: byte array = Array.zeroCreate 64
 
-        Array.set packet 0 (byte messages.SOM)
-        Array.set packet 1 (byte messages.DELETE_CARD)
+        pack packet 0 (byte messages.SOM)
+        pack packet 1 (byte messages.DELETE_CARD)
 
-        Array.blit (pack_u32 controller) 0 packet 4 4
-        Array.blit (pack_u32 card) 0 packet 8 4
+        pack packet 4 controller
+        pack packet 8 card
 
         packet
 
     let delete_all_cards_request (controller: uint32) =
         let packet: byte array = Array.zeroCreate 64
 
-        Array.set packet 0 (byte messages.SOM)
-        Array.set packet 1 (byte messages.DELETE_ALL_CARDS)
+        pack packet 0 (byte messages.SOM)
+        pack packet 1 (byte messages.DELETE_ALL_CARDS)
 
-        Array.blit (pack_u32 controller) 0 packet 4 4
-        Array.blit (pack_u32 MAGIC_WORD) 0 packet 8 4
+        pack packet 4 controller
+        pack packet 8 MAGIC_WORD
 
         packet
 
     let get_event_request (controller: uint32) (index: uint32) =
         let packet: byte array = Array.zeroCreate 64
 
-        Array.set packet 0 (byte messages.SOM)
-        Array.set packet 1 (byte messages.GET_EVENT)
+        pack packet 0 (byte messages.SOM)
+        pack packet 1 (byte messages.GET_EVENT)
 
-        Array.blit (pack_u32 controller) 0 packet 4 4
-        Array.blit (pack_u32 index) 0 packet 8 4
+        pack packet 4 controller
+        pack packet 8 index
 
         packet
 
     let get_event_index_request (controller: uint32) =
         let packet: byte array = Array.zeroCreate 64
 
-        Array.set packet 0 (byte messages.SOM)
-        Array.set packet 1 (byte messages.GET_EVENT_INDEX)
+        pack packet 0 (byte messages.SOM)
+        pack packet 1 (byte messages.GET_EVENT_INDEX)
 
-        Array.blit (pack_u32 controller) 0 packet 4 4
+        pack packet 4 controller
 
         packet
 
     let set_event_index_request (controller: uint32) (index: uint32) =
         let packet: byte array = Array.zeroCreate 64
 
-        Array.set packet 0 (byte messages.SOM)
-        Array.set packet 1 (byte messages.SET_EVENT_INDEX)
+        pack packet 0 (byte messages.SOM)
+        pack packet 1 (byte messages.SET_EVENT_INDEX)
 
-        Array.blit (pack_u32 controller) 0 packet 4 4
-        Array.blit (pack_u32 index) 0 packet 8 4
-        Array.blit (pack_u32 MAGIC_WORD) 0 packet 12 4
+        pack packet 4 controller
+        pack packet 8 index
+        pack packet 12 MAGIC_WORD
 
         packet
 
     let record_special_events_request (controller: uint32) (enabled: bool) =
         let packet: byte array = Array.zeroCreate 64
 
-        Array.set packet 0 (byte messages.SOM)
-        Array.set packet 1 (byte messages.RECORD_SPECIAL_EVENTS)
+        pack packet 0 (byte messages.SOM)
+        pack packet 1 (byte messages.RECORD_SPECIAL_EVENTS)
 
-        Array.blit (pack_u32 controller) 0 packet 4 4
-        Array.blit (pack_bool enabled) 0 packet 8 1
+        pack packet 4 controller
+        pack packet 8 enabled
 
         packet
 
     let get_time_profile_request (controller: uint32) (profile: uint8) =
         let packet: byte array = Array.zeroCreate 64
 
-        Array.set packet 0 (byte messages.SOM)
-        Array.set packet 1 (byte messages.GET_TIME_PROFILE)
+        pack packet 0 (byte messages.SOM)
+        pack packet 1 (byte messages.GET_TIME_PROFILE)
 
-        Array.blit (pack_u32 controller) 0 packet 4 4
-        Array.blit (pack_u8 profile) 0 packet 8 1
+        pack packet 4 controller
+        pack packet 8 profile
 
         packet
 
     let set_time_profile_request (controller: uint32) (profile: TimeProfile) =
         let packet: byte array = Array.zeroCreate 64
 
-        Array.set packet 0 (byte messages.SOM)
-        Array.set packet 1 (byte messages.SET_TIME_PROFILE)
+        pack packet 0 (byte messages.SOM)
+        pack packet 1 (byte messages.SET_TIME_PROFILE)
 
-        Array.blit (pack_u32 controller) 0 packet 4 4
-        Array.blit (pack_u8 profile.profile) 0 packet 8 1
-        Array.blit (pack_date profile.start_date) 0 packet 9 4
-        Array.blit (pack_date profile.end_date) 0 packet 13 4
-        Array.blit (pack_bool profile.monday) 0 packet 17 1
-        Array.blit (pack_bool profile.tuesday) 0 packet 18 1
-        Array.blit (pack_bool profile.wednesday) 0 packet 19 1
-        Array.blit (pack_bool profile.thursday) 0 packet 20 1
-        Array.blit (pack_bool profile.friday) 0 packet 21 1
-        Array.blit (pack_bool profile.saturday) 0 packet 22 1
-        Array.blit (pack_bool profile.sunday) 0 packet 23 1
-        Array.blit (pack_HHmm profile.segment1_start) 0 packet 24 2
-        Array.blit (pack_HHmm profile.segment1_end) 0 packet 26 2
-        Array.blit (pack_HHmm profile.segment2_start) 0 packet 28 2
-        Array.blit (pack_HHmm profile.segment2_end) 0 packet 30 2
-        Array.blit (pack_HHmm profile.segment3_start) 0 packet 32 2
-        Array.blit (pack_HHmm profile.segment3_end) 0 packet 34 2
-        Array.blit (pack_u8 profile.linked_profile) 0 packet 36 1
+        pack packet 4 controller
+        pack packet 8 profile.profile
+        pack packet 9 profile.start_date
+        pack packet 13 profile.end_date
+        pack packet 17 profile.monday
+        pack packet 18 profile.tuesday
+        pack packet 19 profile.wednesday
+        pack packet 20 profile.thursday
+        pack packet 21 profile.friday
+        pack packet 22 profile.saturday
+        pack packet 23 profile.sunday
+        pack packet 24 profile.segment1_start
+        pack packet 26 profile.segment1_end
+        pack packet 28 profile.segment2_start
+        pack packet 30 profile.segment2_end
+        pack packet 32 profile.segment3_start
+        pack packet 34 profile.segment3_end
+        pack packet 36 profile.linked_profile
 
         packet
 
     let clear_time_profiles_request (controller: uint32) =
         let packet: byte array = Array.zeroCreate 64
 
-        Array.set packet 0 (byte messages.SOM)
-        Array.set packet 1 (byte messages.CLEAR_TIME_PROFILES)
+        pack packet 0 (byte messages.SOM)
+        pack packet 1 (byte messages.CLEAR_TIME_PROFILES)
 
-        Array.blit (pack_u32 controller) 0 packet 4 4
-        Array.blit (pack_u32 MAGIC_WORD) 0 packet 8 4
+        pack packet 4 controller
+        pack packet 8 MAGIC_WORD
 
         packet
 
     let add_task_request (controller: uint32) (task: Task) =
         let mutable packet: byte array = Array.zeroCreate 64
 
-        Array.set packet 0 (byte messages.SOM)
-        Array.set packet 1 (byte messages.ADD_TASK)
+        pack packet 0 (byte messages.SOM)
+        pack packet 1 (byte messages.ADD_TASK)
 
-        Array.blit (pack_u32 controller) 0 packet 4 4
-        Array.blit (pack_date task.start_date) 0 packet 8 4
-        Array.blit (pack_date task.end_date) 0 packet 12 4
-        Array.blit (pack_bool task.monday) 0 packet 16 1
-        Array.blit (pack_bool task.tuesday) 0 packet 17 1
-        Array.blit (pack_bool task.wednesday) 0 packet 18 1
-        Array.blit (pack_bool task.thursday) 0 packet 19 1
-        Array.blit (pack_bool task.friday) 0 packet 20 1
-        Array.blit (pack_bool task.saturday) 0 packet 21 1
-        Array.blit (pack_bool task.sunday) 0 packet 22 1
-        Array.blit (pack_HHmm task.start_time) 0 packet 23 2
-        Array.blit (pack_u8 task.door) 0 packet 25 1
-        // Array.blit (pack_u8 task.task) 0 packet 26 1
-        // Array.blit (pack_u8 task.more_cards) 0 packet 27 1
-
-        packet <- pack_u8x packet 26 task.task
-        packet <- pack_u8x packet 27 task.more_cards
+        pack packet 4 controller
+        pack packet 8 task.start_date
+        pack packet 12 task.end_date
+        pack packet 16 task.monday
+        pack packet 17 task.tuesday
+        pack packet 18 task.wednesday
+        pack packet 19 task.thursday
+        pack packet 20 task.friday
+        pack packet 21 task.saturday
+        pack packet 22 task.sunday
+        pack packet 23 task.start_time
+        pack packet 25 task.door
+        pack packet 26 task.task
+        pack packet 27 task.more_cards
 
         packet
