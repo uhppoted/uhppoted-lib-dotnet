@@ -13,6 +13,12 @@ module internal Encode =
 
     let bcd (v: string) = Convert.FromHexString v
 
+    let pack_u8x (packet: byte array) (offset: int) (v: uint8) =
+        let bytes = [| (byte ((v >>> 0) &&& 0x00ffuy)) |]
+
+        Array.blit bytes 0 packet offset 1
+        packet
+
     let pack_u8 (v: uint8) = [| (byte ((v >>> 0) &&& 0x00ffuy)) |]
 
     let pack_u16 (v: uint16) =
@@ -363,7 +369,7 @@ module internal Encode =
         packet
 
     let add_task_request (controller: uint32) (task: Task) =
-        let packet: byte array = Array.zeroCreate 64
+        let mutable packet: byte array = Array.zeroCreate 64
 
         Array.set packet 0 (byte messages.SOM)
         Array.set packet 1 (byte messages.ADD_TASK)
@@ -380,7 +386,10 @@ module internal Encode =
         Array.blit (pack_bool task.sunday) 0 packet 22 1
         Array.blit (pack_HHmm task.start_time) 0 packet 23 2
         Array.blit (pack_u8 task.door) 0 packet 25 1
-        Array.blit (pack_u8 task.task) 0 packet 26 1
-        Array.blit (pack_u8 task.more_cards) 0 packet 27 1
+        // Array.blit (pack_u8 task.task) 0 packet 26 1
+        // Array.blit (pack_u8 task.more_cards) 0 packet 27 1
+
+        packet <- pack_u8x packet 26 task.task
+        packet <- pack_u8x packet 27 task.more_cards
 
         packet
