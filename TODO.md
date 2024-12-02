@@ -62,6 +62,7 @@
             - [ ] rework to take `PassCodes` struct/array
       - [x] open-door
       - [x] get-status
+            - [ ] direction enum
       - [x] get-cards
       - [x] get-card
       - [x] get-card-at-index

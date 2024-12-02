@@ -175,7 +175,7 @@ module internal Decode =
                 { controller = unpack_u32 packet[4..]
                   ok = unpack_bool (packet[8..]) }
 
-    let open_door_response (packet: byte array) : Result<OpenDoorResponse, string> =
+    let openDoorResponse (packet: byte array) : Result<OpenDoorResponse, string> =
         if packet[0] <> messages.SOM then
             Error("invalid controller response")
         else if packet[1] <> messages.OPEN_DOOR then

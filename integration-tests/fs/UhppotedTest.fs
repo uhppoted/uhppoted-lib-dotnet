@@ -221,7 +221,7 @@ type TestClass() =
         options
         |> List.iter (fun opts ->
             match Uhppoted.SetDoor(CONTROLLER, DOOR, MODE, DELAY, TIMEOUT, OPTIONS) with
-            | Ok response -> Assert.That(response, Is.EqualTo(expected))
+            | Ok result -> Assert.That(result, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
     [<Test>]
@@ -229,7 +229,7 @@ type TestClass() =
         options
         |> List.iter (fun opts ->
             match Uhppoted.SetDoor(CONTROLLER, DOOR_NOT_FOUND, MODE, DELAY, TIMEOUT, opts) with
-            | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
+            | Ok result when result.HasValue -> Assert.Fail("expected 'null'")
             | Ok _ -> Assert.Pass()
             | Error err -> Assert.Fail(err))
 
@@ -240,17 +240,17 @@ type TestClass() =
         options
         |> List.iter (fun opts ->
             match Uhppoted.SetDoorPasscodes(CONTROLLER, DOOR, 12345u, 54321u, 0u, 999999u, TIMEOUT, opts) with
-            | Ok response -> Assert.That(response, Is.EqualTo(expected))
+            | Ok result -> Assert.That(result, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
     [<Test>]
     member this.TestOpenDoor() =
-        let expected: OpenDoorResponse = { controller = 405419896u; ok = true }
+        let expected = true
 
-        controllers
-        |> List.iter (fun controller ->
-            match Uhppoted.open_door (controller, DOOR, TIMEOUT, OPTIONS) with
-            | Ok response -> Assert.That(response, Is.EqualTo(expected))
+        options
+        |> List.iter (fun opts ->
+            match Uhppoted.OpenDoor(CONTROLLER, DOOR, TIMEOUT, opts) with
+            | Ok result -> Assert.That(result, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
     [<Test>]

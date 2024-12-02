@@ -10,7 +10,7 @@
 - [`GetDoor`](get-door.md)
 - [`SetDoor`](set-door.md)
 - [`SetDoorPasscodes`](set-door-passcodes.md)
-- [`open_door`](#open_door)
+- [`OpenDoor`](open_door.md)
 - [`get_status`](#get_status)
 - [`GetCards`](get-cards.md)
 - [`GetCard`](get-card.md)
@@ -28,53 +28,6 @@
 - [`AddTask`](add-task.md)
 - [`ClearTaskList`](clear-tasklist.md)
 
-
-## **`open_door`**
-
-Unlocks a door controlled by a controller.
-
-### Parameters
-- **`controller`**: Controller ID and (optionally) address and transport protocol.
-- **`door`**: Door number `[1..4]`.
-- **`timeout`**: Operation timeout (ms).
-- **`options`**: Optional bind, broadcast, and listen addresses.
-
-### Returns
-Returns Ok if the request was processed, error otherwise. The Ok response should be checked for 'true'.
-
-### Examples
-
-```fsharp
-let controller = { controller = 405419896u; address = None; protocol = None }
-let options = { broadcast = IPAddress.Broadcast; debug = true }
-let result = open_door controller 4uy 5000 options
-match result with
-| Ok response -> printfn "open-door: ok %A" response
-| Error e -> printfn "open-door: error %A" e
-```
-```csharp
-var controller = new ControllerBuilder(405419896).build();
-var options = new OptionsBuilder().build();
-var result = open_door(controller, 1, 5000, options);
-if (result.IsOk)
-{
-    Console.WriteLine("open-door: ok {0}", result.Value.ok);
-}
-else
-{
-    Console.WriteLine("open-door: error {0}", result.Error);
-}
-```
-```vb
-Dim controller As New ControllerBuilder(405419896u).build()
-Dim options As New OptionsBuilder().build()
-Dim result = open_door(controller, 1, 5000, options)
-If result.IsOk Then
-    Console.WriteLine("open-door: ok {0}", result.Value.ok)
-Else
-    Console.WriteLine("open-door: error {0}", result.Error)
-End If
-```
 
 ## **`get_status`**
 

@@ -59,7 +59,7 @@ Sets a controller door operational mode and unlocked delay.
 ### [`SetDoorPasscodes`](documentation/API/set-door-passcodes.md)
 Sets up to 4 passcodes for a controller door.
 
-### `open-door`
+### [`OpenDoor`](documentation/API/open-door.md)
 Unlocks a door controlled by a controller.
 
 ### `get-status`

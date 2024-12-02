@@ -313,43 +313,12 @@ module Uhppoted =
     /// </returns>
     /// <remarks>
     /// </remarks>
-    /// <example>
-    /// <code language="fsharp">
-    /// let controller = { controller = 405419896u; address = None; protocol = None }
-    /// let options = { broadcast = IPAddress.Broadcast; debug = true }
-    /// let result = open_door controller 4uy 5000 options
-    /// match result with
-    /// | Ok response -> printfn "Door opened successfully: %A" response
-    /// | Error e -> printfn "Error: %s" e
-    /// </code>
-    /// <code language="csharp">
-    /// var controller = new ControllerBuilder(405419896).build();
-    /// var options = new OptionsBuilder().build();
-    /// var result = open_door(controller, 1, 5000, options);
-    /// if (result.IsOk)
-    /// {
-    ///     Console.WriteLine("open-door: {0}",result.Value.ok);
-    /// }
-    /// else
-    /// {
-    ///     Console.WriteLine("open-door: error {0}",result.Error);
-    /// }
-    /// </code>
-    /// <code language="vbnet">
-    /// Dim controller As New ControllerBuilder(405419896u).build()
-    /// Dim options As New OptionsBuilder().build()
-    /// Dim result = open_door(controller, 1, 3000, options)
-    /// If result.IsOk Then
-    ///     Console.WriteLine("open-door: {0}",result.Value.ok)
-    /// Else
-    ///     Console.WriteLine("open-door: error {0}",result.Error);
-    /// End If
-    /// </code>
-    /// </example>
-    let open_door (controller: Controller, door: uint8, timeout: int, options: Options) =
-        let request = Encode.open_door_request controller.controller door
+    let OpenDoor (controller: uint32, door: uint8, timeout: int, options: Options) =
+        let request = Encode.openDoorRequest controller door
 
-        exex controller request Decode.open_door_response timeout options
+        match exec controller request Decode.openDoorResponse timeout options with
+        | Ok response -> Ok response.ok
+        | Error err -> Error err
 
     /// <summary>
     /// Retrieves the current status of a controller.

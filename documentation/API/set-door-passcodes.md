@@ -23,7 +23,7 @@ let door = 4uy
 let timeout = 5000
 let options = { broadcast = IPAddress.Broadcast; destination = None; protoocol = None; debug = true }
 
-match SetDoorPasscodes controller 4uy 12345u 54321u 0u 999999u timeout options with
+match SetDoorPasscodes controller door 12345u 54321u 0u 999999u timeout options with
 | Ok ok -> printfn "set-door-passcodes: ok %A" ok
 | Error err -> printfn "set-door-passcodes: error %A" err
 ```

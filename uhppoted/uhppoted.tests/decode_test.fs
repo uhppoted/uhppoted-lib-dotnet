@@ -154,11 +154,11 @@ type TestDecoder() =
 
     [<Test>]
     member this.TestDecodeOpenDoorResponse() =
-        let packet = TestResponses.open_door
+        let packet = TestResponses.openDoor
 
         let expected: OpenDoorResponse = { controller = 405419896u; ok = true }
 
-        match Decode.open_door_response packet with
+        match Decode.openDoorResponse packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)
 

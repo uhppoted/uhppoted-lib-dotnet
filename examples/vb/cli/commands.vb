@@ -294,26 +294,20 @@ Module Commands
     End Sub
 
     Sub OpenDoor(args As String())
-        Try
-            Dim controller = New ControllerBuilder(405419896).
-                                 With(IPEndPoint.Parse("192.168.1.100:60000")).
-                                 With("udp").build()
-            Dim door = 4
-            Dim result = UHPPOTE.open_door(controller, door, TIMEOUT, OPTIONS)
+        Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
+        Dim door As Byte = ArgParse.Parse(args, "--door", DOOR)
+        Dim result = UHPPOTE.OpenDoor(controller, door, TIMEOUT, OPTIONS)
 
-            If (result.IsOk)
-                Dim response = result.ResultValue
-                WriteLine("open-door")
-                WriteLine("  controller {0}", response.controller)
-                WriteLine("          ok {0}", response.ok)
-                WriteLine()
-            Else If (result.IsError)
-                Throw New Exception(result.ErrorValue)
-            End If
+        If (result.IsOk)
+            Dim ok = result.ResultValue
 
-        Catch Err As Exception
-            WriteLine("Exception  {0}", err.Message)
-        End Try
+            WriteLine("open-door")
+            WriteLine("  controller {0}", controller)
+            WriteLine("          ok {0}", ok)
+            WriteLine()
+        Else If (result.IsError)
+            Throw New Exception(result.ErrorValue)
+        End If
     End Sub
 
     Sub GetStatus(args As String())

@@ -355,33 +355,22 @@ class Commands
 
     public static void OpenDoor(string[] args)
     {
-        try
+        var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
+        var door = ArgParse.Parse(args, "--door", DOOR);
+        var result = Uhppoted.OpenDoor(controller, door, TIMEOUT, OPTIONS);
+
+        if (result.IsOk)
         {
-            var controller = new uhppoted.ControllerBuilder(CONTROLLER)
-                                         .With(IPEndPoint.Parse("192.168.1.100:60000"))
-                                         .With("udp")
-                                         .build();
-            byte door = 4;
+            var ok = result.ResultValue;
 
-            var result = Uhppoted.open_door(controller, door, TIMEOUT, OPTIONS);
-
-            if (result.IsOk)
-            {
-                var response = result.ResultValue;
-
-                WriteLine("open-door");
-                WriteLine("  controller {0}", response.controller);
-                WriteLine("          ok {0}", response.ok);
-                WriteLine();
-            }
-            else if (result.IsError)
-            {
-                throw new Exception(result.ErrorValue);
-            }
+            WriteLine("open-door");
+            WriteLine("  controller {0}", controller);
+            WriteLine("          ok {0}", ok);
+            WriteLine();
         }
-        catch (Exception err)
+        else if (result.IsError)
         {
-            WriteLine("** ERROR  {0}", err.Message);
+            throw new Exception(result.ErrorValue);
         }
     }
 

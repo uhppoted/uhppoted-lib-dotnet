@@ -246,18 +246,14 @@ let set_door_passcodes args =
     | Error err -> Error err
 
 let open_door args =
-    let controller =
-        { controller = argparse args "--controller" CONTROLLER
-          address = ENDPOINT
-          protocol = PROTOCOL }
+    let controller = argparse args "--controller" CONTROLLER
+    let door = argparse args "--door" DOOR
 
-    let door = 4uy
-
-    match Uhppoted.open_door (controller, door, TIMEOUT, OPTIONS) with
-    | Ok response ->
+    match Uhppoted.OpenDoor(controller, door, TIMEOUT, OPTIONS) with
+    | Ok ok ->
         printfn "open-door"
-        printfn "  controller %u" response.controller
-        printfn "          ok %b" response.ok
+        printfn "  controller %u" controller
+        printfn "          ok %b" ok
         printfn ""
         Ok()
     | Error err -> Error err

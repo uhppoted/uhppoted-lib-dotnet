@@ -128,12 +128,12 @@ type TestEncoder() =
 
     [<Test>]
     member this.TestEncodeOpenDoorRequest() =
-        let expected = TestRequests.open_door
+        let expected = TestRequests.openDoor
 
         let controller = 405419896u
         let door = 3uy
 
-        let packet = Encode.open_door_request controller door
+        let packet = Encode.openDoorRequest controller door
 
         Assert.That(packet, Is.EqualTo(expected))
 

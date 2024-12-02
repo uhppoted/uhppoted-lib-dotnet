@@ -229,7 +229,7 @@ module internal Encode =
 
         packet
 
-    let open_door_request (controller: uint32) (door: uint8) =
+    let openDoorRequest (controller: uint32) (door: uint8) =
         let packet: byte array = Array.zeroCreate 64
 
         pack packet 0 (byte messages.SOM)
