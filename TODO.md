@@ -37,7 +37,7 @@
       - [x] --mode
       - [x] --delay
       - [ ] --passcodes
-            - [ ] F#
+            - [x] F#
             - [ ] C#
             - [ ] VB.NET
       - [ ] --start-date
@@ -96,4 +96,3 @@
       - [ ] restore-default-parameters
       - [ ] listen
 
-## Notes

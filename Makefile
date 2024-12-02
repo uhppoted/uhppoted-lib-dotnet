@@ -1,4 +1,4 @@
-CLI = dotnet run --project ./examples/fs/cli --framework net7.0 --controller $(CONTROLLER)
+CLI = dotnet run --project ./examples/fs/cli --framework net7.0
 
 CONTROLLER ?= 405419896
 DOOR ?= 3
