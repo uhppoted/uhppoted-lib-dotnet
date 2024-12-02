@@ -16,7 +16,7 @@ The `Ok` value is:
 - `null` if there was no door matching the request door ID.
 
 The `Door` record has the following fields:
-  - `mode` (`uint8`): Door control mode (1:normally open, 2:normally closed, 3:controlled).
+  - `mode` (`DoorMode`): Door control mode (NormallyOpen, NormallyClosed, Controlled).
   - `delay` (`uint8`): Duration (seconds) for which the door remains unlocked after access is granted.
   - `event_type` (`uint8`): Event type.
 

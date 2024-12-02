@@ -34,9 +34,9 @@ release: build test integration-tests
 	cd uhppoted && make release
 
 debug: build
-	dotnet run --project ../examples/fs/cli --framework net7.0 clear-tasklist --controller $(CONTROLLER)
-	dotnet run --project ../examples/cs/cli --framework net7.0 clear-tasklist --controller $(CONTROLLER)
-	dotnet run --project ../examples/vb/cli --framework net7.0 clear-tasklist --controller $(CONTROLLER)
+	dotnet run --project ../examples/fs/cli --framework net7.0 get-door --controller $(CONTROLLER) --door $(DOOR)
+	dotnet run --project ../examples/cs/cli --framework net7.0 get-door --controller $(CONTROLLER) --door $(DOOR)
+	dotnet run --project ../examples/vb/cli --framework net7.0 get-door --controller $(CONTROLLER) --door $(DOOR)
 
 find-controllers: build
 	$(CLI) find-controllers

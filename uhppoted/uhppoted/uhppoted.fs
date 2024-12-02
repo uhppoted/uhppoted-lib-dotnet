@@ -241,7 +241,7 @@ module Uhppoted =
         | Ok response ->
             Ok(
                 Nullable
-                    { mode = response.mode
+                    { mode = Enums.toDoorMode response.mode
                       delay = response.delay }
             )
         | Error err -> Error err
@@ -263,7 +263,7 @@ module Uhppoted =
         | Ok response ->
             Ok(
                 Nullable
-                    { mode = response.mode
+                    { mode = Enums.toDoorMode response.mode
                       delay = response.delay }
             )
         | Error err -> Error err

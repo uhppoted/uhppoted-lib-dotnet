@@ -191,7 +191,7 @@ let get_door args =
         printfn "get-door"
         printfn "  controller %u" controller
         printfn "        door %d" door
-        printfn "        mode %d" record.mode
+        printfn "        mode %A" record.mode
         printfn "       delay %ds" record.delay
         printfn ""
         printfn ""
@@ -212,7 +212,7 @@ let set_door args =
         printfn "set-door"
         printfn "  controller %u" controller
         printfn "        door %d" door
-        printfn "        mode %d" record.mode
+        printfn "        mode %A" record.mode
         printfn "       delay %ds" record.delay
         printfn ""
         Ok()

@@ -1,12 +1,12 @@
 # TODO
 
-- [ ] Add .NET 9 as a target framework
+- [ ] camelCase internal functions
 - [ ] Prefer namespaces at the top level
       - https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/conventions
 - [ ] Represent error cases and illegal state in types intrinsic to your domain
       - https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/conventions#represent-error-cases-and-illegal-state-in-types-intrinsic-to-your-domain
-- [ ] camelCase internal functions
 
+- [ ] Add .NET 9 as a target framework
 - [ ] function signature file
 - (?) Cross-platform builds
       - https://stackoverflow.com/questions/69393627/create-nuget-package-for-different-platforms-architectures-and-net-versions
@@ -57,7 +57,6 @@
       - [x] get-time
       - [x] set-time
       - [x] get-door
-            - [ ] DoorMode
       - [x] set-door
       - [x] set-door-passcodes
             - [ ] rework to take `PassCodes` struct/array
@@ -71,6 +70,7 @@
       - [x] delete-card
       - [x] delete-all-cards
       - [x] get-event
+            - [ ] direction enum
       - [x] get-event-index
       - [x] set-event-index
       - [x] record-special-events

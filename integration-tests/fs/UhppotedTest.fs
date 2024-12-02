@@ -193,7 +193,9 @@ type TestClass() =
 
     [<Test>]
     member this.TestGetDoor() =
-        let expected: Door = { mode = 3uy; delay = 7uy }
+        let expected: Door =
+            { mode = DoorMode.Controlled
+              delay = 7uy }
 
         options
         |> List.iter (fun opts ->
@@ -212,7 +214,9 @@ type TestClass() =
 
     [<Test>]
     member this.TestSetDoor() =
-        let expected: Door = { mode = 2uy; delay = 17uy }
+        let expected: Door =
+            { mode = DoorMode.NormallyClosed
+              delay = 17uy }
 
         options
         |> List.iter (fun opts ->

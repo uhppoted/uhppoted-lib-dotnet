@@ -16,7 +16,7 @@ type ControllerRecord =
 
 
 [<Struct>]
-type Door = { mode: uint8; delay: uint8 }
+type Door = { mode: DoorMode; delay: uint8 }
 
 [<Struct>]
 type Card =
