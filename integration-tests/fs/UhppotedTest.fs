@@ -562,3 +562,13 @@ type TestClass() =
             match Uhppoted.AddTask(CONTROLLER, task, TIMEOUT, opts) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
+
+    [<Test>]
+    member this.TestClearTaskList() =
+        let expected = true
+
+        options
+        |> List.iter (fun opts ->
+            match Uhppoted.ClearTaskList(CONTROLLER, TIMEOUT, opts) with
+            | Ok response -> Assert.That(response, Is.EqualTo(expected))
+            | Error err -> Assert.Fail(err))

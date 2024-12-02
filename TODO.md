@@ -1,6 +1,11 @@
 # TODO
 
 - [ ] Add .NET 9 as a target framework
+- [ ] Prefer namespaces at the top level
+      - https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/conventions
+- [ ] Represent error cases and illegal state in types intrinsic to your domain
+      - https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/conventions#represent-error-cases-and-illegal-state-in-types-intrinsic-to-your-domain
+- [ ] camelCase internal functions
 
 - [ ] function signature file
 - (?) Cross-platform builds
@@ -73,7 +78,8 @@
       - [x] set-time-profile
       - [x] clear-time-profiles
       - [x] add-task
-      - [ ] clear-task-list
+      - [x] clear-task-list
+      - [ ] refresh-task-list
             - [ ] API function
             - [ ] CLI
                   - [ ] F#
@@ -83,8 +89,6 @@
             - [ ] API doc
             - [ ] README
       
-      - [ ] refresh-task-list
-      - [ ] set-task-list
       - [ ] set-pc-control
       - [ ] set-interlock
       - [ ] activate-keypads

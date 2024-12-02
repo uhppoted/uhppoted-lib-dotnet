@@ -34,9 +34,9 @@ release: build test integration-tests
 	cd uhppoted && make release
 
 debug: build
-	dotnet run --project ../examples/fs/cli --framework net7.0 set-door-passcodes --controller $(CONTROLLER) --door $(DOOR) --passcodes 12345,54321,999999
-	dotnet run --project ../examples/cs/cli --framework net7.0 set-door-passcodes --controller $(CONTROLLER) --door $(DOOR) --passcodes 12345,54321,999999
-	dotnet run --project ../examples/vb/cli --framework net7.0 set-door-passcodes --controller $(CONTROLLER) --door $(DOOR) --passcodes 12345,54321,999999
+	dotnet run --project ../examples/fs/cli --framework net7.0 clear-tasklist --controller $(CONTROLLER)
+	dotnet run --project ../examples/cs/cli --framework net7.0 clear-tasklist --controller $(CONTROLLER)
+	dotnet run --project ../examples/vb/cli --framework net7.0 clear-tasklist --controller $(CONTROLLER)
 
 find-controllers: build
 	$(CLI) find-controllers
@@ -102,27 +102,30 @@ get-event-index: build
 set-event-index: build
 	$(CLI) set-event-index --controller $(CONTROLLER) --index $(EVENT_INDEX)
 
-record-special-events:build
+record-special-events: build
 	$(CLI) record-special-events --controller $(CONTROLLER) --enable $(RECORD_SPECIAL_EVENTS)
 
-get-time-profile:build
+get-time-profile: build
 	$(CLI) get-time-profile --controller $(CONTROLLER) --profile $(TIME_PROFILE)
 
-set-time-profile:build
+set-time-profile: build
 	$(CLI) set-time-profile --controller $(CONTROLLER) --profile $(TIME_PROFILE) \
                                                        --start 2024-01-01 --end 2024-12-31 \
                                                        --weekdays Mon,Tues,Fri \
                                                        --segments 08:30-11:30,12:15-16:45,19:30-21:15 \
                                                        --linked 37
 
-clear-time-profiles:build
+clear-time-profiles: build
 	$(CLI) clear-time-profile --controller $(CONTROLLER)
 
-add-task:build
+add-task: build
 	$(CLI) add-task --controller $(CONTROLLER) \
                     --task $(TASK) \
                     --door $(DOOR) \
                     --start-date 2024-01-01 --end-date 2024-12-31 --start-time 09:45 \
                     --weekdays Mon,Tue,Fri \
                     --more-cards 7
+
+clear-tasklist: build
+	$(CLI) clear-time-profile --controller $(CONTROLLER)
 

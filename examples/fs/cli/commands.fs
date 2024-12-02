@@ -656,6 +656,24 @@ let add_task args =
         Ok()
     | Error err -> Error(err)
 
+let clearTaskList args =
+    let controller = argparse args "--controller" CONTROLLER
+    let timeout = TIMEOUT
+
+    let options =
+        { OPTIONS with
+            endpoint = ENDPOINT
+            protocol = PROTOCOL }
+
+    match Uhppoted.ClearTaskList(controller, timeout, options) with
+    | Ok ok ->
+        printfn "clear-tasklist"
+        printfn "  controller %u" controller
+        printfn "          ok %b" ok
+        printfn ""
+        Ok()
+    | Error err -> Error(err)
+
 let commands =
     [ { command = "find-controllers"
         description = "Retrieves a list of controllers accessible on the local LAN"
@@ -759,4 +777,8 @@ let commands =
 
       { command = "add-task"
         description = "Adds or updates a scheduled task stored on a controller"
-        f = add_task } ]
+        f = add_task }
+
+      { command = "clear-tasklist"
+        description = "Clears all scheduled tasks from the controller task list"
+        f = clearTaskList } ]

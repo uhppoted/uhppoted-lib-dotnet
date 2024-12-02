@@ -147,7 +147,11 @@ module Messages =
 
           { test = "add-task"
             request = Requests.add_task
-            responses = [ Responses.add_task ] } ]
+            responses = [ Responses.add_task ] }
+
+          { test = "clear-tasklist"
+            request = Requests.clearTaskList
+            responses = [ Responses.clearTaskList ] } ]
 
 
     let find request =

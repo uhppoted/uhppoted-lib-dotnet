@@ -384,3 +384,13 @@ type TestDecoder() =
         match Decode.add_task_response packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)
+
+    [<Test>]
+    member this.TestDecodeClearTasklistResponse() =
+        let packet = TestResponses.clearTaskList
+
+        let expected: ClearTaskListResponse = { controller = 405419896u; ok = true }
+
+        match Decode.clearTaskListResponse packet with
+        | Ok response -> Assert.That(response, Is.EqualTo(expected))
+        | Error err -> Assert.Fail(err)

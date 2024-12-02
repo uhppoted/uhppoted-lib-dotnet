@@ -720,3 +720,19 @@ module Uhppoted =
         match exec controller request Decode.add_task_response timeout options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
+
+    /// <summary>
+    /// Clears all scheduled tasks from the controller task list.
+    /// </summary>
+    /// <param name="controller">Controller ID.</param>
+    /// <param name="timeout">Operation timeout (ms).</param>
+    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <returns>
+    /// Result with the boolean success/fail result or an Error if the request failed.
+    /// </returns>
+    let ClearTaskList (controller: uint32, timeout: int, options: Options) =
+        let request = Encode.clearTaskListRequest controller
+
+        match exec controller request Decode.clearTaskListResponse timeout options with
+        | Ok response -> Ok response.ok
+        | Error err -> Error err

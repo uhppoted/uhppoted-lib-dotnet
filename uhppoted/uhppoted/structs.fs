@@ -320,3 +320,10 @@ type internal AddTaskResponse =
 
     interface IResponse with
         member this.controller = this.controller
+
+type internal ClearTaskListResponse =
+    { controller: uint32
+      ok: bool }
+
+    interface IResponse with
+        member this.controller = this.controller

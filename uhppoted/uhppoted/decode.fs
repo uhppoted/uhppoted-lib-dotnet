@@ -401,3 +401,13 @@ module internal Decode =
             Ok
                 { controller = unpack_u32 packet[4..]
                   ok = unpack_bool (packet[8..]) }
+
+    let clearTaskListResponse (packet: byte array) : Result<ClearTaskListResponse, string> =
+        if packet[0] <> messages.SOM then
+            Error("invalid controller response")
+        else if packet[1] <> messages.CLEAR_TASKLIST then
+            Error("invalid clear-tasklist response")
+        else
+            Ok
+                { controller = unpack_u32 packet[4..]
+                  ok = unpack_bool (packet[8..]) }

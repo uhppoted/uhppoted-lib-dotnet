@@ -114,3 +114,6 @@ add-task:build
                     --weekdays Mon,Tue,Fri \
                     --more-cards 7
 
+clear-tasklist: build
+	$(CLI) clear-time-profile --controller $(CONTROLLER)
+

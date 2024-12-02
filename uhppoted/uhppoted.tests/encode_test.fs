@@ -324,3 +324,12 @@ type TestEncoder() =
         let packet = Encode.add_task_request controller task
 
         Assert.That(packet, Is.EqualTo(expected))
+
+    [<Test>]
+    member this.TestClearTasklistRequest() =
+        let expected = TestRequests.clearTaskList
+
+        let controller = 405419896u
+        let packet = Encode.clearTaskListRequest controller
+
+        Assert.That(packet, Is.EqualTo(expected))

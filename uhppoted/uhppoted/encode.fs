@@ -121,7 +121,6 @@ module internal Encode =
 
         pack packet 0 (byte messages.SOM)
         pack packet 1 (byte messages.GET_CONTROLLER)
-
         pack packet 4 controller
 
         packet
@@ -131,7 +130,6 @@ module internal Encode =
 
         pack packet 0 (byte messages.SOM)
         pack packet 1 (byte messages.SET_IPv4)
-
         pack packet 4 controller
         pack packet 8 address
         pack packet 12 netmask
@@ -145,7 +143,6 @@ module internal Encode =
 
         pack packet 0 (byte messages.SOM)
         pack packet 1 (byte messages.GET_LISTENER)
-
         pack packet 4 controller
 
         packet
@@ -155,7 +152,6 @@ module internal Encode =
 
         pack packet 0 (byte messages.SOM)
         pack packet 1 (byte messages.SET_LISTENER)
-
         pack packet 4 controller
         pack packet 8 address
         pack packet 12 port
@@ -168,7 +164,6 @@ module internal Encode =
 
         pack packet 0 (byte messages.SOM)
         pack packet 1 (byte messages.GET_TIME)
-
         pack packet 4 controller
 
         packet
@@ -178,7 +173,6 @@ module internal Encode =
 
         pack packet 0 (byte messages.SOM)
         pack packet 1 (byte messages.SET_TIME)
-
         pack packet 4 controller
         pack packet 8 datetime
 
@@ -189,7 +183,6 @@ module internal Encode =
 
         pack packet 0 (byte messages.SOM)
         pack packet 1 (byte messages.GET_DOOR)
-
         pack packet 4 controller
         pack packet 8 door
 
@@ -200,7 +193,6 @@ module internal Encode =
 
         pack packet 0 (byte messages.SOM)
         pack packet 1 (byte messages.SET_DOOR)
-
         pack packet 4 controller
         pack packet 8 door
         pack packet 9 (uint8 mode)
@@ -220,7 +212,6 @@ module internal Encode =
 
         pack packet 0 (byte messages.SOM)
         pack packet 1 (byte messages.SET_DOOR_PASSCODES)
-
         pack packet 4 controller
         pack packet 8 door
 
@@ -243,7 +234,6 @@ module internal Encode =
 
         pack packet 0 (byte messages.SOM)
         pack packet 1 (byte messages.OPEN_DOOR)
-
         pack packet 4 controller
         pack packet 8 door
 
@@ -254,7 +244,6 @@ module internal Encode =
 
         pack packet 0 (byte messages.SOM)
         pack packet 1 (byte messages.GET_STATUS)
-
         pack packet 4 controller
 
         packet
@@ -264,7 +253,6 @@ module internal Encode =
 
         pack packet 0 (byte messages.SOM)
         pack packet 1 (byte messages.GET_CARDS)
-
         pack packet 4 controller
 
         packet
@@ -274,7 +262,6 @@ module internal Encode =
 
         pack packet 0 (byte messages.SOM)
         pack packet 1 (byte messages.GET_CARD)
-
         pack packet 4 controller
         pack packet 8 card
 
@@ -285,7 +272,6 @@ module internal Encode =
 
         pack packet 0 (byte messages.SOM)
         pack packet 1 (byte messages.GET_CARD_AT_INDEX)
-
         pack packet 4 controller
         pack packet 8 index
 
@@ -306,7 +292,6 @@ module internal Encode =
 
         pack packet 0 (byte messages.SOM)
         pack packet 1 (byte messages.PUT_CARD)
-
         pack packet 4 controller
         pack packet 8 card
         pack packet 12 (Nullable start_date)
@@ -324,7 +309,6 @@ module internal Encode =
 
         pack packet 0 (byte messages.SOM)
         pack packet 1 (byte messages.DELETE_CARD)
-
         pack packet 4 controller
         pack packet 8 card
 
@@ -335,7 +319,6 @@ module internal Encode =
 
         pack packet 0 (byte messages.SOM)
         pack packet 1 (byte messages.DELETE_ALL_CARDS)
-
         pack packet 4 controller
         pack packet 8 MAGIC_WORD
 
@@ -346,7 +329,6 @@ module internal Encode =
 
         pack packet 0 (byte messages.SOM)
         pack packet 1 (byte messages.GET_EVENT)
-
         pack packet 4 controller
         pack packet 8 index
 
@@ -357,7 +339,6 @@ module internal Encode =
 
         pack packet 0 (byte messages.SOM)
         pack packet 1 (byte messages.GET_EVENT_INDEX)
-
         pack packet 4 controller
 
         packet
@@ -367,7 +348,6 @@ module internal Encode =
 
         pack packet 0 (byte messages.SOM)
         pack packet 1 (byte messages.SET_EVENT_INDEX)
-
         pack packet 4 controller
         pack packet 8 index
         pack packet 12 MAGIC_WORD
@@ -379,7 +359,6 @@ module internal Encode =
 
         pack packet 0 (byte messages.SOM)
         pack packet 1 (byte messages.RECORD_SPECIAL_EVENTS)
-
         pack packet 4 controller
         pack packet 8 enabled
 
@@ -390,7 +369,6 @@ module internal Encode =
 
         pack packet 0 (byte messages.SOM)
         pack packet 1 (byte messages.GET_TIME_PROFILE)
-
         pack packet 4 controller
         pack packet 8 profile
 
@@ -401,7 +379,6 @@ module internal Encode =
 
         pack packet 0 (byte messages.SOM)
         pack packet 1 (byte messages.SET_TIME_PROFILE)
-
         pack packet 4 controller
         pack packet 8 profile.profile
         pack packet 9 profile.start_date
@@ -428,7 +405,6 @@ module internal Encode =
 
         pack packet 0 (byte messages.SOM)
         pack packet 1 (byte messages.CLEAR_TIME_PROFILES)
-
         pack packet 4 controller
         pack packet 8 MAGIC_WORD
 
@@ -439,7 +415,6 @@ module internal Encode =
 
         pack packet 0 (byte messages.SOM)
         pack packet 1 (byte messages.ADD_TASK)
-
         pack packet 4 controller
         pack packet 8 task.start_date
         pack packet 12 task.end_date
@@ -454,5 +429,15 @@ module internal Encode =
         pack packet 25 task.door
         pack packet 26 task.task
         pack packet 27 task.more_cards
+
+        packet
+
+    let clearTaskListRequest (controller: uint32) =
+        let packet: byte array = Array.zeroCreate 64
+
+        pack packet 0 (byte messages.SOM)
+        pack packet 1 (byte messages.CLEAR_TASKLIST)
+        pack packet 4 controller
+        pack packet 8 MAGIC_WORD
 
         packet
