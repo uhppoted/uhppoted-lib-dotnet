@@ -101,7 +101,8 @@ Module Commands
            New Command("set-time-profile", "Adds or updates an access time profile on a controller", AddressOf SetTimeProfile),
            New Command("clear-time-profiles", "Clears all access time profiles stored on a controller", AddressOf ClearTimeProfiles),
            New Command("add-task", "Adds or updates a scheduled task stored on a controller", AddressOf AddTask),
-           New Command("clear-tasklist", "Clears all scheduled tasks from the controller task list", AddressOf ClearTaskList)
+           New Command("clear-tasklist", "Clears all scheduled tasks from the controller task list", AddressOf ClearTaskList),
+           New Command("refresh-tasklist", "Schedules added tasks", AddressOf RefreshTaskList)
        }
 
     Sub FindControllers(args As String())
@@ -709,6 +710,23 @@ Module Commands
             Dim ok = result.ResultValue
 
             WriteLine("clear-tasklist")
+            WriteLine("  controller {0}", controller)
+            WriteLine("          ok {0}", ok)
+            WriteLine()
+        Else If (result.IsError)
+            Throw New Exception(result.ErrorValue)
+        End If
+    End Sub
+
+    Sub RefreshTaskList(args As String())
+        Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
+
+        Dim result = UHPPOTE.RefreshTaskList(controller, TIMEOUT, OPTIONS)
+
+        If (result.IsOk)
+            Dim ok = result.ResultValue
+
+            WriteLine("refresh-tasklist")
             WriteLine("  controller {0}", controller)
             WriteLine("          ok {0}", ok)
             WriteLine()

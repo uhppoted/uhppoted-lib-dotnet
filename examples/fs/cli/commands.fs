@@ -222,7 +222,7 @@ let set_door args =
 let set_door_passcodes args =
     let controller = argparse args "--controller" CONTROLLER
     let door = argparse args "--door" DOOR
-    let passcodes: uint32 array = argparse args "--passcodes" [| |]
+    let passcodes: uint32 array = argparse args "--passcodes" [||]
 
     match
         Uhppoted.SetDoorPasscodes(
@@ -670,6 +670,24 @@ let clearTaskList args =
         Ok()
     | Error err -> Error(err)
 
+let refreshTaskList args =
+    let controller = argparse args "--controller" CONTROLLER
+    let timeout = TIMEOUT
+
+    let options =
+        { OPTIONS with
+            endpoint = ENDPOINT
+            protocol = PROTOCOL }
+
+    match Uhppoted.RefreshTaskList(controller, timeout, options) with
+    | Ok ok ->
+        printfn "refresh-tasklist"
+        printfn "  controller %u" controller
+        printfn "          ok %b" ok
+        printfn ""
+        Ok()
+    | Error err -> Error(err)
+
 let commands =
     [ { command = "find-controllers"
         description = "Retrieves a list of controllers accessible on the local LAN"
@@ -777,4 +795,8 @@ let commands =
 
       { command = "clear-tasklist"
         description = "Clears all scheduled tasks from the controller task list"
-        f = clearTaskList } ]
+        f = clearTaskList }
+
+      { command = "refresh-tasklist"
+        description = "Schedules added tasks"
+        f = refreshTaskList } ]

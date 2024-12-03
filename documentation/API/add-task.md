@@ -1,6 +1,7 @@
 ## `AddTask`
 
-Adds or updates a scheduled task stored on a controller.
+Adds or updates a scheduled task stored on a controller. Added tasks are not scheduled until the 
+tasklist is refreshed.
 
 ### Parameters
 - **`controller`**: Controller ID.

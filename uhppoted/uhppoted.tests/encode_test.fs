@@ -302,7 +302,7 @@ type TestEncoder() =
 
     [<Test>]
     member this.TestAddTaskRequest() =
-        let expected = TestRequests.add_task
+        let expected = TestRequests.addTask
 
         let controller = 405419896u
 
@@ -321,7 +321,7 @@ type TestEncoder() =
               start_time = Nullable(TimeOnly(8, 45))
               more_cards = 7uy }
 
-        let packet = Encode.add_task_request controller task
+        let packet = Encode.addTaskRequest controller task
 
         Assert.That(packet, Is.EqualTo(expected))
 
@@ -331,5 +331,14 @@ type TestEncoder() =
 
         let controller = 405419896u
         let packet = Encode.clearTaskListRequest controller
+
+        Assert.That(packet, Is.EqualTo(expected))
+
+    [<Test>]
+    member this.TestRefreshTasklistRequest() =
+        let expected = TestRequests.refreshTaskList
+
+        let controller = 405419896u
+        let packet = Encode.refreshTaskListRequest controller
 
         Assert.That(packet, Is.EqualTo(expected))

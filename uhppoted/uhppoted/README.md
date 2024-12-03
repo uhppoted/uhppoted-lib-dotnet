@@ -90,8 +90,12 @@ Clears all access time profiles stored on a controller.
 ### [`AddTask`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/add-task.md)
 Adds or updates a scheduled task on a controller.
 
-### [`ClearTaslList`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/clear-tasklist.md)
+### [`ClearTaskList`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/clear-tasklist.md)
 Clears all scheduled tasks from a controller tasklist.
+
+### [`RefreshTasklList`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/refresh-tasklist.md)
+Schedules added tasks.
+
 
 ## Notes
 

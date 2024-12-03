@@ -80,7 +80,8 @@
       - [x] clear-time-profiles
       - [x] add-task
       - [x] clear-task-list
-      - [ ] refresh-task-list
+      - [x] refresh-task-list
+      - [ ] set-pc-control
             - [ ] API function
             - [ ] CLI
                   - [ ] F#
@@ -90,7 +91,6 @@
             - [ ] API doc
             - [ ] README
       
-      - [ ] set-pc-control
       - [ ] set-interlock
       - [ ] activate-keypads
       - [ ] restore-default-parameters

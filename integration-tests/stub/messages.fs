@@ -146,12 +146,16 @@ module Messages =
             responses = [ Responses.clear_time_profiles ] }
 
           { test = "add-task"
-            request = Requests.add_task
-            responses = [ Responses.add_task ] }
+            request = Requests.addTask
+            responses = [ Responses.addTask ] }
 
           { test = "clear-tasklist"
             request = Requests.clearTaskList
-            responses = [ Responses.clearTaskList ] } ]
+            responses = [ Responses.clearTaskList ] }
+
+          { test = "refresh-tasklist"
+            request = Requests.refreshTaskList
+            responses = [ Responses.refreshTaskList ] } ]
 
 
     let find request =

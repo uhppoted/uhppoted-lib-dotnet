@@ -392,7 +392,7 @@ module internal Decode =
                 { controller = unpack_u32 packet[4..]
                   ok = unpack_bool (packet[8..]) }
 
-    let add_task_response (packet: byte array) : Result<AddTaskResponse, string> =
+    let addTaskResponse (packet: byte array) : Result<AddTaskResponse, string> =
         if packet[0] <> messages.SOM then
             Error("invalid controller response")
         else if packet[1] <> messages.ADD_TASK then
@@ -407,6 +407,16 @@ module internal Decode =
             Error("invalid controller response")
         else if packet[1] <> messages.CLEAR_TASKLIST then
             Error("invalid clear-tasklist response")
+        else
+            Ok
+                { controller = unpack_u32 packet[4..]
+                  ok = unpack_bool (packet[8..]) }
+
+    let refreshTaskListResponse (packet: byte array) : Result<RefreshTaskListResponse, string> =
+        if packet[0] <> messages.SOM then
+            Error("invalid controller response")
+        else if packet[1] <> messages.REFRESH_TASKLIST then
+            Error("invalid refresh-tasklist response")
         else
             Ok
                 { controller = unpack_u32 packet[4..]

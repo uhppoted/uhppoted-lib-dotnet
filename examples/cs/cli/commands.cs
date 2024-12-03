@@ -107,6 +107,7 @@ class Commands
           new Command ("clear-time-profiles", "Clears all access time profiles stored on a controller", ClearTimeProfiles),
           new Command ("add-task", "Adds or updates a scheduled task stored on a controller", AddTask),
           new Command ("clear-tasklist", "Clears all scheduled tasks from the controller task list", ClearTaskList),
+          new Command ("refresh-tasklist", "Schedules added tasks", RefreshTaskList),
     };
 
     public static void FindControllers(string[] args)
@@ -875,6 +876,28 @@ class Commands
             var ok = result.ResultValue;
 
             WriteLine("clear-tasklist");
+            WriteLine("  controller {0}", controller);
+            WriteLine("          ok {0}", ok);
+            WriteLine();
+        }
+        else if (result.IsError)
+        {
+            throw new Exception(result.ErrorValue);
+        }
+    }
+
+    public static void RefreshTaskList(string[] args)
+    {
+        var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
+        var timeout = TIMEOUT;
+        var options = OPTIONS;
+        var result = Uhppoted.RefreshTaskList(controller, timeout, options);
+
+        if (result.IsOk)
+        {
+            var ok = result.ResultValue;
+
+            WriteLine("refresh-tasklist");
             WriteLine("  controller {0}", controller);
             WriteLine("          ok {0}", ok);
             WriteLine();

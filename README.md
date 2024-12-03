@@ -107,8 +107,12 @@ Clears all access time profiles stored on a controller.
 ### [`AddTask`](documentation/API/add-task.md)
 Adds or updates a scheduled task on a controller.
 
-### [`ClearTaslList`](documentation/API/clear-tasklist.md)
+### [`ClearTaskList`](documentation/API/clear-tasklist.md)
 Clears all scheduled tasks from a controller tasklist.
+
+### [`RefreshTaskList`](documentation/API/refresh-tasklist.md)
+Schedules added tasks.
+
 
 ## Notes
 

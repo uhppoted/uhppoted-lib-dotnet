@@ -327,3 +327,10 @@ type internal ClearTaskListResponse =
 
     interface IResponse with
         member this.controller = this.controller
+
+type internal RefreshTaskListResponse =
+    { controller: uint32
+      ok: bool }
+
+    interface IResponse with
+        member this.controller = this.controller

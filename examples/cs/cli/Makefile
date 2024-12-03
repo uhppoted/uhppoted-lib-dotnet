@@ -115,5 +115,8 @@ add-task:build
                     --more-cards 7
 
 clear-tasklist: build
-	$(CLI) clear-time-profile --controller $(CONTROLLER)
+	$(CLI) clear-tasklist --controller $(CONTROLLER)
+
+refresh-tasklist: build
+	$(CLI) refresh-tasklist --controller $(CONTROLLER)
 

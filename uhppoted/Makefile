@@ -34,9 +34,9 @@ release: build test integration-tests
 	cd uhppoted && make release
 
 debug: build
-	dotnet run --project ../examples/fs/cli --framework net7.0 open-door --controller $(CONTROLLER) --door $(DOOR)
-	dotnet run --project ../examples/cs/cli --framework net7.0 open-door --controller $(CONTROLLER) --door $(DOOR)
-	dotnet run --project ../examples/vb/cli --framework net7.0 open-door --controller $(CONTROLLER) --door $(DOOR)
+	dotnet run --project ../examples/fs/cli --framework net7.0 refresh-tasklist --controller $(CONTROLLER)
+	dotnet run --project ../examples/cs/cli --framework net7.0 refresh-tasklist --controller $(CONTROLLER)
+	dotnet run --project ../examples/vb/cli --framework net7.0 refresh-tasklist --controller $(CONTROLLER)
 
 find-controllers: build
 	$(CLI) find-controllers
@@ -127,5 +127,8 @@ add-task: build
                     --more-cards 7
 
 clear-tasklist: build
-	$(CLI) clear-time-profile --controller $(CONTROLLER)
+	$(CLI) clear-tasklist --controller $(CONTROLLER)
+
+refresh-tasklist: build
+	$(CLI) refresh-tasklist --controller $(CONTROLLER)
 

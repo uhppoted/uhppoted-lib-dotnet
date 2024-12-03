@@ -377,11 +377,11 @@ type TestDecoder() =
 
     [<Test>]
     member this.TestDecodeAddTaskResponse() =
-        let packet = TestResponses.add_task
+        let packet = TestResponses.addTask
 
         let expected: AddTaskResponse = { controller = 405419896u; ok = true }
 
-        match Decode.add_task_response packet with
+        match Decode.addTaskResponse packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)
 
@@ -392,5 +392,15 @@ type TestDecoder() =
         let expected: ClearTaskListResponse = { controller = 405419896u; ok = true }
 
         match Decode.clearTaskListResponse packet with
+        | Ok response -> Assert.That(response, Is.EqualTo(expected))
+        | Error err -> Assert.Fail(err)
+
+    [<Test>]
+    member this.TestDecodeRefreshTasklistResponse() =
+        let packet = TestResponses.refreshTaskList
+
+        let expected: RefreshTaskListResponse = { controller = 405419896u; ok = true }
+
+        match Decode.refreshTaskListResponse packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)

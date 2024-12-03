@@ -45,13 +45,14 @@ let (|Uint32List|_|) (value: string) =
     try
         let parsed =
             value.Split(',')
-            |> Array.choose (fun v -> 
+            |> Array.choose (fun v ->
                 match System.UInt32.TryParse(v.Trim()) with
                 | true, parsed -> Some parsed
                 | _ -> None)
+
         Some parsed
-    with
-    | _ -> None
+    with _ ->
+        None
 
 let rec argparse (args: string list) flag (defval: 'T) : 'T =
     match args with
@@ -64,7 +65,7 @@ let rec argparse (args: string list) flag (defval: 'T) : 'T =
         | :? IPEndPoint, IPEndPoint parsed -> unbox parsed
         | :? DateTime, DateTime parsed -> unbox parsed
         | :? DoorMode, DoorMode parsed -> unbox parsed
-        | _ when typeof<'T> = typeof<System.UInt32[]> -> 
+        | _ when typeof<'T> = typeof<System.UInt32[]> ->
             match value with
             | Uint32List parsed -> unbox parsed
             | _ -> defval

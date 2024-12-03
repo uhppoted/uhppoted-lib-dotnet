@@ -410,7 +410,7 @@ module internal Encode =
 
         packet
 
-    let add_task_request (controller: uint32) (task: Task) =
+    let addTaskRequest (controller: uint32) (task: Task) =
         let mutable packet: byte array = Array.zeroCreate 64
 
         pack packet 0 (byte messages.SOM)
@@ -437,6 +437,16 @@ module internal Encode =
 
         pack packet 0 (byte messages.SOM)
         pack packet 1 (byte messages.CLEAR_TASKLIST)
+        pack packet 4 controller
+        pack packet 8 MAGIC_WORD
+
+        packet
+
+    let refreshTaskListRequest (controller: uint32) =
+        let packet: byte array = Array.zeroCreate 64
+
+        pack packet 0 (byte messages.SOM)
+        pack packet 1 (byte messages.REFRESH_TASKLIST)
         pack packet 4 controller
         pack packet 8 MAGIC_WORD
 

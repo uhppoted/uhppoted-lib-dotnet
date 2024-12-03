@@ -674,7 +674,8 @@ module Uhppoted =
         | Error err -> Error err
 
     /// <summary>
-    /// Adds or updates a scheduled task on a controller.
+    /// Adds or updates a scheduled task on a controller. Added tasks are not scheduled to run
+    /// until the tasklist has been refreshed.
     /// </summary>
     /// <param name="controller">Controller ID.</param>
     /// <param name="task">Task definition to add or update.</param>
@@ -684,9 +685,9 @@ module Uhppoted =
     /// Ok with true if the task was added/updated, or Error.
     /// </returns>
     let AddTask (controller: uint32, task: Task, timeout: int, options: Options) =
-        let request = Encode.add_task_request controller task
+        let request = Encode.addTaskRequest controller task
 
-        match exec controller request Decode.add_task_response timeout options with
+        match exec controller request Decode.addTaskResponse timeout options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 
@@ -703,5 +704,21 @@ module Uhppoted =
         let request = Encode.clearTaskListRequest controller
 
         match exec controller request Decode.clearTaskListResponse timeout options with
+        | Ok response -> Ok response.ok
+        | Error err -> Error err
+
+    /// <summary>
+    /// Schedules added tasks.
+    /// </summary>
+    /// <param name="controller">Controller ID.</param>
+    /// <param name="timeout">Operation timeout (ms).</param>
+    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <returns>
+    /// Result with the boolean success/fail result or an Error if the request failed.
+    /// </returns>
+    let RefreshTaskList (controller: uint32, timeout: int, options: Options) =
+        let request = Encode.refreshTaskListRequest controller
+
+        match exec controller request Decode.refreshTaskListResponse timeout options with
         | Ok response -> Ok response.ok
         | Error err -> Error err

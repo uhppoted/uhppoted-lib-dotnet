@@ -27,6 +27,7 @@
 - [`ClearTimeProfiles`](clear-time-profiles.md)
 - [`AddTask`](add-task.md)
 - [`ClearTaskList`](clear-tasklist.md)
+- [`RefreshTaskList`](refresh-tasklist.md)
 
 
 ## **`get_status`**
