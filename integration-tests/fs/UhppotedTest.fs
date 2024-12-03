@@ -236,10 +236,11 @@ type TestClass() =
     [<Test>]
     member this.TestSetDoorPasscodes() =
         let expected = true
+        let passcodes = [| 12345u; 54321u; 999999u |]
 
         options
         |> List.iter (fun opts ->
-            match Uhppoted.SetDoorPasscodes(CONTROLLER, DOOR, 12345u, 54321u, 0u, 999999u, TIMEOUT, opts) with
+            match Uhppoted.SetDoorPasscodes(CONTROLLER, DOOR, passcodes, TIMEOUT, opts) with
             | Ok result -> Assert.That(result, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 

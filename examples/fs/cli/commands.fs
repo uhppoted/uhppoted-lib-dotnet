@@ -224,17 +224,7 @@ let set_door_passcodes args =
     let door = argparse args "--door" DOOR
     let passcodes: uint32 array = argparse args "--passcodes" [||]
 
-    match
-        Uhppoted.SetDoorPasscodes(
-            controller,
-            door,
-            passcodes |> Array.tryItem 0 |> Option.defaultValue 0u,
-            passcodes |> Array.tryItem 1 |> Option.defaultValue 0u,
-            passcodes |> Array.tryItem 2 |> Option.defaultValue 0u,
-            passcodes |> Array.tryItem 3 |> Option.defaultValue 0u,
-            TIMEOUT,
-            OPTIONS
-        )
+    match Uhppoted.SetDoorPasscodes(controller, door, passcodes, TIMEOUT, OPTIONS)
     with
     | Ok ok ->
         printfn "set-door-passcodes"

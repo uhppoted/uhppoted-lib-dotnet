@@ -248,28 +248,22 @@ module Uhppoted =
     /// </summary>
     /// <param name="controller">Controller ID.</param>
     /// <param name="door">Door number [1..4].</param>
-    /// <param name="passcode1">Passcode [0..999999] (0 is 'none').</param>
-    /// <param name="passcode2">Passcode [0..999999] (0 is 'none').</param>
-    /// <param name="passcode3">Passcode [0..999999] (0 is 'none').</param>
-    /// <param name="passcode4">Passcode [0..999999] (0 is 'none').</param>
+    /// <param name="passcodes">Array of up to 4 passcodes in the range [0..999999], defaulting to 0 ('none')
+    ///                         if the list contains less than 4 entries.</param>
     /// <param name="timeout">Operation timeout (ms).</param>
     /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
     /// <returns>
     /// Returns Ok with true value if the passcodes were updated or Error.
     /// </returns>
-    let SetDoorPasscodes
-        (
-            controller: uint32,
-            door: uint8,
-            passcode1: uint32,
-            passcode2: uint32,
-            passcode3: uint32,
-            passcode4: uint32,
-            timeout: int,
-            options: Options
-        ) =
+    let SetDoorPasscodes (controller: uint32, door: uint8, passcodes: uint32 array, timeout: int, options: Options) =
         let request =
-            Encode.set_door_passcodes_request controller door passcode1 passcode2 passcode3 passcode4
+            Encode.set_door_passcodes_request
+                controller
+                door
+                (passcodes |> Array.tryItem 0 |> Option.defaultValue 0u)
+                (passcodes |> Array.tryItem 1 |> Option.defaultValue 0u)
+                (passcodes |> Array.tryItem 2 |> Option.defaultValue 0u)
+                (passcodes |> Array.tryItem 3 |> Option.defaultValue 0u)
 
         match exec controller request Decode.set_door_passcodes_response timeout options with
         | Ok response -> Ok response.ok

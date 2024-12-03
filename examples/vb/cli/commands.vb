@@ -279,15 +279,7 @@ Module Commands
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
         Dim door As Byte = ArgParse.Parse(args, "--door", DOOR)
         Dim passcodes As UInteger() = ArgParse.Parse(args, "--passcodes", new UInteger() {})
-        Dim result = UHPPOTE.SetDoorPasscodes(
-            controller,
-            door,
-            If(passcodes.Length > 0, passcodes(0), 0),
-            If(passcodes.Length > 1, passcodes(1), 0),
-            If(passcodes.Length > 2, passcodes(2), 0),
-            If(passcodes.Length > 3, passcodes(3), 0),
-            TIMEOUT,
-            OPTIONS)
+        Dim result = UHPPOTE.SetDoorPasscodes(controller,door,passcodes,TIMEOUT,OPTIONS)
 
         If (result.IsOk)
             Dim ok = result.ResultValue

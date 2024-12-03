@@ -59,7 +59,7 @@
       - [x] get-door
       - [x] set-door
       - [x] set-door-passcodes
-            - [ ] rework to take `PassCodes` struct/array
+            - [x] rework to take `PassCodes` struct/array
       - [x] open-door
       - [x] get-status
             - [ ] direction enum

@@ -336,15 +336,7 @@ class Commands
         var door = ArgParse.Parse(args, "--door", DOOR);
         var mode = ArgParse.Parse(args, "--mode", MODE);
         var passcodes = ArgParse.Parse(args, "--passcodes", new uint[] { });
-        var result = Uhppoted.SetDoorPasscodes(
-            controller,
-            door,
-            passcodes.Length > 0 ? passcodes[0] : 0u,
-            passcodes.Length > 1 ? passcodes[1] : 0u,
-            passcodes.Length > 2 ? passcodes[2] : 0u,
-            passcodes.Length > 3 ? passcodes[3] : 0u,
-            TIMEOUT,
-            OPTIONS);
+        var result = Uhppoted.SetDoorPasscodes(controller,door, passcodes,TIMEOUT, OPTIONS);
 
         if (result.IsOk)
         {
