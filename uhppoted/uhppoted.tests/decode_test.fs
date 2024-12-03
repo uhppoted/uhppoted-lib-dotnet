@@ -164,7 +164,7 @@ type TestDecoder() =
 
     [<Test>]
     member this.TestDecodeGetStatusResponse() =
-        let packet = TestResponses.get_status
+        let packet = TestResponses.getStatus
 
         let expected: GetStatusResponse =
             { controller = 405419896u
@@ -192,7 +192,7 @@ type TestDecoder() =
                    timestamp = Nullable(DateTime.ParseExact("2024-11-10 12:34:56", "yyyy-MM-dd HH:mm:ss", null))
                    reason = 6uy |} }
 
-        match Decode.get_status_response packet with
+        match Decode.getStatusResponse packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)
 

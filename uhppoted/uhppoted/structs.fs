@@ -19,6 +19,31 @@ type ControllerRecord =
 type Door = { mode: DoorMode; delay: uint8 }
 
 [<Struct>]
+type Status =
+    { Door1Open: bool
+      Door2Open: bool
+      Door3Open: bool
+      Door4Open: bool
+      Button1Pressed: bool
+      Button2Pressed: bool
+      Button3Pressed: bool
+      Button4Pressed: bool
+      SystemError: uint8
+      SystemDateTime: DateTime Nullable
+      SequenceNumber: uint32
+      SpecialInfo: uint8
+      Relays: uint8
+      Inputs: uint8
+      EventIndex: uint32
+      EventTimestamp: DateTime Nullable
+      EventType: uint8
+      EventAccessGranted: bool
+      EventDoor: uint8
+      EventDirection: uint8
+      EventCard: uint32
+      EventReason: uint8 }
+
+[<Struct>]
 type Card =
     { card: uint32
       start_date: DateOnly Nullable

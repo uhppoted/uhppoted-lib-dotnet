@@ -45,8 +45,8 @@ Sets up to 4 passcodes for a controller door.
 ### [`OpenDoor`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/open-door.md)
 Unlocks a door controlled by a controller.
 
-### `get-status`
-Retrieves a controller status record.
+### [`GetStatus`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/get-status.md)
+Retrieves a controller status and most recent event (if any).
 
 ### [`GetCards`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/get-cards.md)
 Retrieves the number of card records stored on a controller.

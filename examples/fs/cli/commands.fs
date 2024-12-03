@@ -259,38 +259,35 @@ let open_door args =
     | Error err -> Error err
 
 let get_status args =
-    let controller =
-        { controller = argparse args "--controller" CONTROLLER
-          address = ENDPOINT
-          protocol = PROTOCOL }
+    let controller = argparse args "--controller" CONTROLLER
 
-    match Uhppoted.get_status (controller, TIMEOUT, OPTIONS) with
-    | Ok response ->
+    match Uhppoted.GetStatus(controller, TIMEOUT, OPTIONS) with
+    | Ok record ->
         printfn "get-status"
-        printfn "         controller %u" response.controller
-        printfn "        door 1 open %b" response.door1_open
-        printfn "        door 2 open %b" response.door2_open
-        printfn "        door 3 open %b" response.door3_open
-        printfn "        door 4 open %b" response.door3_open
-        printfn "   button 1 pressed %b" response.door1_button
-        printfn "   button 2 pressed %b" response.door1_button
-        printfn "   button 3 pressed %b" response.door1_button
-        printfn "   button 4 pressed %b" response.door1_button
-        printfn "       system error %u" response.system_error
-        printfn "   system date/time %A" (YYYYMMDDHHmmss(response.system_datetime))
-        printfn "       sequence no. %u" response.sequence_number
-        printfn "       special info %u" response.special_info
-        printfn "             relays %02x" response.relays
-        printfn "             inputs %02x" response.inputs
+        printfn "         controller %u" controller
+        printfn "        door 1 open %b" record.Door1Open
+        printfn "        door 2 open %b" record.Door2Open
+        printfn "        door 3 open %b" record.Door3Open
+        printfn "        door 4 open %b" record.Door3Open
+        printfn "   button 1 pressed %b" record.Button1Pressed
+        printfn "   button 2 pressed %b" record.Button2Pressed
+        printfn "   button 3 pressed %b" record.Button3Pressed
+        printfn "   button 4 pressed %b" record.Button4Pressed
+        printfn "       system error %u" record.SystemError
+        printfn "   system date/time %A" (YYYYMMDDHHmmss(record.SystemDateTime))
+        printfn "       sequence no. %u" record.SequenceNumber
+        printfn "       special info %u" record.SpecialInfo
+        printfn "             relays %02x" record.Relays
+        printfn "             inputs %02x" record.Inputs
         printfn ""
-        printfn "    event index     %u" response.evt.index
-        printfn "          event     %u" response.evt.event_type
-        printfn "          granted   %b" response.evt.granted
-        printfn "          door      %u" response.evt.door
-        printfn "          direction %u" response.evt.direction
-        printfn "          card      %u" response.evt.card
-        printfn "          timestamp %A" (YYYYMMDDHHmmss(response.evt.timestamp))
-        printfn "          reason    %u" response.evt.reason
+        printfn "    event index     %u" record.EventIndex
+        printfn "          event     %u" record.EventType
+        printfn "          granted   %b" record.EventAccessGranted
+        printfn "          door      %u" record.EventDoor
+        printfn "          direction %u" record.EventDirection
+        printfn "          card      %u" record.EventCard
+        printfn "          timestamp %A" (YYYYMMDDHHmmss(record.EventTimestamp))
+        printfn "          reason    %u" record.EventReason
         printfn ""
         Ok()
     | Error err -> Error err

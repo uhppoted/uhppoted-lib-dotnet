@@ -63,6 +63,9 @@
       - [x] open-door
       - [x] get-status
             - [ ] direction enum
+            - [ ] return (status,event) tuple
+            - [ ] decode relays
+            - [ ] decode inputs
       - [x] get-cards
       - [x] get-card
       - [x] get-card-at-index

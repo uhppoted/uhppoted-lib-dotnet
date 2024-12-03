@@ -377,53 +377,43 @@ class Commands
 
     public static void GetStatus(string[] args)
     {
-        try
+        var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
+        var result = Uhppoted.GetStatus(controller, TIMEOUT, OPTIONS);
+
+        if (result.IsOk)
         {
-            var controller = new uhppoted.ControllerBuilder(CONTROLLER)
-                                         .With(IPEndPoint.Parse("192.168.1.100:60000"))
-                                         .With("udp")
-                                         .build();
-            var result = Uhppoted.get_status(controller, TIMEOUT, OPTIONS);
+            var record = result.ResultValue;
 
-            if (result.IsOk)
-            {
-                var response = result.ResultValue;
-
-                WriteLine("get-status");
-                WriteLine("         controller {0}", response.controller);
-                WriteLine("        door 1 open {0}", response.door1_open);
-                WriteLine("        door 2 open {0}", response.door2_open);
-                WriteLine("        door 3 open {0}", response.door3_open);
-                WriteLine("        door 4 open {0}", response.door3_open);
-                WriteLine("   button 1 pressed {0}", response.door1_button);
-                WriteLine("   button 2 pressed {0}", response.door1_button);
-                WriteLine("   button 3 pressed {0}", response.door1_button);
-                WriteLine("   button 4 pressed {0}", response.door1_button);
-                WriteLine("       system error {0}", response.system_error);
-                WriteLine("   system date/time {0}", YYYYMMDDHHmmss(response.system_datetime));
-                WriteLine("       sequence no. {0}", response.sequence_number);
-                WriteLine("       special info {0}", response.special_info);
-                WriteLine("             relays {0:X}", response.relays);
-                WriteLine("             inputs {0:X}", response.inputs);
-                WriteLine();
-                WriteLine("    event index     {0}", response.evt.index);
-                WriteLine("          event     {0}", response.evt.event_type);
-                WriteLine("          granted   {0}", response.evt.granted);
-                WriteLine("          door      {0}", response.evt.door);
-                WriteLine("          direction {0}", response.evt.direction);
-                WriteLine("          card      {0}", response.evt.card);
-                WriteLine("          timestamp {0}", YYYYMMDDHHmmss(response.evt.timestamp));
-                WriteLine("          reason    {0}", response.evt.reason);
-                WriteLine();
-            }
-            else if (result.IsError)
-            {
-                throw new Exception(result.ErrorValue);
-            }
+            WriteLine("get-status");
+            WriteLine("         controller {0}", controller);
+            WriteLine("        door 1 open {0}", record.Door1Open);
+            WriteLine("        door 2 open {0}", record.Door2Open);
+            WriteLine("        door 3 open {0}", record.Door3Open);
+            WriteLine("        door 4 open {0}", record.Door3Open);
+            WriteLine("   button 1 pressed {0}", record.Button1Pressed);
+            WriteLine("   button 2 pressed {0}", record.Button2Pressed);
+            WriteLine("   button 3 pressed {0}", record.Button3Pressed);
+            WriteLine("   button 4 pressed {0}", record.Button4Pressed);
+            WriteLine("       system error {0}", record.SystemError);
+            WriteLine("   system date/time {0}", YYYYMMDDHHmmss(record.SystemDateTime));
+            WriteLine("       sequence no. {0}", record.SequenceNumber);
+            WriteLine("       special info {0}", record.SpecialInfo);
+            WriteLine("             relays {0:X}", record.Relays);
+            WriteLine("             inputs {0:X}", record.Inputs);
+            WriteLine();
+            WriteLine("    event index     {0}", record.EventIndex);
+            WriteLine("          event     {0}", record.EventType);
+            WriteLine("          granted   {0}", record.EventAccessGranted);
+            WriteLine("          door      {0}", record.EventDoor);
+            WriteLine("          direction {0}", record.EventDirection);
+            WriteLine("          card      {0}", record.EventCard);
+            WriteLine("          timestamp {0}", YYYYMMDDHHmmss(record.EventTimestamp));
+            WriteLine("          reason    {0}", record.EventReason);
+            WriteLine();
         }
-        catch (Exception err)
+        else if (result.IsError)
         {
-            WriteLine("** ERROR  {0}", err.Message);
+            throw new Exception(result.ErrorValue);
         }
     }
 

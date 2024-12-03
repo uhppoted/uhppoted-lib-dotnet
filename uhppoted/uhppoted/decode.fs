@@ -185,7 +185,7 @@ module internal Decode =
                 { controller = unpack_u32 packet[4..]
                   ok = unpack_bool (packet[8..]) }
 
-    let get_status_response (packet: byte array) : Result<GetStatusResponse, string> =
+    let getStatusResponse (packet: byte array) : Result<GetStatusResponse, string> =
         if packet[0] <> messages.SOM then
             Error("invalid controller response")
         else if packet[1] <> messages.GET_STATUS then

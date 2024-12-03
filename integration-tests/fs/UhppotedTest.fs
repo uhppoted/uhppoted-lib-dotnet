@@ -255,36 +255,34 @@ type TestClass() =
 
     [<Test>]
     member this.TestGetStatus() =
-        let expected: GetStatusResponse =
-            { controller = 405419896u
-              door1_open = true
-              door2_open = false
-              door3_open = true
-              door4_open = true
-              door1_button = true
-              door2_button = true
-              door3_button = false
-              door4_button = true
-              system_error = 27uy
-              system_datetime = Nullable(DateTime.ParseExact("2024-11-13 14:37:53", "yyyy-MM-dd HH:mm:ss", null))
-              sequence_number = 21987u
-              special_info = 154uy
-              relays = 7uy
-              inputs = 9uy
-              evt =
-                {| index = 75312u
-                   event_type = 19uy
-                   granted = true
-                   door = 4uy
-                   direction = 2uy
-                   card = 10058400u
-                   timestamp = Nullable(DateTime.ParseExact("2024-11-10 12:34:56", "yyyy-MM-dd HH:mm:ss", null))
-                   reason = 6uy |} }
+        let expected: Status =
+            { Door1Open = true
+              Door2Open = false
+              Door3Open = true
+              Door4Open = true
+              Button1Pressed = true
+              Button2Pressed = true
+              Button3Pressed = false
+              Button4Pressed = true
+              SystemError = 27uy
+              SystemDateTime = Nullable(DateTime.ParseExact("2024-11-13 14:37:53", "yyyy-MM-dd HH:mm:ss", null))
+              SequenceNumber = 21987u
+              SpecialInfo = 154uy
+              Relays = 7uy
+              Inputs = 9uy
+              EventIndex = 75312u
+              EventType = 19uy
+              EventAccessGranted = true
+              EventDoor = 4uy
+              EventDirection = 2uy
+              EventCard = 10058400u
+              EventTimestamp = Nullable(DateTime.ParseExact("2024-11-10 12:34:56", "yyyy-MM-dd HH:mm:ss", null))
+              EventReason = 6uy }
 
-        controllers
-        |> List.iter (fun controller ->
-            match Uhppoted.get_status (controller, TIMEOUT, OPTIONS) with
-            | Ok response -> Assert.That(response, Is.EqualTo(expected))
+        options
+        |> List.iter (fun opts ->
+            match Uhppoted.GetStatus(CONTROLLER, TIMEOUT, opts) with
+            | Ok result -> Assert.That(result, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
     [<Test>]

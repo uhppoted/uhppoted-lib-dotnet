@@ -239,7 +239,7 @@ module internal Encode =
 
         packet
 
-    let get_status_request (controller: uint32) =
+    let getStatusRequest (controller: uint32) =
         let packet: byte array = Array.zeroCreate 64
 
         pack packet 0 (byte messages.SOM)

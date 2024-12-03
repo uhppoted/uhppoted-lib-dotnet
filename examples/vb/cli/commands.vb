@@ -312,48 +312,41 @@ Module Commands
     End Sub
 
     Sub GetStatus(args As String())
-        Try
-            Dim controller = New ControllerBuilder(405419896).
-                                 With(IPEndPoint.Parse("192.168.1.100:60000")).
-                                 With("udp").build()
+        Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
+        Dim result = UHPPOTE.GetStatus(controller, TIMEOUT, OPTIONS)
 
-            Dim result = UHPPOTE.get_status(controller, TIMEOUT, OPTIONS)
+        If (result.IsOk)
+            Dim record = result.ResultValue
 
-            If (result.IsOk)
-                Dim response = result.ResultValue
-                WriteLine("get-status")
-                WriteLine("         controller {0}", response.controller)
-                WriteLine("        door 1 open {0}", response.door1_open)
-                WriteLine("        door 2 open {0}", response.door2_open)
-                WriteLine("        door 3 open {0}", response.door3_open)
-                WriteLine("        door 4 open {0}", response.door3_open)
-                WriteLine("   button 1 pressed {0}", response.door1_button)
-                WriteLine("   button 2 pressed {0}", response.door1_button)
-                WriteLine("   button 3 pressed {0}", response.door1_button)
-                WriteLine("   button 4 pressed {0}", response.door1_button)
-                WriteLine("       system error {0}", response.system_error)
-                WriteLine("   system date/time {0}", YYYYMMDDHHmmss(response.system_datetime))
-                WriteLine("       sequence no. {0}", response.sequence_number)
-                WriteLine("       special info {0}", response.special_info)
-                WriteLine("             relays {0:X}", response.relays)
-                WriteLine("             inputs {0:X}", response.inputs)
-                WriteLine()
-                WriteLine("    event index     {0}", response.evt.index)
-                WriteLine("          event     {0}", response.evt.event_type)
-                WriteLine("          granted   {0}", response.evt.granted)
-                WriteLine("          door      {0}", response.evt.door)
-                WriteLine("          direction {0}", response.evt.direction)
-                WriteLine("          card      {0}", response.evt.card)
-                WriteLine("          timestamp {0}", YYYYMMDDHHmmss(response.evt.timestamp))
-                WriteLine("          reason    {0}", response.evt.reason)
-                WriteLine()
-            Else If (result.IsError)
-                Throw New Exception(result.ErrorValue)
-            End If
-
-        Catch Err As Exception
-            WriteLine("Exception  {0}", err.Message)
-        End Try
+            WriteLine("get-status")
+            WriteLine("         controller {0}", controller)
+            WriteLine("        door 1 open {0}", record.Door1Open)
+            WriteLine("        door 2 open {0}", record.Door2Open)
+            WriteLine("        door 3 open {0}", record.Door3Open)
+            WriteLine("        door 4 open {0}", record.Door3Open)
+            WriteLine("   button 1 pressed {0}", record.Button1Pressed)
+            WriteLine("   button 2 pressed {0}", record.Button2Pressed)
+            WriteLine("   button 3 pressed {0}", record.Button3Pressed)
+            WriteLine("   button 4 pressed {0}", record.Button4Pressed)
+            WriteLine("       system error {0}", record.SystemError)
+            WriteLine("   system date/time {0}", YYYYMMDDHHmmss(record.SystemDateTime))
+            WriteLine("       sequence no. {0}", record.SequenceNumber)
+            WriteLine("       special info {0}", record.SpecialInfo)
+            WriteLine("             relays {0:X}", record.Relays)
+            WriteLine("             inputs {0:X}", record.Inputs)
+            WriteLine()
+            WriteLine("    event index     {0}", record.EventIndex)
+            WriteLine("          event     {0}", record.EventType)
+            WriteLine("          granted   {0}", record.EventAccessGranted)
+            WriteLine("          door      {0}", record.EventDoor)
+            WriteLine("          direction {0}", record.EventDirection)
+            WriteLine("          card      {0}", record.EventCard)
+            WriteLine("          timestamp {0}", YYYYMMDDHHmmss(record.EventTimestamp))
+            WriteLine("          reason    {0}", record.EventReason)
+            WriteLine()
+        Else If (result.IsError)
+            Throw New Exception(result.ErrorValue)
+        End If
     End Sub
 
     Sub GetCards(args As String())

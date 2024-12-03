@@ -139,10 +139,10 @@ type TestEncoder() =
 
     [<Test>]
     member this.TestEncodeGetStatusRequest() =
-        let expected = TestRequests.get_status
+        let expected = TestRequests.getStatus
 
         let controller = 405419896u
-        let packet = Encode.get_status_request controller
+        let packet = Encode.getStatusRequest controller
 
         Assert.That(packet, Is.EqualTo(expected))
 

@@ -12,31 +12,6 @@ module Uhppoted =
           protocol = None
           debug = false }
 
-    let private exex
-        (controller: Controller)
-        request
-        (decode: byte[] -> Result<'b, string>)
-        timeout
-        options
-        : Result<'b, string> when 'b :> IResponse =
-        let bind = options.bind
-        let broadcast = options.broadcast
-        let debug = options.debug
-
-        let result =
-            match controller.address, controller.protocol with
-            | None, _ -> UDP.broadcast_to (request, bind, broadcast, timeout, debug)
-            | Some(addr), Some("tcp") -> TCP.send_to (request, bind, addr, timeout, debug)
-            | Some(addr), _ -> UDP.send_to (request, bind, addr, timeout, debug)
-
-        match result with
-        | Ok packet ->
-            match decode packet with
-            | Ok response when response.controller = controller.controller -> Ok response
-            | Ok _ -> Error "invalid response"
-            | Error err -> Error err
-        | Error err -> Error err
-
     let private exec
         (controller: uint32)
         request
@@ -271,14 +246,14 @@ module Uhppoted =
     /// <summary>
     /// Sets up to 4 passcodes for a controller door.
     /// </summary>
-    /// <param name="controller">Controller ID and (optionally) address and transport protocol.</param>
+    /// <param name="controller">Controller ID.</param>
     /// <param name="door">Door number [1..4].</param>
     /// <param name="passcode1">Passcode [0..999999] (0 is 'none').</param>
     /// <param name="passcode2">Passcode [0..999999] (0 is 'none').</param>
     /// <param name="passcode3">Passcode [0..999999] (0 is 'none').</param>
     /// <param name="passcode4">Passcode [0..999999] (0 is 'none').</param>
     /// <param name="timeout">Operation timeout (ms).</param>
-    /// <param name="options">Optional bind, broadcast and listen addresses.</param>
+    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
     /// <returns>
     /// Returns Ok with true value if the passcodes were updated or Error.
     /// </returns>
@@ -303,10 +278,10 @@ module Uhppoted =
     /// <summary>
     /// Unlocks a door controlled by a controller.
     /// </summary>
-    /// <param name="controller">Controller ID and (optionally) address and transport protocol.</param>
+    /// <param name="controller">Controller ID.</param>
     /// <param name="door">Door number [1..4].</param>
     /// <param name="timeout">Operation timeout (ms).</param>
-    /// <param name="options">Optional bind, broadcast and listen addresses.</param>
+    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
     /// <returns>
     /// Returns Ok if the request was processed, error otherwise. The Ok response should be
     /// checked for 'true'
@@ -321,51 +296,44 @@ module Uhppoted =
         | Error err -> Error err
 
     /// <summary>
-    /// Retrieves the current status of a controller.
+    /// Retrieves the current status and most recent event from a controller.
     /// </summary>
-    /// <param name="controller">Controller ID and (optionally) address and transport protocol.</param>
+    /// <param name="controller">Controller ID.</param>
     /// <param name="timeout">Operation timeout (ms).</param>
-    /// <param name="options">Optional bind, broadcast and listen addresses.</param>
+    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
     /// <returns>
-    /// The controller status record, including the most recent event (if any).
+    /// Returns Ok with the controller status record, including the most recent event (if any), or Error.
     /// </returns>
-    /// <example>
-    /// <code language="fsharp">
-    /// let controller = { controller = 405419896u; address = None; protocol = None }
-    /// let options = { broadcast = IPAddress.Broadcast; debug = true }
-    /// let result = get_status controller 5000 options
-    /// match result with
-    /// | Ok response -> printfn "get-status: ok %A" response
-    /// | Error e -> printfn "get-cards: error %s" e
-    /// </code>
-    /// <code language="csharp">
-    /// var controller = new ControllerBuilder(405419896).build();
-    /// var options = new OptionsBuilder().build();
-    /// var result = get_status(controller, 1, 5000, options);
-    /// if (result.IsOk)
-    /// {
-    ///     Console.WriteLine("get-status: {0}",result.Value.ok);
-    /// }
-    /// else
-    /// {
-    ///     Console.WriteLine("get-status: error {0}",result.Error);
-    /// }
-    /// </code>
-    /// <code language="vbnet">
-    /// Dim controller As New ControllerBuilder(405419896u).build()
-    /// Dim options As New OptionsBuilder().build()
-    /// Dim result = get_status(controller, 1, 5000, options)
-    /// If result.IsOk Then
-    ///     Console.WriteLine("get-status: {0}",result.Value.ok)
-    /// Else
-    ///     Console.WriteLine("get-status: error {0}",result.Error);
-    /// End If
-    /// </code>
-    /// </example>
-    let get_status (controller: Controller, timeout: int, options: Options) =
-        let request = Encode.get_status_request controller.controller
+    let GetStatus (controller: uint32, timeout: int, options: Options) =
+        let request = Encode.getStatusRequest controller
 
-        exex controller request Decode.get_status_response timeout options
+        match exec controller request Decode.getStatusResponse timeout options with
+        | Ok response ->
+            Ok(
+                { Door1Open = response.door1_open
+                  Door2Open = response.door2_open
+                  Door3Open = response.door3_open
+                  Door4Open = response.door4_open
+                  Button1Pressed = response.door1_button
+                  Button2Pressed = response.door2_button
+                  Button3Pressed = response.door3_button
+                  Button4Pressed = response.door4_button
+                  SystemError = response.system_error
+                  SystemDateTime = response.system_datetime
+                  SequenceNumber = response.sequence_number
+                  SpecialInfo = response.special_info
+                  Relays = response.relays
+                  Inputs = response.inputs
+                  EventIndex = response.evt.index
+                  EventType = response.evt.event_type
+                  EventAccessGranted = response.evt.granted
+                  EventDoor = response.evt.door
+                  EventDirection = response.evt.direction
+                  EventCard = response.evt.card
+                  EventTimestamp = response.evt.timestamp
+                  EventReason = response.evt.reason }
+            )
+        | Error err -> Error err
 
     /// <summary>
     /// Retrieves the number of card records stored on a controller.
