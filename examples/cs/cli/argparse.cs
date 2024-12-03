@@ -61,6 +61,15 @@ static class ArgParse
                             return (T)(object)DoorMode.Controlled;
                     }
                     break;
+
+                case System.UInt32[]:
+                    var parsed = new List<uint>();
+                    foreach (var token in args[ix].Split(','))
+                    {
+                        if (UInt32.TryParse(token.Trim(), out u32)) parsed.Add(u32);
+                    }
+
+                    return (T)(object)parsed.ToArray();
             }
         }
 

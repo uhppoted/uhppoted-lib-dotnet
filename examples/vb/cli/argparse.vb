@@ -63,6 +63,16 @@ Module ArgParse
                             Return CType(CObj(DoorMode.Controlled), T)
                     End Select
 
+                Case "UInteger()"
+                    Dim parsed As New List(Of UInteger)()
+                    For Each token In args(ix).Split(","c)
+                        If Uint32.TryParse(token.Trim(), u32) Then
+                            parsed.Add(u32)
+                        End If
+                    Next
+
+                    Return CType(CObj(parsed.ToArray()), T)
+
             End Select
         End If
 

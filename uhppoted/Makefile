@@ -34,9 +34,9 @@ release: build test integration-tests
 	cd uhppoted && make release
 
 debug: build
-	dotnet run --project ../examples/fs/cli --framework net7.0 get-status --controller $(CONTROLLER)
-	dotnet run --project ../examples/cs/cli --framework net7.0 get-status --controller $(CONTROLLER)
-	dotnet run --project ../examples/vb/cli --framework net7.0 get-status --controller $(CONTROLLER)
+	dotnet run --project ../examples/fs/cli --framework net7.0 set-door-passcodes --controller $(CONTROLLER) --door $(DOOR) --passcodes 12345,54321,999999
+	dotnet run --project ../examples/cs/cli --framework net7.0 set-door-passcodes --controller $(CONTROLLER) --door $(DOOR) --passcodes 12345,54321,999999
+	dotnet run --project ../examples/vb/cli --framework net7.0 set-door-passcodes --controller $(CONTROLLER) --door $(DOOR) --passcodes 12345,54321,999999
 
 find-controllers: build
 	$(CLI) find-controllers

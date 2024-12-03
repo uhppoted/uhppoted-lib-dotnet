@@ -36,11 +36,11 @@
       - [x] --door
       - [x] --mode
       - [x] --delay
-      - [ ] --passcodes
-            - [x] F#
+      - [x] --passcodes
+      - [ ] --start-date
+            - [ ] F#
             - [ ] C#
             - [ ] VB.NET
-      - [ ] --start-date
       - [ ] --end-date
       - [ ] --permissions
       - [ ] --PIN
