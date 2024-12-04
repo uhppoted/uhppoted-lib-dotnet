@@ -2,7 +2,6 @@ Imports System.Console
 Imports System.Net
 
 Imports UHPPOTE = uhppoted.Uhppoted
-Imports ControllerBuilder = uhppoted.ControllerBuilder
 Imports OptionsBuilder = uhppoted.OptionsBuilder
 Imports DoorMode = uhppoted.DoorMode
 
@@ -72,7 +71,7 @@ Module Commands
                                 WithEndpoint(IPEndPoint.Parse("192.168.1.100:60000")).
                                 WithProtocol("udp").
                                 WithDebug(True).
-                                build()
+                                Build()
 
     Public Dim commands As New List(Of Command) From {
            New Command("find-controllers", "Retrieves a list of controllers accessible on the local LAN", AddressOf FindControllers),

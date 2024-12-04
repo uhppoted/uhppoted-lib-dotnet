@@ -19,7 +19,6 @@
   
   <ItemGroup>
     <Compile Include="internationalisation.fs" />
-    <Compile Include="controller.fs" />
     <Compile Include="options.fs" />
     <Compile Include="enums.fs" />
     <Compile Include="structs.fs" />

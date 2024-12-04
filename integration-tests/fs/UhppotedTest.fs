@@ -38,23 +38,6 @@ type TestClass() =
           protocol = None
           debug = false }
 
-    let controllers =
-        [ { controller = CONTROLLER
-            address = None
-            protocol = None }
-
-          { controller = CONTROLLER
-            address = Some(ENDPOINT)
-            protocol = None }
-
-          { controller = CONTROLLER
-            address = Some(ENDPOINT)
-            protocol = Some("udp") }
-
-          { controller = CONTROLLER
-            address = Some(ENDPOINT)
-            protocol = Some("tcp") } ]
-
     let options =
         [ { OPTIONS with endpoint = None }
 
@@ -84,7 +67,7 @@ type TestClass() =
 
     [<Test>]
     member this.TestFindControllers() =
-        let expected: ControllerRecord array =
+        let expected: Controller array =
             [| { controller = 405419896u
                  address = IPAddress.Parse("192.168.1.100")
                  netmask = IPAddress.Parse("255.255.255.0")
@@ -115,7 +98,7 @@ type TestClass() =
 
     [<Test>]
     member this.TestGetController() =
-        let expected: ControllerRecord =
+        let expected: Controller =
             { controller = 405419896u
               address = IPAddress.Parse("192.168.1.100")
               netmask = IPAddress.Parse("255.255.255.0")

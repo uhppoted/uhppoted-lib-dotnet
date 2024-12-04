@@ -2,14 +2,29 @@ namespace uhppoted
 
 open System.Net
 
+/// Container class for the network configuration used to connect to an access controller.application.
 type Options =
-    { bind: IPEndPoint
-      broadcast: IPEndPoint
-      listen: IPEndPoint
-      endpoint: Option<IPEndPoint>
-      protocol: Option<string>
-      debug: bool }
+    {
+        /// IPv4 endpoint to which to bind. Default value is INADDR_ANY (0.0.0.0:0).
+        bind: IPEndPoint
 
+        /// IPv4 endpoint to which to broadcast UDP requests. Default value is '255.255.255.255:60000'.
+        broadcast: IPEndPoint
+
+        /// IPv4 endpoint on which to listen for controller events. Defaults to '0.0.0.0:60001.
+        listen: IPEndPoint
+
+        /// Optional IPv4 controller address:port. Required if the controller is not accessible via UDP broadcast.
+        endpoint: Option<IPEndPoint>
+
+        /// Optional 'protocol' to connect to controller. Valid values are currently 'udp' or 'tcp', defaulting to 'udp'.
+        protocol: Option<string>
+
+        /// Logs controller requests and responses to the console if enabled.
+        debug: bool
+    }
+
+/// Convenience 'Options' builder implementation for C# and VB.NET.
 type OptionsBuilder() =
     let mutable bind: IPEndPoint = IPEndPoint(IPAddress.Any, 0)
     let mutable broadcast: IPEndPoint = IPEndPoint(IPAddress.Broadcast, 60000)
@@ -18,31 +33,51 @@ type OptionsBuilder() =
     let mutable protocol: Option<string> = None
     let mutable debug: bool = false
 
-    member this.WithBind(v: IPEndPoint) =
-        bind <- v
+    /// Sets the `bind` endpoint.
+    /// - Parameter `endpoint`: IPv4 'bind' endpoint.
+    /// - Returns: The updated builder instance.
+    member this.WithBind(endpoint: IPEndPoint) =
+        bind <- endpoint
         this
 
-    member this.WithBroadcast(v: IPEndPoint) =
-        broadcast <- v
+    /// Sets the `broadcast` endpoint.
+    /// - Parameter `endpoint`: IPv4 'broadcast' endpoint.
+    /// - Returns: The updated builder instance.
+    member this.WithBroadcast(endpoint: IPEndPoint) =
+        broadcast <- endpoint
         this
 
-    member this.WithListen(v: IPEndPoint) =
-        listen <- v
+    /// Sets the `listen` endpoint.
+    /// - Parameter `endpoint`: IPv4 'listen' endpoint.
+    /// - Returns: The updated builder instance.
+    member this.WithListen(endpoint: IPEndPoint) =
+        listen <- endpoint
         this
 
-    member this.WithEndpoint(v: IPEndPoint) =
-        endpoint <- Some(v)
+    /// Sets the optional controller endpoint.
+    /// - Parameter `e`: IPv4 controller address:port.
+    /// - Returns: The updated builder instance.
+    member this.WithEndpoint(e: IPEndPoint) =
+        endpoint <- Some(e)
         this
 
-    member this.WithProtocol(v: string) =
-        protocol <- Some(v)
+    /// Sets the optional connection protocol.
+    /// - Parameter `p`: 'udp' or 'tcp'.
+    /// - Returns: The updated builder instance.
+    member this.WithProtocol(p: string) =
+        protocol <- Some(p)
         this
 
-    member this.WithDebug(v: bool) =
-        debug <- v
+    /// Enables (or disables) logging of controller requests and responses to the console.
+    /// - Parameter `enable`: `true` to enable debugging; `false` to disable.
+    /// - Returns: The updated builder instance.
+    member this.WithDebug(enable: bool) =
+        debug <- enable
         this
 
-    member this.build() =
+    /// Builds the `Options` instance.
+    /// - Returns: An `Options` instance populated with the current settings.
+    member this.Build() =
         { bind = bind
           broadcast = broadcast
           listen = listen

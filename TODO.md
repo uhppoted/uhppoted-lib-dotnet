@@ -83,7 +83,8 @@
       - [x] add-task
       - [x] clear-task-list
       - [x] refresh-task-list
-      - [ ] set-pc-control
+      - [x] set-pc-control
+      - [ ] set-interlock
             - [ ] API function
             - [ ] CLI
                   - [ ] F#
@@ -93,7 +94,6 @@
             - [ ] API doc
             - [ ] README
       
-      - [ ] set-interlock
       - [ ] activate-keypads
       - [ ] restore-default-parameters
       - [ ] listen

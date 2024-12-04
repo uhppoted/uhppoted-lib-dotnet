@@ -59,7 +59,7 @@ class Commands
                                                            .WithEndpoint(IPEndPoint.Parse("192.168.1.100:60000"))
                                                            .WithProtocol(PROTOCOL)
                                                            .WithDebug(true)
-                                                           .build();
+                                                           .Build();
 
     const uint CONTROLLER = 1u;
     const byte INTERVAL = 0;

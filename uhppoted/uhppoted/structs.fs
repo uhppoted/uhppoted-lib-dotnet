@@ -5,7 +5,7 @@ open System.Net
 open System.Net.NetworkInformation
 
 [<Struct>]
-type ControllerRecord =
+type Controller =
     { controller: uint32
       address: IPAddress
       netmask: IPAddress

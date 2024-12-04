@@ -57,7 +57,7 @@ module Uhppoted =
             fun v ->
                 match Decode.get_controller_response v with
                 | Ok response ->
-                    let controller: ControllerRecord =
+                    let controller: Controller =
                         { controller = response.controller
                           address = response.address
                           netmask = response.netmask
@@ -88,7 +88,7 @@ module Uhppoted =
 
         match exec controller request Decode.get_controller_response timeout options with
         | Ok response ->
-            let record: ControllerRecord =
+            let record: Controller =
                 { controller = response.controller
                   address = response.address
                   netmask = response.netmask
