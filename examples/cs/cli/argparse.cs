@@ -14,6 +14,7 @@ static class ArgParse
         IPAddress address;
         IPEndPoint endpoint;
         DateTime datetime;
+        DateOnly date;
 
         if (ix >= 0 && ix + 1 < args.Length)
         {
@@ -46,6 +47,10 @@ static class ArgParse
 
                 case DateTime:
                     if (DateTime.TryParse(args[ix], out datetime)) return (T)(object)datetime;
+                    break;
+
+                case DateOnly:
+                    if (DateOnly.TryParse(args[ix], out date)) return (T)(object)date;
                     break;
 
                 case DoorMode:

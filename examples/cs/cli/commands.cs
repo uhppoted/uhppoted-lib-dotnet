@@ -77,6 +77,8 @@ class Commands
     static readonly IPAddress NETMASK = IPAddress.Parse("255.255.255.0");
     static readonly IPAddress GATEWAY = IPAddress.Parse("192.168.1.1");
     static readonly IPEndPoint LISTENER = IPEndPoint.Parse("192.168.1.250:60001");
+    static readonly DateOnly START_DATE = new DateOnly(2024, 1, 1);
+    static readonly DateOnly END_DATE = new DateOnly(2024, 12, 31);
 
     public static List<Command> commands = new List<Command>
     {
@@ -478,7 +480,7 @@ class Commands
     public static void GetCardAtIndex(string[] args)
     {
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
-        var index = CARD_INDEX;
+        var index = ArgParse.Parse(args, "--index",CARD_INDEX);
         var timeout = TIMEOUT;
         var options = OPTIONS;
         var result = Uhppoted.GetCardAtIndex(controller, index, timeout, options);
@@ -513,8 +515,8 @@ class Commands
     {
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
         var card = ArgParse.Parse(args, "--card", CARD);
-        var startdate = new DateOnly(2024, 1, 1);
-        var enddate = new DateOnly(2024, 12, 31);
+        var startdate = ArgParse.Parse(args, "--start-date", START_DATE);
+        var enddate = ArgParse.Parse(args, "--end-date", END_DATE);
         byte door1 = 1;
         byte door2 = 0;
         byte door3 = 17;
@@ -738,8 +740,8 @@ class Commands
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
         var profile_id = ArgParse.Parse(args, "--profile", TIME_PROFILE_ID);
         var linked = ArgParse.Parse(args, "--linked", (byte)0);
-        var start_date = ArgParse.Parse(args, "--start_date", DateOnly.Parse("2024-01-01"));
-        var end_date = ArgParse.Parse(args, "--end_date", DateOnly.Parse("2024-12-31"));
+        var start_date = ArgParse.Parse(args, "--start_date", START_DATE);
+        var end_date = ArgParse.Parse(args, "--end_date", END_DATE);
         var weekdays = ArgParse.Parse(args, "--weekdays", new Weekdays(true, true, false, false, true, false, false));
         var segments = ArgParse.Parse(args, "--segments", new TimeSegment[] {
             new TimeSegment(TimeOnly.Parse("08:30"), TimeOnly.Parse("09:45")),
@@ -812,8 +814,8 @@ class Commands
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
         var task_id = ArgParse.Parse(args, "--task", TASK_ID);
         var door = ArgParse.Parse(args, "--door", DOOR);
-        var start_date = ArgParse.Parse(args, "--start_date", DateOnly.Parse("2024-01-01"));
-        var end_date = ArgParse.Parse(args, "--end_date", DateOnly.Parse("2024-12-31"));
+        var start_date = ArgParse.Parse(args, "--start_date", START_DATE);
+        var end_date = ArgParse.Parse(args, "--end_date", END_DATE);
         var start_time = ArgParse.Parse(args, "--start-time", TimeOnly.Parse("00:00"));
         var weekdays = ArgParse.Parse(args, "--weekdays", new Weekdays(true, true, false, false, true, false, false));
         var more_cards = ArgParse.Parse(args, "--more-cards", (byte)0);

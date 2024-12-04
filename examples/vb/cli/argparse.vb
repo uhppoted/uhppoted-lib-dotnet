@@ -11,7 +11,8 @@ Module ArgParse
         Dim bool As Boolean
         Dim address As IPAddress
         Dim endpoint As IPEndPoint
-        Dim dt As DateTime
+        Dim adatetime As DateTime
+        Dim adate As DateOnly
 
         If ix >= 0 AndAlso ix + 1 < args.Length Then
             ix += 1
@@ -47,8 +48,13 @@ Module ArgParse
 #Enable Warning BC42030
 
                 Case "DateTime"
-                    If DateTime.TryParse(args(ix), dt) Then
-                        Return CType(CObj(dt), T)
+                    If DateTime.TryParse(args(ix), adatetime) Then
+                        Return CType(CObj(adatetime), T)
+                    End If
+
+                Case "DateOnly"
+                    If DateOnly.TryParse(args(ix), adate) Then
+                        Return CType(CObj(adate), T)
                     End If
 
                 Case "DoorMode" :

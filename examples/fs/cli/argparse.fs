@@ -34,6 +34,11 @@ let (|DateTime|_|) (value: string) =
     | true, v -> Some v
     | _ -> None
 
+let (|DateOnly|_|) (value: string) =
+    match DateOnly.TryParse value with
+    | true, v -> Some v
+    | _ -> None
+
 let (|DoorMode|_|) (value: string) =
     match value.ToLowerInvariant() with
     | "normally-open" -> Some DoorMode.NormallyOpen
@@ -64,6 +69,7 @@ let rec argparse (args: string list) flag (defval: 'T) : 'T =
         | :? IPAddress, IPAddress parsed -> unbox parsed
         | :? IPEndPoint, IPEndPoint parsed -> unbox parsed
         | :? DateTime, DateTime parsed -> unbox parsed
+        | :? DateOnly, DateOnly parsed -> unbox parsed
         | :? DoorMode, DoorMode parsed -> unbox parsed
         | _ when typeof<'T> = typeof<System.UInt32[]> ->
             match value with

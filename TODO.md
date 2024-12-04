@@ -37,12 +37,12 @@
       - [x] --mode
       - [x] --delay
       - [x] --passcodes
-      - [ ] --start-date
+      - [x] --start-date
+      - [x] --end-date
+      - [ ] --permissions
             - [ ] F#
             - [ ] C#
             - [ ] VB.NET
-      - [ ] --end-date
-      - [ ] --permissions
       - [ ] --PIN
       - [ ] --weekdays
       - [ ] --segments

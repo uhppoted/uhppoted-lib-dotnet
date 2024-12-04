@@ -14,6 +14,8 @@ RECORD_SPECIAL_EVENTS ?= true
 TIME_PROFILE ?= 29
 TASK ?= 4
 PCCONTROL ?= true
+STARTDATE ?= 2024-02-03
+ENDDATE ?= 2024-12-29
 
 clean:
 	dotnet clean
@@ -35,9 +37,9 @@ release: build test integration-tests
 	cd uhppoted && make release
 
 debug: build
-	dotnet run --project ../examples/fs/cli --framework net7.0 set-pc-control --controller $(CONTROLLER) --enable $(PCCONTROL)
-	dotnet run --project ../examples/cs/cli --framework net7.0 set-pc-control --controller $(CONTROLLER) --enable $(PCCONTROL)
-	dotnet run --project ../examples/vb/cli --framework net7.0 set-pc-control --controller $(CONTROLLER) --enable $(PCCONTROL)
+	dotnet run --project ../examples/fs/cli --framework net7.0 put-card --controller $(CONTROLLER) --card $(CARD) --start-date $(STARTDATE) --end-date $(ENDDATE)
+	dotnet run --project ../examples/cs/cli --framework net7.0 put-card --controller $(CONTROLLER) --card $(CARD) --start-date $(STARTDATE) --end-date $(ENDDATE)
+	dotnet run --project ../examples/vb/cli --framework net7.0 put-card --controller $(CONTROLLER) --card $(CARD) --start-date $(STARTDATE) --end-date $(ENDDATE)
 
 find-controllers: build
 	$(CLI) find-controllers
@@ -86,7 +88,7 @@ get-card-at-index: build
 	$(CLI) get-card-at-index --controller $(CONTROLLER)
 
 put-card: build
-	$(CLI) put-card --controller $(CONTROLLER) --card $(CARD)
+	$(CLI) put-card --controller $(CONTROLLER) --card $(CARD) --start-date $(STARTDATE) --end-date $(ENDDATE)
 
 delete-card: build
 	$(CLI) delete-card --controller $(CONTROLLER) --card $(CARD)

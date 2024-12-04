@@ -14,6 +14,8 @@ RECORD_SPECIAL_EVENTS ?= true
 TIME_PROFILE ?= 29
 TASK ?= 4
 PCCONTROL ?= true
+STARTDATE ?= 2024-02-03
+ENDDATE ?= 2024-12-29
 
 clean:
 	dotnet clean
@@ -74,7 +76,7 @@ get-card-at-index: build
 	$(CLI) get-card-at-index --controller $(CONTROLLER)
 
 put-card: build
-	$(CLI) put-card --controller $(CONTROLLER) --card $(CARD)
+	$(CLI) put-card --controller $(CONTROLLER) --card $(CARD) --start-date $(STARTDATE) --end-date $(ENDDATE)
 
 delete-card: build
 	$(CLI) delete-card --controller $(CONTROLLER) --card $(CARD)

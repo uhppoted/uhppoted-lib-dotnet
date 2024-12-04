@@ -66,6 +66,8 @@ Module Commands
     Private ReadOnly Dim IPv4_NETMASK = IPAddress.Parse("255.255.255.0")
     Private ReadOnly Dim IPv4_GATEWAY = IPAddress.Parse("192.168.1.1")
     Private ReadOnly Dim EVENT_LISTENER = IPEndPoint.Parse("192.168.1.250:60001")
+    Private ReadOnly Dim START_DATE As DateOnly = New DateOnly(2024, 1, 1)
+    Private ReadOnly Dim END_DATE As DateOnly = New DateOnly(2024, 12, 31)
 
     Private ReadOnly Dim OPTIONS = New OptionsBuilder().
                                 WithEndpoint(IPEndPoint.Parse("192.168.1.100:60000")).
@@ -393,7 +395,7 @@ Module Commands
 
     Sub GetCardAtIndex(args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
-        Dim index = CARD_INDEX
+        Dim index = ArgParse.Parse(args, "--card", CARD_INDEX)
         Dim result = UHPPOTE.GetCardAtIndex(controller, index, TIMEOUT, OPTIONS)
 
         If (result.IsOk And result.ResultValue.HasValue)
@@ -420,8 +422,8 @@ Module Commands
     Sub PutCard(args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
         Dim card = ArgParse.Parse(args, "--card", CARD_NUMBER)
-        Dim startdate = New DateOnly(2024, 1, 1)
-        Dim enddate = New DateOnly(2024, 12, 31)
+        Dim startdate = ArgParse.Parse(args, "--start-date", START_DATE)
+        Dim enddate = ArgParse.Parse(args, "--end-date", END_DATE)
         Dim door1 = 1
         Dim door2 = 0
         Dim door3 = 17
@@ -593,8 +595,8 @@ Module Commands
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
         Dim profile_id = ArgParse.Parse(args, "--profile", TIME_PROFILE_ID)
         Dim linked As Byte = ArgParse.Parse(args, "--linked", CType(0, Byte))
-        Dim start_date = ArgParse.Parse(args, "--start_date", DateOnly.Parse("2024-01-01"))
-        Dim end_date = ArgParse.Parse(args, "--end_date", DateOnly.Parse("2024-12-31"))
+        Dim start_date As DateOnly = ArgParse.Parse(args, "--start_date", START_DATE)
+        Dim end_date As DateOnly = ArgParse.Parse(args, "--end_date", END_DATE)
         Dim weekdays = ArgParse.Parse(args, "--weekdays", New Weekdays(True, True, False, False, True, False, False))
         Dim segments = ArgParse.Parse(args, "--segments", New TimeSegment() {
             New TimeSegment(TimeOnly.Parse("08:30"), TimeOnly.Parse("09:45")),
@@ -656,8 +658,8 @@ Module Commands
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
         Dim _task_id As Byte = ArgParse.Parse(args, "--task", TASK_ID)
         Dim door_id As Byte = ArgParse.Parse(args, "--door", DOOR)
-        Dim start_date = ArgParse.Parse(args, "--start_date", DateOnly.Parse("2024-01-01"))
-        Dim end_date = ArgParse.Parse(args, "--end_date", DateOnly.Parse("2024-12-31"))
+        Dim start_date As DateOnly = ArgParse.Parse(args, "--start_date", START_DATE)
+        Dim end_date As DateOnly = ArgParse.Parse(args, "--end_date", END_DATE)
         Dim start_time = ArgParse.Parse(args, "--start_time", TimeOnly.Parse("00:00"))
         Dim weekdays = ArgParse.Parse(args, "--weekdays", New Weekdays(True, True, False, False, True, False, False))
         Dim more_cards As Byte = ArgParse.Parse(args, "--more-cards", CType(0, Byte))
