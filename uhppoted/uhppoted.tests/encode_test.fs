@@ -254,17 +254,17 @@ type TestEncoder() =
 
     [<Test>]
     member this.TestGetTimeProfileRequest() =
-        let expected = TestRequests.get_time_profile
+        let expected = TestRequests.getTimeProfile
 
         let controller = 405419896u
         let profile = 37uy
-        let packet = Encode.get_time_profile_request controller profile
+        let packet = Encode.getTimeProfileRequest controller profile
 
         Assert.That(packet, Is.EqualTo(expected))
 
     [<Test>]
     member this.TestSetTimeProfileRequest() =
-        let expected = TestRequests.set_time_profile
+        let expected = TestRequests.setTimeProfile
 
         let controller = 405419896u
 
@@ -287,16 +287,16 @@ type TestEncoder() =
               segment3_end = Nullable(TimeOnly(17, 59))
               linked_profile = 19uy }
 
-        let packet = Encode.set_time_profile_request controller profile
+        let packet = Encode.setTimeProfileRequest controller profile
 
         Assert.That(packet, Is.EqualTo(expected))
 
     [<Test>]
     member this.TestClearTimeProfilesRequest() =
-        let expected = TestRequests.clear_time_profiles
+        let expected = TestRequests.clearTimeProfiles
 
         let controller = 405419896u
-        let packet = Encode.clear_time_profiles_request controller
+        let packet = Encode.clearTimeProfilesRequest controller
 
         Assert.That(packet, Is.EqualTo(expected))
 
@@ -340,5 +340,15 @@ type TestEncoder() =
 
         let controller = 405419896u
         let packet = Encode.refreshTaskListRequest controller
+
+        Assert.That(packet, Is.EqualTo(expected))
+
+    [<Test>]
+    member this.TestSetPCControlRequest() =
+        let expected = TestRequests.setPCControl
+
+        let controller = 405419896u
+        let enable = true
+        let packet = Encode.setPCControlRequest controller true
 
         Assert.That(packet, Is.EqualTo(expected))

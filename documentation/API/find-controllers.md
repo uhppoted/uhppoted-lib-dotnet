@@ -3,10 +3,8 @@
 'Discovers' all controllers accessible via a UDP broadcast on the local LAN.
 
 ### Parameters
-- `timeout` (`int`): The timeout duration in milliseconds for the UDP request. If the response takes longer than this value, it will be discarded.
-- `options` (`Options`): A configuration object containing the following fields:
-  - `broadcast` (`IPAddress`): The target IP address for broadcasting the request.
-  - `debug` (`bool`): A flag to indicate whether to log debug information during the request/response process.
+- **`timeout` (`int`)**: The timeout duration in milliseconds for the UDP request. If the response takes longer than this value, it will be discarded.
+- **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 ### Returns
 Array of `Controller` structs that represent the valid decoded responses. Each item includes data about an access controller, 

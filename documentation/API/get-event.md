@@ -3,10 +3,10 @@
 Retrieves the event record (if any) at the index from the controller.
 
 ### Parameters
-- **`controller`**: Controller ID.
-- **`index`**: Event index.
-- **`timeout`**: Operation timeout (ms).
-- **`options`**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
+- **`controller` (`uint32`)**: Controller ID.
+- **`index` (`uint32`)**: Event index.
+- **`timeout` (`int`)**: Operation timeout (ms).
+- **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 ### Returns
 Returns `Ok` with a Nullable `Event` record if the request was processed or an `Error` 

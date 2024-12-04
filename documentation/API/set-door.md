@@ -3,11 +3,12 @@
 Retrieves a door control mode and unlock delay from a controller.
 
 ### Parameters
-- **`controller`**: Controller ID.
-- **`door`**: Door ID [1..4].
-- **`mode`**: Door control mode (controlled, normally-open or normally-closed)
-- **`timeout`**: Operation timeout (ms).
-- **`options`**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
+- **`controller` (`uint32`)**: Controller ID.
+- **`door` (`uint8`)**: Door ID [1..4].
+- **`mode` (`DoorMode`)**: Door control mode (controlled, normally-open or normally-closed)
+- **`delay` (`uint8`)**: Door unlock delay (seconds).
+- **`timeout` (`int`)**: Operation timeout (ms).
+- **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 ### Returns
 Returns `Ok` with a Nullable `Door` record if the door was updated or an `Error` 

@@ -585,3 +585,13 @@ type TestClass() =
             match Uhppoted.RefreshTaskList(CONTROLLER, TIMEOUT, opts) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
+
+    [<Test>]
+    member this.TestSetPCControl() =
+        let expected = true
+
+        options
+        |> List.iter (fun opts ->
+            match Uhppoted.SetPCControl(CONTROLLER, true, TIMEOUT, opts) with
+            | Ok response -> Assert.That(response, Is.EqualTo(expected))
+            | Error err -> Assert.Fail(err))

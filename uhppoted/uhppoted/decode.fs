@@ -346,7 +346,7 @@ module internal Decode =
                 { controller = unpack_u32 packet[4..]
                   ok = unpack_bool packet[8..] }
 
-    let get_time_profile_response (packet: byte array) : Result<GetTimeProfileResponse, string> =
+    let getTimeProfileResponse (packet: byte array) : Result<GetTimeProfileResponse, string> =
         if packet[0] <> messages.SOM then
             Error("invalid controller response")
         else if packet[1] <> messages.GET_TIME_PROFILE then
@@ -372,7 +372,7 @@ module internal Decode =
                   segment3_end = unpack_HHmm (packet[34..])
                   linked_profile = unpack_u8 packet[36..] }
 
-    let set_time_profile_response (packet: byte array) : Result<SetTimeProfileResponse, string> =
+    let setTimeProfileResponse (packet: byte array) : Result<SetTimeProfileResponse, string> =
         if packet[0] <> messages.SOM then
             Error("invalid controller response")
         else if packet[1] <> messages.SET_TIME_PROFILE then
@@ -382,7 +382,7 @@ module internal Decode =
                 { controller = unpack_u32 packet[4..]
                   ok = unpack_bool packet[8..] }
 
-    let clear_time_profiles_response (packet: byte array) : Result<ClearTimeProfilesResponse, string> =
+    let clearTimeProfilesResponse (packet: byte array) : Result<ClearTimeProfilesResponse, string> =
         if packet[0] <> messages.SOM then
             Error("invalid controller response")
         else if packet[1] <> messages.CLEAR_TIME_PROFILES then
@@ -417,6 +417,16 @@ module internal Decode =
             Error("invalid controller response")
         else if packet[1] <> messages.REFRESH_TASKLIST then
             Error("invalid refresh-tasklist response")
+        else
+            Ok
+                { controller = unpack_u32 packet[4..]
+                  ok = unpack_bool (packet[8..]) }
+
+    let setPCControlResponse (packet: byte array) : Result<SetPCControlResponse, string> =
+        if packet[0] <> messages.SOM then
+            Error("invalid controller response")
+        else if packet[1] <> messages.SET_PC_CONTROL then
+            Error("invalid set-pc-control response")
         else
             Ok
                 { controller = unpack_u32 packet[4..]

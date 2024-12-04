@@ -3,9 +3,9 @@
 Retrieves the number of card records stored on the controller.
 
 ### Parameters
-- **`controller`**: Controller ID.
-- **`timeout`**: Operation timeout (ms).
-- **`options`**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
+- **`controller` (`uint32`)**: Controller ID.
+- **`timeout` (`int`)**: Operation timeout (ms).
+- **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 ### Returns
 Returns `Ok` with the number of cards stored on the controller or `Error`. 

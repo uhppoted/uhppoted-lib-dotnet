@@ -3,12 +3,12 @@
 Sets the controller IPv4 address, netmask and gateway address.
 
 ### Parameters
-- **`controller`**: Controller ID.
-- **`address`**: IPv4 address.
-- **`netmask`**: IPv4 netmask.
-- **`gateway`**: gateway IPv4 address.
-- **`timeout`**: Operation timeout (ms).
-- **`options`**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
+- **`controller` (`uint32`)**: Controller ID.
+- **`address` (`IPAddress`)**: IPv4 address.
+- **`netmask` (`IPAddress`)**: IPv4 netmask.
+- **`gateway` (`IPAddress`)**: gateway IPv4 address.
+- **`timeout` (`int`)**: Operation timeout (ms).
+- **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 ### Returns
 

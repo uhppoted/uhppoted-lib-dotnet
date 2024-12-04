@@ -3,10 +3,11 @@
 Retrieves the card record (if any) at the index from the cards list stored on the controller.
 
 ### Parameters
+- **`controller` (`uint32`)**: Controller ID.
+- **`index` (`uint32`)**: Card record index.
+- **`timeout` (`int`)**: Operation timeout (ms).
+- **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 - **`controller`**: Controller ID.
-- **`index`**: Card index.
-- **`timeout`**: Operation timeout (ms).
-- **`options`**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 ### Returns
 Returns `Ok` with a Nullable `Card` record if the request was processed or an error otherwise. 

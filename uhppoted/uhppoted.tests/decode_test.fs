@@ -329,7 +329,7 @@ type TestDecoder() =
 
     [<Test>]
     member this.TestDecodeGetTimeProfileResponse() =
-        let packet = TestResponses.get_time_profile
+        let packet = TestResponses.getTimeProfile
 
         let expected: GetTimeProfileResponse =
             { controller = 405419896u
@@ -351,27 +351,27 @@ type TestDecoder() =
               segment3_end = Nullable(TimeOnly(17, 59))
               linked_profile = 19uy }
 
-        match Decode.get_time_profile_response packet with
+        match Decode.getTimeProfileResponse packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)
 
     [<Test>]
     member this.TestDecodeSetTimeProfileResponse() =
-        let packet = TestResponses.set_time_profile
+        let packet = TestResponses.setTimeProfile
 
         let expected: SetTimeProfileResponse = { controller = 405419896u; ok = true }
 
-        match Decode.set_time_profile_response packet with
+        match Decode.setTimeProfileResponse packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)
 
     [<Test>]
     member this.TestDecodeClearTimeProfilesResponse() =
-        let packet = TestResponses.clear_time_profiles
+        let packet = TestResponses.clearTimeProfiles
 
         let expected: ClearTimeProfilesResponse = { controller = 405419896u; ok = true }
 
-        match Decode.clear_time_profiles_response packet with
+        match Decode.clearTimeProfilesResponse packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)
 
@@ -402,5 +402,15 @@ type TestDecoder() =
         let expected: RefreshTaskListResponse = { controller = 405419896u; ok = true }
 
         match Decode.refreshTaskListResponse packet with
+        | Ok response -> Assert.That(response, Is.EqualTo(expected))
+        | Error err -> Assert.Fail(err)
+
+    [<Test>]
+    member this.TestDecodeSetPCControlResponse() =
+        let packet = TestResponses.setPCControl
+
+        let expected: SetPCControlResponse = { controller = 405419896u; ok = true }
+
+        match Decode.setPCControlResponse packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)

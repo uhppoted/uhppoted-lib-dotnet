@@ -6,9 +6,9 @@ Retrieves the controller event listener endpoint and auto-send interval:
   recent event to the listener. Events are always dispatched as they occur and a zero interval disables auto-send.
 
 ### Parameters
-- **`controller`**: Controller ID.
-- **`timeout`**: Operation timeout (ms).
-- **`options`**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
+- **`controller` (`uint32`)**: Controller ID.
+- **`timeout` (`int`)**: Operation timeout (ms).
+- **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 ### Returns
 
@@ -34,7 +34,7 @@ match GetListener controller timeout options with
 
 ```csharp
 var controller = 405419896u;
-var timeout = 5000
+var timeout = 5000;
 var options = new OptionsBuilder().build();
 var result = GetListener(controller, timeout, options);
 

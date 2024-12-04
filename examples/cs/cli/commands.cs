@@ -108,6 +108,7 @@ class Commands
           new Command ("add-task", "Adds or updates a scheduled task stored on a controller", AddTask),
           new Command ("clear-tasklist", "Clears all scheduled tasks from the controller task list", ClearTaskList),
           new Command ("refresh-tasklist", "Schedules added tasks", RefreshTaskList),
+          new Command ("set-pc-control", "Enables (or disables) remote access control management", SetPCControl),
     };
 
     public static void FindControllers(string[] args)
@@ -336,7 +337,7 @@ class Commands
         var door = ArgParse.Parse(args, "--door", DOOR);
         var mode = ArgParse.Parse(args, "--mode", MODE);
         var passcodes = ArgParse.Parse(args, "--passcodes", new uint[] { });
-        var result = Uhppoted.SetDoorPasscodes(controller,door, passcodes,TIMEOUT, OPTIONS);
+        var result = Uhppoted.SetDoorPasscodes(controller, door, passcodes, TIMEOUT, OPTIONS);
 
         if (result.IsOk)
         {
@@ -889,6 +890,30 @@ class Commands
 
             WriteLine("refresh-tasklist");
             WriteLine("  controller {0}", controller);
+            WriteLine("          ok {0}", ok);
+            WriteLine();
+        }
+        else if (result.IsError)
+        {
+            throw new Exception(result.ErrorValue);
+        }
+    }
+
+    public static void SetPCControl(string[] args)
+    {
+        var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
+        var enable = ArgParse.Parse(args, "--enable", false);
+        var timeout = TIMEOUT;
+        var options = OPTIONS;
+        var result = Uhppoted.SetPCControl(controller, enable, timeout, options);
+
+        if (result.IsOk)
+        {
+            var ok = result.ResultValue;
+
+            WriteLine("set-pc-control");
+            WriteLine("  controller {0}", controller);
+            WriteLine("      enable {0}", enable);
             WriteLine("          ok {0}", ok);
             WriteLine();
         }

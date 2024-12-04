@@ -3,10 +3,10 @@
 Unlocks a door controlled by a controller.
 
 ### Parameters
-- **`controller`**: Controller ID.
+- **`controller` (`uint32`)**: Controller ID.
 - **`door`**: Door number `[1..4]`.
-- **`timeout`**: Operation timeout (ms).
-- **`options`**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
+- **`timeout` (`int`)**: Operation timeout (ms).
+- **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 ### Returns
 Returns `Ok` with a `true` if the door was unlocked, `Error` if the request failed.
@@ -22,10 +22,11 @@ match OpenDoor controller door timeout options with
 | Ok ok -> printfn "open-door: ok %A" ok
 | Error err -> printfn "open-door: error %A" err
 ```
+
 ```csharp
-var controller = 405419896u
-var door = 4u
-var timeout = 5000
+var controller = 405419896u;
+var door = 4u;
+var timeout = 5000;
 var options = new OptionsBuilder().build();
 var result = OpenDoor(controller, door, timeout, options);
 if (result.IsOk)
@@ -37,6 +38,7 @@ else
     Console.WriteLine($"open-door: error {result.ErrorValue}");
 }
 ```
+
 ```vb
 Dim controller = 405419896
 Dim door As Byte = 4

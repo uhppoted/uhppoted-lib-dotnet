@@ -572,9 +572,9 @@ module Uhppoted =
     /// Ok with time profile, Ok(null) if the requested profile does not exist or Error if the request failed.
     /// </returns>
     let GetTimeProfile (controller: uint32, profile: uint8, timeout: int, options: Options) =
-        let request = Encode.get_time_profile_request controller profile
+        let request = Encode.getTimeProfileRequest controller profile
 
-        match exec controller request Decode.get_time_profile_response timeout options with
+        match exec controller request Decode.getTimeProfileResponse timeout options with
         | Ok response when response.profile = 0x00uy -> // not found
             Ok(Nullable())
         | Ok response when response.profile <> profile -> // incorrect profile
@@ -613,9 +613,9 @@ module Uhppoted =
     /// Ok with true if the time profile was added/updated, or Error.
     /// </returns>
     let SetTimeProfile (controller: uint32, profile: TimeProfile, timeout: int, options: Options) =
-        let request = Encode.set_time_profile_request controller profile
+        let request = Encode.setTimeProfileRequest controller profile
 
-        match exec controller request Decode.set_time_profile_response timeout options with
+        match exec controller request Decode.setTimeProfileResponse timeout options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 
@@ -629,9 +629,9 @@ module Uhppoted =
     /// Result with the boolean success/fail result or an Error if the request failed.
     /// </returns>
     let ClearTimeProfiles (controller: uint32, timeout: int, options: Options) =
-        let request = Encode.clear_time_profiles_request controller
+        let request = Encode.clearTimeProfilesRequest controller
 
-        match exec controller request Decode.clear_time_profiles_response timeout options with
+        match exec controller request Decode.clearTimeProfilesResponse timeout options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 
@@ -682,5 +682,23 @@ module Uhppoted =
         let request = Encode.refreshTaskListRequest controller
 
         match exec controller request Decode.refreshTaskListResponse timeout options with
+        | Ok response -> Ok response.ok
+        | Error err -> Error err
+
+    /// <summary>
+    /// Enables/disables remote access control management. The access controller will revert to standalone access
+    //  control managment if it does not receive a command from the 'PC' at least every 30 seconds.
+    /// </summary>
+    /// <param name="controller">Controller ID.</param>
+    /// <param name="enable">Enables or disables remote access control management.</param>
+    /// <param name="timeout">Operation timeout (ms).</param>
+    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <returns>
+    /// Result with the boolean success/fail result or an Error if the request failed.
+    /// </returns>
+    let SetPCControl (controller: uint32, enable: bool, timeout: int, options: Options) =
+        let request = Encode.setPCControlRequest controller enable
+
+        match exec controller request Decode.setPCControlResponse timeout options with
         | Ok response -> Ok response.ok
         | Error err -> Error err

@@ -3,10 +3,12 @@
 Sets the controller date and time.
 
 ### Parameters
-- **`controller`**: Controller ID.
-- **`datetime`**: Date and time to set.
-- **`timeout`**: Operation timeout (ms).
-- **`options`**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
+- **`controller` (`uint32`)**: Controller ID.
+- **`datetime` (`DateTime`)**: Date and time to set.
+- **`controller` (`uint32`)**: Controller ID.
+- **`index` (`uint32`)**: Event index.
+- **`timeout` (`int`)**: Operation timeout (ms).
+- **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 ### Returns
 Returns `Ok` with the controller date and time or `Error`. 

@@ -96,6 +96,9 @@ Clears all scheduled tasks from a controller tasklist.
 ### [`RefreshTasklList`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/refresh-tasklist.md)
 Schedules added tasks.
 
+### [`SetPCControl`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/set-pc-control.md)
+Enables/disables remote access control management. 
+
 
 ## Notes
 

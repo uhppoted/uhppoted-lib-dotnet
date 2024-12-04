@@ -3,9 +3,9 @@
 Schedules added tasks.
 
 ### Parameters
-- **`controller`**: Controller ID.
-- **`timeout`**: Operation timeout (ms).
-- **`options`**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
+- **`controller` (`uint32`)**: Controller ID.
+- **`timeout` (`int`)**: Operation timeout (ms).
+- **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 ### Returns
 
@@ -27,8 +27,8 @@ match RefreshTaskList controller timeout options with
 ```
 
 ```csharp
-var controller = 405419896u
-var timeout = 5000
+var controller = 405419896u;
+var timeout = 5000;
 var options = new OptionsBuilder().build();
 var result = RefreshTaskList(controller, timeout, options);
 

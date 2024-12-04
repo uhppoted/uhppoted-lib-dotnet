@@ -224,8 +224,7 @@ let set_door_passcodes args =
     let door = argparse args "--door" DOOR
     let passcodes: uint32 array = argparse args "--passcodes" [||]
 
-    match Uhppoted.SetDoorPasscodes(controller, door, passcodes, TIMEOUT, OPTIONS)
-    with
+    match Uhppoted.SetDoorPasscodes(controller, door, passcodes, TIMEOUT, OPTIONS) with
     | Ok ok ->
         printfn "set-door-passcodes"
         printfn "  controller %u" controller
@@ -675,6 +674,26 @@ let refreshTaskList args =
         Ok()
     | Error err -> Error(err)
 
+let setPCControl args =
+    let controller = argparse args "--controller" CONTROLLER
+    let enable = argparse args "--enable" false
+    let timeout = TIMEOUT
+
+    let options =
+        { OPTIONS with
+            endpoint = ENDPOINT
+            protocol = PROTOCOL }
+
+    match Uhppoted.SetPCControl(controller, enable, timeout, options) with
+    | Ok ok ->
+        printfn "set-pc-control"
+        printfn "  controller %u" controller
+        printfn "      enable %b" enable
+        printfn "          ok %b" ok
+        printfn ""
+        Ok()
+    | Error err -> Error(err)
+
 let commands =
     [ { command = "find-controllers"
         description = "Retrieves a list of controllers accessible on the local LAN"
@@ -786,4 +805,8 @@ let commands =
 
       { command = "refresh-tasklist"
         description = "Schedules added tasks"
-        f = refreshTaskList } ]
+        f = refreshTaskList }
+
+      { command = "set-pc-control"
+        description = "Enables (or disables) remote access control management"
+        f = setPCControl } ]

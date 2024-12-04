@@ -3,11 +3,12 @@
 Sets up to 4 passcodes for a controller door.
 
 ### Parameters
-- **`controller`**: Controller ID.
-- **`door`**: Door number `[1..4]`.
-- **`passcodes`**: Array of up to 4 passcodes in the range [0..999999], defaulting to 0 ('none') if the list contains less than 4 entries.
-- **`timeout`**: Operation timeout (ms).
-- **`options`**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
+- **`controller` (`uint32`)**: Controller ID.
+- **`door` (`uint8`)**: Door number `[1..4]`.
+- **`passcodes` (`uint32 array`)**: Array of up to 4 passcodes in the range [0..999999], defaulting to 
+  0 ('none') if the list contains less than 4 entries.
+- **`timeout` (`int`)**: Operation timeout (ms).
+- **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 ### Returns
 Returns `Ok` with a `true` if the passcodes were updated, `Error` if the request failed.
@@ -27,10 +28,10 @@ match SetDoorPasscodes controller door passcodes timeout options with
 ```
 
 ```csharp
-var controller = 405419896u
-var door = 4u
+var controller = 405419896u;
+var door = 4u;
 var passcodes = new uint[] {12345u, 54321u, 999999u };
-var timeout = 5000
+var timeout = 5000;
 var options = new OptionsBuilder().build();
 var result = SetDoorPasscodes(controller, door, passcodes, timeout, options);
 if (result.IsOk)

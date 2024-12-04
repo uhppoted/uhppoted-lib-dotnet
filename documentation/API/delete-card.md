@@ -3,10 +3,10 @@
 Deletes a card record from a controller.
 
 ### Parameters
-- **`controller`**: Controller ID.
-- **`card`**: Card number.
-- **`timeout`**: Operation timeout (ms).
-- **`options`**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
+- **`controller` (`uint32`)**: Controller ID.
+- **`card` (`uint32`)**: Card number.
+- **`timeout` (`int`)**: Operation timeout (ms).
+- **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 ### Returns
 
@@ -29,10 +29,9 @@ match DeleteCard controller card timeout options with
 ```
 
 ```csharp
-var controller = 405419896u
-var card = 10058400u
-
-var timeout = 5000
+var controller = 405419896u;
+var card = 10058400u;
+var timeout = 5000;
 var options = new OptionsBuilder().build();
 var result = DeleteCard(controller, card, timeout, options);
 

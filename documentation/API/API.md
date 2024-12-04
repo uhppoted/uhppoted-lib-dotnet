@@ -28,5 +28,5 @@
 - [`AddTask`](add-task.md)
 - [`ClearTaskList`](clear-tasklist.md)
 - [`RefreshTaskList`](refresh-tasklist.md)
-
+- [`SetPCControl`](set-pc-control.md)
 

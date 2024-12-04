@@ -130,20 +130,20 @@ module Messages =
             responses = [ Responses.record_special_events ] }
 
           { test = "get-time-profile"
-            request = Requests.get_time_profile
-            responses = [ Responses.get_time_profile ] }
+            request = Requests.getTimeProfile
+            responses = [ Responses.getTimeProfile ] }
 
           { test = "get-time-profile-not-found"
-            request = Requests.get_time_profile_not_found
-            responses = [ Responses.get_time_profile_not_found ] }
+            request = Requests.getTimeProfileNotFound
+            responses = [ Responses.getTimeProfileNotFound ] }
 
           { test = "set-time-profile"
-            request = Requests.set_time_profile
-            responses = [ Responses.set_time_profile ] }
+            request = Requests.setTimeProfile
+            responses = [ Responses.setTimeProfile ] }
 
           { test = "clear-time-profiles"
-            request = Requests.clear_time_profiles
-            responses = [ Responses.clear_time_profiles ] }
+            request = Requests.clearTimeProfiles
+            responses = [ Responses.clearTimeProfiles ] }
 
           { test = "add-task"
             request = Requests.addTask
@@ -155,7 +155,11 @@ module Messages =
 
           { test = "refresh-tasklist"
             request = Requests.refreshTaskList
-            responses = [ Responses.refreshTaskList ] } ]
+            responses = [ Responses.refreshTaskList ] }
+
+          { test = "set-pc-control"
+            request = Requests.setPCControl
+            responses = [ Responses.setPCControl ] } ]
 
 
     let find request =

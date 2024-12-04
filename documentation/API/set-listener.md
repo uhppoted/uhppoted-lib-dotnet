@@ -6,11 +6,11 @@ Sets the controller event listener endpoint and auto-send interval:
   recent event to the listener. Events are always dispatched as they occur and a zero interval disables auto-send.
 
 ### Parameters
-- **`controller`**: Controller ID.
-- **`listener`**: Event listener IPv4 endpoint.
-- **`interval`**: Auto-send interval (seconds).
-- **`timeout`**: Operation timeout (ms).
-- **`options`**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
+- **`controller` (`uint32`)**: Controller ID.
+- **`listener` (`IPEndPoint`)**: Event listener IPv4 endpoint.
+- **`interval` (`uint8`)**: Auto-send interval (seconds).
+- **`timeout` (`int`)**: Operation timeout (ms).
+- **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 ### Returns
 
@@ -34,9 +34,9 @@ match SetListener controller listener interval timeout options with
 
 ```csharp
 var controller = 405419896u;
-var listener = IPEndPoint.Parse("192.168.1.100:60001")
-var interval = 30uy
-var timeout = 5000
+var listener = IPEndPoint.Parse("192.168.1.100:60001");
+var interval = 30uy;
+var timeout = 5000;
 var options = new OptionsBuilder().build();
 var result = SetListener(controller, listener, interval, timeout, options);
 

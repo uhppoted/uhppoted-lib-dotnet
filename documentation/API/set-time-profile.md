@@ -3,10 +3,10 @@
 Adds or updates an access time profile on a controller.
 
 ### Parameters
-- **`controller`**: Controller ID.
-- **`profile`**: Time profile.
-- **`timeout`**: Operation timeout (ms).
-- **`options`**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
+- **`controller` (`uint32`)**: Controller ID.
+- **`profile` (`uint8`) **: Time profile [2..254].
+- **`timeout` (`int`)**: Operation timeout (ms).
+- **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 The `TimeProfile` record has the following fields:
   - `profile` (`uint8`): profile ID ([2..254])

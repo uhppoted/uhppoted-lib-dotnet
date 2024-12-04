@@ -12,6 +12,7 @@ EVENT_INDEX ?= 23
 RECORD_SPECIAL_EVENTS ?= true
 TIME_PROFILE ?= 29
 TASK ?= 4
+PCCONTROL ?= true
 
 clean:
 	dotnet clean
@@ -118,4 +119,7 @@ clear-tasklist: build
 
 refresh-tasklist: build
 	$(CLI) refresh-tasklist --controller $(CONTROLLER)
+
+set-pc-control: build
+	$(CLI) set-pc-control --controller $(CONTROLLER) --enabl $(PCCONTROL)
 

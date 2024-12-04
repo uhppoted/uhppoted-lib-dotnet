@@ -13,6 +13,7 @@ EVENT_INDEX ?= 23
 RECORD_SPECIAL_EVENTS ?= true
 TIME_PROFILE ?= 29
 TASK ?= 4
+PCCONTROL ?= true
 
 clean:
 	dotnet clean
@@ -34,9 +35,9 @@ release: build test integration-tests
 	cd uhppoted && make release
 
 debug: build
-	dotnet run --project ../examples/fs/cli --framework net7.0 set-door-passcodes --controller $(CONTROLLER) --door $(DOOR) --passcodes 12345,54321,999999
-	dotnet run --project ../examples/cs/cli --framework net7.0 set-door-passcodes --controller $(CONTROLLER) --door $(DOOR) --passcodes 12345,54321,999999
-	dotnet run --project ../examples/vb/cli --framework net7.0 set-door-passcodes --controller $(CONTROLLER) --door $(DOOR) --passcodes 12345,54321,999999
+	dotnet run --project ../examples/fs/cli --framework net7.0 set-pc-control --controller $(CONTROLLER) --enable $(PCCONTROL)
+	dotnet run --project ../examples/cs/cli --framework net7.0 set-pc-control --controller $(CONTROLLER) --enable $(PCCONTROL)
+	dotnet run --project ../examples/vb/cli --framework net7.0 set-pc-control --controller $(CONTROLLER) --enable $(PCCONTROL)
 
 find-controllers: build
 	$(CLI) find-controllers
@@ -131,4 +132,7 @@ clear-tasklist: build
 
 refresh-tasklist: build
 	$(CLI) refresh-tasklist --controller $(CONTROLLER)
+
+set-pc-control: build
+	$(CLI) set-pc-control --controller $(CONTROLLER) --enabl $(PCCONTROL)
 

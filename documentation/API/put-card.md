@@ -3,12 +3,12 @@
 Adds or updates a card record on a controller.
 
 ### Parameters
-- **`controller`**: Controller ID.
-- **`card`**: Card number.
+- **`controller` (`uint32`)**: Controller ID.
+- **`card` (`uint32`)**: Card number.
 - **`startdate`**: Date from which card is valid.
 - **`enddate`**: Date after which card is no longer valid.
-- **`timeout`**: Operation timeout (ms).
-- **`options`**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
+- **`timeout` (`int`)**: Operation timeout (ms).
+- **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 ### Returns
 
@@ -40,7 +40,7 @@ match PutCard controller card startdate enddate door1 door2 door3 door4 PIN time
 
 ```csharp
 var controller = 405419896u;
-var card = 10058400u
+var card = 10058400u;
 var startdate = new DateOnly(2024, 1, 1);
 var enddate = new DateOnly(2024, 12, 31);
 byte door1 = 1;

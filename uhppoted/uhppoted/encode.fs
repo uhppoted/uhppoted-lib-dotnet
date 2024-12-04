@@ -13,7 +13,7 @@ module internal Encode =
 
     let bcd (v: string) = Convert.FromHexString v
 
-    let pack_u32 (packet: byte array) (offset: int) (v: uint32) =
+    let packU32 (packet: byte array) (offset: int) (v: uint32) =
         let bytes =
             [| (byte ((v >>> 0) &&& 0x00ffu))
                (byte ((v >>> 8) &&& 0x00ffu))
@@ -22,11 +22,11 @@ module internal Encode =
 
         Array.blit bytes 0 packet offset 4
 
-    let pack_u16 (packet: byte array) (offset: int) (v: uint16) =
+    let packU16 (packet: byte array) (offset: int) (v: uint16) =
         let bytes = [| (byte ((v >>> 0) &&& 0x00ffus)); (byte ((v >>> 8) &&& 0x00ffus)) |]
         Array.blit bytes 0 packet offset 2
 
-    let pack_u8 (packet: byte array) (offset: int) (v: uint8) =
+    let packU8 (packet: byte array) (offset: int) (v: uint8) =
         let bytes = [| (byte ((v >>> 0) &&& 0x00ffuy)) |]
         Array.blit bytes 0 packet offset 1
 
@@ -106,9 +106,9 @@ module internal Encode =
 
     let pack (packet: byte array) (offset: int) (v: 'T) =
         match box v with
-        | Uint32 u32 -> pack_u32 packet offset u32
-        | Uint16 u16 -> pack_u16 packet offset u16
-        | Uint8 u8 -> pack_u8 packet offset u8
+        | Uint32 u32 -> packU32 packet offset u32
+        | Uint16 u16 -> packU16 packet offset u16
+        | Uint8 u8 -> packU8 packet offset u8
         | Bool b -> pack_bool packet offset b
         | IPv4 addr -> pack_IPv4 packet offset addr
         | DateTime datetime -> pack_datetime packet offset datetime
@@ -364,7 +364,7 @@ module internal Encode =
 
         packet
 
-    let get_time_profile_request (controller: uint32) (profile: uint8) =
+    let getTimeProfileRequest (controller: uint32) (profile: uint8) =
         let packet: byte array = Array.zeroCreate 64
 
         pack packet 0 (byte messages.SOM)
@@ -374,7 +374,7 @@ module internal Encode =
 
         packet
 
-    let set_time_profile_request (controller: uint32) (profile: TimeProfile) =
+    let setTimeProfileRequest (controller: uint32) (profile: TimeProfile) =
         let packet: byte array = Array.zeroCreate 64
 
         pack packet 0 (byte messages.SOM)
@@ -400,7 +400,7 @@ module internal Encode =
 
         packet
 
-    let clear_time_profiles_request (controller: uint32) =
+    let clearTimeProfilesRequest (controller: uint32) =
         let packet: byte array = Array.zeroCreate 64
 
         pack packet 0 (byte messages.SOM)
@@ -449,5 +449,16 @@ module internal Encode =
         pack packet 1 (byte messages.REFRESH_TASKLIST)
         pack packet 4 controller
         pack packet 8 MAGIC_WORD
+
+        packet
+
+    let setPCControlRequest (controller: uint32) (enable: bool) =
+        let packet: byte array = Array.zeroCreate 64
+
+        pack packet 0 (byte messages.SOM)
+        pack packet 1 (byte messages.SET_PC_CONTROL)
+        pack packet 4 controller
+        pack packet 8 MAGIC_WORD
+        pack packet 12 enable
 
         packet

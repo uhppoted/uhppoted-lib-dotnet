@@ -359,3 +359,10 @@ type internal RefreshTaskListResponse =
 
     interface IResponse with
         member this.controller = this.controller
+
+type internal SetPCControlResponse =
+    { controller: uint32
+      ok: bool }
+
+    interface IResponse with
+        member this.controller = this.controller

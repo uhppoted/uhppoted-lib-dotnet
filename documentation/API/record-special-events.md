@@ -3,10 +3,10 @@
 Enables (or disables) events for door open/close, button press, etc.
 
 ### Parameters
-- **`controller`**: Controller ID.
-- **`enable`**: Enables _special events_ if `true`.
-- **`timeout`**: Operation timeout (ms).
-- **`options`**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
+- **`controller` (`uint32`)**: Controller ID.
+- **`enable` (`bool`)**: Enables _special events_ if `true`.
+- **`timeout` (`int`)**: Operation timeout (ms).
+- **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 ### Returns
 Returns:

@@ -59,7 +59,7 @@ Module Commands
     Private Const CARD_NUMBER As UInt32 = 1
     Private Const CARD_INDEX As UInt32 = 1
     Private Const EVENT_INDEX As UInt32 = 1
-    Private Const ENABLE as Boolean = true
+    Private Const ENABLE as Boolean = True
     Private Const TIME_PROFILE_ID as Byte = 0
     Private Const TASK_ID as Byte = 0
 
@@ -71,7 +71,7 @@ Module Commands
     Private ReadOnly Dim OPTIONS = New OptionsBuilder().
                                 WithEndpoint(IPEndPoint.Parse("192.168.1.100:60000")).
                                 WithProtocol("udp").
-                                WithDebug(true).
+                                WithDebug(True).
                                 build()
 
     Public Dim commands As New List(Of Command) From {
@@ -102,7 +102,8 @@ Module Commands
            New Command("clear-time-profiles", "Clears all access time profiles stored on a controller", AddressOf ClearTimeProfiles),
            New Command("add-task", "Adds or updates a scheduled task stored on a controller", AddressOf AddTask),
            New Command("clear-tasklist", "Clears all scheduled tasks from the controller task list", AddressOf ClearTaskList),
-           New Command("refresh-tasklist", "Schedules added tasks", AddressOf RefreshTaskList)
+           New Command("refresh-tasklist", "Schedules added tasks", AddressOf RefreshTaskList),
+           New Command("set-pc-control", "Enables (or disables) remote access control management", AddressOf SetPCControl)
        }
 
     Sub FindControllers(args As String())
@@ -279,7 +280,7 @@ Module Commands
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
         Dim door As Byte = ArgParse.Parse(args, "--door", DOOR)
         Dim passcodes As UInteger() = ArgParse.Parse(args, "--passcodes", new UInteger() {})
-        Dim result = UHPPOTE.SetDoorPasscodes(controller,door,passcodes,TIMEOUT,OPTIONS)
+        Dim result = UHPPOTE.SetDoorPasscodes(controller, door, passcodes, TIMEOUT, OPTIONS)
 
         If (result.IsOk)
             Dim ok = result.ResultValue
@@ -595,7 +596,7 @@ Module Commands
         Dim linked As Byte = ArgParse.Parse(args, "--linked", CType(0, Byte))
         Dim start_date = ArgParse.Parse(args, "--start_date", DateOnly.Parse("2024-01-01"))
         Dim end_date = ArgParse.Parse(args, "--end_date", DateOnly.Parse("2024-12-31"))
-        Dim weekdays = ArgParse.Parse(args, "--weekdays", New Weekdays(true, true, false, false, true, false, false))
+        Dim weekdays = ArgParse.Parse(args, "--weekdays", New Weekdays(True, True, False, False, True, False, False))
         Dim segments = ArgParse.Parse(args, "--segments", New TimeSegment() {
             New TimeSegment(TimeOnly.Parse("08:30"), TimeOnly.Parse("09:45")),
             New TimeSegment(TimeOnly.Parse("12:15"), TimeOnly.Parse("13:15")),
@@ -659,7 +660,7 @@ Module Commands
         Dim start_date = ArgParse.Parse(args, "--start_date", DateOnly.Parse("2024-01-01"))
         Dim end_date = ArgParse.Parse(args, "--end_date", DateOnly.Parse("2024-12-31"))
         Dim start_time = ArgParse.Parse(args, "--start_time", TimeOnly.Parse("00:00"))
-        Dim weekdays = ArgParse.Parse(args, "--weekdays", New Weekdays(true, true, false, false, true, false, false))
+        Dim weekdays = ArgParse.Parse(args, "--weekdays", New Weekdays(True, True, False, False, True, False, False))
         Dim more_cards As Byte = ArgParse.Parse(args, "--more-cards", CType(0, Byte))
 
         Dim monday = weekdays.monday
@@ -721,6 +722,24 @@ Module Commands
 
             WriteLine("refresh-tasklist")
             WriteLine("  controller {0}", controller)
+            WriteLine("          ok {0}", ok)
+            WriteLine()
+        Else If (result.IsError)
+            Throw New Exception(result.ErrorValue)
+        End If
+    End Sub
+
+    Sub SetPCControl(args As String())
+        Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
+        Dim enable = ArgParse.Parse(args, "--enable", False)
+        Dim result = UHPPOTE.RefreshTaskList(controller, TIMEOUT, OPTIONS)
+
+        If (result.IsOk)
+            Dim ok = result.ResultValue
+
+            WriteLine("set-pc-control")
+            WriteLine("  controller {0}", controller)
+            WriteLine("      enable {0}", enable)
             WriteLine("          ok {0}", ok)
             WriteLine()
         Else If (result.IsError)

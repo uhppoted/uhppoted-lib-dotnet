@@ -3,9 +3,9 @@
 Retrieves a controller status record (and most recent event, if any).
 
 ### Parameters
-- **`controller`**: Controller ID and (optionally) address and transp- **`controller`**: Controller ID.
-- **`timeout`**: Operation timeout (ms).
-- **`options`**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
+- **`controller` (`uint32`)**: Controller ID.
+- **`timeout` (`int`)**: Operation timeout (ms).
+- **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 
 ### Returns
@@ -50,7 +50,7 @@ match result with
 
 ```csharp
 var controller = 405419896u;
-var timeout = 5000
+var timeout = 5000;
 var options = new OptionsBuilder().build();
 var result = GetStatus(controller, timeout, options);
 if (result.IsOk)

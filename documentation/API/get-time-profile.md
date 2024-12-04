@@ -3,10 +3,10 @@
 Retrieves an access time profile from the controller.
 
 ### Parameters
-- **`controller`**: Controller ID.
-- **`profile`**: Time profile ID [2..254].
-- **`timeout`**: Operation timeout (ms).
-- **`options`**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
+- **`controller` (`uint32`)**: Controller ID.
+- **`profile` (`uint8`)**: Time profile ID [2..254].
+- **`timeout` (`int`)**: Operation timeout (ms).
+- **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 ### Returns
 Returns `Ok` with a Nullable `TimeProfile` record if the request was processed or an `Error` 

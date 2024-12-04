@@ -113,6 +113,8 @@ Clears all scheduled tasks from a controller tasklist.
 ### [`RefreshTaskList`](documentation/API/refresh-tasklist.md)
 Schedules added tasks.
 
+### [`SetPCControl`](documentation/API/set-pc-control.md)
+Enables/disables remote access control management. 
 
 ## Notes
 
