@@ -15,6 +15,8 @@ static class ArgParse
         IPEndPoint endpoint;
         DateTime datetime;
         DateOnly date;
+        List<uint> passcodes = new List<uint>();
+        Dictionary<int, byte> permissions = new Dictionary<int, byte>();
 
         if (ix >= 0 && ix + 1 < args.Length)
         {
@@ -67,14 +69,41 @@ static class ArgParse
                     }
                     break;
 
-                case System.UInt32[]:
-                    var parsed = new List<uint>();
+                case UInt32[]:
                     foreach (var token in args[ix].Split(','))
                     {
-                        if (UInt32.TryParse(token.Trim(), out u32)) parsed.Add(u32);
+                        if (UInt32.TryParse(token.Trim(), out u32)) passcodes.Add(u32);
                     }
 
-                    return (T)(object)parsed.ToArray();
+                    return (T)(object)passcodes.ToArray();
+
+                case Dictionary<Int32, Byte>:
+                    foreach (var token in args[ix].Split(','))
+                    {
+                        var permission = token.Split(':');
+                        int door;
+                        byte profile;
+
+                        if (permission.Length > 0)
+                        {
+                            if (Int32.TryParse(permission[0].Trim(), out door))
+                            {
+                                if (permission.Length > 1)
+                                {
+                                    if (Byte.TryParse(permission[1].Trim(), out profile))
+                                    {
+                                        permissions[door] = profile;
+                                    }
+                                }
+                                else
+                                {
+                                    permissions[door] = (byte)1;
+                                }
+                            }
+                        }
+
+                    }
+                    return (T)(object)permissions;
             }
         }
 

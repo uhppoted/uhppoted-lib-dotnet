@@ -13,8 +13,9 @@ RECORD_SPECIAL_EVENTS ?= true
 TIME_PROFILE ?= 29
 TASK ?= 4
 PCCONTROL ?= true
-STARTDATE ?= 2024-02-03
-ENDDATE ?= 2024-12-29
+START_DATE ?= 2024-02-03
+END_DATE ?= 2024-12-29
+PERMISSIONS ?= "1,2,4:17"
 INTERLOCK ?= "1&2,3&4"
 
 clean:
@@ -76,7 +77,7 @@ get-card-at-index: build
 	$(CLI) get-card-at-index --controller $(CONTROLLER)
 
 put-card: build
-	$(CLI) put-card --controller $(CONTROLLER) --card $(CARD) --start-date $(STARTDATE) --end-date $(ENDDATE)
+	$(CLI) put-card --controller $(CONTROLLER) --card $(CARD) --start-date $(START_DATE) --end-date $(END_DATE) --permissions $(PERMISSIONS)
 
 delete-card: build
 	$(CLI) delete-card --controller $(CONTROLLER) --card $(CARD)

@@ -40,14 +40,15 @@
       - [x] --passcodes
       - [x] --start-date
       - [x] --end-date
-      - [ ] --permissions
+      - [x] --permissions
+      - [ ] --PIN
             - [ ] F#
             - [ ] C#
             - [ ] VB.NET
-      - [ ] --PIN
       - [ ] --weekdays
       - [ ] --segments
       - [ ] --task
+      - [ ] --interlock
 
 - [ ] API
       - [x] find-controllers

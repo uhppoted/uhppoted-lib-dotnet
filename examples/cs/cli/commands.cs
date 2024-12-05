@@ -518,11 +518,14 @@ class Commands
         var card = ArgParse.Parse(args, "--card", CARD);
         var startdate = ArgParse.Parse(args, "--start-date", START_DATE);
         var enddate = ArgParse.Parse(args, "--end-date", END_DATE);
-        byte door1 = 1;
-        byte door2 = 0;
-        byte door3 = 17;
-        byte door4 = 1;
-        var PIN = 7531u;
+        var permissions = ArgParse.Parse(args, "--permissions", new Dictionary<int, byte>());
+        var PIN = ArgParse.Parse(args, "--PIN", 0u);
+
+        byte u8;
+        byte door1 = permissions.TryGetValue(1, out u8) ? u8 : (byte)0;
+        byte door2 = permissions.TryGetValue(2, out u8) ? u8 : (byte)0;
+        byte door3 = permissions.TryGetValue(3, out u8) ? u8 : (byte)0;
+        byte door4 = permissions.TryGetValue(4, out u8) ? u8 : (byte)0;
 
         var timeout = TIMEOUT;
         var options = OPTIONS;

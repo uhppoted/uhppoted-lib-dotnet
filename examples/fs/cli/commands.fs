@@ -364,11 +364,12 @@ let put_card args =
     let card = argparse args "--card" CARD
     let startdate = argparse args "--start-date" START_DATE
     let enddate = argparse args "--end-date" END_DATE
-    let door1 = 1uy
-    let door2 = 0uy
-    let door3 = 17uy
-    let door4 = 1uy
-    let PIN = 7531u
+    let permissions = argparse args "--permissions" Map.empty
+    let door1 = (permissions |> Map.tryFind 1 |> Option.defaultValue 0uy)
+    let door2 = (permissions |> Map.tryFind 2 |> Option.defaultValue 0uy)
+    let door3 = (permissions |> Map.tryFind 3 |> Option.defaultValue 0uy)
+    let door4 = (permissions |> Map.tryFind 4 |> Option.defaultValue 0uy)
+    let PIN = argparse args "--PIN" 0u
     let timeout = TIMEOUT
 
     let options =

@@ -13,6 +13,8 @@ Module ArgParse
         Dim endpoint As IPEndPoint
         Dim adatetime As DateTime
         Dim adate As DateOnly
+        Dim passcodes As New List(Of UInteger)()
+        Dim permissions As New Dictionary(Of Integer, Byte)()
 
         If ix >= 0 AndAlso ix + 1 < args.Length Then
             ix += 1
@@ -67,17 +69,38 @@ Module ArgParse
 
                         Case "controlled"
                             Return CType(CObj(DoorMode.Controlled), T)
+
+                        Case Else
+                            Return defval
                     End Select
 
                 Case "UInteger()"
-                    Dim parsed As New List(Of UInteger)()
                     For Each token In args(ix).Split(","c)
                         If Uint32.TryParse(token.Trim(), u32) Then
-                            parsed.Add(u32)
+                            passcodes.Add(u32)
                         End If
                     Next
+                    Return CType(CObj(passcodes.ToArray()), T)
 
-                    Return CType(CObj(parsed.ToArray()), T)
+                Case "Dictionary(Of Integer,Byte)"
+                    For Each token In args(ix).Split(","c)
+                        Dim permission = token.Split(":"c)
+                        Dim door As Integer
+                        Dim profile As Byte
+
+                        If permission.Length > 0 Then
+                            If Int32.TryParse(permission(0).Trim(), door) Then
+                                If permission.Length > 1 Then
+                                    If Byte.TryParse(permission(1).Trim(), profile) Then
+                                        permissions(door) = profile
+                                    End If
+                                Else
+                                    permissions(door) = 1
+                                End If
+                            End If
+                        End If
+                    Next
+                    Return CType(CObj(permissions), T)
 
             End Select
         End If

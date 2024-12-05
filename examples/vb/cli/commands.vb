@@ -426,11 +426,14 @@ Module Commands
         Dim card = ArgParse.Parse(args, "--card", CARD_NUMBER)
         Dim startdate = ArgParse.Parse(args, "--start-date", START_DATE)
         Dim enddate = ArgParse.Parse(args, "--end-date", END_DATE)
-        Dim door1 = 1
-        Dim door2 = 0
-        Dim door3 = 17
-        Dim door4 = 1
-        Dim PIN = 7531
+        Dim permissions = ArgParse.Parse(args, "--permissions", New Dictionary(Of Integer, Byte))
+        Dim PIN = ArgParse.Parse(args, "--PIN", 0)
+
+        Dim u8 As Byte
+        Dim door1 As Byte = If(permissions.TryGetValue(1, u8), u8, 0)
+        Dim door2 As Byte = If(permissions.TryGetValue(2, u8), u8, 0)
+        Dim door3 As Byte = If(permissions.TryGetValue(3, u8), u8, 0)
+        Dim door4 As Byte = If(permissions.TryGetValue(4, u8), u8, 0)
 
         Dim result = UHPPOTE.PutCard(controller, card, startdate, enddate, door1, door2, door3, door4, PIN, TIMEOUT, OPTIONS)
 

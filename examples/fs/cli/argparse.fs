@@ -59,6 +59,29 @@ let (|Uint32List|_|) (value: string) =
     with _ ->
         None
 
+let (|Permissions|_|) (value: string) =
+    try
+        let parsed =
+            value.Split(',')
+            |> Seq.choose (fun v ->
+                let parts = v.Split(':')
+
+                match parts with
+                | [| key; value |] ->
+                    match System.Int32.TryParse(key.Trim()), System.Byte.TryParse(value.Trim()) with
+                    | (true, k), (true, v) -> Some(k, v)
+                    | _ -> None
+                | [| key |] ->
+                    match System.Int32.TryParse(key.Trim()) with
+                    | true, k -> Some(k, 1uy)
+                    | _ -> None
+                | _ -> None)
+            |> Map.ofSeq
+
+        Some parsed
+    with _ ->
+        None
+
 let rec argparse (args: string list) flag (defval: 'T) : 'T =
     match args with
     | arg :: value :: rest when arg = flag ->
@@ -74,6 +97,10 @@ let rec argparse (args: string list) flag (defval: 'T) : 'T =
         | _ when typeof<'T> = typeof<System.UInt32[]> ->
             match value with
             | Uint32List parsed -> unbox parsed
+            | _ -> defval
+        | _ when typeof<'T> = typeof<Map<Int32, Byte>> ->
+            match value with
+            | Permissions parsed -> unbox parsed
             | _ -> defval
         | _ -> defval
 
