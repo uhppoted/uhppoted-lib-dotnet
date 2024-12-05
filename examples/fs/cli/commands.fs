@@ -696,6 +696,26 @@ let setPCControl args =
         Ok()
     | Error err -> Error(err)
 
+let setInterlock args =
+    let controller = argparse args "--controller" CONTROLLER
+    let interlock = argparse args "--interlock" Interlock.None
+    let timeout = TIMEOUT
+
+    let options =
+        { OPTIONS with
+            endpoint = ENDPOINT
+            protocol = PROTOCOL }
+
+    match Uhppoted.SetInterlock(controller, interlock, timeout, options) with
+    | Ok ok ->
+        printfn "set-interlock"
+        printfn "  controller %u" controller
+        printfn "   interlock %A" interlock
+        printfn "          ok %b" ok
+        printfn ""
+        Ok()
+    | Error err -> Error(err)
+
 let commands =
     [ { command = "find-controllers"
         description = "Retrieves a list of controllers accessible on the local LAN"
@@ -811,4 +831,8 @@ let commands =
 
       { command = "set-pc-control"
         description = "Enables (or disables) remote access control management"
-        f = setPCControl } ]
+        f = setPCControl }
+
+      { command = "set-interlock"
+        description = "Sets the door interlock mode for a controller"
+        f = setInterlock } ]

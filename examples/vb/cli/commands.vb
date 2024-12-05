@@ -4,6 +4,7 @@ Imports System.Net
 Imports UHPPOTE = uhppoted.Uhppoted
 Imports OptionsBuilder = uhppoted.OptionsBuilder
 Imports DoorMode = uhppoted.DoorMode
+Imports Interlock = uhppoted.Interlock
 
 Public Structure Command
     Public ReadOnly command As String
@@ -104,7 +105,8 @@ Module Commands
            New Command("add-task", "Adds or updates a scheduled task stored on a controller", AddressOf AddTask),
            New Command("clear-tasklist", "Clears all scheduled tasks from the controller task list", AddressOf ClearTaskList),
            New Command("refresh-tasklist", "Schedules added tasks", AddressOf RefreshTaskList),
-           New Command("set-pc-control", "Enables (or disables) remote access control management", AddressOf SetPCControl)
+           New Command("set-pc-control", "Enables (or disables) remote access control management", AddressOf SetPCControl),
+           New Command("set-interlock", "Sets the door interlock mode for a controller", AddressOf SetInterlock)
        }
 
     Sub FindControllers(args As String())
@@ -733,7 +735,7 @@ Module Commands
     Sub SetPCControl(args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
         Dim enable = ArgParse.Parse(args, "--enable", False)
-        Dim result = UHPPOTE.RefreshTaskList(controller, TIMEOUT, OPTIONS)
+        Dim result = UHPPOTE.SetPCControl(controller, enable, TIMEOUT, OPTIONS)
 
         If (result.IsOk)
             Dim ok = result.ResultValue
@@ -741,6 +743,24 @@ Module Commands
             WriteLine("set-pc-control")
             WriteLine("  controller {0}", controller)
             WriteLine("      enable {0}", enable)
+            WriteLine("          ok {0}", ok)
+            WriteLine()
+        Else If (result.IsError)
+            Throw New Exception(result.ErrorValue)
+        End If
+    End Sub
+
+    Sub SetInterlock(args As String())
+        Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
+        Dim interlock As Interlock = ArgParse.Parse(args, "--interlock", Interlock.None)
+        Dim result = UHPPOTE.SetInterlock(controller, interlock, TIMEOUT, OPTIONS)
+
+        If (result.IsOk)
+            Dim ok = result.ResultValue
+
+            WriteLine("set-interlock")
+            WriteLine("  controller {0}", controller)
+            WriteLine("   interlock {0}", interlock)
             WriteLine("          ok {0}", ok)
             WriteLine()
         Else If (result.IsError)

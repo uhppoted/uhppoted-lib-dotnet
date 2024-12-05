@@ -324,7 +324,7 @@ module internal Encode =
 
         packet
 
-    let get_event_request (controller: uint32) (index: uint32) =
+    let getEventRequest (controller: uint32) (index: uint32) =
         let packet: byte array = Array.zeroCreate 64
 
         pack packet 0 (byte messages.SOM)
@@ -334,7 +334,7 @@ module internal Encode =
 
         packet
 
-    let get_event_index_request (controller: uint32) =
+    let getEventIndexRequest (controller: uint32) =
         let packet: byte array = Array.zeroCreate 64
 
         pack packet 0 (byte messages.SOM)
@@ -343,7 +343,7 @@ module internal Encode =
 
         packet
 
-    let set_event_index_request (controller: uint32) (index: uint32) =
+    let setEventIndexRequest (controller: uint32) (index: uint32) =
         let packet: byte array = Array.zeroCreate 64
 
         pack packet 0 (byte messages.SOM)
@@ -354,7 +354,7 @@ module internal Encode =
 
         packet
 
-    let record_special_events_request (controller: uint32) (enabled: bool) =
+    let recordSpecialEventsRequest (controller: uint32) (enabled: bool) =
         let packet: byte array = Array.zeroCreate 64
 
         pack packet 0 (byte messages.SOM)
@@ -460,5 +460,15 @@ module internal Encode =
         pack packet 4 controller
         pack packet 8 MAGIC_WORD
         pack packet 12 enable
+
+        packet
+
+    let setInterlockRequest (controller: uint32) (interlock: Interlock) =
+        let packet: byte array = Array.zeroCreate 64
+
+        pack packet 0 (byte messages.SOM)
+        pack packet 1 (byte messages.SET_INTERLOCK)
+        pack packet 4 controller
+        pack packet 8 (uint8 interlock)
 
         packet

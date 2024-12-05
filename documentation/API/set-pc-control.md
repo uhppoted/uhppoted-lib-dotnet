@@ -35,7 +35,7 @@ var controller = 405419896u;
 var enable = true;
 var timeout = 5000;
 var options = new OptionsBuilder().build();
-var result = RefreshTaskList(controller, timeout, options);
+var result = SetPCControl(controller, enable, timeout, options);
 
 if (result.IsOk)
 {

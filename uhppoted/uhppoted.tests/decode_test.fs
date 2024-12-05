@@ -278,7 +278,7 @@ type TestDecoder() =
 
     [<Test>]
     member this.TestDecodeGetEventResponse() =
-        let packet = TestResponses.get_event
+        let packet = TestResponses.getEvent
 
         let expected: GetEventResponse =
             { controller = 405419896u
@@ -291,39 +291,39 @@ type TestDecoder() =
               card = 10058400u
               reason = 21uy }
 
-        match Decode.get_event_response packet with
+        match Decode.getEventResponse packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)
 
     [<Test>]
     member this.TestDecodeGetEventIndexResponse() =
-        let packet = TestResponses.get_event_index
+        let packet = TestResponses.getEventIndex
 
         let expected: GetEventIndexResponse =
             { controller = 405419896u
               index = 13579u }
 
-        match Decode.get_event_index_response packet with
+        match Decode.getEventIndexResponse packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)
 
     [<Test>]
     member this.TestDecodeSetEventIndexResponse() =
-        let packet = TestResponses.set_event_index
+        let packet = TestResponses.setEventIndex
 
         let expected: SetEventIndexResponse = { controller = 405419896u; ok = true }
 
-        match Decode.set_event_index_response packet with
+        match Decode.setEventIndexResponse packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)
 
     [<Test>]
     member this.TestDecodeRecordSpecialEventsResponse() =
-        let packet = TestResponses.record_special_events
+        let packet = TestResponses.recordSpecialEvents
 
         let expected: RecordSpecialEventsResponse = { controller = 405419896u; ok = true }
 
-        match Decode.record_special_events_response packet with
+        match Decode.recordSpecialEventsResponse packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)
 
@@ -412,5 +412,15 @@ type TestDecoder() =
         let expected: SetPCControlResponse = { controller = 405419896u; ok = true }
 
         match Decode.setPCControlResponse packet with
+        | Ok response -> Assert.That(response, Is.EqualTo(expected))
+        | Error err -> Assert.Fail(err)
+
+    [<Test>]
+    member this.TestDecodeSetInterlockResponse() =
+        let packet = TestResponses.setInterlock
+
+        let expected: SetInterlockResponse = { controller = 405419896u; ok = true }
+
+        match Decode.setInterlockResponse packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)

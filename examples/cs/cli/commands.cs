@@ -111,6 +111,7 @@ class Commands
           new Command ("clear-tasklist", "Clears all scheduled tasks from the controller task list", ClearTaskList),
           new Command ("refresh-tasklist", "Schedules added tasks", RefreshTaskList),
           new Command ("set-pc-control", "Enables (or disables) remote access control management", SetPCControl),
+          new Command ("set-interlock", "Sets the door interlock mode for a controller", SetInterlock),
     };
 
     public static void FindControllers(string[] args)
@@ -480,7 +481,7 @@ class Commands
     public static void GetCardAtIndex(string[] args)
     {
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
-        var index = ArgParse.Parse(args, "--index",CARD_INDEX);
+        var index = ArgParse.Parse(args, "--index", CARD_INDEX);
         var timeout = TIMEOUT;
         var options = OPTIONS;
         var result = Uhppoted.GetCardAtIndex(controller, index, timeout, options);
@@ -916,6 +917,30 @@ class Commands
             WriteLine("set-pc-control");
             WriteLine("  controller {0}", controller);
             WriteLine("      enable {0}", enable);
+            WriteLine("          ok {0}", ok);
+            WriteLine();
+        }
+        else if (result.IsError)
+        {
+            throw new Exception(result.ErrorValue);
+        }
+    }
+
+    public static void SetInterlock(string[] args)
+    {
+        var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
+        var interlock = ArgParse.Parse(args, "--interlock", Interlock.None);
+        var timeout = TIMEOUT;
+        var options = OPTIONS;
+        var result = Uhppoted.SetInterlock(controller, interlock, timeout, options);
+
+        if (result.IsOk)
+        {
+            var ok = result.ResultValue;
+
+            WriteLine("set-interlock");
+            WriteLine("  controller {0}", controller);
+            WriteLine("   interlock {0}", interlock);
             WriteLine("          ok {0}", ok);
             WriteLine();
         }

@@ -215,40 +215,40 @@ type TestEncoder() =
 
     [<Test>]
     member this.TestEncodeGetEventRequest() =
-        let expected = TestRequests.get_event
+        let expected = TestRequests.getEvent
 
         let controller = 405419896u
         let index = 13579u
-        let packet = Encode.get_event_request controller index
+        let packet = Encode.getEventRequest controller index
 
         Assert.That(packet, Is.EqualTo(expected))
 
     [<Test>]
     member this.TestEncodeGetEventIndexRequest() =
-        let expected = TestRequests.get_event_index
+        let expected = TestRequests.getEventIndex
 
         let controller = 405419896u
-        let packet = Encode.get_event_index_request controller
+        let packet = Encode.getEventIndexRequest controller
 
         Assert.That(packet, Is.EqualTo(expected))
 
     [<Test>]
     member this.TestEncodeSetEventIndexRequest() =
-        let expected = TestRequests.set_event_index
+        let expected = TestRequests.setEventIndex
 
         let controller = 405419896u
         let index = 13579u
-        let packet = Encode.set_event_index_request controller index
+        let packet = Encode.setEventIndexRequest controller index
 
         Assert.That(packet, Is.EqualTo(expected))
 
     [<Test>]
     member this.TestRecordSpecialEventsRequest() =
-        let expected = TestRequests.record_special_events
+        let expected = TestRequests.recordSpecialEvents
 
         let controller = 405419896u
         let enabled = true
-        let packet = Encode.record_special_events_request controller enabled
+        let packet = Encode.recordSpecialEventsRequest controller enabled
 
         Assert.That(packet, Is.EqualTo(expected))
 
@@ -350,5 +350,15 @@ type TestEncoder() =
         let controller = 405419896u
         let enable = true
         let packet = Encode.setPCControlRequest controller true
+
+        Assert.That(packet, Is.EqualTo(expected))
+
+    [<Test>]
+    member this.TestSetInterlockRequest() =
+        let expected = TestRequests.setInterlock
+
+        let controller = 405419896u
+        let interlock = Interlock.Doors1234
+        let packet = Encode.setInterlockRequest controller interlock
 
         Assert.That(packet, Is.EqualTo(expected))

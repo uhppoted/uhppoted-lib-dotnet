@@ -106,28 +106,28 @@ module Messages =
             responses = [ Responses.delete_all_cards ] }
 
           { test = "get-event"
-            request = Requests.get_event
-            responses = [ Responses.get_event ] }
+            request = Requests.getEvent
+            responses = [ Responses.getEvent ] }
 
           { test = "get-event-not-found"
-            request = Requests.get_event_not_found
-            responses = [ Responses.get_event_not_found ] }
+            request = Requests.getEventNotFound
+            responses = [ Responses.getEventNotFound ] }
 
-          { test = "get-event-overwritten"
-            request = Requests.get_event_overwritten
-            responses = [ Responses.get_event_overwritten ] }
+          { test = "getEventOverwritten"
+            request = Requests.getEventOverwritten
+            responses = [ Responses.getEventOverwritten ] }
 
           { test = "get-event-index"
-            request = Requests.get_event_index
-            responses = [ Responses.get_event_index ] }
+            request = Requests.getEventIndex
+            responses = [ Responses.getEventIndex ] }
 
           { test = "set-event-index"
-            request = Requests.set_event_index
-            responses = [ Responses.set_event_index ] }
+            request = Requests.setEventIndex
+            responses = [ Responses.setEventIndex ] }
 
           { test = "record-special-events"
-            request = Requests.record_special_events
-            responses = [ Responses.record_special_events ] }
+            request = Requests.recordSpecialEvents
+            responses = [ Responses.recordSpecialEvents ] }
 
           { test = "get-time-profile"
             request = Requests.getTimeProfile
@@ -159,7 +159,12 @@ module Messages =
 
           { test = "set-pc-control"
             request = Requests.setPCControl
-            responses = [ Responses.setPCControl ] } ]
+            responses = [ Responses.setPCControl ] }
+
+          { test = "set-interlock"
+            request = Requests.setInterlock
+            responses = [ Responses.setInterlock ] } ]
+
 
 
     let find request =

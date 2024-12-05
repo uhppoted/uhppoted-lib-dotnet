@@ -16,6 +16,7 @@ TASK ?= 4
 PCCONTROL ?= true
 STARTDATE ?= 2024-02-03
 ENDDATE ?= 2024-12-29
+INTERLOCK ?= "1&2,3&4"
 
 clean:
 	dotnet clean
@@ -127,5 +128,8 @@ refresh-tasklist: build
 	$(CLI) refresh-tasklist --controller $(CONTROLLER)
 
 set-pc-control: build
-	$(CLI) set-pc-control --controller $(CONTROLLER) --enabl $(PCCONTROL)
+	$(CLI) set-pc-control --controller $(CONTROLLER) --enable $(PCCONTROL)
+
+set-interlock: build
+	$(CLI) set-interlock --controller $(CONTROLLER) --interlock $(INTERLOCK)
 

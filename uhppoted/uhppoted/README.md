@@ -99,6 +99,9 @@ Schedules added tasks.
 ### [`SetPCControl`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/set-pc-control.md)
 Enables/disables remote access control management. 
 
+### [`SetInterlock`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/set-interlock.md)
+Sets the door interlock mode for an access controller.
+
 
 ## Notes
 

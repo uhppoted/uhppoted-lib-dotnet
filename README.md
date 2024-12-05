@@ -116,6 +116,9 @@ Schedules added tasks.
 ### [`SetPCControl`](documentation/API/set-pc-control.md)
 Enables/disables remote access control management. 
 
+### [`SetInterlock`](sdocumentation/API/set-interlock.md)
+Sets the door interlock mode for an access controller.
+
 ## Notes
 
 ### C# Interop

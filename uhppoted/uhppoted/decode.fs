@@ -299,7 +299,7 @@ module internal Decode =
                 { controller = unpack_u32 packet[4..]
                   ok = unpack_bool (packet[8..]) }
 
-    let get_event_response (packet: byte array) : Result<GetEventResponse, string> =
+    let getEventResponse (packet: byte array) : Result<GetEventResponse, string> =
         if packet[0] <> messages.SOM then
             Error("invalid controller response")
         else if packet[1] <> messages.GET_EVENT then
@@ -316,7 +316,7 @@ module internal Decode =
                   timestamp = unpack_datetime (packet[20..])
                   reason = unpack_u8 (packet[27..]) }
 
-    let get_event_index_response (packet: byte array) : Result<GetEventIndexResponse, string> =
+    let getEventIndexResponse (packet: byte array) : Result<GetEventIndexResponse, string> =
         if packet[0] <> messages.SOM then
             Error("invalid controller response")
         else if packet[1] <> messages.GET_EVENT_INDEX then
@@ -326,7 +326,7 @@ module internal Decode =
                 { controller = unpack_u32 packet[4..]
                   index = unpack_u32 packet[8..] }
 
-    let set_event_index_response (packet: byte array) : Result<SetEventIndexResponse, string> =
+    let setEventIndexResponse (packet: byte array) : Result<SetEventIndexResponse, string> =
         if packet[0] <> messages.SOM then
             Error("invalid controller response")
         else if packet[1] <> messages.SET_EVENT_INDEX then
@@ -336,7 +336,7 @@ module internal Decode =
                 { controller = unpack_u32 packet[4..]
                   ok = unpack_bool packet[8..] }
 
-    let record_special_events_response (packet: byte array) : Result<RecordSpecialEventsResponse, string> =
+    let recordSpecialEventsResponse (packet: byte array) : Result<RecordSpecialEventsResponse, string> =
         if packet[0] <> messages.SOM then
             Error("invalid controller response")
         else if packet[1] <> messages.RECORD_SPECIAL_EVENTS then
@@ -427,6 +427,16 @@ module internal Decode =
             Error("invalid controller response")
         else if packet[1] <> messages.SET_PC_CONTROL then
             Error("invalid set-pc-control response")
+        else
+            Ok
+                { controller = unpack_u32 packet[4..]
+                  ok = unpack_bool (packet[8..]) }
+
+    let setInterlockResponse (packet: byte array) : Result<SetInterlockResponse, string> =
+        if packet[0] <> messages.SOM then
+            Error("invalid controller response")
+        else if packet[1] <> messages.SET_INTERLOCK then
+            Error("invalid set-interlock response")
         else
             Ok
                 { controller = unpack_u32 packet[4..]

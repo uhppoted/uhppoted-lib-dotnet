@@ -17,6 +17,7 @@
       - [ ] event reasons
       - [ ] event direction
       - [ ] tasks
+      - [ ] interlock
       - https://stackoverflow.com/questions/2689446/how-to-manage-resources-in-an-f-project
       - https://fsprojects.github.io/FSharp.Configuration/ResXProvider.html
       - https://poeditor.com/kb/resx-editor
@@ -84,7 +85,8 @@
       - [x] clear-task-list
       - [x] refresh-task-list
       - [x] set-pc-control
-      - [ ] set-interlock
+      - [x] set-interlock
+      - [ ] activate-keypads
             - [ ] API function
             - [ ] CLI
                   - [ ] F#
@@ -94,7 +96,6 @@
             - [ ] API doc
             - [ ] README
       
-      - [ ] activate-keypads
       - [ ] restore-default-parameters
       - [ ] listen
 

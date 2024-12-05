@@ -29,6 +29,7 @@
 - [`ClearTaskList`](clear-tasklist.md)
 - [`RefreshTaskList`](refresh-tasklist.md)
 - [`SetPCControl`](set-pc-control.md)
+- [`SetInterlock`](set-interlock.md)
 
 ## Options
 
@@ -81,3 +82,16 @@ Private ReadOnly Dim options = New OptionsBuilder().
                                    WithDebug(True).
                                    Build()
 ```
+
+## enums
+
+### Interlock
+
+Defines the door interlocks for an access controller:
+
+- `None`: no interlock
+- `Doors12`: interlocks doors 1 & 2
+- `Doors34`: interlocks doors 3 & 4
+- `Doors12And34`: interlocks doors 1 & 2 and doors 3 & 4
+- `Doors123`: interlock between doors 1, 2 & 3
+- `Doors1234`: interlocks all doors

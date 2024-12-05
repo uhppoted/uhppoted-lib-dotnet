@@ -16,6 +16,7 @@ TASK ?= 4
 PCCONTROL ?= true
 STARTDATE ?= 2024-02-03
 ENDDATE ?= 2024-12-29
+INTERLOCK ?= "1&2,3&4"
 
 clean:
 	dotnet clean
@@ -24,6 +25,7 @@ format:
 	dotnet fantomas .
 
 build:
+#	export DOTNET7=true && dotnet build && dotnet fantomas .
 	dotnet build
 	dotnet fantomas .
 
@@ -37,9 +39,9 @@ release: build test integration-tests
 	cd uhppoted && make release
 
 debug: build
-	dotnet run --project ../examples/fs/cli --framework net7.0 put-card --controller $(CONTROLLER) --card $(CARD) --start-date $(STARTDATE) --end-date $(ENDDATE)
-	dotnet run --project ../examples/cs/cli --framework net7.0 put-card --controller $(CONTROLLER) --card $(CARD) --start-date $(STARTDATE) --end-date $(ENDDATE)
-	dotnet run --project ../examples/vb/cli --framework net7.0 put-card --controller $(CONTROLLER) --card $(CARD) --start-date $(STARTDATE) --end-date $(ENDDATE)
+	dotnet run --project ../examples/fs/cli --framework net7.0 set-interlock --controller $(CONTROLLER) --interlock $(INTERLOCK)
+	dotnet run --project ../examples/cs/cli --framework net7.0 set-interlock --controller $(CONTROLLER) --interlock $(INTERLOCK)
+	dotnet run --project ../examples/vb/cli --framework net7.0 set-interlock --controller $(CONTROLLER) --interlock $(INTERLOCK)
 
 find-controllers: build
 	$(CLI) find-controllers
@@ -136,5 +138,9 @@ refresh-tasklist: build
 	$(CLI) refresh-tasklist --controller $(CONTROLLER)
 
 set-pc-control: build
-	$(CLI) set-pc-control --controller $(CONTROLLER) --enabl $(PCCONTROL)
+	$(CLI) set-pc-control --controller $(CONTROLLER) --enable $(PCCONTROL)
+
+set-interlock: build
+	$(CLI) set-interlock --controller $(CONTROLLER) --interlock $(INTERLOCK)
+
 

@@ -490,9 +490,9 @@ module Uhppoted =
     // record does not exist or if the event has been overwritten.
     /// </returns>
     let GetEvent (controller: uint32, index: uint32, timeout: int, options: Options) =
-        let request = Encode.get_event_request controller index
+        let request = Encode.getEventRequest controller index
 
-        match exec controller request Decode.get_event_response timeout options with
+        match exec controller request Decode.getEventResponse timeout options with
         | Ok response when response.event = 0x00uy -> // not found
             Ok(Nullable())
         | Ok response when response.event = 0xffuy -> // overwritten
@@ -521,9 +521,9 @@ module Uhppoted =
     /// Ok with current controller event indexEvent record at the index or Error.
     /// </returns>
     let GetEventIndex (controller: uint32, timeout: int, options: Options) =
-        let request = Encode.get_event_index_request controller
+        let request = Encode.getEventIndexRequest controller
 
-        match exec controller request Decode.get_event_index_response timeout options with
+        match exec controller request Decode.getEventIndexResponse timeout options with
         | Ok response -> Ok response.index
         | Error err -> Error err
 
@@ -538,9 +538,9 @@ module Uhppoted =
     /// Ok with true if the event index was updated (false if it was unchanged) or Error.
     /// </returns>
     let SetEventIndex (controller: uint32, index: uint32, timeout: int, options: Options) =
-        let request = Encode.set_event_index_request controller index
+        let request = Encode.setEventIndexRequest controller index
 
-        match exec controller request Decode.set_event_index_response timeout options with
+        match exec controller request Decode.setEventIndexResponse timeout options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 
@@ -555,9 +555,9 @@ module Uhppoted =
     /// Ok with true if the 'special events' mode was set or Error.
     /// </returns>
     let RecordSpecialEvents (controller: uint32, enable: bool, timeout: int, options: Options) =
-        let request = Encode.record_special_events_request controller enable
+        let request = Encode.recordSpecialEventsRequest controller enable
 
-        match exec controller request Decode.record_special_events_response timeout options with
+        match exec controller request Decode.recordSpecialEventsResponse timeout options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 
@@ -687,7 +687,7 @@ module Uhppoted =
 
     /// <summary>
     /// Enables/disables remote access control management. The access controller will revert to standalone access
-    //  control managment if it does not receive a command from the 'PC' at least every 30 seconds.
+    /// control managment if it does not receive a command from the 'PC' at least every 30 seconds.
     /// </summary>
     /// <param name="controller">Controller ID.</param>
     /// <param name="enable">Enables or disables remote access control management.</param>
@@ -700,5 +700,22 @@ module Uhppoted =
         let request = Encode.setPCControlRequest controller enable
 
         match exec controller request Decode.setPCControlResponse timeout options with
+        | Ok response -> Ok response.ok
+        | Error err -> Error err
+
+    /// <summary>
+    /// Sets the access controller door interlocks.
+    /// </summary>
+    /// <param name="controller">Controller ID.</param>
+    /// <param name="interlock">Door interlocks (none, 1&2, 3&4, 1&2 and 3&4, 1&2&3 or 1&2&3&4.</param>
+    /// <param name="timeout">Operation timeout (ms).</param>
+    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <returns>
+    /// Result with the boolean success/fail result or an Error if the request failed.
+    /// </returns>
+    let SetInterlock (controller: uint32, interlock: Interlock, timeout: int, options: Options) =
+        let request = Encode.setInterlockRequest controller interlock
+
+        match exec controller request Decode.setInterlockResponse timeout options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
