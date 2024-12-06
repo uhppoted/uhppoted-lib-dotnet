@@ -24,13 +24,19 @@ A `Status` record includes the following fields:
 - `SystemDateTime` (`Nullable<DateOnly>`): Current controller date/time.
 - `SequenceNumber` (`uint32`): Message sequence number.
 - `SpecialInfo` (`uint8`): Special info code.
-- `Relays` (`uint8`) Bitmask for door relays 1 to 4.
-- `Inputs` (`uint8`) Bitmask for door inputs 1 to 4.
+- `Relay1` (`Relay`): Relay 1 state (`Open` or `Closed`).
+- `Relay2` (`Relay`): Relay 2 state (`Open` or `Closed`).
+- `Relay3` (`Relay`): Relay 3 state (`Open` or `Closed`).
+- `Relay4` (`Relay`): Relay 4 state (`Open` or `Closed`).
+- `Input1` (`Input`): Input 1 contact state (`Open` or `Closed`).
+- `Input2` (`Input`): Input 2 contact state (`Open` or `Closed`).
+- `Input3` (`Input`): Input 3 contact state (`Open` or `Closed`).
+- `Input4` (`Input`): Input 4 contact state (`Open` or `Closed`).
 - `EventIndex` (`uint32`) Index of most recent event (0 if none).
 - `EventType (`uint8`) Event type.
 - `EventAccessGranted (`bool`) Event access granted.
 - `EventDoor (`uint8`) Event door.
-- `EventDirection (`uint8`) Event direction (IN/OUT).
+- `EventDirection (`uint8`) Event direction (`In` or `Out`).
 - `EventCard (`uint32`) Event card (0 if none).
 - `EventTimestamp (`DateTime Nullable`) Event timestamp.
 - `EventReason (`uint8`) Event reason code.

@@ -259,7 +259,7 @@ let get_status args =
         printfn "        door 1 open %b" record.Door1Open
         printfn "        door 2 open %b" record.Door2Open
         printfn "        door 3 open %b" record.Door3Open
-        printfn "        door 4 open %b" record.Door3Open
+        printfn "        door 4 open %b" record.Door4Open
         printfn "   button 1 pressed %b" record.Button1Pressed
         printfn "   button 2 pressed %b" record.Button2Pressed
         printfn "   button 3 pressed %b" record.Button3Pressed
@@ -268,8 +268,14 @@ let get_status args =
         printfn "   system date/time %A" (YYYYMMDDHHmmss(record.SystemDateTime))
         printfn "       sequence no. %u" record.SequenceNumber
         printfn "       special info %u" record.SpecialInfo
-        printfn "             relays %02x" record.Relays
-        printfn "             inputs %02x" record.Inputs
+        printfn "            relay 1 %A" record.Relay1
+        printfn "            relay 2 %A" record.Relay2
+        printfn "            relay 3 %A" record.Relay3
+        printfn "            relay 4 %A" record.Relay4
+        printfn "            input 1 %A" record.Input1
+        printfn "            input 2 %A" record.Input2
+        printfn "            input 3 %A" record.Input3
+        printfn "            input 4 %A" record.Input4
         printfn ""
         printfn "    event index     %u" record.EventIndex
         printfn "          event     %u" record.EventType

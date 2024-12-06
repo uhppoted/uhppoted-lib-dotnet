@@ -216,7 +216,7 @@ module Uhppoted =
         | Ok response ->
             Ok(
                 Nullable
-                    { mode = Enums.toDoorMode response.mode
+                    { mode = Enums.doorMode response.mode
                       delay = response.delay }
             )
         | Error err -> Error err
@@ -238,7 +238,7 @@ module Uhppoted =
         | Ok response ->
             Ok(
                 Nullable
-                    { mode = Enums.toDoorMode response.mode
+                    { mode = Enums.doorMode response.mode
                       delay = response.delay }
             )
         | Error err -> Error err
@@ -316,13 +316,19 @@ module Uhppoted =
                   SystemDateTime = response.system_datetime
                   SequenceNumber = response.sequence_number
                   SpecialInfo = response.special_info
-                  Relays = response.relays
-                  Inputs = response.inputs
+                  Relay1 = Enums.relay response.relays 0x01uy
+                  Relay2 = Enums.relay response.relays 0x02uy
+                  Relay3 = Enums.relay response.relays 0x04uy
+                  Relay4 = Enums.relay response.relays 0x08uy
+                  Input1 = Enums.input response.inputs 0x01uy
+                  Input2 = Enums.input response.inputs 0x02uy
+                  Input3 = Enums.input response.inputs 0x04uy
+                  Input4 = Enums.input response.inputs 0x08uy
                   EventIndex = response.evt.index
                   EventType = response.evt.event_type
                   EventAccessGranted = response.evt.granted
                   EventDoor = response.evt.door
-                  EventDirection = Enums.toDirection response.evt.direction
+                  EventDirection = Enums.direction response.evt.direction
                   EventCard = response.evt.card
                   EventTimestamp = response.evt.timestamp
                   EventReason = response.evt.reason }
@@ -505,7 +511,7 @@ module Uhppoted =
                       EventType = response.event
                       AccessGranted = response.granted
                       Door = response.door
-                      Direction = Enums.toDirection response.direction
+                      Direction = Enums.direction response.direction
                       Card = response.card
                       Reason = response.reason }
             )

@@ -17,6 +17,16 @@ The `Ok` value is:
 - `null` if there was no record at the index.
 - `null` if the record at the index was deleted.
 
+A `Card` record has the following fields:
+  - `Card` (`uint32`): Card number.
+  - `StartDate` (`DateOnly`): Date from which card is valid.
+  - `EndDate` (`DateOnly`): Date after which card is no longer valid.
+  - `Door1` (`uint8`): Door 1 access permission (0: NONE, 1: ALWAYS, [2..254]: time profile).
+  - `Door2` (`uint8`): Door 2 access permission (0: NONE, 1: ALWAYS, [2..254]: time profile).
+  - `Door3` (`uint8`): Door 3 access permission (0: NONE, 1: ALWAYS, [2..254]: time profile).
+  - `Door4` (`uint8`): Door 4 access permission (0: NONE, 1: ALWAYS, [2..254]: time profile).
+  - `PIN (`uint32`): Optional card PIN (0 for _none_).
+
 ### Examples
 
 ```fsharp
@@ -69,13 +79,3 @@ End If
 ```
 
 ### Notes
-- The `Card` struct is defined as:
-  - `card` (`uint32`): Card number.
-  - `startdate` (`DateOnly`): Date from which card is valid.
-  - `enddate` (`DateOnly`): Date after which card is no longer valid.
-  - `door1` (`uint8`): Door 1 access permission (0: NONE, 1: ALWAYS, [2..254]: time profile).
-  - `door2` (`uint8`): Door 2 access permission (0: NONE, 1: ALWAYS, [2..254]: time profile).
-  - `door3` (`uint8`): Door 3 access permission (0: NONE, 1: ALWAYS, [2..254]: time profile).
-  - `door4` (`uint8`): Door 4 access permission (0: NONE, 1: ALWAYS, [2..254]: time profile).
-  - `PIN (`uint32`): Optional card PIN (0 for _none_).
-

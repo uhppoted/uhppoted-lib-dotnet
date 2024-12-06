@@ -394,7 +394,7 @@ class Commands
             WriteLine("        door 1 open {0}", record.Door1Open);
             WriteLine("        door 2 open {0}", record.Door2Open);
             WriteLine("        door 3 open {0}", record.Door3Open);
-            WriteLine("        door 4 open {0}", record.Door3Open);
+            WriteLine("        door 4 open {0}", record.Door4Open);
             WriteLine("   button 1 pressed {0}", record.Button1Pressed);
             WriteLine("   button 2 pressed {0}", record.Button2Pressed);
             WriteLine("   button 3 pressed {0}", record.Button3Pressed);
@@ -403,8 +403,14 @@ class Commands
             WriteLine("   system date/time {0}", YYYYMMDDHHmmss(record.SystemDateTime));
             WriteLine("       sequence no. {0}", record.SequenceNumber);
             WriteLine("       special info {0}", record.SpecialInfo);
-            WriteLine("             relays {0:X}", record.Relays);
-            WriteLine("             inputs {0:X}", record.Inputs);
+            WriteLine("            relay 1 {0}", record.Relay1);
+            WriteLine("            relay 2 {0}", record.Relay2);
+            WriteLine("            relay 3 {0}", record.Relay3);
+            WriteLine("            relay 4 {0}", record.Relay4);
+            WriteLine("            input 1 {0}", record.Input1);
+            WriteLine("            input 2 {0}", record.Input2);
+            WriteLine("            input 3 {0}", record.Input3);
+            WriteLine("            input 4 {0}", record.Input4);
             WriteLine();
             WriteLine("    event index     {0}", record.EventIndex);
             WriteLine("          event     {0}", record.EventType);

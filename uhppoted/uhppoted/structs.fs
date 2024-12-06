@@ -32,8 +32,14 @@ type Status =
       SystemDateTime: DateTime Nullable
       SequenceNumber: uint32
       SpecialInfo: uint8
-      Relays: uint8
-      Inputs: uint8
+      Relay1: Relay
+      Relay2: Relay
+      Relay3: Relay
+      Relay4: Relay
+      Input1: Input
+      Input2: Input
+      Input3: Input
+      Input4: Input
       EventIndex: uint32
       EventTimestamp: DateTime Nullable
       EventType: uint8

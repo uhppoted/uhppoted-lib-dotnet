@@ -50,15 +50,37 @@ type Interlock =
     /// <summary>Unknown interlock mode.</summary>
     | Unknown = 255
 
+/// <summary>Defines whether a relay is open or closed.</summary>
+type Relay =
+    /// <summary>Unknown state.</summary>
+    | Unknown = 0
+
+    /// <summary>Relay is in the 'open' state.</summary>
+    | Open = 1
+
+    /// <summary>Relay is in the 'closed' state.</summary>
+    | Closed = 2
+
+/// <summary>Defines whether an input contact is open or closed.</summary>
+type Input =
+    /// <summary>Unknown state.</summary>
+    | Unknown = 0
+
+    /// <summary>Input contact is in the 'open' state.</summary>
+    | Open = 1
+
+    /// <summary>Input contact is in the 'closed' state.</summary>
+    | Closed = 2
+
 module internal Enums =
-    let internal toDoorMode (v: uint8) : DoorMode =
+    let internal doorMode (v: uint8) : DoorMode =
         match v with
         | 1uy -> DoorMode.NormallyOpen
         | 2uy -> DoorMode.NormallyClosed
         | 3uy -> DoorMode.Controlled
         | _ -> DoorMode.Unknown
 
-    let internal toInterlock (v: uint8) : Interlock =
+    let internal interlock (v: uint8) : Interlock =
         match v with
         | 0uy -> Interlock.None
         | 1uy -> Interlock.Doors12
@@ -68,8 +90,14 @@ module internal Enums =
         | 8uy -> Interlock.Doors1234
         | _ -> Interlock.Unknown
 
-    let internal toDirection (v: uint8) : Direction =
+    let internal direction (v: uint8) : Direction =
         match v with
         | 1uy -> Direction.In
         | 2uy -> Direction.Out
         | _ -> Direction.Unknown
+
+    let internal relay (v: uint8) (mask: uint8) : Relay =
+        if v &&& mask = mask then Relay.Closed else Relay.Open
+
+    let internal input (v: uint8) (mask: uint8) : Input =
+        if v &&& mask = mask then Input.Closed else Input.Open

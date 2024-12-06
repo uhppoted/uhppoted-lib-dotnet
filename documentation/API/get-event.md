@@ -17,14 +17,14 @@ The `Ok` value is:
 - `null` if the record at the index was deleted.
 
 The `Event` record has the following fields:
-  - `timestamp` (`DateTime`): Timestamp of event.
-  - `index` (`uint32`): Event index.
-  - `event_type` (`uint8`): Event type.
-  - `access_granted` (`bool`): `true` if access to the door was granted.
-  - `door` (`uint8`): Door [1..4] for event.
-  - `direction` (`uint8`): 1(IN), or 2(OUT).
-  - `card` (`uint32`): Card number.
-  - `reason (`uint8`): Reason code for access granted/denied.
+  - `Timestamp` (`DateTime`): Timestamp of event.
+  - `Index` (`uint32`): Event index.
+  - `EventType` (`uint8`): Event type.
+  - `AccessGranted` (`bool`): `true` if access to the door was granted.
+  - `Door` (`uint8`): Door [1..4] for event.
+  - `Direction` (`Direction`): `In` or `Out`.
+  - `Card` (`uint32`): Card number.
+  - `Reason (`uint8`): Reason code for access granted/denied.
 
 
 ### Examples

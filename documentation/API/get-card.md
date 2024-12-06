@@ -16,13 +16,13 @@ The `Ok` value is:
 - `null` if there was no record for the card number.
 
 A `Card` record has the following fields:
-  - `card` (`uint32`): Card number.
-  - `startdate` (`DateOnly`): Date from which card is valid.
-  - `enddate` (`DateOnly`): Date after which card is no longer valid.
-  - `door1` (`uint8`): Door 1 access permission (0: NONE, 1: ALWAYS, [2..254]: time profile).
-  - `door2` (`uint8`): Door 2 access permission (0: NONE, 1: ALWAYS, [2..254]: time profile).
-  - `door3` (`uint8`): Door 3 access permission (0: NONE, 1: ALWAYS, [2..254]: time profile).
-  - `door4` (`uint8`): Door 4 access permission (0: NONE, 1: ALWAYS, [2..254]: time profile).
+  - `Card` (`uint32`): Card number.
+  - `StartDate` (`DateOnly`): Date from which card is valid.
+  - `EndDate` (`DateOnly`): Date after which card is no longer valid.
+  - `Door1` (`uint8`): Door 1 access permission (0: NONE, 1: ALWAYS, [2..254]: time profile).
+  - `Door2` (`uint8`): Door 2 access permission (0: NONE, 1: ALWAYS, [2..254]: time profile).
+  - `Door3` (`uint8`): Door 3 access permission (0: NONE, 1: ALWAYS, [2..254]: time profile).
+  - `Door4` (`uint8`): Door 4 access permission (0: NONE, 1: ALWAYS, [2..254]: time profile).
   - `PIN (`uint32`): Optional card PIN (0 for _none_).
 
 ### Examples
