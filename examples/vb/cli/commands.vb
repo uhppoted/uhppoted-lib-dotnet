@@ -427,7 +427,7 @@ Module Commands
         Dim startdate = ArgParse.Parse(args, "--start-date", START_DATE)
         Dim enddate = ArgParse.Parse(args, "--end-date", END_DATE)
         Dim permissions = ArgParse.Parse(args, "--permissions", New Dictionary(Of Integer, Byte))
-        Dim PIN = ArgParse.Parse(args, "--PIN", 0)
+        Dim PIN = ArgParse.Parse(args, "--PIN", CUint(0))
 
         Dim u8 As Byte
         Dim door1 As Byte = If(permissions.TryGetValue(1, u8), u8, 0)

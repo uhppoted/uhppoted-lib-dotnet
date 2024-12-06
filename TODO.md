@@ -41,11 +41,11 @@
       - [x] --start-date
       - [x] --end-date
       - [x] --permissions
-      - [ ] --PIN
+      - [x] --PIN
+      - [ ] --weekdays
             - [ ] F#
             - [ ] C#
             - [ ] VB.NET
-      - [ ] --weekdays
       - [ ] --segments
       - [ ] --task
       - [ ] --interlock

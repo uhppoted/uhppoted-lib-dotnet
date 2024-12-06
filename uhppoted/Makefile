@@ -17,6 +17,7 @@ PCCONTROL ?= true
 START_DATE ?= 2024-02-03
 END_DATE ?= 2024-12-29
 PERMISSIONS ?= "1,2,4:17"
+PIN ?= 7531
 INTERLOCK ?= "1&2,3&4"
 
 clean:
@@ -40,9 +41,9 @@ release: build test integration-tests
 	cd uhppoted && make release
 
 debug: build
-	dotnet run --project ../examples/fs/cli --framework net7.0 put-card --controller $(CONTROLLER) --card $(CARD) --start-date $(START_DATE) --end-date $(END_DATE) --permissions $(PERMISSIONS)
-	dotnet run --project ../examples/cs/cli --framework net7.0 put-card --controller $(CONTROLLER) --card $(CARD) --start-date $(START_DATE) --end-date $(END_DATE) --permissions $(PERMISSIONS)
-	dotnet run --project ../examples/vb/cli --framework net7.0 put-card --controller $(CONTROLLER) --card $(CARD) --start-date $(START_DATE) --end-date $(END_DATE) --permissions $(PERMISSIONS)
+	dotnet run --project ../examples/fs/cli --framework net7.0 put-card --controller $(CONTROLLER) --card $(CARD) --start-date $(START_DATE) --end-date $(END_DATE) --permissions $(PERMISSIONS) --PIN 7531
+	dotnet run --project ../examples/cs/cli --framework net7.0 put-card --controller $(CONTROLLER) --card $(CARD) --start-date $(START_DATE) --end-date $(END_DATE) --permissions $(PERMISSIONS) --PIN 7531
+	dotnet run --project ../examples/vb/cli --framework net7.0 put-card --controller $(CONTROLLER) --card $(CARD) --start-date $(START_DATE) --end-date $(END_DATE) --permissions $(PERMISSIONS) --PIN 7531
 
 find-controllers: build
 	$(CLI) find-controllers
@@ -91,7 +92,7 @@ get-card-at-index: build
 	$(CLI) get-card-at-index --controller $(CONTROLLER)
 
 put-card: build
-	$(CLI) put-card --controller $(CONTROLLER) --card $(CARD) --start-date $(START_DATE) --end-date $(END_DATE) --permissions $(PERMISSIONS)
+	$(CLI) put-card --controller $(CONTROLLER) --card $(CARD) --start-date $(START_DATE) --end-date $(END_DATE) --permissions $(PERMISSIONS) --PIN $(PIN)
 
 delete-card: build
 	$(CLI) delete-card --controller $(CONTROLLER) --card $(CARD)
