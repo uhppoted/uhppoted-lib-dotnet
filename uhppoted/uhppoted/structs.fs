@@ -373,3 +373,10 @@ type internal SetInterlockResponse =
 
     interface IResponse with
         member this.controller = this.controller
+
+type internal ActivateKeypadsResponse =
+    { controller: uint32
+      ok: bool }
+
+    interface IResponse with
+        member this.controller = this.controller

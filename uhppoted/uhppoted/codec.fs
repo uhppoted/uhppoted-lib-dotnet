@@ -74,7 +74,7 @@ module internal messages =
     let SET_INTERLOCK = 0xa2uy
 
     [<Literal>]
-    let ACTIVATE_ACCESS_KEYPADS = 0xa4uy
+    let ACTIVATE_KEYPADS = 0xa4uy
 
     [<Literal>]
     let CLEAR_TASKLIST = 0xa6uy

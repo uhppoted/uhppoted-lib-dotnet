@@ -717,6 +717,34 @@ let setInterlock args =
         Ok()
     | Error err -> Error(err)
 
+let activateKeypads args =
+    let controller = argparse args "--controller" CONTROLLER
+    let keypads = argparse args "--keypads" []
+    let timeout = TIMEOUT
+
+    let reader1 = keypads |> List.contains 1uy
+    let reader2 = keypads |> List.contains 2uy
+    let reader3 = keypads |> List.contains 3uy
+    let reader4 = keypads |> List.contains 4uy
+
+    let options =
+        { OPTIONS with
+            endpoint = ENDPOINT
+            protocol = PROTOCOL }
+
+    match Uhppoted.ActivateKeypads(controller, reader1, reader2, reader3, reader4, timeout, options) with
+    | Ok ok ->
+        printfn "activate-keypads"
+        printfn "  controller %u" controller
+        printfn "    reader 1 %b" reader1
+        printfn "    reader 2 %b" reader2
+        printfn "    reader 3 %b" reader3
+        printfn "    reader 4 %b" reader4
+        printfn "          ok %b" ok
+        printfn ""
+        Ok()
+    | Error err -> Error(err)
+
 let commands =
     [ { command = "find-controllers"
         description = "Retrieves a list of controllers accessible on the local LAN"
@@ -836,4 +864,8 @@ let commands =
 
       { command = "set-interlock"
         description = "Sets the door interlock mode for a controller"
-        f = setInterlock } ]
+        f = setInterlock }
+
+      { command = "activate-keypads"
+        description = "Activates the access reader keypads attached to a controller"
+        f = activateKeypads } ]

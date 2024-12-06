@@ -106,7 +106,8 @@ Module Commands
            New Command("clear-tasklist", "Clears all scheduled tasks from the controller task list", AddressOf ClearTaskList),
            New Command("refresh-tasklist", "Schedules added tasks", AddressOf RefreshTaskList),
            New Command("set-pc-control", "Enables (or disables) remote access control management", AddressOf SetPCControl),
-           New Command("set-interlock", "Sets the door interlock mode for a controller", AddressOf SetInterlock)
+           New Command("set-interlock", "Sets the door interlock mode for a controller", AddressOf SetInterlock),
+           New Command("activate-keypads", "Activates the access reader keypads attached to a controller", AddressOf ActivateKeypads)
        }
 
     Sub FindControllers(args As String())
@@ -764,6 +765,33 @@ Module Commands
             WriteLine("set-interlock")
             WriteLine("  controller {0}", controller)
             WriteLine("   interlock {0}", interlock)
+            WriteLine("          ok {0}", ok)
+            WriteLine()
+        Else If (result.IsError)
+            Throw New Exception(result.ErrorValue)
+        End If
+    End Sub
+
+    Sub ActivateKeypads(args As String())
+        Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
+        Dim keypads = ArgParse.Parse(args, "--keypads", New List(Of Byte)({1, 2, 4}))
+
+        Dim reader1 = keypads.Contains(1)
+        Dim reader2 = keypads.Contains(2)
+        Dim reader3 = keypads.Contains(3)
+        Dim reader4 = keypads.Contains(4)
+
+        Dim result = UHPPOTE.ActivateKeypads(controller, reader1, reader2, reader3, reader4, TIMEOUT, OPTIONS)
+
+        If (result.IsOk)
+            Dim ok = result.ResultValue
+
+            WriteLine("activate-keypads")
+            WriteLine("  controller {0}", controller)
+            WriteLine("    reader 1 {0}", reader1)
+            WriteLine("    reader 2 {0}", reader2)
+            WriteLine("    reader 3 {0}", reader3)
+            WriteLine("    reader 4 {0}", reader4)
             WriteLine("          ok {0}", ok)
             WriteLine()
         Else If (result.IsError)

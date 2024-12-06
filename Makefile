@@ -19,6 +19,7 @@ END_DATE ?= 2024-12-29
 PERMISSIONS ?= "1,2,4:17"
 PIN ?= 7531
 INTERLOCK ?= "1&2,3&4"
+KEYPADS ?= "1,2,4"
 
 clean:
 	cd uhppoted && make clean
@@ -138,4 +139,7 @@ set-pc-control: build
 
 set-interlock: build
 	$(CLI) set-interlock --controller $(CONTROLLER) --interlock $(INTERLOCK)
+
+activate-keypads: build
+	$(CLI) activate-keypads --controller $(CONTROLLER) --keypads $(KEYPADS)
 

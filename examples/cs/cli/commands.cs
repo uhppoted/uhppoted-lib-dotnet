@@ -112,6 +112,7 @@ class Commands
           new Command ("refresh-tasklist", "Schedules added tasks", RefreshTaskList),
           new Command ("set-pc-control", "Enables (or disables) remote access control management", SetPCControl),
           new Command ("set-interlock", "Sets the door interlock mode for a controller", SetInterlock),
+          new Command ("activate-keypads", "Activates the access reader keypads attached to a controller", ActivateKeypads),
     };
 
     public static void FindControllers(string[] args)
@@ -944,6 +945,39 @@ class Commands
             WriteLine("set-interlock");
             WriteLine("  controller {0}", controller);
             WriteLine("   interlock {0}", interlock);
+            WriteLine("          ok {0}", ok);
+            WriteLine();
+        }
+        else if (result.IsError)
+        {
+            throw new Exception(result.ErrorValue);
+        }
+    }
+
+    public static void ActivateKeypads(string[] args)
+    {
+        var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
+        var keypads = ArgParse.Parse(args, "--keypads", new List<byte> { });
+        var timeout = TIMEOUT;
+        var options = OPTIONS;
+
+        var reader1 = keypads.Contains((byte)1);
+        var reader2 = keypads.Contains((byte)2);
+        var reader3 = keypads.Contains((byte)3);
+        var reader4 = keypads.Contains((byte)4);
+
+        var result = Uhppoted.ActivateKeypads(controller, reader1, reader2, reader3, reader4, timeout, options);
+
+        if (result.IsOk)
+        {
+            var ok = result.ResultValue;
+
+            WriteLine("activate-keypads");
+            WriteLine("  controller {0}", controller);
+            WriteLine("    reader 1 {0}", reader1);
+            WriteLine("    reader 2 {0}", reader2);
+            WriteLine("    reader 3 {0}", reader3);
+            WriteLine("    reader 4 {0}", reader4);
             WriteLine("          ok {0}", ok);
             WriteLine();
         }

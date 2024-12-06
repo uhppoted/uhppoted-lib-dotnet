@@ -11,7 +11,7 @@ open uhppoted
 type TestDecoder() =
     [<Test>]
     member this.TestDecodeGetControllerResponse() =
-        let packet = TestResponses.get_controller
+        let packet = TestResponses.getController
 
         let expected =
             { controller = 405419896u
@@ -22,13 +22,13 @@ type TestDecoder() =
               version = "v8.92"
               date = Nullable(DateOnly(2018, 8, 16)) }
 
-        match Decode.get_controller_response packet with
+        match Decode.getControllerResponse packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)
 
     [<Test>]
     member this.TestDecodeGetControllerResponseWithInvalidDate() =
-        let packet = TestResponses.get_controller_with_invalid_date
+        let packet = TestResponses.getControllerWithInvalidDate
 
         let expected =
             { controller = 405419896u
@@ -39,30 +39,30 @@ type TestDecoder() =
               version = "v8.92"
               date = Nullable() }
 
-        match Decode.get_controller_response packet with
+        match Decode.getControllerResponse packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)
 
     [<Test>]
     member this.TestDecodeGetListenerResponse() =
-        let packet = TestResponses.get_listener
+        let packet = TestResponses.getListener
 
         let expected =
             { controller = 405419896u
               endpoint = IPEndPoint.Parse("192.168.1.100:60001")
               interval = 13uy }
 
-        match Decode.get_listener_response packet with
+        match Decode.getListenerResponse packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)
 
     [<Test>]
     member this.TestDecodeSetListenerResponse() =
-        let packet = TestResponses.set_listener
+        let packet = TestResponses.setListener
 
         let expected: SetListenerResponse = { controller = 405419896u; ok = true }
 
-        match Decode.set_listener_response packet with
+        match Decode.setListenerResponse packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)
 
@@ -422,5 +422,15 @@ type TestDecoder() =
         let expected: SetInterlockResponse = { controller = 405419896u; ok = true }
 
         match Decode.setInterlockResponse packet with
+        | Ok response -> Assert.That(response, Is.EqualTo(expected))
+        | Error err -> Assert.Fail(err)
+
+    [<Test>]
+    member this.TestDecodeActivateKeypadsResponse() =
+        let packet = TestResponses.activateKeypads
+
+        let expected: ActivateKeypadsResponse = { controller = 405419896u; ok = true }
+
+        match Decode.activateKeypadsResponse packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)

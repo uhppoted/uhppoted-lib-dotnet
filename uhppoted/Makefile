@@ -19,6 +19,7 @@ END_DATE ?= 2024-12-29
 PERMISSIONS ?= "1,2,4:17"
 PIN ?= 7531
 INTERLOCK ?= "1&2,3&4"
+KEYPADS ?= "1,2,4"
 
 clean:
 	dotnet clean
@@ -41,9 +42,9 @@ release: build test integration-tests
 	cd uhppoted && make release
 
 debug: build
-	dotnet run --project ../examples/fs/cli --framework net7.0 put-card --controller $(CONTROLLER) --card $(CARD) --start-date $(START_DATE) --end-date $(END_DATE) --permissions $(PERMISSIONS) --PIN 7531
-	dotnet run --project ../examples/cs/cli --framework net7.0 put-card --controller $(CONTROLLER) --card $(CARD) --start-date $(START_DATE) --end-date $(END_DATE) --permissions $(PERMISSIONS) --PIN 7531
-	dotnet run --project ../examples/vb/cli --framework net7.0 put-card --controller $(CONTROLLER) --card $(CARD) --start-date $(START_DATE) --end-date $(END_DATE) --permissions $(PERMISSIONS) --PIN 7531
+	dotnet run --project ../examples/fs/cli --framework net7.0 activate-keypads --controller $(CONTROLLER) --keypads $(KEYPADS)
+	dotnet run --project ../examples/cs/cli --framework net7.0 activate-keypads --controller $(CONTROLLER) --keypads $(KEYPADS)
+	dotnet run --project ../examples/vb/cli --framework net7.0 activate-keypads --controller $(CONTROLLER) --keypads $(KEYPADS)
 
 find-controllers: build
 	$(CLI) find-controllers
@@ -145,4 +146,7 @@ set-pc-control: build
 set-interlock: build
 	$(CLI) set-interlock --controller $(CONTROLLER) --interlock $(INTERLOCK)
 
+activate-keypads: build
+	$(CLI) activate-keypads --controller $(CONTROLLER) --keypads $(KEYPADS)
 
+	dotnet run --project ../examples/fs/cli --framework net7.0 activate-keypads --controller $(CONTROLLER) --keypads $(KEYPADS)

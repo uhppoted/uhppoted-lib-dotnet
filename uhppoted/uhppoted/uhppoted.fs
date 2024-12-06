@@ -50,12 +50,12 @@ module Uhppoted =
         let bind = options.bind
         let broadcast = options.broadcast
         let debug = options.debug
-        let request = Encode.get_controller_request 0u
+        let request = Encode.getControllerRequest 0u
         let result = UDP.broadcast (request, bind, broadcast, timeout, debug)
 
         let f =
             fun v ->
-                match Decode.get_controller_response v with
+                match Decode.getControllerResponse v with
                 | Ok response ->
                     let controller: Controller =
                         { controller = response.controller
@@ -84,9 +84,9 @@ module Uhppoted =
     /// <returns>Ok with a Controller record or Error.</returns>
     /// <remarks></remarks>
     let GetController (controller: uint32, timeout: int, options: Options) =
-        let request = Encode.get_controller_request controller
+        let request = Encode.getControllerRequest controller
 
-        match exec controller request Decode.get_controller_response timeout options with
+        match exec controller request Decode.getControllerResponse timeout options with
         | Ok response ->
             let record: Controller =
                 { controller = response.controller
@@ -120,7 +120,7 @@ module Uhppoted =
         let bind = options.bind
         let broadcast = options.broadcast
         let debug = options.debug
-        let request = Encode.set_IPv4_request controller address netmask gateway
+        let request = Encode.setIPv4Request controller address netmask gateway
 
         let result =
             match options.endpoint, options.protocol with
@@ -140,9 +140,9 @@ module Uhppoted =
     /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
     /// <returns>Ok with an Listener record or Error.</returns>
     let GetListener (controller: uint32, timeout: int, options: Options) =
-        let request = Encode.get_listener_request controller
+        let request = Encode.getListenerRequest controller
 
-        match exec controller request Decode.get_listener_response timeout options with
+        match exec controller request Decode.getListenerResponse timeout options with
         | Ok response ->
             Ok
                 { endpoint = response.endpoint
@@ -164,9 +164,9 @@ module Uhppoted =
     let SetListener (controller: uint32, endpoint: IPEndPoint, interval: uint8, timeout: int, options: Options) =
         let address = endpoint.Address
         let port = uint16 endpoint.Port
-        let request = Encode.set_listener_request controller address port interval
+        let request = Encode.setListenerRequest controller address port interval
 
-        match exec controller request Decode.set_listener_response timeout options with
+        match exec controller request Decode.setListenerResponse timeout options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 
@@ -717,5 +717,28 @@ module Uhppoted =
         let request = Encode.setInterlockRequest controller interlock
 
         match exec controller request Decode.setInterlockResponse timeout options with
+        | Ok response -> Ok response.ok
+        | Error err -> Error err
+
+    /// <summary>
+    /// Activates/deactivates the access reader keypads attached to an access controller.
+    /// </summary>
+    /// <param name="controller">Controller ID.</param>
+    /// <param name="reader1">Activates/deactivates the keypad for reader 1.</param>
+    /// <param name="reader2">Activates/deactivates the keypad for reader 2.</param>
+    /// <param name="reader3">Activates/deactivates the keypad for reader 3.</param>
+    /// <param name="reader4">Activates/deactivates the keypad for reader 4.</param>
+    /// <param name="timeout">Operation timeout (ms).</param>
+    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <returns>
+    /// Result with the boolean success/fail result or an Error if the request failed.
+    /// </returns>
+    let ActivateKeypads
+        (controller: uint32, reader1: bool, reader2: bool, reader3: bool, reader4: bool, timeout: int, options: Options)
+        =
+        let request =
+            Encode.activateKeypadsRequest controller reader1 reader2 reader3 reader4
+
+        match exec controller request Decode.activateKeypadsResponse timeout options with
         | Ok response -> Ok response.ok
         | Error err -> Error err

@@ -30,6 +30,7 @@
 - [`RefreshTaskList`](refresh-tasklist.md)
 - [`SetPCControl`](set-pc-control.md)
 - [`SetInterlock`](set-interlock.md)
+- [`ActivateKeypads`](activate-keypads.md)
 
 ## Options
 

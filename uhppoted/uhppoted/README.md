@@ -102,6 +102,9 @@ Enables/disables remote access control management.
 ### [`SetInterlock`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/set-interlock.md)
 Sets the door interlock mode for an access controller.
 
+### [`ActivateKeypads`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/activate-keypads.md)
+Activates/deactivates the access reader keypads attached to an access controller.
+
 
 ## Notes
 

@@ -116,7 +116,7 @@ module internal Encode =
         | TimeOnly time -> pack_HHmm packet offset time
         | _ -> ()
 
-    let get_controller_request (controller: uint32) =
+    let getControllerRequest (controller: uint32) =
         let packet: byte array = Array.zeroCreate 64
 
         pack packet 0 (byte messages.SOM)
@@ -125,7 +125,7 @@ module internal Encode =
 
         packet
 
-    let set_IPv4_request (controller: uint32) address netmask gateway =
+    let setIPv4Request (controller: uint32) address netmask gateway =
         let packet: byte array = Array.zeroCreate 64
 
         pack packet 0 (byte messages.SOM)
@@ -138,7 +138,7 @@ module internal Encode =
 
         packet
 
-    let get_listener_request (controller: uint32) =
+    let getListenerRequest (controller: uint32) =
         let packet: byte array = Array.zeroCreate 64
 
         pack packet 0 (byte messages.SOM)
@@ -147,7 +147,7 @@ module internal Encode =
 
         packet
 
-    let set_listener_request (controller: uint32) (address: IPAddress) (port: uint16) (interval: uint8) =
+    let setListenerRequest (controller: uint32) (address: IPAddress) (port: uint16) (interval: uint8) =
         let packet: byte array = Array.zeroCreate 64
 
         pack packet 0 (byte messages.SOM)
@@ -470,5 +470,18 @@ module internal Encode =
         pack packet 1 (byte messages.SET_INTERLOCK)
         pack packet 4 controller
         pack packet 8 (uint8 interlock)
+
+        packet
+
+    let activateKeypadsRequest (controller: uint32) (reader1: bool) (reader2: bool) (reader3: bool) (reader4: bool) =
+        let packet: byte array = Array.zeroCreate 64
+
+        pack packet 0 (byte messages.SOM)
+        pack packet 1 (byte messages.ACTIVATE_KEYPADS)
+        pack packet 4 controller
+        pack packet 8 reader1
+        pack packet 9 reader2
+        pack packet 10 reader3
+        pack packet 11 reader4
 
         packet

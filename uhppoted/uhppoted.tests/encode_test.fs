@@ -9,50 +9,50 @@ open uhppoted
 type TestEncoder() =
     [<Test>]
     member this.TestEncodeGetControllerRequestWithZeroControllerID() =
-        let expected = TestRequests.get_all_controllers
-        let packet = Encode.get_controller_request 0u
+        let expected = TestRequests.getAllControllers
+        let packet = Encode.getControllerRequest 0u
 
         Assert.That(packet, Is.EqualTo(expected))
 
     [<Test>]
     member this.TestEncodeGetControllerRequestWithValidControllerID() =
-        let expected = TestRequests.get_controller
+        let expected = TestRequests.getController
 
         let controller = 405419896u
-        let packet = Encode.get_controller_request controller
+        let packet = Encode.getControllerRequest controller
 
         Assert.That(packet, Is.EqualTo(expected))
 
     [<Test>]
     member this.TestEncodeSetIPv4Request() =
-        let expected = TestRequests.set_IPv4
+        let expected = TestRequests.setIPv4
 
         let controller = 405419896u
         let address = IPAddress.Parse("192.168.1.100")
         let netmask = IPAddress.Parse("255.255.255.0")
         let gateway = IPAddress.Parse("192.168.1.1")
-        let packet = Encode.set_IPv4_request controller address netmask gateway
+        let packet = Encode.setIPv4Request controller address netmask gateway
 
         Assert.That(packet, Is.EqualTo(expected))
 
     [<Test>]
     member this.TestEncodeGetListenerRequest() =
-        let expected = TestRequests.get_listener
+        let expected = TestRequests.getListener
 
         let controller = 405419896u
-        let packet = Encode.get_listener_request controller
+        let packet = Encode.getListenerRequest controller
 
         Assert.That(packet, Is.EqualTo(expected))
 
     [<Test>]
     member this.TestEncodeSetListenerRequest() =
-        let expected = TestRequests.set_listener
+        let expected = TestRequests.setListener
 
         let controller = 405419896u
         let address = IPAddress.Parse("192.168.1.100")
         let port = 60001us
         let interval = 17uy
-        let packet = Encode.set_listener_request controller address port interval
+        let packet = Encode.setListenerRequest controller address port interval
 
         Assert.That(packet, Is.EqualTo(expected))
 
@@ -360,5 +360,14 @@ type TestEncoder() =
         let controller = 405419896u
         let interlock = Interlock.Doors1234
         let packet = Encode.setInterlockRequest controller interlock
+
+        Assert.That(packet, Is.EqualTo(expected))
+
+    [<Test>]
+    member this.TestActivateKeypadsRequest() =
+        let expected = TestRequests.activateKeypads
+
+        let controller = 405419896u
+        let packet = Encode.activateKeypadsRequest controller true true false true
 
         Assert.That(packet, Is.EqualTo(expected))

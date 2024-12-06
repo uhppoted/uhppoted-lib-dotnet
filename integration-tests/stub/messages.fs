@@ -11,27 +11,27 @@ type Message =
 module Messages =
     let messages =
         [ { test = "get-all-controllers"
-            request = Requests.get_all_controllers
+            request = Requests.getAllControllers
             responses =
-              [ Responses.get_controller_405419896
-                Responses.get_controller_303986753
-                Responses.get_controller_201020304 ] }
+              [ Responses.getController405419896
+                Responses.getController303986753
+                Responses.getController201020304 ] }
 
           { test = "get-controller"
-            request = Requests.get_controller
-            responses = [ Responses.get_controller ] }
+            request = Requests.getController
+            responses = [ Responses.getController ] }
 
           { test = "set-IPv4"
-            request = Requests.set_IPv4
+            request = Requests.setIPv4
             responses = [] }
 
           { test = "get-listener"
-            request = Requests.get_listener
-            responses = [ Responses.get_listener ] }
+            request = Requests.getListener
+            responses = [ Responses.getListener ] }
 
           { test = "set-listener"
-            request = Requests.set_listener
-            responses = [ Responses.set_listener ] }
+            request = Requests.setListener
+            responses = [ Responses.setListener ] }
 
           { test = "get-time"
             request = Requests.get_time
@@ -163,8 +163,11 @@ module Messages =
 
           { test = "set-interlock"
             request = Requests.setInterlock
-            responses = [ Responses.setInterlock ] } ]
+            responses = [ Responses.setInterlock ] }
 
+          { test = "activate-keypads"
+            request = Requests.activateKeypads
+            responses = [ Responses.activateKeypads ] } ]
 
 
     let find request =

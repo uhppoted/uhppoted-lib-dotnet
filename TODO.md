@@ -49,6 +49,7 @@
       - [ ] --segments
       - [ ] --task
       - [ ] --interlock
+      - [ ] --keypads
 
 - [ ] API
       - [x] find-controllers
@@ -87,7 +88,8 @@
       - [x] refresh-task-list
       - [x] set-pc-control
       - [x] set-interlock
-      - [ ] activate-keypads
+      - [x] activate-keypads
+      - [ ] restore-default-parameters
             - [ ] API function
             - [ ] CLI
                   - [ ] F#
@@ -97,6 +99,5 @@
             - [ ] API doc
             - [ ] README
       
-      - [ ] restore-default-parameters
       - [ ] listen
 

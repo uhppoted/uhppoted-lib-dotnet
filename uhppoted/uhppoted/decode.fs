@@ -80,7 +80,7 @@ module internal Decode =
         | true, time -> Nullable time
         | false, _ -> Nullable()
 
-    let get_controller_response (packet: byte array) : Result<GetControllerResponse, string> =
+    let getControllerResponse (packet: byte array) : Result<GetControllerResponse, string> =
         if packet[0] <> messages.SOM then
             Error("invalid controller response")
         else if packet[1] <> messages.GET_CONTROLLER then
@@ -95,7 +95,7 @@ module internal Decode =
                   version = unpack_version packet[26..]
                   date = unpack_date (packet[28..]) }
 
-    let get_listener_response (packet: byte array) : Result<GetListenerResponse, string> =
+    let getListenerResponse (packet: byte array) : Result<GetListenerResponse, string> =
         if packet[0] <> messages.SOM then
             Error("invalid controller response")
         else if packet[1] <> messages.GET_LISTENER then
@@ -111,7 +111,7 @@ module internal Decode =
                   endpoint = IPEndPoint(address, int port)
                   interval = interval }
 
-    let set_listener_response (packet: byte array) : Result<SetListenerResponse, string> =
+    let setListenerResponse (packet: byte array) : Result<SetListenerResponse, string> =
         if packet[0] <> messages.SOM then
             Error("invalid controller response")
         else if packet[1] <> messages.SET_LISTENER then
@@ -437,6 +437,16 @@ module internal Decode =
             Error("invalid controller response")
         else if packet[1] <> messages.SET_INTERLOCK then
             Error("invalid set-interlock response")
+        else
+            Ok
+                { controller = unpack_u32 packet[4..]
+                  ok = unpack_bool (packet[8..]) }
+
+    let activateKeypadsResponse (packet: byte array) : Result<ActivateKeypadsResponse, string> =
+        if packet[0] <> messages.SOM then
+            Error("invalid controller response")
+        else if packet[1] <> messages.ACTIVATE_KEYPADS then
+            Error("invalid activate-keyapds response")
         else
             Ok
                 { controller = unpack_u32 packet[4..]

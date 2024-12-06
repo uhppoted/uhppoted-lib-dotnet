@@ -34,7 +34,7 @@ let options = { broadcast = IPAddress.Broadcast; destination = None; protoocol =
 
 match SetInterlock controller interlock timeout options with
 | Ok ok -> printfn "set-interlock: ok %A" ok
-| Error err -> printfn "set-set-interlock: error %A" err
+| Error err -> printfn "set-interlock: error %A" err
 ```
 
 ```csharp

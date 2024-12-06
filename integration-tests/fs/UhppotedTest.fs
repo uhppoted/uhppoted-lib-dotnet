@@ -580,11 +580,21 @@ type TestClass() =
             | Error err -> Assert.Fail(err))
 
     [<Test>]
-    member this.TestSetInterlockl() =
+    member this.TestSetInterlock() =
         let expected = true
 
         options
         |> List.iter (fun opts ->
             match Uhppoted.SetInterlock(CONTROLLER, Interlock.Doors1234, TIMEOUT, opts) with
+            | Ok response -> Assert.That(response, Is.EqualTo(expected))
+            | Error err -> Assert.Fail(err))
+
+    [<Test>]
+    member this.TestActivateKeypads() =
+        let expected = true
+
+        options
+        |> List.iter (fun opts ->
+            match Uhppoted.ActivateKeypads(CONTROLLER, true, true, false, true, TIMEOUT, opts) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
