@@ -258,7 +258,7 @@ type TestClass() =
               EventType = 19uy
               EventAccessGranted = true
               EventDoor = 4uy
-              EventDirection = 2uy
+              EventDirection = Direction.Out
               EventCard = 10058400u
               EventTimestamp = Nullable(DateTime.ParseExact("2024-11-10 12:34:56", "yyyy-MM-dd HH:mm:ss", null))
               EventReason = 6uy }
@@ -282,13 +282,13 @@ type TestClass() =
     [<Test>]
     member this.TestGetCard() =
         let expected: Card =
-            { card = 10058400u
-              start_date = Nullable(DateOnly(2024, 1, 1))
-              end_date = Nullable(DateOnly(2024, 12, 31))
-              door1 = 1uy
-              door2 = 0uy
-              door3 = 17uy
-              door4 = 1uy
+            { Card = 10058400u
+              StartDate = Nullable(DateOnly(2024, 1, 1))
+              EndDate = Nullable(DateOnly(2024, 12, 31))
+              Door1 = 1uy
+              Door2 = 0uy
+              Door3 = 17uy
+              Door4 = 1uy
               PIN = 7531u }
 
         options
@@ -310,13 +310,13 @@ type TestClass() =
     [<Test>]
     member this.TestGetCardAtIndex() =
         let expected: Card =
-            { card = 10058400u
-              start_date = Nullable(DateOnly(2024, 1, 1))
-              end_date = Nullable(DateOnly(2024, 12, 31))
-              door1 = 1uy
-              door2 = 0uy
-              door3 = 17uy
-              door4 = 1uy
+            { Card = 10058400u
+              StartDate = Nullable(DateOnly(2024, 1, 1))
+              EndDate = Nullable(DateOnly(2024, 12, 31))
+              Door1 = 1uy
+              Door2 = 0uy
+              Door3 = 17uy
+              Door4 = 1uy
               PIN = 7531u }
 
         options
@@ -386,14 +386,14 @@ type TestClass() =
     [<Test>]
     member this.TestGetEvent() =
         let expected: Event =
-            { timestamp = Nullable(DateTime.ParseExact("2024-11-17 12:34:56", "yyyy-MM-dd HH:mm:ss", null))
-              index = 13579u
-              event_type = 2uy
-              access_granted = true
-              door = 4uy
-              direction = 2uy
-              card = 10058400u
-              reason = 21uy }
+            { Timestamp = Nullable(DateTime.ParseExact("2024-11-17 12:34:56", "yyyy-MM-dd HH:mm:ss", null))
+              Index = 13579u
+              EventType = 2uy
+              AccessGranted = true
+              Door = 4uy
+              Direction = Direction.Out
+              Card = 10058400u
+              Reason = 21uy }
 
         options
         |> List.iter (fun opts ->

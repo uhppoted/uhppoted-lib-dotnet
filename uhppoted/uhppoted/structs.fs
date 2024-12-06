@@ -39,31 +39,31 @@ type Status =
       EventType: uint8
       EventAccessGranted: bool
       EventDoor: uint8
-      EventDirection: uint8
+      EventDirection: Direction
       EventCard: uint32
       EventReason: uint8 }
 
 [<Struct>]
 type Card =
-    { card: uint32
-      start_date: DateOnly Nullable
-      end_date: DateOnly Nullable
-      door1: uint8
-      door2: uint8
-      door3: uint8
-      door4: uint8
+    { Card: uint32
+      StartDate: DateOnly Nullable
+      EndDate: DateOnly Nullable
+      Door1: uint8
+      Door2: uint8
+      Door3: uint8
+      Door4: uint8
       PIN: uint32 }
 
 [<Struct>]
 type Event =
-    { timestamp: DateTime Nullable
-      index: uint32
-      event_type: uint8
-      access_granted: bool
-      door: uint8
-      direction: uint8
-      card: uint32
-      reason: uint8 }
+    { Timestamp: DateTime Nullable
+      Index: uint32
+      EventType: uint8
+      AccessGranted: bool
+      Door: uint8
+      Direction: Direction
+      Card: uint32
+      Reason: uint8 }
 
 [<Struct>]
 type TimeProfile =

@@ -322,7 +322,7 @@ module Uhppoted =
                   EventType = response.evt.event_type
                   EventAccessGranted = response.evt.granted
                   EventDoor = response.evt.door
-                  EventDirection = response.evt.direction
+                  EventDirection = Enums.toDirection response.evt.direction
                   EventCard = response.evt.card
                   EventTimestamp = response.evt.timestamp
                   EventReason = response.evt.reason }
@@ -364,13 +364,13 @@ module Uhppoted =
         | Ok response ->
             Ok(
                 Nullable
-                    { card = response.card
-                      start_date = response.start_date
-                      end_date = response.end_date
-                      door1 = response.door1
-                      door2 = response.door2
-                      door3 = response.door3
-                      door4 = response.door4
+                    { Card = response.card
+                      StartDate = response.start_date
+                      EndDate = response.end_date
+                      Door1 = response.door1
+                      Door2 = response.door2
+                      Door3 = response.door3
+                      Door4 = response.door4
                       PIN = response.PIN }
             )
         | Error err -> Error err
@@ -396,13 +396,13 @@ module Uhppoted =
         | Ok response ->
             Ok(
                 Nullable
-                    { card = response.card
-                      start_date = response.start_date
-                      end_date = response.end_date
-                      door1 = response.door1
-                      door2 = response.door2
-                      door3 = response.door3
-                      door4 = response.door4
+                    { Card = response.card
+                      StartDate = response.start_date
+                      EndDate = response.end_date
+                      Door1 = response.door1
+                      Door2 = response.door2
+                      Door3 = response.door3
+                      Door4 = response.door4
                       PIN = response.PIN }
             )
         | Error err -> Error err
@@ -500,14 +500,14 @@ module Uhppoted =
         | Ok response ->
             Ok(
                 Nullable
-                    { timestamp = response.timestamp
-                      index = response.index
-                      event_type = response.event
-                      access_granted = response.granted
-                      door = response.door
-                      direction = response.direction
-                      card = response.card
-                      reason = response.reason }
+                    { Timestamp = response.timestamp
+                      Index = response.index
+                      EventType = response.event
+                      AccessGranted = response.granted
+                      Door = response.door
+                      Direction = Enums.toDirection response.direction
+                      Card = response.card
+                      Reason = response.reason }
             )
         | Error err -> Error err
 

@@ -64,10 +64,10 @@
       - [x] set-door-passcodes
       - [x] open-door
       - [x] get-status
-            - [ ] direction enum
-            - [ ] return (status,event) tuple
+            - [x] direction enum
             - [ ] decode relays
             - [ ] decode inputs
+            - [ ] return (status,event) tuple
       - [x] get-cards
       - [x] get-card
       - [x] get-card-at-index
@@ -76,7 +76,7 @@
       - [x] delete-card
       - [x] delete-all-cards
       - [x] get-event
-            - [ ] direction enum
+            - [x] direction enum
       - [x] get-event-index
       - [x] set-event-index
       - [x] record-special-events

@@ -275,7 +275,7 @@ let get_status args =
         printfn "          event     %u" record.EventType
         printfn "          granted   %b" record.EventAccessGranted
         printfn "          door      %u" record.EventDoor
-        printfn "          direction %u" record.EventDirection
+        printfn "          direction %A" record.EventDirection
         printfn "          card      %u" record.EventCard
         printfn "          timestamp %A" (YYYYMMDDHHmmss(record.EventTimestamp))
         printfn "          reason    %u" record.EventReason
@@ -317,13 +317,13 @@ let get_card args =
 
         printfn "get-card"
         printfn "  controller %u" controller
-        printfn "        card %u" record.card
-        printfn "  start date %s" (YYYYMMDD(record.start_date))
-        printfn "    end date %s" (YYYYMMDD(record.end_date))
-        printfn "      door 1 %u" record.door1
-        printfn "      door 2 %u" record.door2
-        printfn "      door 3 %u" record.door3
-        printfn "      door 4 %u" record.door4
+        printfn "        card %u" record.Card
+        printfn "  start date %s" (YYYYMMDD(record.StartDate))
+        printfn "    end date %s" (YYYYMMDD(record.EndDate))
+        printfn "      door 1 %u" record.Door1
+        printfn "      door 2 %u" record.Door2
+        printfn "      door 3 %u" record.Door3
+        printfn "      door 4 %u" record.Door4
         printfn "         PIN %u" record.PIN
         printfn ""
         Ok()
@@ -346,13 +346,13 @@ let get_card_at_index args =
 
         printfn "get-card-at-index"
         printfn "  controller %u" controller
-        printfn "        card %u" record.card
-        printfn "  start date %s" (YYYYMMDD(record.start_date))
-        printfn "    end date %s" (YYYYMMDD(record.end_date))
-        printfn "      door 1 %u" record.door1
-        printfn "      door 2 %u" record.door2
-        printfn "      door 3 %u" record.door3
-        printfn "      door 4 %u" record.door4
+        printfn "        card %u" record.Card
+        printfn "  start date %s" (YYYYMMDD(record.StartDate))
+        printfn "    end date %s" (YYYYMMDD(record.EndDate))
+        printfn "      door 1 %u" record.Door1
+        printfn "      door 2 %u" record.Door2
+        printfn "      door 3 %u" record.Door3
+        printfn "      door 4 %u" record.Door4
         printfn "         PIN %u" record.PIN
         printfn ""
         Ok()
@@ -441,14 +441,14 @@ let get_event args =
 
         printfn "get-event"
         printfn "  controller %u" controller
-        printfn "   timestamp %s" (YYYYMMDDHHmmss(record.timestamp))
-        printfn "       index %u" record.index
-        printfn "       event %u" record.event_type
-        printfn "     granted %b" record.access_granted
-        printfn "        door %u" record.door
-        printfn "   direction %u" record.direction
-        printfn "        card %u" record.card
-        printfn "      reason %u" record.reason
+        printfn "   timestamp %s" (YYYYMMDDHHmmss(record.Timestamp))
+        printfn "       index %u" record.Index
+        printfn "       event %u" record.EventType
+        printfn "     granted %b" record.AccessGranted
+        printfn "        door %u" record.Door
+        printfn "   direction %A" record.Direction
+        printfn "        card %u" record.Card
+        printfn "      reason %u" record.Reason
         printfn ""
         Ok()
     | Ok _ -> Error "event not found"

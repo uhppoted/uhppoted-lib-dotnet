@@ -459,13 +459,13 @@ class Commands
 
             WriteLine("get-card");
             WriteLine("  controller {0}", controller);
-            WriteLine("        card {0}", record.card);
-            WriteLine("  start date {0}", (YYYYMMDD(record.start_date)));
-            WriteLine("    end date {0}", (YYYYMMDD(record.end_date)));
-            WriteLine("      door 1 {0}", record.door1);
-            WriteLine("      door 2 {0}", record.door2);
-            WriteLine("      door 3 {0}", record.door3);
-            WriteLine("      door 4 {0}", record.door4);
+            WriteLine("        card {0}", record.Card);
+            WriteLine("  start date {0}", (YYYYMMDD(record.StartDate)));
+            WriteLine("    end date {0}", (YYYYMMDD(record.EndDate)));
+            WriteLine("      door 1 {0}", record.Door1);
+            WriteLine("      door 2 {0}", record.Door2);
+            WriteLine("      door 3 {0}", record.Door3);
+            WriteLine("      door 4 {0}", record.Door4);
             WriteLine("         PIN {0}", record.PIN);
             WriteLine();
         }
@@ -493,13 +493,13 @@ class Commands
 
             WriteLine("get-card-at-index");
             WriteLine("  controller {0}", controller);
-            WriteLine("        card {0}", record.card);
-            WriteLine("  start date {0}", (YYYYMMDD(record.start_date)));
-            WriteLine("    end date {0}", (YYYYMMDD(record.end_date)));
-            WriteLine("      door 1 {0}", record.door1);
-            WriteLine("      door 2 {0}", record.door2);
-            WriteLine("      door 3 {0}", record.door3);
-            WriteLine("      door 4 {0}", record.door4);
+            WriteLine("        card {0}", record.Card);
+            WriteLine("  start date {0}", (YYYYMMDD(record.StartDate)));
+            WriteLine("    end date {0}", (YYYYMMDD(record.EndDate)));
+            WriteLine("      door 1 {0}", record.Door1);
+            WriteLine("      door 2 {0}", record.Door2);
+            WriteLine("      door 3 {0}", record.Door3);
+            WriteLine("      door 4 {0}", record.Door4);
             WriteLine("         PIN {0}", record.PIN);
             WriteLine();
         }
@@ -609,14 +609,14 @@ class Commands
 
             WriteLine("get-event");
             WriteLine("  controller {0}", controller);
-            WriteLine("   timestamp {0}", (YYYYMMDDHHmmss(record.timestamp)));
-            WriteLine("       index {0}", record.index);
-            WriteLine("       event {0}", record.event_type);
-            WriteLine("     granted {0}", record.access_granted);
-            WriteLine("        door {0}", record.door);
-            WriteLine("   direction {0}", record.direction);
-            WriteLine("        card {0}", record.card);
-            WriteLine("      reason {0}", record.reason);
+            WriteLine("   timestamp {0}", (YYYYMMDDHHmmss(record.Timestamp)));
+            WriteLine("       index {0}", record.Index);
+            WriteLine("       event {0}", record.EventType);
+            WriteLine("     granted {0}", record.AccessGranted);
+            WriteLine("        door {0}", record.Door);
+            WriteLine("   direction {0}", record.Direction);
+            WriteLine("        card {0}", record.Card);
+            WriteLine("      reason {0}", record.Reason);
             WriteLine();
         }
         else if (result.IsOk)
