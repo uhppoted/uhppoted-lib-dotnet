@@ -74,7 +74,6 @@
       - [x] get-card
       - [x] get-card-at-index
       - [x] put-card
-            - [x] rework to take `Card` struct
       - [x] delete-card
       - [x] delete-all-cards
       - [x] get-event
