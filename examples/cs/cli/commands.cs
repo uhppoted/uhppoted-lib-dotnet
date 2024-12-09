@@ -523,9 +523,9 @@ class Commands
     public static void PutCard(string[] args)
     {
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
-        var card = ArgParse.Parse(args, "--card", CARD);
-        var startdate = ArgParse.Parse(args, "--start-date", START_DATE);
-        var enddate = ArgParse.Parse(args, "--end-date", END_DATE);
+        var cardNumber= ArgParse.Parse(args, "--card", CARD);
+        var startDate = ArgParse.Parse(args, "--start-date", START_DATE);
+        var endDate = ArgParse.Parse(args, "--end-date", END_DATE);
         var permissions = ArgParse.Parse(args, "--permissions", new Dictionary<int, byte>());
         var PIN = ArgParse.Parse(args, "--PIN", 0u);
 
@@ -535,9 +535,19 @@ class Commands
         byte door3 = permissions.TryGetValue(3, out u8) ? u8 : (byte)0;
         byte door4 = permissions.TryGetValue(4, out u8) ? u8 : (byte)0;
 
+        var card = new uhppoted.CardBuilder(cardNumber)
+                               .WithStartDate(startDate)
+                               .WithEndDate(endDate)
+                               .WithDoor1(door1)
+                               .WithDoor2(door2)
+                               .WithDoor3(door3)
+                               .WithDoor4(door4)
+                               .WithPIN(PIN)
+                               .Build();
+
         var timeout = TIMEOUT;
         var options = OPTIONS;
-        var result = Uhppoted.PutCard(controller, card, startdate, enddate, door1, door2, door3, door4, PIN, timeout, options);
+        var result = Uhppoted.PutCard(controller, card, timeout, options);
 
         if (result.IsOk)
         {
@@ -545,7 +555,7 @@ class Commands
 
             WriteLine("put-card");
             WriteLine("  controller {0}", controller);
-            WriteLine("        card {0}", card);
+            WriteLine("        card {0}", card.Card);
             WriteLine("          ok {0}", ok);
             WriteLine();
         }
@@ -777,7 +787,7 @@ class Commands
                                   .WithSegment2(segments[1].start, segments[1].end)
                                   .WithSegment3(segments[2].start, segments[2].end)
                                   .WithLinkedProfile(linked)
-                                  .build();
+                                  .Build();
 
         var timeout = TIMEOUT;
         var options = OPTIONS;
@@ -846,7 +856,7 @@ class Commands
                                   .WithStartTime(start_time)
                                   .WithWeekdays(monday, tuesday, wednesday, thursday, friday, saturday, sunday)
                                   .WithMoreCards(more_cards)
-                                  .build();
+                                  .Build();
 
         var timeout = TIMEOUT;
         var options = OPTIONS;

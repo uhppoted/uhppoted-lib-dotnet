@@ -180,17 +180,18 @@ type TestEncoder() =
         let expected = TestRequests.putCard
 
         let controller = 405419896u
-        let card = 10058400u
-        let startdate = DateOnly(2024, 1, 1)
-        let enddate = DateOnly(2024, 12, 31)
-        let door1 = 1uy
-        let door2 = 0uy
-        let door3 = 17uy
-        let door4 = 1uy
-        let PIN = 999999u
 
-        let packet =
-            Encode.putCardRequest controller card startdate enddate door1 door2 door3 door4 PIN
+        let card: Card =
+            { Card = 10058400u
+              StartDate = Nullable(DateOnly(2024, 1, 1))
+              EndDate = Nullable(DateOnly(2024, 12, 31))
+              Door1 = 1uy
+              Door2 = 0uy
+              Door3 = 17uy
+              Door4 = 1uy
+              PIN = 999999u }
+
+        let packet = Encode.putCardRequest controller card
 
         Assert.That(packet, Is.EqualTo(expected))
 

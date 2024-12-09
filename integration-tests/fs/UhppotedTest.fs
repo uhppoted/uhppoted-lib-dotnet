@@ -353,19 +353,19 @@ type TestClass() =
     member this.TestPutCard() =
         let expected = true
 
-        let startdate = DateOnly(2024, 1, 1)
-        let enddate = DateOnly(2024, 12, 31)
-        let door1 = 1uy
-        let door2 = 0uy
-        let door3 = 17uy
-        let door4 = 1uy
-        let PIN = 7531u
+        let card: Card =
+            { Card = CARD
+              StartDate = Nullable(DateOnly(2024, 1, 1))
+              EndDate = Nullable(DateOnly(2024, 12, 31))
+              Door1 = 1uy
+              Door2 = 0uy
+              Door3 = 17uy
+              Door4 = 1uy
+              PIN = 7531u }
 
         options
         |> List.iter (fun opts ->
-            match
-                Uhppoted.PutCard(CONTROLLER, CARD, startdate, enddate, door1, door2, door3, door4, PIN, TIMEOUT, opts)
-            with
+            match Uhppoted.PutCard(CONTROLLER, card, TIMEOUT, opts) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 

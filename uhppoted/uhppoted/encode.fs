@@ -277,30 +277,20 @@ module internal Encode =
 
         packet
 
-    let putCardRequest
-        (controller: uint32)
-        (card: uint32)
-        (start_date: DateOnly)
-        (end_date: DateOnly)
-        (door1: uint8)
-        (door2: uint8)
-        (door3: uint8)
-        (door4: uint8)
-        (pin: uint32)
-        =
+    let putCardRequest (controller: uint32) (card: Card) =
         let packet: byte array = Array.zeroCreate 64
 
         pack packet 0 (byte messages.SOM)
         pack packet 1 (byte messages.PUT_CARD)
         pack packet 4 controller
-        pack packet 8 card
-        pack packet 12 (Nullable start_date)
-        pack packet 16 (Nullable end_date)
-        pack packet 20 door1
-        pack packet 21 door2
-        pack packet 22 door3
-        pack packet 23 door4
-        pack packet 24 pin
+        pack packet 8 card.Card
+        pack packet 12 card.StartDate
+        pack packet 16 card.EndDate
+        pack packet 20 card.Door1
+        pack packet 21 card.Door2
+        pack packet 22 card.Door3
+        pack packet 23 card.Door4
+        pack packet 24 card.PIN
 
         packet
 

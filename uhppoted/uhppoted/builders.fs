@@ -2,6 +2,54 @@ namespace uhppoted
 
 open System
 
+
+type CardBuilder(card: uint32) =
+    let mutable startDate: Nullable<DateOnly> = Nullable()
+    let mutable endDate: Nullable<DateOnly> = Nullable()
+    let mutable door1: uint8 = 0uy
+    let mutable door2: uint8 = 0uy
+    let mutable door3: uint8 = 0uy
+    let mutable door4: uint8 = 0uy
+    let mutable PIN: uint32 = 0u
+
+    member this.WithStartDate(v: DateOnly) =
+        startDate <- Nullable(v)
+        this
+
+    member this.WithEndDate(v: DateOnly) =
+        endDate <- Nullable(v)
+        this
+
+    member this.WithDoor1(profile: uint8) =
+        door1 <- profile
+        this
+
+    member this.WithDoor2(profile: uint8) =
+        door2 <- profile
+        this
+
+    member this.WithDoor3(profile: uint8) =
+        door3 <- profile
+        this
+
+    member this.WithDoor4(profile: uint8) =
+        door4 <- profile
+        this
+
+    member this.WithPIN(v: uint32) =
+        PIN <- v
+        this
+
+    member this.Build() =
+        { Card = card
+          StartDate = startDate
+          EndDate = endDate
+          Door1 = door1
+          Door2 = door2
+          Door3 = door3
+          Door4 = door4
+          PIN = PIN }
+
 type TimeProfileBuilder(profile: uint8) =
     let mutable start_date: Nullable<DateOnly> = Nullable()
     let mutable end_date: Nullable<DateOnly> = Nullable()
@@ -57,7 +105,7 @@ type TimeProfileBuilder(profile: uint8) =
         linked <- v
         this
 
-    member this.build() =
+    member this.Build() =
         { profile = profile
           start_date = start_date
           end_date = end_date
@@ -116,7 +164,7 @@ type TaskBuilder(task: uint8, door: uint8) =
         more_cards <- v
         this
 
-    member this.build() =
+    member this.Build() =
         { task = task
           door = door
           start_date = start_date

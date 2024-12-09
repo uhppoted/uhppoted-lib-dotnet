@@ -42,9 +42,9 @@ release: build test integration-tests
 	cd uhppoted && make release
 
 debug: build
-	dotnet run --project ../examples/fs/cli --framework net7.0 restore-default-parameters --controller $(CONTROLLER)
-	dotnet run --project ../examples/cs/cli --framework net7.0 restore-default-parameters --controller $(CONTROLLER)
-	dotnet run --project ../examples/vb/cli --framework net7.0 restore-default-parameters --controller $(CONTROLLER)
+	dotnet run --project ../examples/fs/cli --framework net7.0 put-card --controller $(CONTROLLER) --card $(CARD) --start-date $(START_DATE) --end-date $(END_DATE) --permissions $(PERMISSIONS) --PIN $(PIN)
+	dotnet run --project ../examples/cs/cli --framework net7.0 put-card --controller $(CONTROLLER) --card $(CARD) --start-date $(START_DATE) --end-date $(END_DATE) --permissions $(PERMISSIONS) --PIN $(PIN)
+	dotnet run --project ../examples/vb/cli --framework net7.0 put-card --controller $(CONTROLLER) --card $(CARD) --start-date $(START_DATE) --end-date $(END_DATE) --permissions $(PERMISSIONS) --PIN $(PIN)
 
 find-controllers: build
 	$(CLI) find-controllers

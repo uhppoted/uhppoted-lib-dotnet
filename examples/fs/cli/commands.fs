@@ -367,15 +367,16 @@ let get_card_at_index args =
 
 let put_card args =
     let controller = argparse args "--controller" CONTROLLER
-    let card = argparse args "--card" CARD
-    let startdate = argparse args "--start-date" START_DATE
-    let enddate = argparse args "--end-date" END_DATE
     let permissions = argparse args "--permissions" Map.empty
-    let door1 = (permissions |> Map.tryFind 1 |> Option.defaultValue 0uy)
-    let door2 = (permissions |> Map.tryFind 2 |> Option.defaultValue 0uy)
-    let door3 = (permissions |> Map.tryFind 3 |> Option.defaultValue 0uy)
-    let door4 = (permissions |> Map.tryFind 4 |> Option.defaultValue 0uy)
-    let PIN = argparse args "--PIN" 0u
+    let card: Card = {    
+        Card = argparse args "--card" CARD
+        StartDate = Nullable(argparse args "--start-date" START_DATE)
+        EndDate = Nullable(argparse args "--end-date" END_DATE)
+        Door1 = (permissions |> Map.tryFind 1 |> Option.defaultValue 0uy)
+        Door2 = (permissions |> Map.tryFind 2 |> Option.defaultValue 0uy)
+        Door3 = (permissions |> Map.tryFind 3 |> Option.defaultValue 0uy)
+        Door4 = (permissions |> Map.tryFind 4 |> Option.defaultValue 0uy)
+        PIN = argparse args "--PIN" 0u }
     let timeout = TIMEOUT
 
     let options =
@@ -383,11 +384,11 @@ let put_card args =
             endpoint = ENDPOINT
             protocol = PROTOCOL }
 
-    match Uhppoted.PutCard(controller, card, startdate, enddate, door1, door2, door3, door4, PIN, timeout, options) with
+    match Uhppoted.PutCard(controller, card, timeout, options) with
     | Ok ok ->
         printfn "put-card"
         printfn "  controller %u" controller
-        printfn "        card %u" card
+        printfn "        card %u" card.Card
         printfn "          ok %b" ok
         printfn ""
         Ok()

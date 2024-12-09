@@ -431,9 +431,9 @@ Module Commands
 
     Sub PutCard(args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
-        Dim card = ArgParse.Parse(args, "--card", CARD_NUMBER)
-        Dim startdate = ArgParse.Parse(args, "--start-date", START_DATE)
-        Dim enddate = ArgParse.Parse(args, "--end-date", END_DATE)
+        Dim cardNumber = ArgParse.Parse(args, "--card", CARD_NUMBER)
+        Dim startDate = ArgParse.Parse(args, "--start-date", START_DATE)
+        Dim endDate = ArgParse.Parse(args, "--end-date", END_DATE)
         Dim permissions = ArgParse.Parse(args, "--permissions", New Dictionary(Of Integer, Byte))
         Dim PIN = ArgParse.Parse(args, "--PIN", CUint(0))
 
@@ -443,14 +443,24 @@ Module Commands
         Dim door3 As Byte = If(permissions.TryGetValue(3, u8), u8, 0)
         Dim door4 As Byte = If(permissions.TryGetValue(4, u8), u8, 0)
 
-        Dim result = UHPPOTE.PutCard(controller, card, startdate, enddate, door1, door2, door3, door4, PIN, TIMEOUT, OPTIONS)
+        Dim card = New uhppoted.CardBuilder(cardNumber).
+                                WithStartDate(startDate).
+                                WithEndDate(endDate).
+                                WithDoor1(door1).
+                                WithDoor2(door2).
+                                WithDoor3(door3).
+                                WithDoor4(door4).
+                                WithPIN(PIN).
+                                Build()
+
+        Dim result = UHPPOTE.PutCard(controller, card, TIMEOUT, OPTIONS)
 
         If (result.IsOk)
             Dim ok = result.ResultValue
 
             WriteLine("put-card")
             WriteLine("  controller {0}", controller)
-            WriteLine("        card {0}", card)
+            WriteLine("        card {0}", card.Card)
             WriteLine("          ok {0}", ok)
             WriteLine()
         Else If (result.IsError)
