@@ -225,7 +225,7 @@ module internal Decode =
                        timestamp = unpack_datetime (packet[20..])
                        reason = unpack_u8 packet[27..] |} }
 
-    let get_cards_response (packet: byte array) : Result<GetCardsResponse, string> =
+    let getCardsResponse (packet: byte array) : Result<GetCardsResponse, string> =
         if packet[0] <> messages.SOM then
             Error("invalid controller response")
         else if packet[1] <> messages.GET_CARDS then
@@ -235,7 +235,7 @@ module internal Decode =
                 { controller = unpack_u32 packet[4..]
                   cards = unpack_u32 packet[8..] }
 
-    let get_card_response (packet: byte array) : Result<GetCardResponse, string> =
+    let getCardResponse (packet: byte array) : Result<GetCardResponse, string> =
         if packet[0] <> messages.SOM then
             Error("invalid controller response")
         else if packet[1] <> messages.GET_CARD then
@@ -252,7 +252,7 @@ module internal Decode =
                   door4 = unpack_u8 (packet[23..])
                   PIN = unpack_u32 (packet[24..]) }
 
-    let get_card_at_index_response (packet: byte array) : Result<GetCardAtIndexResponse, string> =
+    let getCardAtIndexResponse (packet: byte array) : Result<GetCardAtIndexResponse, string> =
         if packet[0] <> messages.SOM then
             Error("invalid controller response")
         else if packet[1] <> messages.GET_CARD_AT_INDEX then
@@ -269,7 +269,7 @@ module internal Decode =
                   door4 = unpack_u8 (packet[23..])
                   PIN = unpack_u32 (packet[24..]) }
 
-    let put_card_response (packet: byte array) : Result<PutCardResponse, string> =
+    let putCardResponse (packet: byte array) : Result<PutCardResponse, string> =
         if packet[0] <> messages.SOM then
             Error("invalid controller response")
         else if packet[1] <> messages.PUT_CARD then
@@ -279,7 +279,7 @@ module internal Decode =
                 { controller = unpack_u32 packet[4..]
                   ok = unpack_bool (packet[8..]) }
 
-    let delete_card_response (packet: byte array) : Result<DeleteCardResponse, string> =
+    let deleteCardResponse (packet: byte array) : Result<DeleteCardResponse, string> =
         if packet[0] <> messages.SOM then
             Error("invalid controller response")
         else if packet[1] <> messages.DELETE_CARD then
@@ -289,7 +289,7 @@ module internal Decode =
                 { controller = unpack_u32 packet[4..]
                   ok = unpack_bool (packet[8..]) }
 
-    let delete_all_cards_response (packet: byte array) : Result<DeleteAllCardsResponse, string> =
+    let deleteAllCardsResponse (packet: byte array) : Result<DeleteAllCardsResponse, string> =
         if packet[0] <> messages.SOM then
             Error("invalid controller response")
         else if packet[1] <> messages.DELETE_ALL_CARDS then
@@ -447,6 +447,16 @@ module internal Decode =
             Error("invalid controller response")
         else if packet[1] <> messages.ACTIVATE_KEYPADS then
             Error("invalid activate-keyapds response")
+        else
+            Ok
+                { controller = unpack_u32 packet[4..]
+                  ok = unpack_bool (packet[8..]) }
+
+    let restoreDefaultParametersResponse (packet: byte array) : Result<RestoreDefaultParametersResponse, string> =
+        if packet[0] <> messages.SOM then
+            Error("invalid controller response")
+        else if packet[1] <> messages.RESTORE_DEFAULT_PARAMETERS then
+            Error("invalid restore-default-parameters response")
         else
             Ok
                 { controller = unpack_u32 packet[4..]

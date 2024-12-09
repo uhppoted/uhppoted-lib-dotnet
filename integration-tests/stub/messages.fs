@@ -70,40 +70,40 @@ module Messages =
             responses = [ Responses.get_status ] }
 
           { test = "get-cards"
-            request = Requests.get_cards
-            responses = [ Responses.get_cards ] }
+            request = Requests.getCards
+            responses = [ Responses.getCards ] }
 
           { test = "get-card"
-            request = Requests.get_card
-            responses = [ Responses.get_card ] }
+            request = Requests.getCard
+            responses = [ Responses.getCard ] }
 
           { test = "get-card-not-found"
-            request = Requests.get_card_not_found
-            responses = [ Responses.get_card_not_found ] }
+            request = Requests.getCardNotFound
+            responses = [ Responses.getCardNotFound ] }
 
           { test = "get-card-at-index"
-            request = Requests.get_card_at_index
-            responses = [ Responses.get_card_at_index ] }
+            request = Requests.getCardAtIndex
+            responses = [ Responses.getCardAtIndex ] }
 
           { test = "get-card-at-index-not-found"
-            request = Requests.get_card_at_index_not_found
-            responses = [ Responses.get_card_at_index_not_found ] }
+            request = Requests.getCardAtIndexNotFound
+            responses = [ Responses.getCardAtIndexNotFound ] }
 
           { test = "get-card-at-index-deleted"
-            request = Requests.get_card_at_index_deleted
-            responses = [ Responses.get_card_at_index_deleted ] }
+            request = Requests.getCardAtIndexDeleted
+            responses = [ Responses.getCardAtIndexDeleted ] }
 
           { test = "put-card"
-            request = Requests.put_card
-            responses = [ Responses.put_card ] }
+            request = Requests.putCard
+            responses = [ Responses.putCard ] }
 
           { test = "delete-card"
-            request = Requests.delete_card
-            responses = [ Responses.delete_card ] }
+            request = Requests.deleteCard
+            responses = [ Responses.deleteCard ] }
 
           { test = "delete-all-cards"
-            request = Requests.delete_all_cards
-            responses = [ Responses.delete_all_cards ] }
+            request = Requests.deleteAllCards
+            responses = [ Responses.deleteAllCards ] }
 
           { test = "get-event"
             request = Requests.getEvent
@@ -167,7 +167,11 @@ module Messages =
 
           { test = "activate-keypads"
             request = Requests.activateKeypads
-            responses = [ Responses.activateKeypads ] } ]
+            responses = [ Responses.activateKeypads ] }
+
+          { test = "restore-default-parameters"
+            request = Requests.restoreDefaultParameters
+            responses = [ Responses.restoreDefaultParameters ] } ]
 
 
     let find request =

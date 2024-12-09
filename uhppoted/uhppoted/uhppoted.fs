@@ -345,9 +345,9 @@ module Uhppoted =
     /// Ok with the number of cards stored on the controller or Error.
     /// </returns>
     let GetCards (controller: uint32, timeout: int, options: Options) =
-        let request = Encode.get_cards_request controller
+        let request = Encode.getCardsRequest controller
 
-        match exec controller request Decode.get_cards_response timeout options with
+        match exec controller request Decode.getCardsResponse timeout options with
         | Ok response -> Ok response.cards
         | Error err -> Error err
 
@@ -362,9 +362,9 @@ module Uhppoted =
     /// Card record matching the card number (or null if not found) or an error if the request failed.
     /// </returns>
     let GetCard (controller: uint32, card: uint32, timeout: int, options: Options) =
-        let request = Encode.get_card_request controller card
+        let request = Encode.getCardRequest controller card
 
-        match exec controller request Decode.get_card_response timeout options with
+        match exec controller request Decode.getCardResponse timeout options with
         | Ok response when response.card = 0u -> // not found
             Ok(Nullable())
         | Ok response ->
@@ -392,9 +392,9 @@ module Uhppoted =
     /// Card record at the index (or null if not found or deleted) or an error if the request failed.
     /// </returns>
     let GetCardAtIndex (controller: uint32, index: uint32, timeout: int, options: Options) =
-        let request = Encode.get_card_at_index_request controller index
+        let request = Encode.getCardAtIndexRequest controller index
 
-        match exec controller request Decode.get_card_at_index_response timeout options with
+        match exec controller request Decode.getCardAtIndexResponse timeout options with
         | Ok response when response.card = 0u -> // not found
             Ok(Nullable())
         | Ok response when response.card = 0xffffffffu -> // deleted
@@ -445,9 +445,9 @@ module Uhppoted =
             options: Options
         ) =
         let request =
-            Encode.put_card_request controller card startdate enddate door1 door2 door3 door4 pin
+            Encode.putCardRequest controller card startdate enddate door1 door2 door3 door4 pin
 
-        match exec controller request Decode.put_card_response timeout options with
+        match exec controller request Decode.putCardResponse timeout options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 
@@ -462,9 +462,9 @@ module Uhppoted =
     /// Result with the boolean success/fail result or an Error if the request failed.
     /// </returns>
     let DeleteCard (controller: uint32, card: uint32, timeout: int, options: Options) =
-        let request = Encode.delete_card_request controller card
+        let request = Encode.deleteCardRequest controller card
 
-        match exec controller request Decode.delete_card_response timeout options with
+        match exec controller request Decode.deleteCardResponse timeout options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 
@@ -478,9 +478,9 @@ module Uhppoted =
     /// Result with the boolean success/fail result or an Error if the request failed.
     /// </returns>
     let DeleteAllCards (controller: uint32, timeout: int, options: Options) =
-        let request = Encode.delete_all_cards_request controller
+        let request = Encode.deleteAllCardsRequest controller
 
-        match exec controller request Decode.delete_all_cards_response timeout options with
+        match exec controller request Decode.deleteAllCardsResponse timeout options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 
@@ -746,5 +746,21 @@ module Uhppoted =
             Encode.activateKeypadsRequest controller reader1 reader2 reader3 reader4
 
         match exec controller request Decode.activateKeypadsResponse timeout options with
+        | Ok response -> Ok response.ok
+        | Error err -> Error err
+
+    /// <summary>
+    /// Restores the manufacturer defaults.
+    /// </summary>
+    /// <param name="controller">Controller ID.</param>
+    /// <param name="timeout">Operation timeout (ms).</param>
+    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <returns>
+    /// Result with the boolean success/fail result or an Error if the request failed.
+    /// </returns>
+    let RestoreDefaultParameters (controller: uint32, timeout: int, options: Options) =
+        let request = Encode.restoreDefaultParametersRequest controller
+
+        match exec controller request Decode.restoreDefaultParametersResponse timeout options with
         | Ok response -> Ok response.ok
         | Error err -> Error err

@@ -18,6 +18,8 @@
       - [ ] event direction
       - [ ] tasks
       - [ ] interlock
+      - [ ] relays
+      - [ ] inputs
       - https://stackoverflow.com/questions/2689446/how-to-manage-resources-in-an-f-project
       - https://fsprojects.github.io/FSharp.Configuration/ResXProvider.html
       - https://poeditor.com/kb/resx-editor
@@ -76,7 +78,6 @@
       - [x] delete-card
       - [x] delete-all-cards
       - [x] get-event
-            - [x] direction enum
       - [x] get-event-index
       - [x] set-event-index
       - [x] record-special-events
@@ -89,7 +90,8 @@
       - [x] set-pc-control
       - [x] set-interlock
       - [x] activate-keypads
-      - [ ] restore-default-parameters
+      - [x] restore-default-parameters
+      - [ ] listen
             - [ ] API function
             - [ ] CLI
                   - [ ] F#
@@ -99,5 +101,4 @@
             - [ ] API doc
             - [ ] README
       
-      - [ ] listen
 

@@ -105,6 +105,9 @@ Sets the door interlock mode for an access controller.
 ### [`ActivateKeypads`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/activate-keypads.md)
 Activates/deactivates the access reader keypads attached to an access controller.
 
+### [`RestoreDefaultSettings`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/restore-default-settings.md)
+Restores the manufacturer default settings.
+
 
 ## Notes
 

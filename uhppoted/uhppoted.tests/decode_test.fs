@@ -198,19 +198,19 @@ type TestDecoder() =
 
     [<Test>]
     member this.TestDecodeGetCardsResponse() =
-        let packet = TestResponses.get_cards
+        let packet = TestResponses.getCards
 
         let expected: GetCardsResponse =
             { controller = 405419896u
               cards = 13579u }
 
-        match Decode.get_cards_response packet with
+        match Decode.getCardsResponse packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)
 
     [<Test>]
     member this.TestDecodeGetCardResponse() =
-        let packet = TestResponses.get_card
+        let packet = TestResponses.getCard
 
         let expected: GetCardResponse =
             { controller = 405419896u
@@ -223,13 +223,13 @@ type TestDecoder() =
               door4 = 1uy
               PIN = 999999u }
 
-        match Decode.get_card_response packet with
+        match Decode.getCardResponse packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)
 
     [<Test>]
     member this.TestDecodeGetCardAtIndexResponse() =
-        let packet = TestResponses.get_card_at_index
+        let packet = TestResponses.getCardAtIndex
 
         let expected: GetCardAtIndexResponse =
             { controller = 405419896u
@@ -242,37 +242,37 @@ type TestDecoder() =
               door4 = 1uy
               PIN = 999999u }
 
-        match Decode.get_card_at_index_response packet with
+        match Decode.getCardAtIndexResponse packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)
 
     [<Test>]
     member this.TestDecodePutCardResponse() =
-        let packet = TestResponses.put_card
+        let packet = TestResponses.putCard
 
         let expected: PutCardResponse = { controller = 405419896u; ok = true }
 
-        match Decode.put_card_response packet with
+        match Decode.putCardResponse packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)
 
     [<Test>]
     member this.TestDecodeDeleteCardResponse() =
-        let packet = TestResponses.delete_card
+        let packet = TestResponses.deleteCard
 
         let expected: DeleteCardResponse = { controller = 405419896u; ok = true }
 
-        match Decode.delete_card_response packet with
+        match Decode.deleteCardResponse packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)
 
     [<Test>]
     member this.TestDecodeDeleteAllCardsResponse() =
-        let packet = TestResponses.delete_all_cards
+        let packet = TestResponses.deleteAllCards
 
         let expected: DeleteAllCardsResponse = { controller = 405419896u; ok = true }
 
-        match Decode.delete_all_cards_response packet with
+        match Decode.deleteAllCardsResponse packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)
 
@@ -432,5 +432,16 @@ type TestDecoder() =
         let expected: ActivateKeypadsResponse = { controller = 405419896u; ok = true }
 
         match Decode.activateKeypadsResponse packet with
+        | Ok response -> Assert.That(response, Is.EqualTo(expected))
+        | Error err -> Assert.Fail(err)
+
+    [<Test>]
+    member this.TestDecodeRestoreDefaultParametersResponse() =
+        let packet = TestResponses.restoreDefaultParameters
+
+        let expected: RestoreDefaultParametersResponse =
+            { controller = 405419896u; ok = true }
+
+        match Decode.restoreDefaultParametersResponse packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)

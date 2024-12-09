@@ -30,7 +30,7 @@ module internal Encode =
         let bytes = [| (byte ((v >>> 0) &&& 0x00ffuy)) |]
         Array.blit bytes 0 packet offset 1
 
-    let pack_bool (packet: byte array) (offset: int) (v: bool) =
+    let packBool (packet: byte array) (offset: int) (v: bool) =
         let bytes =
             match v with
             | true -> [| 0x01uy |]
@@ -38,15 +38,15 @@ module internal Encode =
 
         Array.blit bytes 0 packet offset 1
 
-    let pack_IPv4 (packet: byte array) (offset: int) (v: IPAddress) =
+    let packIPv4 (packet: byte array) (offset: int) (v: IPAddress) =
         let bytes = v.MapToIPv4().GetAddressBytes()
         Array.blit bytes 0 packet offset 4
 
-    let pack_datetime (packet: byte array) (offset: int) (v: DateTime) =
+    let packDateTime (packet: byte array) (offset: int) (v: DateTime) =
         let bytes = bcd (v.ToString "yyyyMMddHHmmss")
         Array.blit bytes 0 packet offset 7
 
-    let pack_date (packet: byte array) (offset: int) (v: Nullable<DateOnly>) =
+    let packDateOnly (packet: byte array) (offset: int) (v: Nullable<DateOnly>) =
         let bytes =
             match v.HasValue with
             | true -> bcd (v.Value.ToString "yyyyMMdd")
@@ -54,7 +54,7 @@ module internal Encode =
 
         Array.blit bytes 0 packet offset 4
 
-    let pack_HHmm (packet: byte array) (offset: int) (v: Nullable<TimeOnly>) =
+    let packTimeOnly (packet: byte array) (offset: int) (v: Nullable<TimeOnly>) =
         let bytes =
             match v.HasValue with
             | true -> bcd (v.Value.ToString "HHmm")
@@ -109,11 +109,11 @@ module internal Encode =
         | Uint32 u32 -> packU32 packet offset u32
         | Uint16 u16 -> packU16 packet offset u16
         | Uint8 u8 -> packU8 packet offset u8
-        | Bool b -> pack_bool packet offset b
-        | IPv4 addr -> pack_IPv4 packet offset addr
-        | DateTime datetime -> pack_datetime packet offset datetime
-        | DateOnly date -> pack_date packet offset date
-        | TimeOnly time -> pack_HHmm packet offset time
+        | Bool b -> packBool packet offset b
+        | IPv4 addr -> packIPv4 packet offset addr
+        | DateTime datetime -> packDateTime packet offset datetime
+        | DateOnly date -> packDateOnly packet offset date
+        | TimeOnly time -> packTimeOnly packet offset time
         | _ -> ()
 
     let getControllerRequest (controller: uint32) =
@@ -248,7 +248,7 @@ module internal Encode =
 
         packet
 
-    let get_cards_request (controller: uint32) =
+    let getCardsRequest (controller: uint32) =
         let packet: byte array = Array.zeroCreate 64
 
         pack packet 0 (byte messages.SOM)
@@ -257,7 +257,7 @@ module internal Encode =
 
         packet
 
-    let get_card_request (controller: uint32) (card: uint32) =
+    let getCardRequest (controller: uint32) (card: uint32) =
         let packet: byte array = Array.zeroCreate 64
 
         pack packet 0 (byte messages.SOM)
@@ -267,7 +267,7 @@ module internal Encode =
 
         packet
 
-    let get_card_at_index_request (controller: uint32) (index: uint32) =
+    let getCardAtIndexRequest (controller: uint32) (index: uint32) =
         let packet: byte array = Array.zeroCreate 64
 
         pack packet 0 (byte messages.SOM)
@@ -277,7 +277,7 @@ module internal Encode =
 
         packet
 
-    let put_card_request
+    let putCardRequest
         (controller: uint32)
         (card: uint32)
         (start_date: DateOnly)
@@ -304,7 +304,7 @@ module internal Encode =
 
         packet
 
-    let delete_card_request (controller: uint32) (card: uint32) =
+    let deleteCardRequest (controller: uint32) (card: uint32) =
         let packet: byte array = Array.zeroCreate 64
 
         pack packet 0 (byte messages.SOM)
@@ -314,7 +314,7 @@ module internal Encode =
 
         packet
 
-    let delete_all_cards_request (controller: uint32) =
+    let deleteAllCardsRequest (controller: uint32) =
         let packet: byte array = Array.zeroCreate 64
 
         pack packet 0 (byte messages.SOM)
@@ -483,5 +483,15 @@ module internal Encode =
         pack packet 9 reader2
         pack packet 10 reader3
         pack packet 11 reader4
+
+        packet
+
+    let restoreDefaultParametersRequest (controller: uint32) =
+        let packet: byte array = Array.zeroCreate 64
+
+        pack packet 0 (byte messages.SOM)
+        pack packet 1 (byte messages.RESTORE_DEFAULT_PARAMETERS)
+        pack packet 4 controller
+        pack packet 8 MAGIC_WORD
 
         packet

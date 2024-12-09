@@ -751,6 +751,24 @@ let activateKeypads args =
         Ok()
     | Error err -> Error(err)
 
+let restoreDefaultParameters args =
+    let controller = argparse args "--controller" CONTROLLER
+    let timeout = TIMEOUT
+
+    let options =
+        { OPTIONS with
+            endpoint = ENDPOINT
+            protocol = PROTOCOL }
+
+    match Uhppoted.RestoreDefaultParameters(controller, timeout, options) with
+    | Ok ok ->
+        printfn "restore-default-parameters"
+        printfn "  controller %u" controller
+        printfn "          ok %b" ok
+        printfn ""
+        Ok()
+    | Error err -> Error(err)
+
 let commands =
     [ { command = "find-controllers"
         description = "Retrieves a list of controllers accessible on the local LAN"
@@ -874,4 +892,8 @@ let commands =
 
       { command = "activate-keypads"
         description = "Activates the access reader keypads attached to a controller"
-        f = activateKeypads } ]
+        f = activateKeypads }
+
+      { command = "restore-default-parameters"
+        description = "Restores the manufacturer defaults"
+        f = restoreDefaultParameters } ]

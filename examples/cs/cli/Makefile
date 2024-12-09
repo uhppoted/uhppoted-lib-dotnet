@@ -136,3 +136,6 @@ set-interlock: build
 activate-keypads: build
 	$(CLI) activate-keypads --controller $(CONTROLLER) --keypads $(KEYPADS)
 
+restore-default-parameters: build
+	$(CLI) restore-default-parameters --controller $(CONTROLLER)
+

@@ -148,36 +148,36 @@ type TestEncoder() =
 
     [<Test>]
     member this.TestEncodeGetCardsRequest() =
-        let expected = TestRequests.get_cards
+        let expected = TestRequests.getCards
 
         let controller = 405419896u
-        let packet = Encode.get_cards_request controller
+        let packet = Encode.getCardsRequest controller
 
         Assert.That(packet, Is.EqualTo(expected))
 
     [<Test>]
     member this.TestEncodeGetCardRequest() =
-        let expected = TestRequests.get_card
+        let expected = TestRequests.getCard
 
         let controller = 405419896u
         let card = 10058400u
-        let packet = Encode.get_card_request controller card
+        let packet = Encode.getCardRequest controller card
 
         Assert.That(packet, Is.EqualTo(expected))
 
     [<Test>]
     member this.TestEncodeGetCardAtIndexRequest() =
-        let expected = TestRequests.get_card_at_index
+        let expected = TestRequests.getCardAtIndex
 
         let controller = 405419896u
         let index = 135u
-        let packet = Encode.get_card_at_index_request controller index
+        let packet = Encode.getCardAtIndexRequest controller index
 
         Assert.That(packet, Is.EqualTo(expected))
 
     [<Test>]
     member this.TestEncodePutCardRequest() =
-        let expected = TestRequests.put_card
+        let expected = TestRequests.putCard
 
         let controller = 405419896u
         let card = 10058400u
@@ -190,26 +190,26 @@ type TestEncoder() =
         let PIN = 999999u
 
         let packet =
-            Encode.put_card_request controller card startdate enddate door1 door2 door3 door4 PIN
+            Encode.putCardRequest controller card startdate enddate door1 door2 door3 door4 PIN
 
         Assert.That(packet, Is.EqualTo(expected))
 
     [<Test>]
     member this.TestEncodeDeleteCardRequest() =
-        let expected = TestRequests.delete_card
+        let expected = TestRequests.deleteCard
 
         let controller = 405419896u
         let card = 10058400u
-        let packet = Encode.delete_card_request controller card
+        let packet = Encode.deleteCardRequest controller card
 
         Assert.That(packet, Is.EqualTo(expected))
 
     [<Test>]
     member this.TestEncodeDeleteAllCardsRequest() =
-        let expected = TestRequests.delete_all_cards
+        let expected = TestRequests.deleteAllCards
 
         let controller = 405419896u
-        let packet = Encode.delete_all_cards_request controller
+        let packet = Encode.deleteAllCardsRequest controller
 
         Assert.That(packet, Is.EqualTo(expected))
 
@@ -369,5 +369,14 @@ type TestEncoder() =
 
         let controller = 405419896u
         let packet = Encode.activateKeypadsRequest controller true true false true
+
+        Assert.That(packet, Is.EqualTo(expected))
+
+    [<Test>]
+    member this.TestRestoreDefaultParametersRequest() =
+        let expected = TestRequests.restoreDefaultParameters
+
+        let controller = 405419896u
+        let packet = Encode.restoreDefaultParametersRequest controller
 
         Assert.That(packet, Is.EqualTo(expected))

@@ -122,6 +122,9 @@ Sets the door interlock mode for an access controller.
 ### [`ActivateKeypads`](documentation/API/activate-keypads.md)
 Activates/deactivates the access reader keypads attached to an access controller.
 
+### [`RestoreDefaultSettings`](documentation/API/restore-default-settings.md)
+Restores the manufacturer default settings.
+
 
 ## Notes
 

@@ -107,7 +107,8 @@ Module Commands
            New Command("refresh-tasklist", "Schedules added tasks", AddressOf RefreshTaskList),
            New Command("set-pc-control", "Enables (or disables) remote access control management", AddressOf SetPCControl),
            New Command("set-interlock", "Sets the door interlock mode for a controller", AddressOf SetInterlock),
-           New Command("activate-keypads", "Activates the access reader keypads attached to a controller", AddressOf ActivateKeypads)
+           New Command("activate-keypads", "Activates the access reader keypads attached to a controller", AddressOf ActivateKeypads),
+           New Command("restore-default-parameters", "Restores the manufacturer defaults", AddressOf RestoreDefaultParameters)
        }
 
     Sub FindControllers(args As String())
@@ -798,6 +799,23 @@ Module Commands
             WriteLine("    reader 2 {0}", reader2)
             WriteLine("    reader 3 {0}", reader3)
             WriteLine("    reader 4 {0}", reader4)
+            WriteLine("          ok {0}", ok)
+            WriteLine()
+        Else If (result.IsError)
+            Throw New Exception(result.ErrorValue)
+        End If
+    End Sub
+
+    Sub RestoreDefaultParameters(args As String())
+        Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
+
+        Dim result = UHPPOTE.RestoreDefaultParameters(controller, TIMEOUT, OPTIONS)
+
+        If (result.IsOk)
+            Dim ok = result.ResultValue
+
+            WriteLine("restore-default-parameters")
+            WriteLine("  controller {0}", controller)
             WriteLine("          ok {0}", ok)
             WriteLine()
         Else If (result.IsError)

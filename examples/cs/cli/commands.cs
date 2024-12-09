@@ -113,6 +113,7 @@ class Commands
           new Command ("set-pc-control", "Enables (or disables) remote access control management", SetPCControl),
           new Command ("set-interlock", "Sets the door interlock mode for a controller", SetInterlock),
           new Command ("activate-keypads", "Activates the access reader keypads attached to a controller", ActivateKeypads),
+          new Command ("restore-default-parameters", "Restores the manufacturer defaults", RestoreDefaultParameters),
     };
 
     public static void FindControllers(string[] args)
@@ -984,6 +985,28 @@ class Commands
             WriteLine("    reader 2 {0}", reader2);
             WriteLine("    reader 3 {0}", reader3);
             WriteLine("    reader 4 {0}", reader4);
+            WriteLine("          ok {0}", ok);
+            WriteLine();
+        }
+        else if (result.IsError)
+        {
+            throw new Exception(result.ErrorValue);
+        }
+    }
+
+    public static void RestoreDefaultParameters(string[] args)
+    {
+        var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
+        var timeout = TIMEOUT;
+        var options = OPTIONS;
+        var result = Uhppoted.RestoreDefaultParameters(controller, timeout, options);
+
+        if (result.IsOk)
+        {
+            var ok = result.ResultValue;
+
+            WriteLine("restore-default-parameters");
+            WriteLine("  controller {0}", controller);
             WriteLine("          ok {0}", ok);
             WriteLine();
         }
