@@ -7,9 +7,10 @@
       - https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/conventions#represent-error-cases-and-illegal-state-in-types-intrinsic-to-your-domain
 
 - [ ] Add .NET 9 as a target framework
-- [ ] function signature file
 - (?) Cross-platform builds
       - https://stackoverflow.com/questions/69393627/create-nuget-package-for-different-platforms-architectures-and-net-versions
+
+- [ ] function signature file
 
 - [ ] translations & enums
       - [ ] door mode
@@ -70,6 +71,7 @@
             - [x] decode relays
             - [x] decode inputs
             - [ ] return (status,event) tuple
+            - [ ] Rework .evt as .event a lá _ListenEvent_
       - [x] get-cards
       - [x] get-card
       - [x] get-card-at-index
@@ -92,12 +94,16 @@
       - [x] restore-default-parameters
       - [ ] listen
             - [ ] API function
+                  - [ ] controller
+                  - [ ] status
+                  - [ ] error handling
             - [ ] CLI
-                  - [ ] F#
+                  - [x] F#
                   - [ ] C#
                   - [ ] VB.NET
             - [ ] integration test
             - [ ] API doc
             - [ ] README
+      - [ ] Handle v6.62 messages
+      - [ ] Rethink the controller/options thing
       
-

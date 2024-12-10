@@ -46,6 +46,9 @@ debug: build
 	dotnet run --project ../examples/cs/cli --framework net7.0 put-card --controller $(CONTROLLER) --card $(CARD) --start-date $(START_DATE) --end-date $(END_DATE) --permissions $(PERMISSIONS) --PIN $(PIN)
 	dotnet run --project ../examples/vb/cli --framework net7.0 put-card --controller $(CONTROLLER) --card $(CARD) --start-date $(START_DATE) --end-date $(END_DATE) --permissions $(PERMISSIONS) --PIN $(PIN)
 
+swipe:
+	curl -X POST "http://127.0.0.1:8000/uhppote/simulator/405419896/swipe" -H "accept: application/json" -H "Content-Type: application/json" -d '{"door":1,"card-number":1048400,"direction":1,"PIN":7531}'
+
 find-controllers: build
 	$(CLI) find-controllers
 
@@ -151,4 +154,7 @@ activate-keypads: build
 
 restore-default-parameters: build
 	$(CLI) restore-default-parameters --controller $(CONTROLLER)
+
+listen: build
+	$(CLI) listen
 

@@ -461,3 +461,43 @@ module internal Decode =
             Ok
                 { controller = unpack_u32 packet[4..]
                   ok = unpack_bool (packet[8..]) }
+
+    let listenEvent (packet: byte array) : Result<ListenEvent, string> =
+        if packet[0] <> messages.SOM then
+            Error("invalid controller response")
+        else if packet[1] <> messages.LISTEN_EVENT then
+            Error("invalid listen-event packet")
+        else
+            let sysdate = unpack_yymmdd (packet[51..])
+            let systime = unpack_HHmmss (packet[37..])
+
+            let sysdatetime =
+                match sysdate.HasValue, systime.HasValue with
+                | true, true -> Nullable(sysdate.Value.ToDateTime(systime.Value))
+                | _, _ -> Nullable()
+
+            Ok
+                { controller = unpack_u32 packet[4..]
+                  door1_open = unpack_bool packet[28..]
+                  door2_open = unpack_bool packet[29..]
+                  door3_open = unpack_bool packet[30..]
+                  door4_open = unpack_bool packet[31..]
+                  door1_button = unpack_bool packet[32..]
+                  door2_button = unpack_bool packet[33..]
+                  door3_button = unpack_bool packet[34..]
+                  door4_button = unpack_bool packet[35..]
+                  system_error = unpack_u8 packet[36..]
+                  system_datetime = sysdatetime
+                  sequence_number = unpack_u32 packet[40..]
+                  special_info = unpack_u8 packet[48..]
+                  relays = unpack_u8 packet[49..]
+                  inputs = unpack_u8 packet[50..]
+                  event =
+                    {| index = unpack_u32 packet[8..]
+                       event = unpack_u8 packet[12..]
+                       granted = unpack_bool packet[13..]
+                       door = unpack_u8 packet[14..]
+                       direction = unpack_u8 packet[15..]
+                       card = unpack_u32 packet[16..]
+                       timestamp = unpack_datetime (packet[20..])
+                       reason = unpack_u8 packet[27..] |} }

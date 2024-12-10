@@ -49,12 +49,34 @@ module internal UDP =
                     )
 
                 if packet.Length = 64 then
-                    return Ok((packet, remote))
+                    return Ok(packet, remote)
                 else
                     return! receive socket
 
             with err ->
                 return Error err.Message
+        }
+
+    let rec receive_event (socket: UdpClient) (handler: byte array * IPEndPoint -> unit) : Async<Result<unit, string>> =
+        async {
+            try
+                let! (packet, remote) =
+                    Async.FromBeginEnd(
+                        (fun (callback, state) -> socket.BeginReceive(callback, state)),
+                        (fun (iar) ->
+                            let addr = ref Unchecked.defaultof<IPEndPoint>
+                            let packet = socket.EndReceive(iar, addr)
+                            (packet, !addr))
+                    )
+
+                if packet.Length = 64 then
+                    handler (packet, remote)
+
+                return! receive_event socket handler
+
+            with
+            | :? ObjectDisposedException -> return Ok()
+            | err -> return Error err.Message
         }
 
     let broadcast (request: byte array, bind: IPEndPoint, broadcast: IPEndPoint, timeout: int, debug: bool) =
@@ -181,3 +203,23 @@ module internal UDP =
                 Error error.Message
         finally
             socket.Close()
+
+    let listen (bind: IPEndPoint) (callback: byte array -> unit) (token: CancellationToken) (debug: bool) =
+        let socket = new UdpClient(bind)
+
+        let handler (packet: byte array, addr: IPEndPoint) =
+            if debug then
+                printfn "    ... event %d bytes from %A" packet.Length addr.Address
+                dump packet
+
+            callback packet
+
+        try
+            receive_event socket handler |> Async.StartAsTask |> ignore
+
+            token.WaitHandle.WaitOne() |> ignore
+            socket.Close()
+            Ok()
+
+        with error ->
+            Error error.Message

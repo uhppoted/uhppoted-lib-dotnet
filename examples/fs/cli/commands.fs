@@ -2,6 +2,8 @@ module Commands
 
 open System
 open System.Net
+open System.Threading
+
 open uhppoted
 open argparse
 
@@ -770,6 +772,33 @@ let restoreDefaultParameters args =
         Ok()
     | Error err -> Error(err)
 
+let listen args =
+    let cancel = new CancellationTokenSource()
+
+    Console.CancelKeyPress.Add(fun args ->
+        args.Cancel <- true
+        cancel.Cancel())
+
+    let handler v = 
+        match v with
+        | Ok e -> 
+            printfn "-- EVENT"
+            // printfn "  controller %u" controller
+            printfn "   timestamp %s" (YYYYMMDDHHmmss(e.Timestamp))
+            printfn "       index %u" e.Index
+            printfn "       event %u" e.EventType
+            printfn "     granted %b" e.AccessGranted
+            printfn "        door %u" e.Door
+            printfn "   direction %A" e.Direction
+            printfn "        card %u" e.Card
+            printfn "      reason %u" e.Reason
+            printfn ""
+
+        | Error err -> printfn "OOOPS %A" err
+
+    Uhppoted.Listen(handler, cancel.Token, OPTIONS)
+
+
 let commands =
     [ { command = "find-controllers"
         description = "Retrieves a list of controllers accessible on the local LAN"
@@ -897,4 +926,8 @@ let commands =
 
       { command = "restore-default-parameters"
         description = "Restores the manufacturer defaults"
-        f = restoreDefaultParameters } ]
+        f = restoreDefaultParameters }
+
+      { command = "listen"
+        description = "Listens for access controller events"
+        f = listen } ]

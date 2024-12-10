@@ -2,6 +2,7 @@
 
 open System
 open System.Net
+open System.Threading
 
 module Uhppoted =
     let private defaults =
@@ -743,3 +744,36 @@ module Uhppoted =
         match exec controller request Decode.restoreDefaultParametersResponse timeout options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
+
+    /// <summary>
+    /// Listens for events from access controllers and dispatches received events to a handler.
+    /// </summary>
+    /// <param name="callback">External event handler function.</param>
+    /// <param name="stop">Cancellation token to terminate event listener.</param>
+    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <returns>
+    /// Result with the boolean success/fail result or an Error if the request failed.
+    /// </returns>
+    let Listen (callback: Result<Event, string> -> unit, stop: CancellationToken, options: Options) =
+        let bind = options.listen
+        let debug = options.debug
+
+        let handler (packet: byte array) =
+            match Decode.listenEvent packet with
+            | Ok e ->
+                if e.event.index <> 0u then
+                    let event: Event =
+                        { Timestamp = e.event.timestamp
+                          Index = e.event.index
+                          EventType = e.event.event
+                          AccessGranted = e.event.granted
+                          Door = e.event.door
+                          Direction = Enums.direction e.event.direction
+                          Card = e.event.card
+                          Reason = e.event.reason }
+
+                    callback (Ok event)
+
+            | Error err -> printfn "OOOOPS %A" err
+
+        UDP.listen bind handler stop debug

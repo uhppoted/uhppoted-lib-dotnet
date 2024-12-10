@@ -445,3 +445,37 @@ type TestDecoder() =
         match Decode.restoreDefaultParametersResponse packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)
+
+    [<Test>]
+    member this.TestDecodeEvent() =
+        let packet = TestResponses.event
+
+        let expected: ListenEvent =
+            { controller = 405419896u
+              door1_open = true
+              door2_open = false
+              door3_open = true
+              door4_open = true
+              door1_button = true
+              door2_button = true
+              door3_button = false
+              door4_button = true
+              system_error = 27uy
+              system_datetime = Nullable(DateTime.ParseExact("2024-11-13 14:37:53", "yyyy-MM-dd HH:mm:ss", null))
+              sequence_number = 21987u
+              special_info = 154uy
+              relays = 7uy
+              inputs = 9uy
+              event =
+                {| index = 75312u
+                   event = 19uy
+                   granted = true
+                   door = 4uy
+                   direction = 2uy
+                   card = 10058400u
+                   timestamp = Nullable(DateTime.ParseExact("2024-11-10 12:34:56", "yyyy-MM-dd HH:mm:ss", null))
+                   reason = 6uy |} }
+
+        match Decode.listenEvent packet with
+        | Ok response -> Assert.That(response, Is.EqualTo(expected))
+        | Error err -> Assert.Fail(err)

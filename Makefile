@@ -146,3 +146,6 @@ activate-keypads: build
 restore-default-parameters: build
 	$(CLI) restore-default-parameters --controller $(CONTROLLER)
 
+listen: build
+	$(CLI) listen
+

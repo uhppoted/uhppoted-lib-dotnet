@@ -99,3 +99,6 @@ module internal messages =
 
     [<Literal>]
     let RESTORE_DEFAULT_PARAMETERS = 0xc8uy
+
+    [<Literal>]
+    let LISTEN_EVENT = 0x20uy
