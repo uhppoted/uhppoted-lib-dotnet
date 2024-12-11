@@ -68,7 +68,7 @@ type TestDecoder() =
 
     [<Test>]
     member this.TestDecodeGetTimeResponse() =
-        let packet = TestResponses.get_time
+        let packet = TestResponses.getTime
 
         let expected: GetTimeResponse =
             { controller = 405419896u
@@ -80,7 +80,7 @@ type TestDecoder() =
 
     [<Test>]
     member this.TestDecodeGetTimeResponseWithInvalidDateTime() =
-        let packet = TestResponses.get_time_with_invalid_datetime
+        let packet = TestResponses.getTimeWithInvalidDatetime
 
         let expected: GetTimeResponse =
             { controller = 405419896u
@@ -92,7 +92,7 @@ type TestDecoder() =
 
     [<Test>]
     member this.TestDecodeSetTimeResponse() =
-        let packet = TestResponses.set_time
+        let packet = TestResponses.setTime
 
         let expected: SetTimeResponse =
             { controller = 405419896u
@@ -104,7 +104,7 @@ type TestDecoder() =
 
     [<Test>]
     member this.TestDecodeSetTimeResponseWithInvalidDateTime() =
-        let packet = TestResponses.set_time_with_invalid_datetime
+        let packet = TestResponses.setTimeWithInvalidDatetime
 
         let expected: SetTimeResponse =
             { controller = 405419896u
@@ -116,7 +116,7 @@ type TestDecoder() =
 
     [<Test>]
     member this.TestDecodeGetDoorResponse() =
-        let packet = TestResponses.get_door
+        let packet = TestResponses.getDoor
 
         let expected: GetDoorResponse =
             { controller = 405419896u
@@ -130,7 +130,7 @@ type TestDecoder() =
 
     [<Test>]
     member this.TestDecodeSetDoorResponse() =
-        let packet = TestResponses.set_door
+        let packet = TestResponses.setDoor
 
         let expected: SetDoorResponse =
             { controller = 405419896u
@@ -144,7 +144,7 @@ type TestDecoder() =
 
     [<Test>]
     member this.TestDecodeSetDoorPasscodesResponse() =
-        let packet = TestResponses.set_door_passcodes
+        let packet = TestResponses.setDoorPasscodes
 
         let expected: SetDoorPasscodesResponse = { controller = 405419896u; ok = true }
 
@@ -168,23 +168,23 @@ type TestDecoder() =
 
         let expected: GetStatusResponse =
             { controller = 405419896u
-              door1_open = true
-              door2_open = false
-              door3_open = true
-              door4_open = true
-              door1_button = true
-              door2_button = true
-              door3_button = false
-              door4_button = true
-              system_error = 27uy
-              system_datetime = Nullable(DateTime.ParseExact("2024-11-13 14:37:53", "yyyy-MM-dd HH:mm:ss", null))
-              sequence_number = 21987u
-              special_info = 154uy
+              door1Open = true
+              door2Open = false
+              door3Open = true
+              door4Open = true
+              door1Button = true
+              door2Button = true
+              door3Button = false
+              door4Button = true
+              systemError = 27uy
+              systemDateTime = Nullable(DateTime.ParseExact("2024-11-13 14:37:53", "yyyy-MM-dd HH:mm:ss", null))
+              sequenceNumber = 21987u
+              specialInfo = 154uy
               relays = 7uy
               inputs = 9uy
               evt =
                 {| index = 75312u
-                   event_type = 19uy
+                   event = 19uy
                    granted = true
                    door = 4uy
                    direction = 2uy

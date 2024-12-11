@@ -71,7 +71,7 @@
             - [x] decode relays
             - [x] decode inputs
             - [x] return (Status,Nullable<Event>) tuple
-            - [ ] Rework response .evt as .event a lá _ListenEvent_
+            - [x] Rework response .evt as .event a lá _ListenEvent_
       - [x] get-cards
       - [x] get-card
       - [x] get-card-at-index

@@ -58,7 +58,7 @@ type TestEncoder() =
 
     [<Test>]
     member this.TestEncodeGetTimeRequest() =
-        let expected = TestRequests.get_time
+        let expected = TestRequests.getTime
 
         let controller = 405419896u
         let packet = Encode.get_time_request controller
@@ -67,7 +67,7 @@ type TestEncoder() =
 
     [<Test>]
     member this.TestEncodeSetTimeRequest() =
-        let expected = TestRequests.set_time
+        let expected = TestRequests.setTime
 
         let controller = 405419896u
 
@@ -80,7 +80,7 @@ type TestEncoder() =
 
     [<Test>]
     member this.TestEncodeGetDoorRequest() =
-        let expected = TestRequests.get_door
+        let expected = TestRequests.getDoor
 
         let controller = 405419896u
         let door = 3uy
@@ -90,7 +90,7 @@ type TestEncoder() =
 
     [<Test>]
     member this.TestEncodeSetDoorRequest() =
-        let expected = TestRequests.set_door
+        let expected = TestRequests.setDoor
 
         let controller = 405419896u
         let door = 3uy
@@ -102,7 +102,7 @@ type TestEncoder() =
 
     [<Test>]
     member this.TestEncodeSetDoorPasscodesRequest() =
-        let expected = TestRequests.set_door_passcodes
+        let expected = TestRequests.setDoorPasscodes
 
         let controller = 405419896u
         let door = 3uy
@@ -115,7 +115,7 @@ type TestEncoder() =
 
     [<Test>]
     member this.TestEncodeSetDoorPasscodesRequestWithInvalidPasscode() =
-        let expected = TestRequests.set_door_passcodes_with_invalid_passcode
+        let expected = TestRequests.setDoorPasscodesWithInvalidPasscode
 
         let controller = 405419896u
         let door = 3uy
