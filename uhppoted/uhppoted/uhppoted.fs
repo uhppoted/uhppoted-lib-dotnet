@@ -760,7 +760,12 @@ module Uhppoted =
     /// <returns>
     /// Result with the boolean success/fail result or an Error if the request failed.
     /// </returns>
-    let Listen (callback: Result<Event, string> -> unit, stop: CancellationToken, options: Options) =
+    let Listen
+        (
+            callback: Result<(uint32 * Status * Nullable<Event>), string> -> unit,
+            stop: CancellationToken,
+            options: Options
+        ) =
         let bind = options.listen
         let debug = options.debug
 
@@ -768,6 +773,30 @@ module Uhppoted =
             match Decode.listenEvent packet with
             | Ok e ->
                 if e.event.index <> 0u then
+                    let controller = e.controller
+
+                    let status: Status =
+                        { Door1Open = e.door1Open
+                          Door2Open = e.door2Open
+                          Door3Open = e.door3Open
+                          Door4Open = e.door4Open
+                          Button1Pressed = e.door1Button
+                          Button2Pressed = e.door2Button
+                          Button3Pressed = e.door3Button
+                          Button4Pressed = e.door4Button
+                          SystemError = e.systemError
+                          SystemDateTime = e.systemDateTime
+                          SequenceNumber = e.sequenceNumber
+                          SpecialInfo = e.specialInfo
+                          Relay1 = Enums.relay e.relays 0x01uy
+                          Relay2 = Enums.relay e.relays 0x02uy
+                          Relay3 = Enums.relay e.relays 0x04uy
+                          Relay4 = Enums.relay e.relays 0x08uy
+                          Input1 = Enums.input e.inputs 0x01uy
+                          Input2 = Enums.input e.inputs 0x02uy
+                          Input3 = Enums.input e.inputs 0x04uy
+                          Input4 = Enums.input e.inputs 0x08uy }
+
                     let event: Event =
                         { Timestamp = e.event.timestamp
                           Index = e.event.index
@@ -778,7 +807,10 @@ module Uhppoted =
                           Card = e.event.card
                           Reason = e.event.reason }
 
-                    callback (Ok event)
+                    match event.Index with
+                    | 0u -> callback (Ok(controller, status, Nullable()))
+                    | _ -> callback (Ok(controller, status, Nullable(event)))
+
 
             | Error err -> printfn "OOOOPS %A" err
 

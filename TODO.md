@@ -94,8 +94,8 @@
       - [x] restore-default-parameters
       - [ ] listen
             - [ ] API function
-                  - [ ] controller
-                  - [ ] status
+                  - [x] controller
+                  - [x] status
                   - [ ] error handling
             - [ ] CLI
                   - [x] F#

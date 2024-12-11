@@ -389,18 +389,18 @@ type internal RestoreDefaultParametersResponse =
 
 type internal ListenEvent =
     { controller: uint32
-      door1_open: bool
-      door2_open: bool
-      door3_open: bool
-      door4_open: bool
-      door1_button: bool
-      door2_button: bool
-      door3_button: bool
-      door4_button: bool
-      system_error: uint8
-      system_datetime: DateTime Nullable
-      sequence_number: uint32
-      special_info: uint8
+      door1Open: bool
+      door2Open: bool
+      door3Open: bool
+      door4Open: bool
+      door1Button: bool
+      door2Button: bool
+      door3Button: bool
+      door4Button: bool
+      systemError: uint8
+      systemDateTime: DateTime Nullable
+      sequenceNumber: uint32
+      specialInfo: uint8
       relays: uint8
       inputs: uint8
       event:

@@ -789,18 +789,45 @@ let listen args =
 
     let handler v =
         match v with
-        | Ok e ->
+        | Ok (controller, status, event: Nullable<Event>) ->
             printfn "-- EVENT"
-            // printfn "  controller %u" controller
-            printfn "   timestamp %s" (YYYYMMDDHHmmss(e.Timestamp))
-            printfn "       index %u" e.Index
-            printfn "       event %u" e.Event
-            printfn "     granted %b" e.AccessGranted
-            printfn "        door %u" e.Door
-            printfn "   direction %A" e.Direction
-            printfn "        card %u" e.Card
-            printfn "      reason %u" e.Reason
+            printfn "         controller %u" controller
             printfn ""
+            printfn "        door 1 open %b" status.Door1Open
+            printfn "        door 2 open %b" status.Door2Open
+            printfn "        door 3 open %b" status.Door3Open
+            printfn "        door 4 open %b" status.Door4Open
+            printfn "   button 1 pressed %b" status.Button1Pressed
+            printfn "   button 2 pressed %b" status.Button2Pressed
+            printfn "   button 3 pressed %b" status.Button3Pressed
+            printfn "   button 4 pressed %b" status.Button4Pressed
+            printfn "       system error %u" status.SystemError
+            printfn "   system date/time %s" (YYYYMMDDHHmmss(status.SystemDateTime))
+            printfn "       sequence no. %u" status.SequenceNumber
+            printfn "       special info %u" status.SpecialInfo
+            printfn "            relay 1 %A" status.Relay1
+            printfn "            relay 2 %A" status.Relay2
+            printfn "            relay 3 %A" status.Relay3
+            printfn "            relay 4 %A" status.Relay4
+            printfn "            input 1 %A" status.Input1
+            printfn "            input 2 %A" status.Input2
+            printfn "            input 3 %A" status.Input3
+            printfn "            input 4 %A" status.Input4
+            printfn ""
+
+            if event.HasValue then
+                printfn "    event timestamp %s" (YYYYMMDDHHmmss(event.Value.Timestamp))
+                printfn "              index %u" event.Value.Index
+                printfn "              event %u" event.Value.Event
+                printfn "            granted %b" event.Value.AccessGranted
+                printfn "               door %u" event.Value.Door
+                printfn "          direction %A" event.Value.Direction
+                printfn "               card %u" event.Value.Card
+                printfn "             reason %u" event.Value.Reason
+                printfn ""
+            else
+                printfn "   (no event)"
+                printfn ""
 
         | Error err -> printfn "OOOPS %A" err
 
