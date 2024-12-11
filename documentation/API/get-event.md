@@ -19,7 +19,7 @@ The `Ok` value is:
 The `Event` record has the following fields:
   - `Timestamp` (`DateTime`): Timestamp of event.
   - `Index` (`uint32`): Event index.
-  - `EventType` (`uint8`): Event type.
+  - `Event` (`uint8`): Event type.
   - `AccessGranted` (`bool`): `true` if access to the door was granted.
   - `Door` (`uint8`): Door [1..4] for event.
   - `Direction` (`Direction`): `In` or `Out`.

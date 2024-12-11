@@ -39,15 +39,19 @@ type Status =
       Input1: Input
       Input2: Input
       Input3: Input
-      Input4: Input
-      EventIndex: uint32
-      EventTimestamp: DateTime Nullable
-      EventType: uint8
-      EventAccessGranted: bool
-      EventDoor: uint8
-      EventDirection: Direction
-      EventCard: uint32
-      EventReason: uint8 }
+      Input4: Input }
+
+[<Struct>]
+type Event =
+    { Timestamp: DateTime Nullable
+      Index: uint32
+      Event: uint8
+      AccessGranted: bool
+      Door: uint8
+      Direction: Direction
+      Card: uint32
+      Reason: uint8 }
+
 
 [<Struct>]
 type Card =
@@ -59,17 +63,6 @@ type Card =
       Door3: uint8
       Door4: uint8
       PIN: uint32 }
-
-[<Struct>]
-type Event =
-    { Timestamp: DateTime Nullable
-      Index: uint32
-      EventType: uint8
-      AccessGranted: bool
-      Door: uint8
-      Direction: Direction
-      Card: uint32
-      Reason: uint8 }
 
 [<Struct>]
 type TimeProfile =

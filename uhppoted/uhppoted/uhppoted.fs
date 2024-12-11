@@ -304,7 +304,7 @@ module Uhppoted =
 
         match exec controller request Decode.getStatusResponse timeout options with
         | Ok response ->
-            Ok(
+            let status: Status =
                 { Door1Open = response.door1_open
                   Door2Open = response.door2_open
                   Door3Open = response.door3_open
@@ -324,16 +324,22 @@ module Uhppoted =
                   Input1 = Enums.input response.inputs 0x01uy
                   Input2 = Enums.input response.inputs 0x02uy
                   Input3 = Enums.input response.inputs 0x04uy
-                  Input4 = Enums.input response.inputs 0x08uy
-                  EventIndex = response.evt.index
-                  EventType = response.evt.event_type
-                  EventAccessGranted = response.evt.granted
-                  EventDoor = response.evt.door
-                  EventDirection = Enums.direction response.evt.direction
-                  EventCard = response.evt.card
-                  EventTimestamp = response.evt.timestamp
-                  EventReason = response.evt.reason }
-            )
+                  Input4 = Enums.input response.inputs 0x08uy }
+
+            let event: Event =
+                { Timestamp = response.evt.timestamp
+                  Index = response.evt.index
+                  Event = response.evt.event_type
+                  AccessGranted = response.evt.granted
+                  Door = response.evt.door
+                  Direction = Enums.direction response.evt.direction
+                  Card = response.evt.card
+                  Reason = response.evt.reason }
+
+            match event.Index with
+            | 0u -> Ok(status, Nullable())
+            | _ -> Ok(status, Nullable(event))
+
         | Error err -> Error err
 
     /// <summary>
@@ -488,7 +494,7 @@ module Uhppoted =
                 Nullable
                     { Timestamp = response.timestamp
                       Index = response.index
-                      EventType = response.event
+                      Event = response.event
                       AccessGranted = response.granted
                       Door = response.door
                       Direction = Enums.direction response.direction
@@ -765,7 +771,7 @@ module Uhppoted =
                     let event: Event =
                         { Timestamp = e.event.timestamp
                           Index = e.event.index
-                          EventType = e.event.event
+                          Event = e.event.event
                           AccessGranted = e.event.granted
                           Door = e.event.door
                           Direction = Enums.direction e.event.direction

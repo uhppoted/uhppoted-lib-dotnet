@@ -388,40 +388,50 @@ class Commands
 
         if (result.IsOk)
         {
-            var record = result.ResultValue;
+            var status = result.ResultValue.Item1;
+            var evt = result.ResultValue.Item2;
 
             WriteLine("get-status");
             WriteLine("         controller {0}", controller);
-            WriteLine("        door 1 open {0}", record.Door1Open);
-            WriteLine("        door 2 open {0}", record.Door2Open);
-            WriteLine("        door 3 open {0}", record.Door3Open);
-            WriteLine("        door 4 open {0}", record.Door4Open);
-            WriteLine("   button 1 pressed {0}", record.Button1Pressed);
-            WriteLine("   button 2 pressed {0}", record.Button2Pressed);
-            WriteLine("   button 3 pressed {0}", record.Button3Pressed);
-            WriteLine("   button 4 pressed {0}", record.Button4Pressed);
-            WriteLine("       system error {0}", record.SystemError);
-            WriteLine("   system date/time {0}", YYYYMMDDHHmmss(record.SystemDateTime));
-            WriteLine("       sequence no. {0}", record.SequenceNumber);
-            WriteLine("       special info {0}", record.SpecialInfo);
-            WriteLine("            relay 1 {0}", record.Relay1);
-            WriteLine("            relay 2 {0}", record.Relay2);
-            WriteLine("            relay 3 {0}", record.Relay3);
-            WriteLine("            relay 4 {0}", record.Relay4);
-            WriteLine("            input 1 {0}", record.Input1);
-            WriteLine("            input 2 {0}", record.Input2);
-            WriteLine("            input 3 {0}", record.Input3);
-            WriteLine("            input 4 {0}", record.Input4);
+            WriteLine("        door 1 open {0}", status.Door1Open);
+            WriteLine("        door 2 open {0}", status.Door2Open);
+            WriteLine("        door 3 open {0}", status.Door3Open);
+            WriteLine("        door 4 open {0}", status.Door4Open);
+            WriteLine("   button 1 pressed {0}", status.Button1Pressed);
+            WriteLine("   button 2 pressed {0}", status.Button2Pressed);
+            WriteLine("   button 3 pressed {0}", status.Button3Pressed);
+            WriteLine("   button 4 pressed {0}", status.Button4Pressed);
+            WriteLine("       system error {0}", status.SystemError);
+            WriteLine("   system date/time {0}", YYYYMMDDHHmmss(status.SystemDateTime));
+            WriteLine("       sequence no. {0}", status.SequenceNumber);
+            WriteLine("       special info {0}", status.SpecialInfo);
+            WriteLine("            relay 1 {0}", status.Relay1);
+            WriteLine("            relay 2 {0}", status.Relay2);
+            WriteLine("            relay 3 {0}", status.Relay3);
+            WriteLine("            relay 4 {0}", status.Relay4);
+            WriteLine("            input 1 {0}", status.Input1);
+            WriteLine("            input 2 {0}", status.Input2);
+            WriteLine("            input 3 {0}", status.Input3);
+            WriteLine("            input 4 {0}", status.Input4);
             WriteLine();
-            WriteLine("    event index     {0}", record.EventIndex);
-            WriteLine("          event     {0}", record.EventType);
-            WriteLine("          granted   {0}", record.EventAccessGranted);
-            WriteLine("          door      {0}", record.EventDoor);
-            WriteLine("          direction {0}", record.EventDirection);
-            WriteLine("          card      {0}", record.EventCard);
-            WriteLine("          timestamp {0}", YYYYMMDDHHmmss(record.EventTimestamp));
-            WriteLine("          reason    {0}", record.EventReason);
-            WriteLine();
+
+            if (evt.HasValue)
+            {
+                WriteLine("    event index     {0}", evt.Value.Index);
+                WriteLine("          event     {0}", evt.Value.Event);
+                WriteLine("          granted   {0}", evt.Value.AccessGranted);
+                WriteLine("          door      {0}", evt.Value.Door);
+                WriteLine("          direction {0}", evt.Value.Direction);
+                WriteLine("          card      {0}", evt.Value.Card);
+                WriteLine("          timestamp {0}", YYYYMMDDHHmmss(evt.Value.Timestamp));
+                WriteLine("          reason    {0}", evt.Value.Reason);
+                WriteLine();
+            }
+            else
+            {
+                WriteLine("    (no event)");
+                WriteLine();
+            }
         }
         else if (result.IsError)
         {
@@ -523,7 +533,7 @@ class Commands
     public static void PutCard(string[] args)
     {
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
-        var cardNumber= ArgParse.Parse(args, "--card", CARD);
+        var cardNumber = ArgParse.Parse(args, "--card", CARD);
         var startDate = ArgParse.Parse(args, "--start-date", START_DATE);
         var endDate = ArgParse.Parse(args, "--end-date", END_DATE);
         var permissions = ArgParse.Parse(args, "--permissions", new Dictionary<int, byte>());
@@ -628,7 +638,7 @@ class Commands
             WriteLine("  controller {0}", controller);
             WriteLine("   timestamp {0}", (YYYYMMDDHHmmss(record.Timestamp)));
             WriteLine("       index {0}", record.Index);
-            WriteLine("       event {0}", record.EventType);
+            WriteLine("       event {0}", record.Event);
             WriteLine("     granted {0}", record.AccessGranted);
             WriteLine("        door {0}", record.Door);
             WriteLine("   direction {0}", record.Direction);

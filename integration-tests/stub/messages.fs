@@ -66,8 +66,12 @@ module Messages =
             responses = [ Responses.open_door ] }
 
           { test = "get-status"
-            request = Requests.get_status
-            responses = [ Responses.get_status ] }
+            request = Requests.getStatus
+            responses = [ Responses.getStatus ] }
+
+          { test = "get-status-no-event"
+            request = Requests.getStatusNoEvent
+            responses = [ Responses.getStatusNoEvent ] }
 
           { test = "get-cards"
             request = Requests.getCards

@@ -9,7 +9,8 @@ Retrieves a controller status record (and most recent event, if any).
 
 
 ### Returns
-Returns `Ok` with the controller status record if the request was processed, or `Error`.
+Returns `Ok` with a (Status,Nuillable<Event>) tuple if the request was processed, or `Error`. The second tuple field is 
+`null` if the controller does not have an event.
 
 A `Status` record includes the following fields:
 - `Door1Open` (`bool`): `true`if the door 1 open contact is set.
@@ -32,14 +33,16 @@ A `Status` record includes the following fields:
 - `Input2` (`Input`): Input 2 contact state (`Open` or `Closed`).
 - `Input3` (`Input`): Input 3 contact state (`Open` or `Closed`).
 - `Input4` (`Input`): Input 4 contact state (`Open` or `Closed`).
-- `EventIndex` (`uint32`) Index of most recent event (0 if none).
-- `EventType (`uint8`) Event type.
-- `EventAccessGranted (`bool`) Event access granted.
-- `EventDoor (`uint8`) Event door.
-- `EventDirection (`uint8`) Event direction (`In` or `Out`).
-- `EventCard (`uint32`) Event card (0 if none).
-- `EventTimestamp (`DateTime Nullable`) Event timestamp.
-- `EventReason (`uint8`) Event reason code.
+
+An `Event` record includes the following fields:
+- `Index` (`uint32`) Index of most recent event (0 if none).
+- `Event (`uint8`) Event type.
+- `AccessGranted (`bool`) Event access granted.
+- `Door (`uint8`) Event door.
+- `Direction (`uint8`) Event direction (`In` or `Out`).
+- `Card (`uint32`) Event card (0 if none).
+- `Timestamp (`DateTime Nullable`) Event timestamp.
+- `Reason (`uint8`) Event reason code.
 
 
 ### Examples

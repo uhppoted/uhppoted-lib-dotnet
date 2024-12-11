@@ -255,39 +255,45 @@ let get_status args =
     let controller = argparse args "--controller" CONTROLLER
 
     match Uhppoted.GetStatus(controller, TIMEOUT, OPTIONS) with
-    | Ok record ->
+    | Ok(status, event) ->
         printfn "get-status"
         printfn "         controller %u" controller
-        printfn "        door 1 open %b" record.Door1Open
-        printfn "        door 2 open %b" record.Door2Open
-        printfn "        door 3 open %b" record.Door3Open
-        printfn "        door 4 open %b" record.Door4Open
-        printfn "   button 1 pressed %b" record.Button1Pressed
-        printfn "   button 2 pressed %b" record.Button2Pressed
-        printfn "   button 3 pressed %b" record.Button3Pressed
-        printfn "   button 4 pressed %b" record.Button4Pressed
-        printfn "       system error %u" record.SystemError
-        printfn "   system date/time %A" (YYYYMMDDHHmmss(record.SystemDateTime))
-        printfn "       sequence no. %u" record.SequenceNumber
-        printfn "       special info %u" record.SpecialInfo
-        printfn "            relay 1 %A" record.Relay1
-        printfn "            relay 2 %A" record.Relay2
-        printfn "            relay 3 %A" record.Relay3
-        printfn "            relay 4 %A" record.Relay4
-        printfn "            input 1 %A" record.Input1
-        printfn "            input 2 %A" record.Input2
-        printfn "            input 3 %A" record.Input3
-        printfn "            input 4 %A" record.Input4
+        printfn "        door 1 open %b" status.Door1Open
+        printfn "        door 2 open %b" status.Door2Open
+        printfn "        door 3 open %b" status.Door3Open
+        printfn "        door 4 open %b" status.Door4Open
+        printfn "   button 1 pressed %b" status.Button1Pressed
+        printfn "   button 2 pressed %b" status.Button2Pressed
+        printfn "   button 3 pressed %b" status.Button3Pressed
+        printfn "   button 4 pressed %b" status.Button4Pressed
+        printfn "       system error %u" status.SystemError
+        printfn "   system date/time %A" (YYYYMMDDHHmmss(status.SystemDateTime))
+        printfn "       sequence no. %u" status.SequenceNumber
+        printfn "       special info %u" status.SpecialInfo
+        printfn "            relay 1 %A" status.Relay1
+        printfn "            relay 2 %A" status.Relay2
+        printfn "            relay 3 %A" status.Relay3
+        printfn "            relay 4 %A" status.Relay4
+        printfn "            input 1 %A" status.Input1
+        printfn "            input 2 %A" status.Input2
+        printfn "            input 3 %A" status.Input3
+        printfn "            input 4 %A" status.Input4
         printfn ""
-        printfn "    event index     %u" record.EventIndex
-        printfn "          event     %u" record.EventType
-        printfn "          granted   %b" record.EventAccessGranted
-        printfn "          door      %u" record.EventDoor
-        printfn "          direction %A" record.EventDirection
-        printfn "          card      %u" record.EventCard
-        printfn "          timestamp %A" (YYYYMMDDHHmmss(record.EventTimestamp))
-        printfn "          reason    %u" record.EventReason
-        printfn ""
+
+        if event.HasValue then
+            printfn "    event index     %u" event.Value.Index
+            printfn "          event     %u" event.Value.Event
+            printfn "          granted   %b" event.Value.AccessGranted
+            printfn "          door      %u" event.Value.Door
+            printfn "          direction %A" event.Value.Direction
+            printfn "          card      %u" event.Value.Card
+            printfn "          timestamp %A" (YYYYMMDDHHmmss(event.Value.Timestamp))
+            printfn "          reason    %u" event.Value.Reason
+            printfn ""
+        else
+            printfn "    (no event)"
+            printfn ""
+
         Ok()
     | Error err -> Error err
 
@@ -370,15 +376,17 @@ let get_card_at_index args =
 let put_card args =
     let controller = argparse args "--controller" CONTROLLER
     let permissions = argparse args "--permissions" Map.empty
-    let card: Card = {    
-        Card = argparse args "--card" CARD
-        StartDate = Nullable(argparse args "--start-date" START_DATE)
-        EndDate = Nullable(argparse args "--end-date" END_DATE)
-        Door1 = (permissions |> Map.tryFind 1 |> Option.defaultValue 0uy)
-        Door2 = (permissions |> Map.tryFind 2 |> Option.defaultValue 0uy)
-        Door3 = (permissions |> Map.tryFind 3 |> Option.defaultValue 0uy)
-        Door4 = (permissions |> Map.tryFind 4 |> Option.defaultValue 0uy)
-        PIN = argparse args "--PIN" 0u }
+
+    let card: Card =
+        { Card = argparse args "--card" CARD
+          StartDate = Nullable(argparse args "--start-date" START_DATE)
+          EndDate = Nullable(argparse args "--end-date" END_DATE)
+          Door1 = (permissions |> Map.tryFind 1 |> Option.defaultValue 0uy)
+          Door2 = (permissions |> Map.tryFind 2 |> Option.defaultValue 0uy)
+          Door3 = (permissions |> Map.tryFind 3 |> Option.defaultValue 0uy)
+          Door4 = (permissions |> Map.tryFind 4 |> Option.defaultValue 0uy)
+          PIN = argparse args "--PIN" 0u }
+
     let timeout = TIMEOUT
 
     let options =
@@ -452,7 +460,7 @@ let get_event args =
         printfn "  controller %u" controller
         printfn "   timestamp %s" (YYYYMMDDHHmmss(record.Timestamp))
         printfn "       index %u" record.Index
-        printfn "       event %u" record.EventType
+        printfn "       event %u" record.Event
         printfn "     granted %b" record.AccessGranted
         printfn "        door %u" record.Door
         printfn "   direction %A" record.Direction
@@ -779,14 +787,14 @@ let listen args =
         args.Cancel <- true
         cancel.Cancel())
 
-    let handler v = 
+    let handler v =
         match v with
-        | Ok e -> 
+        | Ok e ->
             printfn "-- EVENT"
             // printfn "  controller %u" controller
             printfn "   timestamp %s" (YYYYMMDDHHmmss(e.Timestamp))
             printfn "       index %u" e.Index
-            printfn "       event %u" e.EventType
+            printfn "       event %u" e.Event
             printfn "     granted %b" e.AccessGranted
             printfn "        door %u" e.Door
             printfn "   direction %A" e.Direction

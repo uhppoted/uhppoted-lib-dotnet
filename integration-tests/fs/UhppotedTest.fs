@@ -13,6 +13,7 @@ type TestClass() =
     val mutable emulator: Emulator
 
     let CONTROLLER = 405419896u
+    let CONTROLLER_NO_EVENT = 405419897u
     let ENDPOINT = IPEndPoint.Parse("127.0.0.1:59999")
     let TIMEOUT = 500
     let DOOR = 4uy
@@ -239,7 +240,7 @@ type TestClass() =
 
     [<Test>]
     member this.TestGetStatus() =
-        let expected: Status =
+        let status: Status =
             { Door1Open = true
               Door2Open = false
               Door3Open = true
@@ -259,19 +260,55 @@ type TestClass() =
               Input1 = Input.Closed
               Input2 = Input.Open
               Input3 = Input.Open
-              Input4 = Input.Closed
-              EventIndex = 75312u
-              EventType = 19uy
-              EventAccessGranted = true
-              EventDoor = 4uy
-              EventDirection = Direction.Out
-              EventCard = 10058400u
-              EventTimestamp = Nullable(DateTime.ParseExact("2024-11-10 12:34:56", "yyyy-MM-dd HH:mm:ss", null))
-              EventReason = 6uy }
+              Input4 = Input.Closed }
+
+        let event: Event =
+            { Timestamp = Nullable(DateTime.ParseExact("2024-11-10 12:34:56", "yyyy-MM-dd HH:mm:ss", null))
+              Index = 75312u
+              Event = 19uy
+              AccessGranted = true
+              Door = 4uy
+              Direction = Direction.Out
+              Card = 10058400u
+              Reason = 6uy }
+
+        let expected = (status, Nullable(event))
 
         options
         |> List.iter (fun opts ->
             match Uhppoted.GetStatus(CONTROLLER, TIMEOUT, opts) with
+            | Ok result -> Assert.That(result, Is.EqualTo(expected))
+            | Error err -> Assert.Fail(err))
+
+    [<Test>]
+    member this.TestGetStatusNoEvent() =
+        let status: Status =
+            { Door1Open = true
+              Door2Open = false
+              Door3Open = true
+              Door4Open = true
+              Button1Pressed = true
+              Button2Pressed = true
+              Button3Pressed = false
+              Button4Pressed = true
+              SystemError = 27uy
+              SystemDateTime = Nullable(DateTime.ParseExact("2024-11-13 14:37:53", "yyyy-MM-dd HH:mm:ss", null))
+              SequenceNumber = 21987u
+              SpecialInfo = 154uy
+              Relay1 = Relay.Closed
+              Relay2 = Relay.Closed
+              Relay3 = Relay.Closed
+              Relay4 = Relay.Open
+              Input1 = Input.Closed
+              Input2 = Input.Open
+              Input3 = Input.Open
+              Input4 = Input.Closed }
+
+        let expected = (status, Nullable())
+
+        options
+        |> List.iter (fun opts ->
+            match Uhppoted.GetStatus(CONTROLLER_NO_EVENT, TIMEOUT, opts) with
             | Ok result -> Assert.That(result, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
@@ -394,7 +431,7 @@ type TestClass() =
         let expected: Event =
             { Timestamp = Nullable(DateTime.ParseExact("2024-11-17 12:34:56", "yyyy-MM-dd HH:mm:ss", null))
               Index = 13579u
-              EventType = 2uy
+              Event = 2uy
               AccessGranted = true
               Door = 4uy
               Direction = Direction.Out

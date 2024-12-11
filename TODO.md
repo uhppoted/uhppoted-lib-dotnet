@@ -70,8 +70,8 @@
             - [x] direction enum
             - [x] decode relays
             - [x] decode inputs
-            - [ ] return (status,event) tuple
-            - [ ] Rework .evt as .event a lá _ListenEvent_
+            - [x] return (Status,Nullable<Event>) tuple
+            - [ ] Rework response .evt as .event a lá _ListenEvent_
       - [x] get-cards
       - [x] get-card
       - [x] get-card-at-index
