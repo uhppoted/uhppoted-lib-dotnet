@@ -114,6 +114,7 @@ class Commands
           new Command ("set-interlock", "Sets the door interlock mode for a controller", SetInterlock),
           new Command ("activate-keypads", "Activates the access reader keypads attached to a controller", ActivateKeypads),
           new Command ("restore-default-parameters", "Restores the manufacturer defaults", RestoreDefaultParameters),
+          new Command ("listen", "Listens for access controller events", Listen),
     };
 
     public static void FindControllers(string[] args)
@@ -1034,6 +1035,75 @@ class Commands
         {
             throw new Exception(result.ErrorValue);
         }
+    }
+
+    public static void Listen(string[] args)
+    {
+        var options = OPTIONS;
+        var cancel = new CancellationTokenSource();
+
+        Console.CancelKeyPress += (sender, e) =>
+        {
+            e.Cancel = true;
+            cancel.Cancel();
+        };
+
+        void onEvent(uhppoted.ListenerEvent e)
+        {
+            var controller = e.Controller;
+            var status = e.Status;
+            var evt = e.Event;
+
+            WriteLine("-- EVENT");
+            WriteLine($"         controller {controller}");
+            WriteLine("");
+
+            WriteLine($"        door 1 open {status.Door1Open}");
+            WriteLine($"        door 2 open {status.Door2Open}");
+            WriteLine($"        door 3 open {status.Door3Open}");
+            WriteLine($"        door 4 open {status.Door4Open}");
+            WriteLine($"   button 1 pressed {status.Button1Pressed}");
+            WriteLine($"   button 2 pressed {status.Button2Pressed}");
+            WriteLine($"   button 3 pressed {status.Button3Pressed}");
+            WriteLine($"   button 4 pressed {status.Button4Pressed}");
+            WriteLine($"       system error {status.SystemError}");
+            WriteLine($"   system date/time {YYYYMMDDHHmmss(status.SystemDateTime)}");
+            WriteLine($"       sequence no. {status.SequenceNumber}");
+            WriteLine($"       special info {status.SpecialInfo}");
+            WriteLine($"            relay 1 {status.Relay1}");
+            WriteLine($"            relay 2 {status.Relay2}");
+            WriteLine($"            relay 3 {status.Relay3}");
+            WriteLine($"            relay 4 {status.Relay4}");
+            WriteLine($"            input 1 {status.Input1}");
+            WriteLine($"            input 2 {status.Input2}");
+            WriteLine($"            input 3 {status.Input3}");
+            WriteLine($"            input 4 {status.Input4}");
+            WriteLine("");
+
+            if (evt.HasValue)
+            {
+                var v = evt.Value;
+
+                WriteLine($"    event timestamp {YYYYMMDDHHmmss(v.Timestamp)}");
+                WriteLine($"              index {v.Index}");
+                WriteLine($"              event {v.Event}");
+                WriteLine($"            granted {v.AccessGranted}");
+                WriteLine($"               door {v.Door}");
+                WriteLine($"          direction {v.Direction}");
+                WriteLine($"               card {v.Card}");
+                WriteLine($"             reason {v.Reason}");
+                WriteLine("");
+            }
+            else
+            {
+                WriteLine("   (no event)");
+                WriteLine("");
+            }
+        }
+
+        uhppoted.OnEvent onevent = new uhppoted.OnEvent(onEvent);
+
+        Uhppoted.Listen(onevent, cancel.Token, options);
     }
 
     private static string YYYYMMDD(DateOnly? date)

@@ -67,11 +67,6 @@
       - [x] set-door-passcodes
       - [x] open-door
       - [x] get-status
-            - [x] direction enum
-            - [x] decode relays
-            - [x] decode inputs
-            - [x] return (Status,Nullable<Event>) tuple
-            - [x] Rework response .evt as .event a lá _ListenEvent_
       - [x] get-cards
       - [x] get-card
       - [x] get-card-at-index
@@ -93,17 +88,22 @@
       - [x] activate-keypads
       - [x] restore-default-parameters
       - [ ] listen
-            - [ ] API function
+            - [x] API function
                   - [x] controller
                   - [x] status
-                  - [ ] error handling
-            - [ ] CLI
+                  - [x] Nullable<Event>
+                  - [ ] on error
+            - [x] CLI
                   - [x] F#
-                  - [ ] C#
-                  - [ ] VB.NET
+                  - [x] C#
+                  - [x] VB.NET
             - [ ] integration test
             - [ ] API doc
             - [ ] README
       - [ ] Handle v6.62 messages
       - [ ] Rethink the controller/options thing
+      - (?) Move timeout to Options
+      - [ ] _Cannot access a disposed object._
+      - [ ] Set SO_REUSEADDR option
+
       

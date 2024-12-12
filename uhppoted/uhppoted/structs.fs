@@ -105,6 +105,15 @@ type Listener =
     { endpoint: IPEndPoint
       interval: uint8 }
 
+[<Struct>]
+type ListenerEvent =
+    { Controller: uint32
+      Status: Status
+      Event: Nullable<Event> }
+
+type OnEvent = delegate of (ListenerEvent) -> unit
+
+
 type internal IResponse =
     abstract member controller: uint32
 

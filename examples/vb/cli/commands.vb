@@ -1,5 +1,6 @@
 Imports System.Console
 Imports System.Net
+Imports System.Threading
 
 Imports UHPPOTE = uhppoted.Uhppoted
 Imports OptionsBuilder = uhppoted.OptionsBuilder
@@ -108,7 +109,8 @@ Module Commands
            New Command("set-pc-control", "Enables (or disables) remote access control management", AddressOf SetPCControl),
            New Command("set-interlock", "Sets the door interlock mode for a controller", AddressOf SetInterlock),
            New Command("activate-keypads", "Activates the access reader keypads attached to a controller", AddressOf ActivateKeypads),
-           New Command("restore-default-parameters", "Restores the manufacturer defaults", AddressOf RestoreDefaultParameters)
+           New Command("restore-default-parameters", "Restores the manufacturer defaults", AddressOf RestoreDefaultParameters),
+           New Command("listen", "Listens for access controller events", AddressOf Listen)
        }
 
     Sub FindControllers(args As String())
@@ -841,6 +843,67 @@ Module Commands
         End If
     End Sub
 
+    Sub Listen(args As String())
+        Dim cancel = New CancellationTokenSource()
+
+        AddHandler Console.CancelKeyPress, Sub(sender, e)
+                                               e.Cancel = True
+                                               cancel.Cancel()
+                                           End Sub
+
+        Dim callback As New uhppoted.OnEvent(AddressOf onEvent)
+
+        UHPPOTE.Listen(callback, cancel.Token, OPTIONS)
+    End Sub
+
+    Private Sub onEvent(e As uhppoted.ListenerEvent)
+        Dim controller = e.Controller
+        Dim status = e.Status
+        Dim evt = e.Event
+
+        WriteLine("-- EVENT")
+        WriteLine($"         controller {controller}")
+        WriteLine("")
+
+        WriteLine($"        door 1 open {status.Door1Open}")
+        WriteLine($"        door 2 open {status.Door2Open}")
+        WriteLine($"        door 3 open {status.Door3Open}")
+        WriteLine($"        door 4 open {status.Door4Open}")
+        WriteLine($"   button 1 pressed {status.Button1Pressed}")
+        WriteLine($"   button 2 pressed {status.Button2Pressed}")
+        WriteLine($"   button 3 pressed {status.Button3Pressed}")
+        WriteLine($"   button 4 pressed {status.Button4Pressed}")
+        WriteLine($"       system error {status.SystemError}")
+        WriteLine($"   system date/time {YYYYMMDDHHmmss(status.SystemDateTime)}")
+        WriteLine($"       sequence no. {status.SequenceNumber}")
+        WriteLine($"       special info {status.SpecialInfo}")
+        WriteLine($"            relay 1 {status.Relay1}")
+        WriteLine($"            relay 2 {status.Relay2}")
+        WriteLine($"            relay 3 {status.Relay3}")
+        WriteLine($"            relay 4 {status.Relay4}")
+        WriteLine($"            input 1 {status.Input1}")
+        WriteLine($"            input 2 {status.Input2}")
+        WriteLine($"            input 3 {status.Input3}")
+        WriteLine($"            input 4 {status.Input4}")
+        WriteLine("")
+
+        If evt.HasValue Then
+            Dim v = evt.Value
+            WriteLine($"    event timestamp {YYYYMMDDHHmmss(v.Timestamp)}")
+            WriteLine($"              index {v.Index}")
+            WriteLine($"              event {v.Event}")
+            WriteLine($"            granted {v.AccessGranted}")
+            WriteLine($"               door {v.Door}")
+            WriteLine($"          direction {v.Direction}")
+            WriteLine($"               card {v.Card}")
+            WriteLine($"             reason {v.Reason}")
+            WriteLine("")
+        Else
+            WriteLine("   (no event)")
+            WriteLine("")
+        End If
+    End Sub
+
     Private Function YYYYMMDD(v As Nullable(Of DateOnly)) As String
         If v.HasValue Then
             Return v.Value.ToString("yyyy-MM-dd")
@@ -849,7 +912,7 @@ Module Commands
         End If
     End Function
 
-    Public Function YYYYMMDDHHmmss(datetime As DateTime?) As String
+    Private Function YYYYMMDDHHmmss(datetime As DateTime?) As String
         If datetime.HasValue Then
             Return datetime.Value.ToString("yyyy-MM-dd HH:mm:ss")
         Else
@@ -857,7 +920,7 @@ Module Commands
         End If
     End Function
 
-    Public Function HHmm(time As TimeOnly?) As String
+    Private Function HHmm(time As TimeOnly?) As String
         If time.HasValue Then
             Return time.Value.ToString("HH:mm")
         Else
