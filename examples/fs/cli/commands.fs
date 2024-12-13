@@ -787,10 +787,10 @@ let listen args =
         args.Cancel <- true
         cancel.Cancel())
 
-    let eventHandler v =
-        let controller = v.Controller
-        let status = v.Status
-        let event = v.Event
+    let eventHandler e =
+        let controller = e.Controller
+        let status = e.Status
+        let event = e.Event
 
         printfn "-- EVENT"
         printfn "         controller %u" controller

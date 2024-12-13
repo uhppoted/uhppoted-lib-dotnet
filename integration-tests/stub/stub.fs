@@ -48,7 +48,7 @@ module Stub =
 
                 return! recv socket logger
             with
-            | :? ObjectDisposedException -> logger.WriteLine("** UDP SOCKET CLOSED")
+            | :? ObjectDisposedException -> ()
             | err -> logger.WriteLine("** ERROR {0}", err.Message)
         }
 
@@ -94,7 +94,7 @@ module Stub =
 
                     read stream logger |> Async.Start
             with
-            | :? ObjectDisposedException -> logger.WriteLine("** TCP SOCKET CLOSED")
+            | :? ObjectDisposedException -> ()
             | err -> logger.WriteLine("** ERROR {0}", err.Message)
         }
 
@@ -108,4 +108,12 @@ module Stub =
         { udp = (udp, udprx)
           tcp = (tcp, tcprx) }
 
-    let terminate (emulator: Emulator) = printfn "... closing UDP emulator"
+    let terminate (emulator: Emulator) (logger: TextWriter) =
+        (fst emulator.udp).Close()
+        (fst emulator.tcp).Stop()
+
+    let event (emulator: Emulator) (event: byte array) (logger: TextWriter) =
+        let listener = IPEndPoint.Parse("127.0.0.1:60001")
+        let socket = fst emulator.udp
+
+        socket.Send(event, event.Length, listener) |> ignore

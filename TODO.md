@@ -87,7 +87,7 @@
       - [x] set-interlock
       - [x] activate-keypads
       - [x] restore-default-parameters
-      - [ ] listen
+      - [x] listen
             - [x] API function
                   - [x] controller
                   - [x] status
@@ -97,9 +97,9 @@
                   - [x] F#
                   - [x] C#
                   - [x] VB.NET
-            - [ ] integration test
-            - [ ] API doc
-            - [ ] README
+            - [x] integration test
+            - [x] API doc
+            - [x] README
       - [ ] Handle v6.62 messages
       - [ ] Rethink the controller/options thing
       - (?) Move timeout to Options

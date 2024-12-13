@@ -125,6 +125,9 @@ Activates/deactivates the access reader keypads attached to an access controller
 ### [`RestoreDefaultSettings`](documentation/API/restore-default-settings.md)
 Restores the manufacturer default settings.
 
+### [`Listen`](documentation/API/listen.md)
+Listens for access controller events.
+
 
 ## Notes
 

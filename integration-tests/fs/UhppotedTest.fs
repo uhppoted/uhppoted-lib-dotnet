@@ -3,7 +3,9 @@ namespace FSharp.Tests
 open System
 open System.Net
 open System.Net.NetworkInformation
+open System.Threading
 open NUnit.Framework
+
 open uhppoted
 open stub
 
@@ -58,7 +60,8 @@ type TestClass() =
         this.emulator <- Stub.initialise TestContext.Error
 
     [<OneTimeTearDown>]
-    member this.Terminate() = Stub.terminate this.emulator
+    member this.Terminate() =
+        Stub.terminate this.emulator TestContext.Error
 
     [<SetUp>]
     member this.Setup() = ()
@@ -651,3 +654,85 @@ type TestClass() =
             match Uhppoted.RestoreDefaultParameters(CONTROLLER, TIMEOUT, opts) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
+
+    [<Test>]
+    member this.TestListen() =
+        let cancel = new CancellationTokenSource()
+
+        Console.CancelKeyPress.Add(fun args ->
+            args.Cancel <- true
+            cancel.Cancel())
+
+        let mutable events = []
+        let mutable errors = []
+
+        let eventHandler event = events <- events @ [ event ]
+        let errorHandler err = errors <- errors @ [ err ]
+
+        let onevent: OnEvent = new OnEvent(eventHandler)
+        let onerror: OnError = new OnError(errorHandler)
+
+        let listen =
+            Async.StartAsTask(async { Uhppoted.Listen(onevent, onerror, cancel.Token, OPTIONS) |> ignore })
+
+        async {
+            do! Async.Sleep(1000)
+            cancel.Cancel()
+        }
+        |> Async.Start
+
+        async {
+            do! Async.Sleep(100)
+            Stub.event this.emulator Events.normalEvent TestContext.Error
+            do! Async.Sleep(100)
+            Stub.event this.emulator Events.eventWithoutEvent TestContext.Error
+            do! Async.Sleep(100)
+            Stub.event this.emulator Events.errorEvent TestContext.Error
+        }
+        |> Async.Start
+
+        listen.Wait()
+
+        let status =
+            { Door1Open = true
+              Door2Open = false
+              Door3Open = true
+              Door4Open = true
+              Button1Pressed = true
+              Button2Pressed = true
+              Button3Pressed = false
+              Button4Pressed = true
+              SystemError = 27uy
+              SystemDateTime = Nullable(DateTime.ParseExact("2024-11-13 14:37:53", "yyyy-MM-dd HH:mm:ss", null))
+              SequenceNumber = 21987u
+              SpecialInfo = 154uy
+              Relay1 = Relay.Closed
+              Relay2 = Relay.Closed
+              Relay3 = Relay.Closed
+              Relay4 = Relay.Open
+              Input1 = Input.Closed
+              Input2 = Input.Open
+              Input3 = Input.Open
+              Input4 = Input.Closed }
+
+        let event =
+            { Timestamp = Nullable(DateTime.ParseExact("2024-11-10 12:34:56", "yyyy-MM-dd HH:mm:ss", null))
+              Index = 75312u
+              Event = 19uy
+              AccessGranted = true
+              Door = 4uy
+              Direction = Direction.Out
+              Card = 10058400u
+              Reason = 6uy }
+
+        let expected =
+            [ { Controller = 405419896u
+                Status = status
+                Event = Nullable(event) }
+
+              { Controller = 405419897u
+                Status = status
+                Event = Nullable() } ]
+
+        Assert.That(events, Is.EqualTo(expected))
+        Assert.That(errors, Is.EqualTo([ "invalid listen-event packet" ]))

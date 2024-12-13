@@ -32,6 +32,7 @@
 - [`SetInterlock`](set-interlock.md)
 - [`ActivateKeypads`](activate-keypads.md)
 - [`RestoreDefaultParameters`](restore-default-parameters.md)
+- [`Listen`](listen.md)
 
 ## Options
 

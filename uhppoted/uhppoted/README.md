@@ -108,6 +108,8 @@ Activates/deactivates the access reader keypads attached to an access controller
 ### [`RestoreDefaultSettings`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/restore-default-settings.md)
 Restores the manufacturer default settings.
 
+### [`Listen`](https://github.com/uhppoted/uhppoted-lib-dotnet/documentation/API/listen.md)
+Listens for access controller events.
 
 ## Notes
 
