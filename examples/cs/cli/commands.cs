@@ -1101,9 +1101,15 @@ class Commands
             }
         }
 
-        uhppoted.OnEvent onevent = new uhppoted.OnEvent(onEvent);
+        void onError(string err)
+        {
+            WriteLine("** ERROR {0}",err);
+        }
 
-        Uhppoted.Listen(onevent, cancel.Token, options);
+        var onevent = new uhppoted.OnEvent(onEvent);
+        var onerror = new uhppoted.OnError(onError);
+
+        Uhppoted.Listen(onevent, onerror, cancel.Token, options);
     }
 
     private static string YYYYMMDD(DateOnly? date)

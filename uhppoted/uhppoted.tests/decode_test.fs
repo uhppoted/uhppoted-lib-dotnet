@@ -13,7 +13,7 @@ type TestDecoder() =
     member this.TestDecodeGetControllerResponse() =
         let packet = TestResponses.getController
 
-        let expected =
+        let expected: GetControllerResponse =
             { controller = 405419896u
               address = IPAddress([| 0xc0uy; 0xa8uy; 0x01uy; 0x64uy |])
               netmask = IPAddress([| 0xffuy; 0xffuy; 0xffuy; 0x00uy |])
@@ -30,7 +30,7 @@ type TestDecoder() =
     member this.TestDecodeGetControllerResponseWithInvalidDate() =
         let packet = TestResponses.getControllerWithInvalidDate
 
-        let expected =
+        let expected: GetControllerResponse =
             { controller = 405419896u
               address = IPAddress([| 0xc0uy; 0xa8uy; 0x01uy; 0x64uy |])
               netmask = IPAddress([| 0xffuy; 0xffuy; 0xffuy; 0x00uy |])

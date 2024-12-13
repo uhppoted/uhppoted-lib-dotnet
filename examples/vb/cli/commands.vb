@@ -851,12 +851,13 @@ Module Commands
                                                cancel.Cancel()
                                            End Sub
 
-        Dim callback As New uhppoted.OnEvent(AddressOf onEvent)
+        Dim onevent As New uhppoted.OnEvent(AddressOf eventHandler)
+        Dim onerror As New uhppoted.OnError(AddressOf errorHandler)
 
-        UHPPOTE.Listen(callback, cancel.Token, OPTIONS)
+        UHPPOTE.Listen(onevent, onerror, cancel.Token, OPTIONS)
     End Sub
 
-    Private Sub onEvent(e As uhppoted.ListenerEvent)
+    Private Sub eventHandler(e As uhppoted.ListenerEvent)
         Dim controller = e.Controller
         Dim status = e.Status
         Dim evt = e.Event
@@ -902,6 +903,10 @@ Module Commands
             WriteLine("   (no event)")
             WriteLine("")
         End If
+    End Sub
+
+    Private Sub errorHandler(err)
+        WriteLine("** ERROR {0}",err)
     End Sub
 
     Private Function YYYYMMDD(v As Nullable(Of DateOnly)) As String

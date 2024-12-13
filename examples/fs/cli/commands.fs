@@ -787,7 +787,7 @@ let listen args =
         args.Cancel <- true
         cancel.Cancel())
 
-    let handler v =
+    let eventHandler v =
         let controller = v.Controller
         let status = v.Status
         let event = v.Event
@@ -831,9 +831,13 @@ let listen args =
             printfn "   (no event)"
             printfn ""
 
-    let onevent: OnEvent = new OnEvent(handler)
+    let errorHandler err =
+        printfn "** ERROR %A" err
 
-    Uhppoted.Listen(onevent, cancel.Token, OPTIONS)
+    let onevent: OnEvent = new OnEvent(eventHandler)
+    let onerror: OnError = new OnError(errorHandler)
+
+    Uhppoted.Listen(onevent, onerror, cancel.Token, OPTIONS)
 
 
 let commands =

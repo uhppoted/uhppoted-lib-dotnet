@@ -755,12 +755,13 @@ module Uhppoted =
     /// Listens for events from access controllers and dispatches received events to a handler.
     /// </summary>
     /// <param name="onevent">External event handler function.</param>
+    /// <param name="onerror">External error handler function.</param>
     /// <param name="stop">Cancellation token to terminate event listener.</param>
     /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
     /// <returns>
     /// Result with the boolean success/fail result or an Error if the request failed.
     /// </returns>
-    let Listen (onevent: OnEvent, stop: CancellationToken, options: Options) =
+    let Listen (onevent: OnEvent, onerror: OnError, stop: CancellationToken, options: Options) =
         let bind = options.listen
         let debug = options.debug
 
@@ -812,6 +813,7 @@ module Uhppoted =
 
                 onevent.Invoke(event)
 
-            | Error err -> printfn "ooooops %A" err
+            | Error err -> onerror.Invoke(err)
+
 
         UDP.listen bind handler stop debug

@@ -92,7 +92,7 @@
                   - [x] controller
                   - [x] status
                   - [x] Nullable<Event>
-                  - [ ] on error
+                  - [x] on error
             - [x] CLI
                   - [x] F#
                   - [x] C#
