@@ -1,109 +1,105 @@
 # TODO
+- [ ] API
+    - [x] find-controllers
+    - [x] get-controller
+    - [x] set-IPv4
+    - [x] get-listener
+    - [x] set-listener
+    - [x] get-time
+    - [x] set-time
+    - [x] get-door
+    - [x] set-door
+    - [x] set-door-passcodes
+    - [x] open-door
+    - [x] get-status
+    - [x] get-cards
+    - [x] get-card
+    - [x] get-card-at-index
+    - [x] put-card
+    - [x] delete-card
+    - [x] delete-all-cards
+    - [x] get-event
+    - [x] get-event-index
+    - [x] set-event-index
+    - [x] record-special-events
+    - [x] get-time-profile
+    - [x] set-time-profile
+    - [x] clear-time-profiles
+    - [x] add-task
+    - [x] clear-task-list
+    - [x] refresh-task-list
+    - [x] set-pc-control
+    - [x] set-interlock
+    - [x] activate-keypads
+    - [x] restore-default-parameters
+    - [x] listen
+        - [x] API function
+            - [x] controller
+            - [x] status
+            - [x] Nullable<Event>
+            - [x] on error
+        - [x] CLI
+            - [x] F#
+            - [x] C#
+            - [x] VB.NET
+        - [x] integration test
+        - [x] API doc
+        - [x] README
+    - [ ] Handle v6.62 messages
+    - [ ] Rethink the controller/options thing
+    - (?) Move timeout to Options
+    - [ ] _Cannot access a disposed object._
+    - [ ] Set SO_REUSEADDR option
 
+- [ ] argparse
+    - [x] --controller
+    - [x] --card
+    - [x] --address
+    - [x] --netmask
+    - [x] --gateway
+    - [x] --listener
+    - [x] --interval
+    - [x] --index
+    - [x] --time
+    - [x] --enable
+    - [x] --door
+    - [x] --mode
+    - [x] --delay
+    - [x] --passcodes
+    - [x] --start-date
+    - [x] --end-date
+    - [x] --permissions
+    - [x] --PIN
+    - [ ] --weekdays
+        - [ ] F#
+        - [ ] C#
+        - [ ] VB.NET
+    - [ ] --segments
+    - [ ] --task
+    - [ ] --interlock
+    - [ ] --keypads
+
+- [ ] translations & enums
+    - [ ] door mode
+    - [ ] event types
+    - [ ] event reasons
+    - [ ] event direction
+    - [ ] tasks
+    - [ ] interlock
+    - [ ] relays
+    - [ ] inputs
+    - https://stackoverflow.com/questions/2689446/how-to-manage-resources-in-an-f-project
+    - https://fsprojects.github.io/FSharp.Configuration/ResXProvider.html
+    - https://poeditor.com/kb/resx-editor
+    - https://localizely.com/getting-started
+
+- [ ] function signature file
 - [ ] camelCase internal functions
-- [ ] Prefer namespaces at the top level
-      - https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/conventions
 - [ ] Represent error cases and illegal state in types intrinsic to your domain
       - https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/conventions#represent-error-cases-and-illegal-state-in-types-intrinsic-to-your-domain
-
+- [ ] Prefer namespaces at the top level
+      - https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/conventions
 - [ ] Add .NET 9 as a target framework
 - (?) Cross-platform builds
       - https://stackoverflow.com/questions/69393627/create-nuget-package-for-different-platforms-architectures-and-net-versions
 
-- [ ] function signature file
-
-- [ ] translations & enums
-      - [ ] door mode
-      - [ ] event types
-      - [ ] event reasons
-      - [ ] event direction
-      - [ ] tasks
-      - [ ] interlock
-      - [ ] relays
-      - [ ] inputs
-      - https://stackoverflow.com/questions/2689446/how-to-manage-resources-in-an-f-project
-      - https://fsprojects.github.io/FSharp.Configuration/ResXProvider.html
-      - https://poeditor.com/kb/resx-editor
-      - https://localizely.com/getting-started
-
-- [ ] argparse
-      - [x] --controller
-      - [x] --card
-      - [x] --address
-      - [x] --netmask
-      - [x] --gateway
-      - [x] --listener
-      - [x] --interval
-      - [x] --index
-      - [x] --time
-      - [x] --enable
-      - [x] --door
-      - [x] --mode
-      - [x] --delay
-      - [x] --passcodes
-      - [x] --start-date
-      - [x] --end-date
-      - [x] --permissions
-      - [x] --PIN
-      - [ ] --weekdays
-            - [ ] F#
-            - [ ] C#
-            - [ ] VB.NET
-      - [ ] --segments
-      - [ ] --task
-      - [ ] --interlock
-      - [ ] --keypads
-
-- [ ] API
-      - [x] find-controllers
-      - [x] get-controller
-      - [x] set-IPv4
-      - [x] get-listener
-      - [x] set-listener
-      - [x] get-time
-      - [x] set-time
-      - [x] get-door
-      - [x] set-door
-      - [x] set-door-passcodes
-      - [x] open-door
-      - [x] get-status
-      - [x] get-cards
-      - [x] get-card
-      - [x] get-card-at-index
-      - [x] put-card
-      - [x] delete-card
-      - [x] delete-all-cards
-      - [x] get-event
-      - [x] get-event-index
-      - [x] set-event-index
-      - [x] record-special-events
-      - [x] get-time-profile
-      - [x] set-time-profile
-      - [x] clear-time-profiles
-      - [x] add-task
-      - [x] clear-task-list
-      - [x] refresh-task-list
-      - [x] set-pc-control
-      - [x] set-interlock
-      - [x] activate-keypads
-      - [x] restore-default-parameters
-      - [x] listen
-            - [x] API function
-                  - [x] controller
-                  - [x] status
-                  - [x] Nullable<Event>
-                  - [x] on error
-            - [x] CLI
-                  - [x] F#
-                  - [x] C#
-                  - [x] VB.NET
-            - [x] integration test
-            - [x] API doc
-            - [x] README
-      - [ ] Handle v6.62 messages
-      - [ ] Rethink the controller/options thing
-      - (?) Move timeout to Options
-      - [ ] _Cannot access a disposed object._
-      - [ ] Set SO_REUSEADDR option
-
-      
