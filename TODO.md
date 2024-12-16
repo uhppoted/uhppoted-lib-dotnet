@@ -35,9 +35,9 @@
     - [x] listen
     - [x] Move timeout to Options
     - [x] Handle v6.62 messages
+    - [x] Set SO_REUSEADDR option
     - [ ] Rethink the controller/options thing
     - [ ] _Cannot access a disposed object._
-    - [ ] Set SO_REUSEADDR option
 
 - [ ] argparse
     - [x] --controller

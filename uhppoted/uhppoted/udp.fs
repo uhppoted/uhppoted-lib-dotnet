@@ -85,6 +85,7 @@ module internal UDP =
         try
             let rx = receive_all socket [] |> Async.StartAsTask
 
+            socket.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true)
             socket.EnableBroadcast <- true
             socket.Send(request, request.Length, broadcast) |> ignore
 
@@ -126,6 +127,7 @@ module internal UDP =
                 let rx_timeout = timer timeout |> Async.StartAsTask
 
                 socket.EnableBroadcast <- true
+                socket.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true)
                 socket.Send(request, request.Length, broadcast) |> ignore
 
                 if debug then
@@ -168,6 +170,7 @@ module internal UDP =
 
         try
             try
+                socket.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true)
                 socket.Connect(dest)
 
                 let rx = receive socket |> Async.StartAsTask
@@ -206,6 +209,8 @@ module internal UDP =
 
     let listen (bind: IPEndPoint) (callback: byte array -> unit) (token: CancellationToken) (debug: bool) =
         let socket = new UdpClient(bind)
+
+        socket.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true)
 
         let handler (packet: byte array, addr: IPEndPoint) =
             if debug then

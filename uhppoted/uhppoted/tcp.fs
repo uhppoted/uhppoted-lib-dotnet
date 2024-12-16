@@ -50,6 +50,7 @@ module internal TCP =
 
         try
             try
+                socket.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true)
                 socket.Connect(dest)
 
                 let stream = socket.GetStream()
