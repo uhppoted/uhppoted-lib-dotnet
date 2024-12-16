@@ -463,7 +463,7 @@ module internal Decode =
                   ok = unpack_bool (packet[8..]) }
 
     let listenEvent (packet: byte array) : Result<ListenEvent, string> =
-        if packet[0] <> messages.SOM then
+        if packet[0] <> messages.SOM && packet[0] <> messages.SOM_v6_62 then
             Error("invalid controller response")
         else if packet[1] <> messages.LISTEN_EVENT then
             Error("invalid listen-event packet")

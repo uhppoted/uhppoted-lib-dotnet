@@ -34,7 +34,7 @@
     - [x] restore-default-parameters
     - [x] listen
     - [x] Move timeout to Options
-    - [ ] Handle v6.62 messages
+    - [x] Handle v6.62 messages
     - [ ] Rethink the controller/options thing
     - [ ] _Cannot access a disposed object._
     - [ ] Set SO_REUSEADDR option

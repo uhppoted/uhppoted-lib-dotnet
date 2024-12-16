@@ -685,6 +685,8 @@ type TestClass() =
             do! Async.Sleep(100)
             Stub.event this.emulator Events.normalEvent TestContext.Error
             do! Async.Sleep(100)
+            Stub.event this.emulator Events.v6_62_Event TestContext.Error
+            do! Async.Sleep(100)
             Stub.event this.emulator Events.eventWithoutEvent TestContext.Error
             do! Async.Sleep(100)
             Stub.event this.emulator Events.errorEvent TestContext.Error
@@ -727,6 +729,10 @@ type TestClass() =
 
         let expected =
             [ { Controller = 405419896u
+                Status = status
+                Event = Nullable(event) }
+
+              { Controller = 303986753u
                 Status = status
                 Event = Nullable(event) }
 

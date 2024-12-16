@@ -5,6 +5,9 @@ module internal messages =
     let SOM = 0x17uy
 
     [<Literal>]
+    let SOM_v6_62 = 0x19uy
+
+    [<Literal>]
     let GET_STATUS = 0x20uy
 
     [<Literal>]
