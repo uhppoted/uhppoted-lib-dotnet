@@ -9,7 +9,6 @@ Sets the controller event listener endpoint and auto-send interval:
 - **`controller` (`uint32`)**: Controller ID.
 - **`listener` (`IPEndPoint`)**: Event listener IPv4 endpoint.
 - **`interval` (`uint8`)**: Auto-send interval (seconds).
-- **`timeout` (`int`)**: Operation timeout (ms).
 - **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 ### Returns
@@ -24,10 +23,9 @@ Returns:
 let controller = 405419896u
 let listener = IPEndPoint.Parse("192.168.1.100:60001")
 let interval = 30uy
-let timeout = 5000
-let options = { broadcast = IPAddress.Broadcast; destination = None; protoocol = None; debug = true }
+let options = { broadcast = IPAddress.Broadcast; timeout = 1250; debug = true }
 
-match SetListener controller listener interval timeout options with
+match SetListener controller listener interval options with
 | Ok ok -> printfn "set-listener: ok %A" ok
 | Error err -> printfn "set-listener: error %A" err
 ```
@@ -36,9 +34,8 @@ match SetListener controller listener interval timeout options with
 var controller = 405419896u;
 var listener = IPEndPoint.Parse("192.168.1.100:60001");
 var interval = 30uy;
-var timeout = 5000;
-var options = new OptionsBuilder().build();
-var result = SetListener(controller, listener, interval, timeout, options);
+var options = new OptionsBuilder().WithTimeout(1250).build();
+var result = SetListener(controller, listener, interval, options);
 
 if (result.IsOk)
 {
@@ -54,9 +51,8 @@ else
 Dim controller = 405419896
 Dim listener = IPEndPoint.Parse("192.168.1.100:60001")
 Dim interval = 30uy
-Dim timeout = 5000
-Dim options As New OptionsBuilder().build()
-Dim result = SetListener(controller, listener, interval, timeout, options)
+Dim options As New OptionsBuilder().WithTimeout(1250).build()
+Dim result = SetListener(controller, listener, interval, options)
 
 If result.IsOk Then
     Console.WriteLine($"set-listener: ok {result.ResultValue}")

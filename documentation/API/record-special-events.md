@@ -5,7 +5,6 @@ Enables (or disables) events for door open/close, button press, etc.
 ### Parameters
 - **`controller` (`uint32`)**: Controller ID.
 - **`enable` (`bool`)**: Enables _special events_ if `true`.
-- **`timeout` (`int`)**: Operation timeout (ms).
 - **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 ### Returns
@@ -18,10 +17,9 @@ Returns:
 ```fsharp
 let controller = 405419896u
 let enable = true
-let timeout = 5000
-let options = { broadcast = IPAddress.Broadcast; destination=None; protocol=None; debug = true }
+let options = { broadcast = IPAddress.Broadcast; timeout = 1250; debug = true }
 
-match RecordSpecialEvents controller enable timeout options with
+match RecordSpecialEvents controller enable options with
 | Ok ok  -> printfn "record-special-events: ok %A" ok
 | Error err -> printfn "record-special-events: error %A" err
 ```
@@ -29,9 +27,8 @@ match RecordSpecialEvents controller enable timeout options with
 ```csharp
 var controller = 405419896u;
 var enable = true;
-var timeout = 5000;
-var options = new OptionsBuilder().build();
-var result = RecordSpecialEvents(controller, enable, timeout, options);
+var options = new OptionsBuilder().WithTimeout(1250).build();
+var result = RecordSpecialEvents(controller, enable, options);
 
 if (result.IsOk)
 {
@@ -46,9 +43,8 @@ else
 ```vb
 Dim controller = 405419896
 Dim enable = true
-Dim timeout = 5000
-Dim options As New OptionsBuilder().build()
-Dim result = RecordSpecialEvents(controller, enable, timeout, options)
+Dim options As New OptionsBuilder().WithTimeout(1250).build()
+Dim result = RecordSpecialEvents(controller, enable, options)
 
 If (result.IsOk) Then
     Console.WriteLine($"record-special-events: ok {result.ResultValue}")

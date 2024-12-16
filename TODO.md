@@ -33,21 +33,9 @@
     - [x] activate-keypads
     - [x] restore-default-parameters
     - [x] listen
-        - [x] API function
-            - [x] controller
-            - [x] status
-            - [x] Nullable<Event>
-            - [x] on error
-        - [x] CLI
-            - [x] F#
-            - [x] C#
-            - [x] VB.NET
-        - [x] integration test
-        - [x] API doc
-        - [x] README
+    - [x] Move timeout to Options
     - [ ] Handle v6.62 messages
     - [ ] Rethink the controller/options thing
-    - (?) Move timeout to Options
     - [ ] _Cannot access a disposed object._
     - [ ] Set SO_REUSEADDR option
 

@@ -7,7 +7,6 @@ Sets up to 4 passcodes for a controller door.
 - **`door` (`uint8`)**: Door number `[1..4]`.
 - **`passcodes` (`uint32 array`)**: Array of up to 4 passcodes in the range [0..999999], defaulting to 
   0 ('none') if the list contains less than 4 entries.
-- **`timeout` (`int`)**: Operation timeout (ms).
 - **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 ### Returns
@@ -19,10 +18,9 @@ Returns `Ok` with a `true` if the passcodes were updated, `Error` if the request
 let controller = 405419896u
 let door = 4uy
 let passcodes = [| 12345u; 54321u; 999999u |]
-let timeout = 5000
-let options = { broadcast = IPAddress.Broadcast; destination = None; protoocol = None; debug = true }
+let options = { broadcast = IPAddress.Broadcast; timeout = 1250; debug = true }
 
-match SetDoorPasscodes controller door passcodes timeout options with
+match SetDoorPasscodes controller door passcodes options with
 | Ok ok -> printfn "set-door-passcodes: ok %A" ok
 | Error err -> printfn "set-door-passcodes: error %A" err
 ```
@@ -31,9 +29,8 @@ match SetDoorPasscodes controller door passcodes timeout options with
 var controller = 405419896u;
 var door = 4u;
 var passcodes = new uint[] {12345u, 54321u, 999999u };
-var timeout = 5000;
-var options = new OptionsBuilder().build();
-var result = SetDoorPasscodes(controller, door, passcodes, timeout, options);
+var options = new OptionsBuilder().WithTimeout(1250).build();
+var result = SetDoorPasscodes(controller, door, passcodes, options);
 if (result.IsOk)
 {
     Console.WriteLine($"set-door-passcodes: ok {result.ResultValue}");
@@ -48,9 +45,8 @@ else
 Dim controller = 405419896
 Dim door As Byte = 4
 Dim passcodes As Uinteger() = new UInteger() {12345, 54321, 999999}
-Dim timeout = 5000
-Dim options As New OptionsBuilder().build()
-Dim result = SetDoorPasscodes(controller, door, passcodes , timeout, options)
+Dim options As New OptionsBuilder().WithTimeout(1250).build()
+Dim result = SetDoorPasscodes(controller, door, passcodes , options)
 
 If result.IsOk Then
     Console.WriteLine($"set-door-passcodes: ok {result.ResultValue}")

@@ -6,7 +6,6 @@ tasklist is refreshed.
 ### Parameters
 - **`controller`**: Controller ID.
 - **`task`**: Task definition.
-- **`timeout`**: Operation timeout (ms).
 - **`options`**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 The `Task` record has the following fields:
@@ -62,10 +61,9 @@ let task: Task =
       sunday = true
       more_cards = 7uy }
 
-let timeout = 5000
-let options = { broadcast = IPAddress.Broadcast; destination=None; protocol=None; debug = true }
+let options = { broadcast = IPAddress.Broadcast; timeout = 1250; debug = true }
 
-match AddTask controller task timeout options with
+match AddTask controller task options with
 | Ok response -> printfn "add-task: ok %A" response.Value
 | Error err -> printfn "add-task: error %A" err
 ```
@@ -79,9 +77,8 @@ var task = new TaskBuilder(4,3)
                   .WithWeekdays(true,true,false,false,true,false,false)
                   .WithMoreCards(7)
                   .build();
-var timeout = 5000;
-var options = new OptionsBuilder().build();
-var result = AddTask(controller, task, timeout, options);
+var options = new OptionsBuilder().WithTimeout(1250).build();
+var result = AddTask(controller, task, options);
 
 if (result.IsOk)
 {
@@ -102,9 +99,8 @@ DIm task = New TaskBuilder(4,3).
                WithWeekdays(true,true,false,false,true,false,false).
                WithMoreCards(7).
                build()
-Dim timeout = 5000
-Dim options As New OptionsBuilder().build()
-Dim result = AddTask(controller, task, timeout, options)
+Dim options As New OptionsBuilder().WithTimeout(1250).build()
+Dim result = AddTask(controller, task, options)
 
 If (result.IsOk) Then
     Console.WriteLine($"add-task: ok {result.ResultValue}")

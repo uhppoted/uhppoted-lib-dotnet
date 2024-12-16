@@ -7,7 +7,6 @@ Adds or updates a card record on a controller.
 - **`card` (`Card`)**: Card record.
 - **`startdate`**: Date from which card is valid.
 - **`enddate`**: Date after which card is no longer valid.
-- **`timeout` (`int`)**: Operation timeout (ms).
 - **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 A `Card` record has the following fields:
@@ -76,10 +75,9 @@ let card: Card = {
     Door3 = 17uy
     Door4 = 1uy
     PIN = 7531u }
-let timeout = 5000
-let options = { broadcast = IPAddress.Broadcast; destination = None; protoocol = None; debug = true }
+let options = { broadcast = IPAddress.Broadcast; timeout = 1250; debug = true }
 
-match PutCard controller card timeout options with
+match PutCard controller card options with
 | Ok ok -> printfn "put-card: ok %A" ok
 | Error err -> printfn "put-card: error %A" err
 ```
@@ -95,9 +93,8 @@ var card = new CardBuilder(10058400u)
                .WithDoor4(1)
                .Build();
 
-var timeout = 5000
-var options = new OptionsBuilder().build();
-var result = PutCard(controller, card, timeout, options);
+var options = new OptionsBuilder().WithTimeout(1250).build();
+var result = PutCard(controller, card, options);
 
 if (result.IsOk)
 {
@@ -120,9 +117,8 @@ Dim card = New CardBuilder().
                WithDoor4(1).
                Build()
 
-Dim timeout = 5000
-Dim options As New OptionsBuilder().build()
-Dim result = PutCard(controller, card, timeout, options)
+Dim options As New OptionsBuilder().WithTimeout(1250).build()
+Dim result = PutCard(controller, card, options)
 
 If result.IsOk Then
     Console.WriteLine($"put-card: ok {result.ResultValue}")

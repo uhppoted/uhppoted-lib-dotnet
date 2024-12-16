@@ -7,7 +7,6 @@ Sets the controller IPv4 address, netmask and gateway address.
 - **`address` (`IPAddress`)**: IPv4 address.
 - **`netmask` (`IPAddress`)**: IPv4 netmask.
 - **`gateway` (`IPAddress`)**: gateway IPv4 address.
-- **`timeout` (`int`)**: Operation timeout (ms).
 - **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 ### Returns
@@ -23,10 +22,9 @@ let controller = 405419896u
 let address = IPAddress.Parse "192.168.1.100"
 let netmask = IPAddress.Parse "255.255.255.0"
 let gateway = IPAddress.Parse "192.168.1.1"
-let timeout = 5000
-let options = { broadcast = IPAddress.Broadcast; destination = None; protoocol = None; debug = true }
+let options = { broadcast = IPAddress.Broadcast; timeout = 1250; debug = true }
 
-match SetIPv4 controller address netmask gateway timeout options with
+match SetIPv4 controller address netmask gateway options with
 | Ok record -> printfn "set-IPv4: ok"
 | Error err -> printfn "set-IPv4: error %A" err
 ```
@@ -36,9 +34,8 @@ var controller = 405419896u;
 var address = IPAddress.Parse("192.168.1.100");
 var netmask = IPAddress.Parse("255.255.255.0");
 var gateway = IPAddress.Parse("192.168.1.1");
-var timeout = 5000
-var options = new OptionsBuilder().build();
-var result = SetIPv4(controller, address, netmask, gateway, timeout, options);
+var options = new OptionsBuilder().WithTimeout(1250).build();
+var result = SetIPv4(controller, address, netmask, gateway, options);
 
 if (result.IsOk)
 {
@@ -55,9 +52,8 @@ Dim controller = 405419896
 Dim address = IPAddress.Parse("192.168.1.100")
 Dim netmask = IPAddress.Parse("255.255.255.0")
 Dim gateway = IPAddress.Parse("192.168.1.1")
-Dim timeout = 5000
-Dim options As New OptionsBuilder().build()
-Dim result = SetIPv4(controller, address, netmask, gateway, timeout, options)
+Dim options As New OptionsBuilder().WithTimeout(1250).build()
+Dim result = SetIPv4(controller, address, netmask, gateway, options)
 
 If result.IsOk Then
     Console.WriteLine($"set-IPv4: ok")

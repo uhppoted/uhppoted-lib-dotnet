@@ -7,7 +7,6 @@ the other interlocked doors is already unlocked.
 ### Parameters
 - **`controller` (`uint32`)**: Controller ID.
 - **`interlock` (`Interlock`)**: Door interlock mode.
-- **`timeout` (`int`)**: Operation timeout (ms).
 - **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 The `interlock` parameter may take one of the following values:
@@ -29,10 +28,9 @@ Returns:
 ```fsharp
 let controller = 405419896u
 let interlock = Interlock.Doors123
-let timeout = 5000
-let options = { broadcast = IPAddress.Broadcast; destination = None; protoocol = None; debug = true }
+let options = { broadcast = IPAddress.Broadcast; timeout = 1250; debug = true }
 
-match SetInterlock controller interlock timeout options with
+match SetInterlock controller interlock options with
 | Ok ok -> printfn "set-interlock: ok %A" ok
 | Error err -> printfn "set-interlock: error %A" err
 ```
@@ -40,9 +38,8 @@ match SetInterlock controller interlock timeout options with
 ```csharp
 var controller = 405419896u;
 var interlock = Interlock.Doors123;
-var timeout = 5000;
-var options = new OptionsBuilder().build();
-var result = SetInterlock(controller, interlock, timeout, options);
+var options = new OptionsBuilder().WithTimeout(1250).build();
+var result = SetInterlock(controller, interlock, options);
 
 if (result.IsOk)
 {
@@ -57,9 +54,8 @@ else
 ```vb
 Dim controller = 405419896
 Dim interlock = Interlock.Doors123
-Dim timeout = 5000
-Dim options As New OptionsBuilder().build()
-Dim result = SetInterlock(controller, interlock, timeout, options)
+Dim options As New OptionsBuilder().WithTimeout(1250).build()
+Dim result = SetInterlock(controller, interlock, options)
 
 If result.IsOk Then
     Console.WriteLine($"set-interlock: ok {result.ResultValue}")

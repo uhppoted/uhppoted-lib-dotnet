@@ -5,7 +5,6 @@ Unlocks a door controlled by a controller.
 ### Parameters
 - **`controller` (`uint32`)**: Controller ID.
 - **`door`**: Door number `[1..4]`.
-- **`timeout` (`int`)**: Operation timeout (ms).
 - **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 ### Returns
@@ -15,10 +14,9 @@ Returns `Ok` with a `true` if the door was unlocked, `Error` if the request fail
 ```fsharp
 let controller = 405419896u
 let door = 4uy
-let timeout = 5000
-let options = { broadcast = IPAddress.Broadcast; destination = None; protoocol = None; debug = true }
+let options = { broadcast = IPAddress.Broadcast; timeout = 1250; debug = true }
 
-match OpenDoor controller door timeout options with
+match OpenDoor controller door options with
 | Ok ok -> printfn "open-door: ok %A" ok
 | Error err -> printfn "open-door: error %A" err
 ```
@@ -26,9 +24,8 @@ match OpenDoor controller door timeout options with
 ```csharp
 var controller = 405419896u;
 var door = 4u;
-var timeout = 5000;
-var options = new OptionsBuilder().build();
-var result = OpenDoor(controller, door, timeout, options);
+var options = new OptionsBuilder().WithTimeout(1250).build();
+var result = OpenDoor(controller, door, options);
 if (result.IsOk)
 {
     Console.WriteLine($"open-door: ok {result.ResultValue}");
@@ -42,9 +39,8 @@ else
 ```vb
 Dim controller = 405419896
 Dim door As Byte = 4
-Dim timeout = 5000
-Dim options As New OptionsBuilder().build()
-Dim result = OpenDoor(controller, door, timeout, options)
+Dim options As New OptionsBuilder().WithTimeout(1250).build()
+Dim result = OpenDoor(controller, door, options)
 
 If result.IsOk Then
     Console.WriteLine($"open-door: ok {result.ResultValue}")

@@ -7,7 +7,6 @@ Retrieves a door control mode and unlock delay from a controller.
 - **`door` (`uint8`)**: Door ID [1..4].
 - **`mode` (`DoorMode`)**: Door control mode (controlled, normally-open or normally-closed)
 - **`delay` (`uint8`)**: Door unlock delay (seconds).
-- **`timeout` (`int`)**: Operation timeout (ms).
 - **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 ### Returns
@@ -30,10 +29,9 @@ let controller = 405419896u
 let door = 3uy
 let mode = DoorMode.NormallyClosed
 let delay = 5
-let timeout = 5000
-let options = { broadcast = IPAddress.Broadcast; destination=None; protocol=None; debug = true }
+let options = { broadcast = IPAddress.Broadcast; timeout = 1250; debug = true }
 
-match SetDoor controller door mode delay timeout options with
+match SetDoor controller door mode delay options with
 | Ok response when response.HasValue -> printfn "set-door: ok %A" response.Value
 | Ok _ -> printfn "set-door: not found"
 | Error err -> printfn "set-door: error %A" err
@@ -44,9 +42,8 @@ var controller = 405419896u;
 var door = 3u;
 var mode = DoorMode.NormallyClosed;
 var delay = 5;
-var timeout = 5000;
-var options = new OptionsBuilder().build();
-var result = SetDoor(controller, door, mode, delay, timeout, options);
+var options = new OptionsBuilder().WithTimeout(1250).build();
+var result = SetDoor(controller, door, mode, delay, options);
 
 if (result.IsOk && result.ResultValue.HasValue)
 {
@@ -67,9 +64,8 @@ Dim controller = 405419896
 Dim door = 3
 Dim mode = DoorMode.NormallyClosed
 Dim delay = 5
-Dim timeout = 5000
-Dim options As New OptionsBuilder().build()
-Dim result = SetDoor(controller, door, mode, delay, timeout, options)
+Dim options As New OptionsBuilder().WithTimeout(1250).build()
+Dim result = SetDoor(controller, door, mode, delay, options)
 
 If (result.IsOk And result.Value.HasValue) Then
     Console.WriteLine($"set-door: ok {result.ResultValue.Value}")

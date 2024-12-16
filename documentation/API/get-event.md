@@ -5,7 +5,6 @@ Retrieves the event record (if any) at the index from the controller.
 ### Parameters
 - **`controller` (`uint32`)**: Controller ID.
 - **`index` (`uint32`)**: Event index.
-- **`timeout` (`int`)**: Operation timeout (ms).
 - **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 ### Returns
@@ -32,10 +31,9 @@ The `Event` record has the following fields:
 ```fsharp
 let controller = 405419896u
 let index = 13579u
-let timeout = 5000
-let options = { broadcast = IPAddress.Broadcast; destination=None; protocol=None; debug = true }
+let options = { broadcast = IPAddress.Broadcast; timeout = 1250; debug = true }
 
-match GetEvent controller index timeout options with
+match GetEvent controller index options with
 | Ok response when response.HasValue -> printfn "get-event: ok %A" response.Value
 | Ok _ -> printfn "get-event: not found"
 | Error err -> printfn "get-event: error %A" err
@@ -44,9 +42,8 @@ match GetEvent controller index timeout options with
 ```csharp
 var controller = 405419896u;
 var index = 13579u;
-var timeout = 5000;
-var options = new OptionsBuilder().build();
-var result = GetEvent(controller, index, timeout, options);
+var options = new OptionsBuilder().WithTimeout(1250).build();
+var result = GetEvent(controller, index, options);
 
 if (result.IsOk && result.ResultValue.HasValue)
 {
@@ -65,9 +62,8 @@ else
 ```vb
 Dim controller = 405419896
 Dim index = 13579
-Dim timeout = 5000
-Dim options As New OptionsBuilder().build()
-Dim result = GetEvent(controller, index, timeout, options)
+Dim options As New OptionsBuilder().WithTimeout(1250).build()
+Dim result = GetEvent(controller, index, options)
 
 If (result.IsOk And result.Value.HasValue) Then
     Console.WriteLine($"get-event: ok {result.ResultValue.Value}")

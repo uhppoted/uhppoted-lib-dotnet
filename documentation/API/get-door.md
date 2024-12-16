@@ -5,7 +5,6 @@ Retrieves a door control mode and unlock delay from a controller.
 ### Parameters
 - **`controller` (`uint32`)**: Controller ID.
 - **`door` (`uint8`)**: Door ID [1..4].
-- **`timeout` (`int`)**: Operation timeout (ms).
 - **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 ### Returns
@@ -26,10 +25,9 @@ The `Door` record has the following fields:
 ```fsharp
 let controller = 405419896u
 let door = 3uy
-let timeout = 5000
-let options = { broadcast = IPAddress.Broadcast; destination=None; protocol=None; debug = true }
+let options = { broadcast = IPAddress.Broadcast; timeout = 1250; debug = true }
 
-match GetDoor controller door timeout options with
+match GetDoor controller door options with
 | Ok response when response.HasValue -> printfn "get-door: ok %A" response.Value
 | Ok _ -> printfn "get-door: not found"
 | Error err -> printfn "get-door: error %A" err
@@ -38,9 +36,8 @@ match GetDoor controller door timeout options with
 ```csharp
 var controller = 405419896u;
 var door = 3u;
-var timeout = 5000;
-var options = new OptionsBuilder().build();
-var result = GetDoor(controller, door, timeout, options);
+var options = new OptionsBuilder().WithTimeout(1250).build();
+var result = GetDoor(controller, door, options);
 
 if (result.IsOk && result.ResultValue.HasValue)
 {
@@ -59,9 +56,8 @@ else
 ```vb
 Dim controller = 405419896
 Dim door = 3
-Dim timeout = 5000
-Dim options As New OptionsBuilder().build()
-Dim result = GetDoor(controller, door, timeout, options)
+Dim options As New OptionsBuilder().WithTimeout(1250).build()
+Dim result = GetDoor(controller, door, options)
 
 If (result.IsOk And result.Value.HasValue) Then
     Console.WriteLine($"get-door: ok {result.ResultValue.Value}")

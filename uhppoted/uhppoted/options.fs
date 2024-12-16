@@ -14,6 +14,9 @@ type Options =
         /// IPv4 endpoint on which to listen for controller events. Defaults to '0.0.0.0:60001.
         listen: IPEndPoint
 
+        /// Operation timeout (milliseconds).
+        timeout: int
+
         /// Optional IPv4 controller address:port. Required if the controller is not accessible via UDP broadcast.
         endpoint: Option<IPEndPoint>
 
@@ -29,6 +32,7 @@ type OptionsBuilder() =
     let mutable bind: IPEndPoint = IPEndPoint(IPAddress.Any, 0)
     let mutable broadcast: IPEndPoint = IPEndPoint(IPAddress.Broadcast, 60000)
     let mutable listen: IPEndPoint = IPEndPoint(IPAddress.Any, 60001)
+    let mutable timeout: int = 1000
     let mutable endpoint: Option<IPEndPoint> = None
     let mutable protocol: Option<string> = None
     let mutable debug: bool = false
@@ -52,6 +56,13 @@ type OptionsBuilder() =
     /// - Returns: The updated builder instance.
     member this.WithListen(endpoint: IPEndPoint) =
         listen <- endpoint
+        this
+
+    /// Sets the operation timeout.
+    /// - Parameter `ms`: Operation timeout (milliseconds).
+    /// - Returns: The updated builder instance.
+    member this.WithTimeout(ms: int) =
+        timeout <- ms
         this
 
     /// Sets the optional controller endpoint.
@@ -81,6 +92,7 @@ type OptionsBuilder() =
         { bind = bind
           broadcast = broadcast
           listen = listen
+          timeout = timeout
           endpoint = endpoint
           protocol = protocol
           debug = debug }

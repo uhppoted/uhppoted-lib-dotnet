@@ -5,7 +5,6 @@ Retrieves the card record (if any) at the index from the cards list stored on th
 ### Parameters
 - **`controller` (`uint32`)**: Controller ID.
 - **`index` (`uint32`)**: Card record index.
-- **`timeout` (`int`)**: Operation timeout (ms).
 - **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 - **`controller`**: Controller ID.
 
@@ -32,10 +31,9 @@ A `Card` record has the following fields:
 ```fsharp
 let controller = 405419896u
 let index = 135u
-let timeout = 5000
-let options = { broadcast = IPAddress.Broadcast; destination=None; protocol=None; debug = true }
+let options = { broadcast = IPAddress.Broadcast; timeout = 1250; debug = true }
 
-match GetCardAtIndex controller index timeout options with
+match GetCardAtIndex controller index options with
 | Ok response when response.HasValue -> printfn "get-card-at-index: ok %A" response.Value
 | Ok _ -> printfn "get-card-at-index: not found"
 | Error err -> printfn "get-card-at-index: error %A" err
@@ -44,9 +42,8 @@ match GetCardAtIndex controller index timeout options with
 ```csharp
 var controller = 405419896u;
 var index = 135u;
-var timeout = 5000;
-var options = new OptionsBuilder().build();
-var result = GetCardAtIndex(controller, index, timeout, options);
+var options = new OptionsBuilder().WithTimeout(1250).build();
+var result = GetCardAtIndex(controller, index, options);
 
 if (result.IsOk && result.ResultValue.HasValue)
 {
@@ -65,9 +62,8 @@ else
 ```vb
 Dim controller = 405419896
 Dim index = 135
-Dim timeout = 5000
-Dim options As New OptionsBuilder().build()
-Dim result = GetCardAtIndex(controller, index, timeout, options)
+Dim options As New OptionsBuilder().WithTimeout(1250).build()
+Dim result = GetCardAtIndex(controller, index, options)
 
 If (result.IsOk And result.Value.HasValue) Then
     Console.WriteLine($"get-card-at-index: ok {result.ResultValue.Value}")

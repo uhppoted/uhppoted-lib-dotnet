@@ -5,7 +5,6 @@ Adds or updates an access time profile on a controller.
 ### Parameters
 - **`controller` (`uint32`)**: Controller ID.
 - **`profile` (`uint8`) **: Time profile [2..254].
-- **`timeout` (`int`)**: Operation timeout (ms).
 - **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 The `TimeProfile` record has the following fields:
@@ -54,10 +53,9 @@ let profile: TimeProfile =
       segment3_end = Nullable(TimeOnly(17, 59))
       linked_profile = 19uy }
 
-let timeout = 5000
-let options = { broadcast = IPAddress.Broadcast; destination=None; protocol=None; debug = true }
+let options = { broadcast = IPAddress.Broadcast; timeout = 1250; debug = true }
 
-match SetTimeProfile controller profile timeout options with
+match SetTimeProfile controller profile options with
 | Ok response -> printfn "set-time-profile: ok %A" response.Value
 | Error err -> printfn "set-time-profile: error %A" err
 ```
@@ -73,9 +71,8 @@ var profile = new TimeProfileBuilder(29)
                   .WithSegment2(TimeOnly.Parse("19:15"),TimeOnly.Parse("21:45"))
                   .WithLinkedProfile(37)
                   .build();
-var timeout = 5000;
-var options = new OptionsBuilder().build();
-var result = SetTimeProfile(controller, profile, timeout, options);
+var options = new OptionsBuilder().WithTimeout(1250).build();
+var result = SetTimeProfile(controller, profile, options);
 
 if (result.IsOk)
 {
@@ -98,9 +95,8 @@ DIm profile = New TimeProfileBuilder(29).
                   WithSegment2(TimeOnly.Parse("19:15"),TimeOnly.Parse("21:45")).
                   WithLinkedProfile(37).
                   build()
-Dim timeout = 5000
-Dim options As New OptionsBuilder().build()
-Dim result = SetTimeProfile(controller, profile, timeout, options)
+Dim options As New OptionsBuilder().WithTimeout(1250).build()
+Dim result = SetTimeProfile(controller, profile, options)
 
 If (result.IsOk) Then
     Console.WriteLine($"set-time-profile: ok {result.ResultValue}")

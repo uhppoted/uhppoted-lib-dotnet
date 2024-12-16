@@ -17,7 +17,6 @@ type TestClass() =
     let CONTROLLER = 405419896u
     let CONTROLLER_NO_EVENT = 405419897u
     let ENDPOINT = IPEndPoint.Parse("127.0.0.1:59999")
-    let TIMEOUT = 500
     let DOOR = 4uy
     let DOOR_NOT_FOUND = 5uy
     let MODE = DoorMode.NormallyClosed
@@ -37,6 +36,7 @@ type TestClass() =
         { bind = IPEndPoint(IPAddress.Any, 0)
           broadcast = IPEndPoint(IPAddress.Broadcast, 59999)
           listen = IPEndPoint(IPAddress.Any, 60001)
+          timeout = 500
           endpoint = None
           protocol = None
           debug = false }
@@ -96,7 +96,7 @@ type TestClass() =
                  version = "v6.62"
                  date = Nullable(DateOnly.ParseExact("2020-01-01", "yyyy-MM-dd")) } |]
 
-        match Uhppoted.FindControllers(TIMEOUT, OPTIONS) with
+        match Uhppoted.FindControllers(OPTIONS) with
         | Ok controllers -> Assert.That(controllers, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)
 
@@ -113,7 +113,7 @@ type TestClass() =
 
         options
         |> List.iter (fun opts ->
-            match Uhppoted.GetController(CONTROLLER, TIMEOUT, opts) with
+            match Uhppoted.GetController(CONTROLLER, opts) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
@@ -125,7 +125,7 @@ type TestClass() =
 
         options
         |> List.iter (fun opts ->
-            match Uhppoted.SetIPv4(CONTROLLER, address, netmask, gateway, TIMEOUT, OPTIONS) with
+            match Uhppoted.SetIPv4(CONTROLLER, address, netmask, gateway, OPTIONS) with
             | Ok _ -> Assert.Pass()
             | Error err -> Assert.Fail(err))
 
@@ -137,7 +137,7 @@ type TestClass() =
 
         options
         |> List.iter (fun opts ->
-            match Uhppoted.GetListener(CONTROLLER, TIMEOUT, OPTIONS) with
+            match Uhppoted.GetListener(CONTROLLER, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
@@ -149,7 +149,7 @@ type TestClass() =
 
         options
         |> List.iter (fun opts ->
-            match Uhppoted.SetListener(CONTROLLER, listener, interval, TIMEOUT, OPTIONS) with
+            match Uhppoted.SetListener(CONTROLLER, listener, interval, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
@@ -160,7 +160,7 @@ type TestClass() =
 
         options
         |> List.iter (fun opts ->
-            match Uhppoted.GetTime(CONTROLLER, TIMEOUT, OPTIONS) with
+            match Uhppoted.GetTime(CONTROLLER, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
@@ -174,7 +174,7 @@ type TestClass() =
 
         options
         |> List.iter (fun opts ->
-            match Uhppoted.SetTime(CONTROLLER, datetime, TIMEOUT, OPTIONS) with
+            match Uhppoted.SetTime(CONTROLLER, datetime, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
@@ -186,7 +186,7 @@ type TestClass() =
 
         options
         |> List.iter (fun opts ->
-            match Uhppoted.GetDoor(CONTROLLER, DOOR, TIMEOUT, OPTIONS) with
+            match Uhppoted.GetDoor(CONTROLLER, DOOR, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
@@ -194,7 +194,7 @@ type TestClass() =
     member this.TestGetDoorNotFound() =
         options
         |> List.iter (fun opts ->
-            match Uhppoted.GetDoor(CONTROLLER, DOOR_NOT_FOUND, TIMEOUT, opts) with
+            match Uhppoted.GetDoor(CONTROLLER, DOOR_NOT_FOUND, opts) with
             | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
             | Ok _ -> Assert.Pass()
             | Error err -> Assert.Fail(err))
@@ -207,7 +207,7 @@ type TestClass() =
 
         options
         |> List.iter (fun opts ->
-            match Uhppoted.SetDoor(CONTROLLER, DOOR, MODE, DELAY, TIMEOUT, OPTIONS) with
+            match Uhppoted.SetDoor(CONTROLLER, DOOR, MODE, DELAY, OPTIONS) with
             | Ok result -> Assert.That(result, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
@@ -215,7 +215,7 @@ type TestClass() =
     member this.TestSetDoorNotFound() =
         options
         |> List.iter (fun opts ->
-            match Uhppoted.SetDoor(CONTROLLER, DOOR_NOT_FOUND, MODE, DELAY, TIMEOUT, opts) with
+            match Uhppoted.SetDoor(CONTROLLER, DOOR_NOT_FOUND, MODE, DELAY, opts) with
             | Ok result when result.HasValue -> Assert.Fail("expected 'null'")
             | Ok _ -> Assert.Pass()
             | Error err -> Assert.Fail(err))
@@ -227,7 +227,7 @@ type TestClass() =
 
         options
         |> List.iter (fun opts ->
-            match Uhppoted.SetDoorPasscodes(CONTROLLER, DOOR, passcodes, TIMEOUT, opts) with
+            match Uhppoted.SetDoorPasscodes(CONTROLLER, DOOR, passcodes, opts) with
             | Ok result -> Assert.That(result, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
@@ -237,7 +237,7 @@ type TestClass() =
 
         options
         |> List.iter (fun opts ->
-            match Uhppoted.OpenDoor(CONTROLLER, DOOR, TIMEOUT, opts) with
+            match Uhppoted.OpenDoor(CONTROLLER, DOOR, opts) with
             | Ok result -> Assert.That(result, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
@@ -279,7 +279,7 @@ type TestClass() =
 
         options
         |> List.iter (fun opts ->
-            match Uhppoted.GetStatus(CONTROLLER, TIMEOUT, opts) with
+            match Uhppoted.GetStatus(CONTROLLER, opts) with
             | Ok result -> Assert.That(result, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
@@ -311,7 +311,7 @@ type TestClass() =
 
         options
         |> List.iter (fun opts ->
-            match Uhppoted.GetStatus(CONTROLLER_NO_EVENT, TIMEOUT, opts) with
+            match Uhppoted.GetStatus(CONTROLLER_NO_EVENT, opts) with
             | Ok result -> Assert.That(result, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
@@ -321,7 +321,7 @@ type TestClass() =
 
         options
         |> List.iter (fun opts ->
-            match Uhppoted.GetCards(CONTROLLER, TIMEOUT, opts) with
+            match Uhppoted.GetCards(CONTROLLER, opts) with
             | Ok cards -> Assert.That(cards, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
@@ -339,7 +339,7 @@ type TestClass() =
 
         options
         |> List.iter (fun opts ->
-            match Uhppoted.GetCard(CONTROLLER, CARD, TIMEOUT, opts) with
+            match Uhppoted.GetCard(CONTROLLER, CARD, opts) with
             | Ok response -> Assert.That(response.Value, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
@@ -348,7 +348,7 @@ type TestClass() =
     member this.TestGetCardNotFound() =
         options
         |> List.iter (fun opts ->
-            match Uhppoted.GetCard(CONTROLLER, MISSING_CARD, TIMEOUT, opts) with
+            match Uhppoted.GetCard(CONTROLLER, MISSING_CARD, opts) with
             | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
             | Ok _ -> Assert.Pass()
             | Error err -> Assert.Fail(err))
@@ -367,7 +367,7 @@ type TestClass() =
 
         options
         |> List.iter (fun opts ->
-            match Uhppoted.GetCardAtIndex(CONTROLLER, CARD_INDEX, TIMEOUT, opts) with
+            match Uhppoted.GetCardAtIndex(CONTROLLER, CARD_INDEX, opts) with
             | Ok response -> Assert.That(response.Value, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
@@ -375,7 +375,7 @@ type TestClass() =
     member this.TestGetCardAtIndexNotFound() =
         options
         |> List.iter (fun opts ->
-            match Uhppoted.GetCardAtIndex(CONTROLLER, CARD_INDEX_NOT_FOUND, TIMEOUT, opts) with
+            match Uhppoted.GetCardAtIndex(CONTROLLER, CARD_INDEX_NOT_FOUND, opts) with
             | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
             | Ok _ -> Assert.Pass()
             | Error err -> Assert.Fail(err))
@@ -384,7 +384,7 @@ type TestClass() =
     member this.TestGetCardAtIndexDeleted() =
         options
         |> List.iter (fun opts ->
-            match Uhppoted.GetCardAtIndex(CONTROLLER, CARD_INDEX_DELETED, TIMEOUT, opts) with
+            match Uhppoted.GetCardAtIndex(CONTROLLER, CARD_INDEX_DELETED, opts) with
             | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
             | Ok _ -> Assert.Pass()
             | Error err -> Assert.Fail(err))
@@ -405,7 +405,7 @@ type TestClass() =
 
         options
         |> List.iter (fun opts ->
-            match Uhppoted.PutCard(CONTROLLER, card, TIMEOUT, opts) with
+            match Uhppoted.PutCard(CONTROLLER, card, opts) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
@@ -415,7 +415,7 @@ type TestClass() =
 
         options
         |> List.iter (fun opts ->
-            match Uhppoted.DeleteCard(CONTROLLER, CARD, TIMEOUT, opts) with
+            match Uhppoted.DeleteCard(CONTROLLER, CARD, opts) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
@@ -425,7 +425,7 @@ type TestClass() =
 
         options
         |> List.iter (fun opts ->
-            match Uhppoted.DeleteAllCards(CONTROLLER, TIMEOUT, opts) with
+            match Uhppoted.DeleteAllCards(CONTROLLER, opts) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
@@ -443,7 +443,7 @@ type TestClass() =
 
         options
         |> List.iter (fun opts ->
-            match Uhppoted.GetEvent(CONTROLLER, EVENT_INDEX, TIMEOUT, opts) with
+            match Uhppoted.GetEvent(CONTROLLER, EVENT_INDEX, opts) with
             | Ok response -> Assert.That(response.Value, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
@@ -451,7 +451,7 @@ type TestClass() =
     member this.TestGetEventNotFound() =
         options
         |> List.iter (fun opts ->
-            match Uhppoted.GetEvent(CONTROLLER, EVENT_INDEX_NOT_FOUND, TIMEOUT, opts) with
+            match Uhppoted.GetEvent(CONTROLLER, EVENT_INDEX_NOT_FOUND, opts) with
             | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
             | Ok _ -> Assert.Pass()
             | Error err -> Assert.Fail(err))
@@ -460,7 +460,7 @@ type TestClass() =
     member this.TestGetEventOverwritten() =
         options
         |> List.iter (fun opts ->
-            match Uhppoted.GetEvent(CONTROLLER, EVENT_INDEX_OVERWRITTEN, TIMEOUT, opts) with
+            match Uhppoted.GetEvent(CONTROLLER, EVENT_INDEX_OVERWRITTEN, opts) with
             | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
             | Ok _ -> Assert.Pass()
             | Error err -> Assert.Fail(err))
@@ -471,7 +471,7 @@ type TestClass() =
 
         options
         |> List.iter (fun opts ->
-            match Uhppoted.GetEventIndex(CONTROLLER, TIMEOUT, opts) with
+            match Uhppoted.GetEventIndex(CONTROLLER, opts) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
@@ -481,7 +481,7 @@ type TestClass() =
 
         options
         |> List.iter (fun opts ->
-            match Uhppoted.SetEventIndex(CONTROLLER, EVENT_INDEX, TIMEOUT, opts) with
+            match Uhppoted.SetEventIndex(CONTROLLER, EVENT_INDEX, opts) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
@@ -491,7 +491,7 @@ type TestClass() =
 
         options
         |> List.iter (fun opts ->
-            match Uhppoted.RecordSpecialEvents(CONTROLLER, true, TIMEOUT, opts) with
+            match Uhppoted.RecordSpecialEvents(CONTROLLER, true, opts) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
@@ -518,7 +518,7 @@ type TestClass() =
 
         options
         |> List.iter (fun opts ->
-            match Uhppoted.GetTimeProfile(CONTROLLER, TIME_PROFILE_ID, TIMEOUT, opts) with
+            match Uhppoted.GetTimeProfile(CONTROLLER, TIME_PROFILE_ID, opts) with
             | Ok response -> Assert.That(response.Value, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
@@ -526,7 +526,7 @@ type TestClass() =
     member this.TestGetTimeProfileNotFound() =
         options
         |> List.iter (fun opts ->
-            match Uhppoted.GetTimeProfile(CONTROLLER, TIME_PROFILE_ID_NOT_FOUND, TIMEOUT, opts) with
+            match Uhppoted.GetTimeProfile(CONTROLLER, TIME_PROFILE_ID_NOT_FOUND, opts) with
             | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
             | Ok _ -> Assert.Pass()
             | Error err -> Assert.Fail(err))
@@ -556,7 +556,7 @@ type TestClass() =
 
         options
         |> List.iter (fun opts ->
-            match Uhppoted.SetTimeProfile(CONTROLLER, profile, TIMEOUT, opts) with
+            match Uhppoted.SetTimeProfile(CONTROLLER, profile, opts) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
@@ -566,7 +566,7 @@ type TestClass() =
 
         options
         |> List.iter (fun opts ->
-            match Uhppoted.ClearTimeProfiles(CONTROLLER, TIMEOUT, opts) with
+            match Uhppoted.ClearTimeProfiles(CONTROLLER, opts) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
@@ -591,7 +591,7 @@ type TestClass() =
 
         options
         |> List.iter (fun opts ->
-            match Uhppoted.AddTask(CONTROLLER, task, TIMEOUT, opts) with
+            match Uhppoted.AddTask(CONTROLLER, task, opts) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
@@ -601,7 +601,7 @@ type TestClass() =
 
         options
         |> List.iter (fun opts ->
-            match Uhppoted.ClearTaskList(CONTROLLER, TIMEOUT, opts) with
+            match Uhppoted.ClearTaskList(CONTROLLER, opts) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
@@ -611,7 +611,7 @@ type TestClass() =
 
         options
         |> List.iter (fun opts ->
-            match Uhppoted.RefreshTaskList(CONTROLLER, TIMEOUT, opts) with
+            match Uhppoted.RefreshTaskList(CONTROLLER, opts) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
@@ -621,7 +621,7 @@ type TestClass() =
 
         options
         |> List.iter (fun opts ->
-            match Uhppoted.SetPCControl(CONTROLLER, true, TIMEOUT, opts) with
+            match Uhppoted.SetPCControl(CONTROLLER, true, opts) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
@@ -631,7 +631,7 @@ type TestClass() =
 
         options
         |> List.iter (fun opts ->
-            match Uhppoted.SetInterlock(CONTROLLER, Interlock.Doors1234, TIMEOUT, opts) with
+            match Uhppoted.SetInterlock(CONTROLLER, Interlock.Doors1234, opts) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
@@ -641,7 +641,7 @@ type TestClass() =
 
         options
         |> List.iter (fun opts ->
-            match Uhppoted.ActivateKeypads(CONTROLLER, true, true, false, true, TIMEOUT, opts) with
+            match Uhppoted.ActivateKeypads(CONTROLLER, true, true, false, true, opts) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 
@@ -651,7 +651,7 @@ type TestClass() =
 
         options
         |> List.iter (fun opts ->
-            match Uhppoted.RestoreDefaultParameters(CONTROLLER, TIMEOUT, opts) with
+            match Uhppoted.RestoreDefaultParameters(CONTROLLER, opts) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail(err))
 

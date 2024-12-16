@@ -1,9 +1,10 @@
 ## **`FindControllers`**
 
-'Discovers' all controllers accessible via a UDP broadcast on the local LAN.
+'Discovers' all controllers accessible via a UDP broadcast on the local LAN. The returned list of 
+controllers includes all controllers that responded within the `timeout` value set in the options.
+
 
 ### Parameters
-- **`timeout` (`int`)**: The timeout duration in milliseconds for the UDP request. If the response takes longer than this value, it will be discarded.
 - **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 ### Returns
@@ -12,8 +13,7 @@ including its address, MAC, version, and other relevant details.
 
 ### Examples
 ```fsharp
-let timeout = 5000
-let options = { 
+let options = { broadcast = IPAddress.Broadcast; timeout = 1250; debug = true }
     bind = IPEndPoint.Parse(IPAddress.Any, 0)
     broadcast = IPEndPoint(IPAddress.Broadcast, 60000)
     listen = IPEndPoint(IPAddress.Any, 60001)
@@ -21,16 +21,15 @@ let options = {
     protocol = None
     debug = true }
 
-match find_controllers(timeout, options) with
+match find_controllers(options) with
 | Ok controllers -> controllers |> Array.iter (fun controller -> printfn "controller: %u, version: %s" controller.controller controller.version
 | Error err -> printfn "find-controlelrs %A" err
 )
 ```
 
 ```csharp
-var timeout = 5000;
-var options = new OptionsBuilder().build();
-var result = FindControllers(timeout, options);
+var options = new OptionsBuilder().WithTimeout(1250).build();
+var result = FindControllers(options);
 
 if (result.IsOk)
 {
@@ -47,10 +46,8 @@ else if (result.IsError)
 ```
 
 ```vb
-Dim timeout As Integer = 3000
-Dim timeout = 5000
-Dim options As New OptionsBuilder().build()
-Dim result = get_all_controllers(timeout, options)
+Dim options As New OptionsBuilder().WithTimeout(1250).build()
+Dim result = get_all_controllers(options)
 
 If (result.IsOk)
     Dim controllers = result.ResultValue

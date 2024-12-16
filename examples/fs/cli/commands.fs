@@ -15,7 +15,6 @@ type command =
 let CONTROLLER = 1u
 let ENDPOINT = Some(IPEndPoint(IPAddress.Parse("192.168.1.100"), 60000))
 let PROTOCOL = Some("udp")
-let TIMEOUT = 1000
 
 let ADDRESS = IPAddress.Parse "192.168.1.10"
 let NETMASK = IPAddress.Parse "255.255.255.0"
@@ -39,6 +38,7 @@ let OPTIONS: Options =
     { bind = IPEndPoint(IPAddress.Any, 0)
       broadcast = IPEndPoint(IPAddress.Broadcast, 60000)
       listen = IPEndPoint(IPAddress.Any, 60001)
+      timeout = 1000
       endpoint = None
       protocol = None
       debug = true }
@@ -62,10 +62,7 @@ let HHmm (time: Nullable<TimeOnly>) =
         "---"
 
 let find_controllers args =
-    let timeout = TIMEOUT
-    let options = OPTIONS
-
-    match Uhppoted.FindControllers(timeout, options) with
+    match Uhppoted.FindControllers(OPTIONS) with
     | Ok controllers ->
         printfn "find-controllers: %d" controllers.Length
 
@@ -85,14 +82,8 @@ let find_controllers args =
 
 let get_controller args =
     let controller = argparse args "--controller" CONTROLLER
-    let timeout = TIMEOUT
 
-    let options =
-        { OPTIONS with
-            endpoint = ENDPOINT
-            protocol = PROTOCOL }
-
-    match Uhppoted.GetController(controller, timeout, options) with
+    match Uhppoted.GetController(controller, OPTIONS) with
     | Ok record ->
         printfn "get-controller"
         printfn "  controller %u" record.controller
@@ -111,14 +102,8 @@ let set_IPv4 args =
     let address = argparse args "--address" ADDRESS
     let netmask = argparse args "--netmask" NETMASK
     let gateway = argparse args "--gateway" GATEWAY
-    let timeout = TIMEOUT
 
-    let options =
-        { OPTIONS with
-            endpoint = ENDPOINT
-            protocol = PROTOCOL }
-
-    match Uhppoted.SetIPv4(controller, address, netmask, gateway, timeout, options) with
+    match Uhppoted.SetIPv4(controller, address, netmask, gateway, OPTIONS) with
     | Ok response ->
         printfn "set-IPv4"
         printfn "  ok"
@@ -128,14 +113,8 @@ let set_IPv4 args =
 
 let get_listener args =
     let controller = argparse args "--controller" CONTROLLER
-    let timeout = TIMEOUT
 
-    let options =
-        { OPTIONS with
-            endpoint = ENDPOINT
-            protocol = PROTOCOL }
-
-    match Uhppoted.GetListener(controller, TIMEOUT, OPTIONS) with
+    match Uhppoted.GetListener(controller, OPTIONS) with
     | Ok record ->
         printfn "get-listener"
         printfn "  controller %u" controller
@@ -150,7 +129,7 @@ let set_listener args =
     let listener = argparse args "--listener" LISTENER
     let interval = argparse args "--interval" INTERVAL
 
-    match Uhppoted.SetListener(controller, listener, interval, TIMEOUT, OPTIONS) with
+    match Uhppoted.SetListener(controller, listener, interval, OPTIONS) with
     | Ok ok ->
         printfn "set-listener"
         printfn "  controller %u" controller
@@ -162,7 +141,7 @@ let set_listener args =
 let get_time args =
     let controller = argparse args "--controller" CONTROLLER
 
-    match Uhppoted.GetTime(controller, TIMEOUT, OPTIONS) with
+    match Uhppoted.GetTime(controller, OPTIONS) with
     | Ok datetime ->
         printfn "get-time"
         printfn "  controller %u" controller
@@ -175,7 +154,7 @@ let set_time args =
     let controller = argparse args "--controller" CONTROLLER
     let now = argparse args "--datetime" DateTime.Now
 
-    match Uhppoted.SetTime(controller, now, TIMEOUT, OPTIONS) with
+    match Uhppoted.SetTime(controller, now, OPTIONS) with
     | Ok datetime ->
         printfn "set-time"
         printfn "  controller %u" controller
@@ -188,7 +167,7 @@ let get_door args =
     let controller = argparse args "--controller" CONTROLLER
     let door = argparse args "--door" DOOR
 
-    match Uhppoted.GetDoor(controller, door, TIMEOUT, OPTIONS) with
+    match Uhppoted.GetDoor(controller, door, OPTIONS) with
     | Ok v when v.HasValue ->
         let record = v.Value
 
@@ -209,7 +188,7 @@ let set_door args =
     let mode = argparse args "--mode" MODE
     let delay = argparse args "--delay" DELAY
 
-    match Uhppoted.SetDoor(controller, door, mode, delay, TIMEOUT, OPTIONS) with
+    match Uhppoted.SetDoor(controller, door, mode, delay, OPTIONS) with
     | Ok v when v.HasValue ->
         let record = v.Value
 
@@ -228,7 +207,7 @@ let set_door_passcodes args =
     let door = argparse args "--door" DOOR
     let passcodes: uint32 array = argparse args "--passcodes" [||]
 
-    match Uhppoted.SetDoorPasscodes(controller, door, passcodes, TIMEOUT, OPTIONS) with
+    match Uhppoted.SetDoorPasscodes(controller, door, passcodes, OPTIONS) with
     | Ok ok ->
         printfn "set-door-passcodes"
         printfn "  controller %u" controller
@@ -242,7 +221,7 @@ let open_door args =
     let controller = argparse args "--controller" CONTROLLER
     let door = argparse args "--door" DOOR
 
-    match Uhppoted.OpenDoor(controller, door, TIMEOUT, OPTIONS) with
+    match Uhppoted.OpenDoor(controller, door, OPTIONS) with
     | Ok ok ->
         printfn "open-door"
         printfn "  controller %u" controller
@@ -254,7 +233,7 @@ let open_door args =
 let get_status args =
     let controller = argparse args "--controller" CONTROLLER
 
-    match Uhppoted.GetStatus(controller, TIMEOUT, OPTIONS) with
+    match Uhppoted.GetStatus(controller, OPTIONS) with
     | Ok(status, event) ->
         printfn "get-status"
         printfn "         controller %u" controller
@@ -299,14 +278,8 @@ let get_status args =
 
 let get_cards args =
     let controller = argparse args "--controller" CONTROLLER
-    let timeout = TIMEOUT
 
-    let options =
-        { OPTIONS with
-            endpoint = ENDPOINT
-            protocol = PROTOCOL }
-
-    match Uhppoted.GetCards(controller, TIMEOUT, OPTIONS) with
+    match Uhppoted.GetCards(controller, OPTIONS) with
     | Ok cards ->
         printfn "get-cards"
         printfn "  controller %u" controller
@@ -318,14 +291,8 @@ let get_cards args =
 let get_card args =
     let controller = argparse args "--controller" CONTROLLER
     let card = argparse args "--card" CARD
-    let timeout = TIMEOUT
 
-    let options =
-        { OPTIONS with
-            endpoint = ENDPOINT
-            protocol = PROTOCOL }
-
-    match Uhppoted.GetCard(controller, card, TIMEOUT, OPTIONS) with
+    match Uhppoted.GetCard(controller, card, OPTIONS) with
     | Ok v when v.HasValue ->
         let record = v.Value
 
@@ -347,14 +314,8 @@ let get_card args =
 let get_card_at_index args =
     let controller = argparse args "--controller" CONTROLLER
     let index = argparse args "--card" CARD_INDEX
-    let timeout = TIMEOUT
 
-    let options =
-        { OPTIONS with
-            endpoint = ENDPOINT
-            protocol = PROTOCOL }
-
-    match Uhppoted.GetCardAtIndex(controller, index, timeout, options) with
+    match Uhppoted.GetCardAtIndex(controller, index, OPTIONS) with
     | Ok v when v.HasValue ->
         let record = v.Value
 
@@ -387,14 +348,8 @@ let put_card args =
           Door4 = (permissions |> Map.tryFind 4 |> Option.defaultValue 0uy)
           PIN = argparse args "--PIN" 0u }
 
-    let timeout = TIMEOUT
 
-    let options =
-        { OPTIONS with
-            endpoint = ENDPOINT
-            protocol = PROTOCOL }
-
-    match Uhppoted.PutCard(controller, card, timeout, options) with
+    match Uhppoted.PutCard(controller, card, OPTIONS) with
     | Ok ok ->
         printfn "put-card"
         printfn "  controller %u" controller
@@ -407,14 +362,8 @@ let put_card args =
 let delete_card args =
     let controller = argparse args "--controller" CONTROLLER
     let card = argparse args "--card" CARD
-    let timeout = TIMEOUT
 
-    let options =
-        { OPTIONS with
-            endpoint = ENDPOINT
-            protocol = PROTOCOL }
-
-    match Uhppoted.DeleteCard(controller, card, timeout, options) with
+    match Uhppoted.DeleteCard(controller, card, OPTIONS) with
     | Ok ok ->
         printfn "delete-card"
         printfn "  controller %u" controller
@@ -426,14 +375,8 @@ let delete_card args =
 
 let delete_all_cards args =
     let controller = argparse args "--controller" CONTROLLER
-    let timeout = TIMEOUT
 
-    let options =
-        { OPTIONS with
-            endpoint = ENDPOINT
-            protocol = PROTOCOL }
-
-    match Uhppoted.DeleteAllCards(controller, timeout, options) with
+    match Uhppoted.DeleteAllCards(controller, OPTIONS) with
     | Ok ok ->
         printfn "delete-all-cards"
         printfn "  controller %u" controller
@@ -445,14 +388,8 @@ let delete_all_cards args =
 let get_event args =
     let controller = argparse args "--controller" CONTROLLER
     let index = argparse args "--index" EVENT_INDEX
-    let timeout = TIMEOUT
 
-    let options =
-        { OPTIONS with
-            endpoint = ENDPOINT
-            protocol = PROTOCOL }
-
-    match Uhppoted.GetEvent(controller, index, timeout, options) with
+    match Uhppoted.GetEvent(controller, index, OPTIONS) with
     | Ok v when v.HasValue ->
         let record = v.Value
 
@@ -473,14 +410,8 @@ let get_event args =
 
 let get_event_index args =
     let controller = argparse args "--controller" CONTROLLER
-    let timeout = TIMEOUT
 
-    let options =
-        { OPTIONS with
-            endpoint = ENDPOINT
-            protocol = PROTOCOL }
-
-    match Uhppoted.GetEventIndex(controller, timeout, options) with
+    match Uhppoted.GetEventIndex(controller, OPTIONS) with
     | Ok index ->
         printfn "get-event-index"
         printfn "  controller %u" controller
@@ -492,14 +423,8 @@ let get_event_index args =
 let set_event_index args =
     let controller = argparse args "--controller" CONTROLLER
     let index = argparse args "--index" EVENT_INDEX
-    let timeout = TIMEOUT
 
-    let options =
-        { OPTIONS with
-            endpoint = ENDPOINT
-            protocol = PROTOCOL }
-
-    match Uhppoted.SetEventIndex(controller, index, timeout, options) with
+    match Uhppoted.SetEventIndex(controller, index, OPTIONS) with
     | Ok ok ->
         printfn "set-event-index"
         printfn "  controller %u" controller
@@ -511,14 +436,8 @@ let set_event_index args =
 let record_special_events args =
     let controller = argparse args "--controller" CONTROLLER
     let enable = argparse args "--enable" ENABLE
-    let timeout = TIMEOUT
 
-    let options =
-        { OPTIONS with
-            endpoint = ENDPOINT
-            protocol = PROTOCOL }
-
-    match Uhppoted.RecordSpecialEvents(controller, enable, timeout, options) with
+    match Uhppoted.RecordSpecialEvents(controller, enable, OPTIONS) with
     | Ok ok ->
         printfn "record-special-events"
         printfn "  controller %u" controller
@@ -530,14 +449,8 @@ let record_special_events args =
 let get_time_profile args =
     let controller = argparse args "--controller" CONTROLLER
     let profile = argparse args "--profile" TIME_PROFILE_ID
-    let timeout = TIMEOUT
 
-    let options =
-        { OPTIONS with
-            endpoint = ENDPOINT
-            protocol = PROTOCOL }
-
-    match Uhppoted.GetTimeProfile(controller, profile, timeout, options) with
+    match Uhppoted.GetTimeProfile(controller, profile, OPTIONS) with
     | Ok v when v.HasValue ->
         let record = v.Value
 
@@ -587,14 +500,8 @@ let set_time_profile args =
           segment3_end = Nullable(TimeOnly(18, 0))
           linked_profile = argparse args "--linked" 0uy }
 
-    let timeout = TIMEOUT
 
-    let options =
-        { OPTIONS with
-            endpoint = ENDPOINT
-            protocol = PROTOCOL }
-
-    match Uhppoted.SetTimeProfile(controller, profile, timeout, options) with
+    match Uhppoted.SetTimeProfile(controller, profile, OPTIONS) with
     | Ok ok ->
         printfn "set-time-profile"
         printfn "  controller %u" controller
@@ -606,14 +513,8 @@ let set_time_profile args =
 
 let clear_time_profiles args =
     let controller = argparse args "--controller" CONTROLLER
-    let timeout = TIMEOUT
 
-    let options =
-        { OPTIONS with
-            endpoint = ENDPOINT
-            protocol = PROTOCOL }
-
-    match Uhppoted.ClearTimeProfiles(controller, timeout, options) with
+    match Uhppoted.ClearTimeProfiles(controller, OPTIONS) with
     | Ok ok ->
         printfn "clear-time-profiles"
         printfn "  controller %u" controller
@@ -640,14 +541,8 @@ let add_task args =
           sunday = true
           more_cards = argparse args "--more-cards" 0uy }
 
-    let timeout = TIMEOUT
 
-    let options =
-        { OPTIONS with
-            endpoint = ENDPOINT
-            protocol = PROTOCOL }
-
-    match Uhppoted.AddTask(controller, task, timeout, options) with
+    match Uhppoted.AddTask(controller, task, OPTIONS) with
     | Ok ok ->
         printfn "add-task"
         printfn "  controller %u" controller
@@ -660,14 +555,8 @@ let add_task args =
 
 let clearTaskList args =
     let controller = argparse args "--controller" CONTROLLER
-    let timeout = TIMEOUT
 
-    let options =
-        { OPTIONS with
-            endpoint = ENDPOINT
-            protocol = PROTOCOL }
-
-    match Uhppoted.ClearTaskList(controller, timeout, options) with
+    match Uhppoted.ClearTaskList(controller, OPTIONS) with
     | Ok ok ->
         printfn "clear-tasklist"
         printfn "  controller %u" controller
@@ -678,14 +567,8 @@ let clearTaskList args =
 
 let refreshTaskList args =
     let controller = argparse args "--controller" CONTROLLER
-    let timeout = TIMEOUT
 
-    let options =
-        { OPTIONS with
-            endpoint = ENDPOINT
-            protocol = PROTOCOL }
-
-    match Uhppoted.RefreshTaskList(controller, timeout, options) with
+    match Uhppoted.RefreshTaskList(controller, OPTIONS) with
     | Ok ok ->
         printfn "refresh-tasklist"
         printfn "  controller %u" controller
@@ -697,14 +580,8 @@ let refreshTaskList args =
 let setPCControl args =
     let controller = argparse args "--controller" CONTROLLER
     let enable = argparse args "--enable" false
-    let timeout = TIMEOUT
 
-    let options =
-        { OPTIONS with
-            endpoint = ENDPOINT
-            protocol = PROTOCOL }
-
-    match Uhppoted.SetPCControl(controller, enable, timeout, options) with
+    match Uhppoted.SetPCControl(controller, enable, OPTIONS) with
     | Ok ok ->
         printfn "set-pc-control"
         printfn "  controller %u" controller
@@ -717,14 +594,8 @@ let setPCControl args =
 let setInterlock args =
     let controller = argparse args "--controller" CONTROLLER
     let interlock = argparse args "--interlock" Interlock.None
-    let timeout = TIMEOUT
 
-    let options =
-        { OPTIONS with
-            endpoint = ENDPOINT
-            protocol = PROTOCOL }
-
-    match Uhppoted.SetInterlock(controller, interlock, timeout, options) with
+    match Uhppoted.SetInterlock(controller, interlock, OPTIONS) with
     | Ok ok ->
         printfn "set-interlock"
         printfn "  controller %u" controller
@@ -737,19 +608,13 @@ let setInterlock args =
 let activateKeypads args =
     let controller = argparse args "--controller" CONTROLLER
     let keypads = argparse args "--keypads" []
-    let timeout = TIMEOUT
 
     let reader1 = keypads |> List.contains 1uy
     let reader2 = keypads |> List.contains 2uy
     let reader3 = keypads |> List.contains 3uy
     let reader4 = keypads |> List.contains 4uy
 
-    let options =
-        { OPTIONS with
-            endpoint = ENDPOINT
-            protocol = PROTOCOL }
-
-    match Uhppoted.ActivateKeypads(controller, reader1, reader2, reader3, reader4, timeout, options) with
+    match Uhppoted.ActivateKeypads(controller, reader1, reader2, reader3, reader4, OPTIONS) with
     | Ok ok ->
         printfn "activate-keypads"
         printfn "  controller %u" controller
@@ -764,14 +629,8 @@ let activateKeypads args =
 
 let restoreDefaultParameters args =
     let controller = argparse args "--controller" CONTROLLER
-    let timeout = TIMEOUT
 
-    let options =
-        { OPTIONS with
-            endpoint = ENDPOINT
-            protocol = PROTOCOL }
-
-    match Uhppoted.RestoreDefaultParameters(controller, timeout, options) with
+    match Uhppoted.RestoreDefaultParameters(controller, OPTIONS) with
     | Ok ok ->
         printfn "restore-default-parameters"
         printfn "  controller %u" controller
@@ -831,8 +690,7 @@ let listen args =
             printfn "   (no event)"
             printfn ""
 
-    let errorHandler err =
-        printfn "** ERROR %A" err
+    let errorHandler err = printfn "** ERROR %A" err
 
     let onevent: OnEvent = new OnEvent(eventHandler)
     let onerror: OnError = new OnError(errorHandler)

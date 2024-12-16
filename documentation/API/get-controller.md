@@ -4,7 +4,6 @@ Retrieves the IPv4 configuration, MAC address and version information for an acc
 
 ### Parameters
 - **`controller`**: Controller ID.
-- **`timeout`**: Operation timeout (ms).
 - **`options`**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 ### Returns
@@ -17,19 +16,17 @@ Returns:
 
 ```fsharp
 let controller = 405419896u
-let timeout = 5000
-let options = { broadcast = IPAddress.Broadcast; destination = None; protoocol = None; debug = true }
+let options = { broadcast = IPAddress.Broadcast; timeout = 1250; debug = true }
 
-match GetController controller timeout options with
+match GetController controller options with
 | Ok record -> printfn "get-controller: ok %A" record
 | Error err -> printfn "get-controller: error %A" err
 ```
 
 ```csharp
 var controller = 405419896u;
-var timeout = 5000
-var options = new OptionsBuilder().build();
-var result = GetController(controller, timeout, options);
+var options = new OptionsBuilder().WithTimeout(1250).build();
+var result = GetController(controller, options);
 
 if (result.IsOk)
 {
@@ -43,9 +40,8 @@ else
 
 ```vb
 Dim controller = 405419896
-Dim timeout = 5000
-Dim options As New OptionsBuilder().build()
-Dim result = GetController(controller, timeout, options)
+Dim options As New OptionsBuilder().WithTimeout(1250).build()
+Dim result = GetController(controller, options)
 
 If result.IsOk Then
     Console.WriteLine($"get-controller: ok {result.ResultValue}")

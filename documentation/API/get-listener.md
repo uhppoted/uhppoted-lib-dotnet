@@ -7,7 +7,6 @@ Retrieves the controller event listener endpoint and auto-send interval:
 
 ### Parameters
 - **`controller` (`uint32`)**: Controller ID.
-- **`timeout` (`int`)**: Operation timeout (ms).
 - **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 ### Returns
@@ -24,19 +23,17 @@ The `Listener` record comprises the following fields:
 
 ```fsharp
 let controller = 405419896u
-let timeout = 5000
-let options = { broadcast = IPAddress.Broadcast; destination = None; protoocol = None; debug = true }
+let options = { broadcast = IPAddress.Broadcast; timeout = 1250; debug = true }
 
-match GetListener controller timeout options with
+match GetListener controller options with
 | Ok record -> printfn "get-listener: ok %A" record
 | Error err -> printfn "get-listener: error %A" err
 ```
 
 ```csharp
 var controller = 405419896u;
-var timeout = 5000;
-var options = new OptionsBuilder().build();
-var result = GetListener(controller, timeout, options);
+var options = new OptionsBuilder().WithTimeout(1250).build();
+var result = GetListener(controller, options);
 
 if (result.IsOk)
 {
@@ -50,9 +47,8 @@ else
 
 ```vb
 Dim controller = 405419896
-Dim timeout = 5000
-Dim options As New OptionsBuilder().build()
-Dim result = GetListener(controller, timeout, options)
+Dim options As New OptionsBuilder().WithTimeout(1250).build()
+Dim result = GetListener(controller, options)
 
 If result.IsOk Then
     Console.WriteLine($"get-listener: ok {result.ResultValue}")

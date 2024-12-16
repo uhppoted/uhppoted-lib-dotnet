@@ -4,7 +4,6 @@ Schedules added tasks.
 
 ### Parameters
 - **`controller` (`uint32`)**: Controller ID.
-- **`timeout` (`int`)**: Operation timeout (ms).
 - **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 ### Returns
@@ -18,19 +17,17 @@ Returns:
 
 ```fsharp
 let controller = 405419896u
-let timeout = 5000
-let options = { broadcast = IPAddress.Broadcast; destination = None; protoocol = None; debug = true }
+let options = { broadcast = IPAddress.Broadcast; timeout = 1250; debug = true }
 
-match RefreshTaskList controller timeout options with
+match RefreshTaskList controller options with
 | Ok ok -> printfn "refresh-tasklist: ok %A" ok
 | Error err -> printfn "refresh-tasklist: error %A" err
 ```
 
 ```csharp
 var controller = 405419896u;
-var timeout = 5000;
-var options = new OptionsBuilder().build();
-var result = RefreshTaskList(controller, timeout, options);
+var options = new OptionsBuilder().WithTimeout(1250).build();
+var result = RefreshTaskList(controller, options);
 
 if (result.IsOk)
 {
@@ -44,9 +41,8 @@ else
 
 ```vb
 Dim controller = 405419896
-Dim timeout = 5000
-Dim options As New OptionsBuilder().build()
-Dim result = RefreshTaskList(controller, timeout, options)
+Dim options As New OptionsBuilder().WithTimeout(1250).build()
+Dim result = RefreshTaskList(controller, options)
 
 If result.IsOk Then
     Console.WriteLine($"refresh-tasklist: ok {result.ResultValue}")

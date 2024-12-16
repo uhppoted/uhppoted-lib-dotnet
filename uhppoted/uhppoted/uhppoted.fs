@@ -9,6 +9,7 @@ module Uhppoted =
         { bind = IPEndPoint(IPAddress.Any, 0)
           broadcast = IPEndPoint(IPAddress.Broadcast, 60000)
           listen = IPEndPoint(IPAddress.Any, 60001)
+          timeout = 1000
           endpoint = None
           protocol = None
           debug = false }
@@ -17,11 +18,11 @@ module Uhppoted =
         (controller: uint32)
         request
         (decode: byte[] -> Result<'b, string>)
-        timeout
         options
         : Result<'b, string> when 'b :> IResponse =
         let bind = options.bind
         let broadcast = options.broadcast
+        let timeout = options.timeout
         let debug = options.debug
 
         let result =
@@ -41,15 +42,15 @@ module Uhppoted =
     /// <summary>
     /// Retrieves a list of controllers on the local LAN accessible via a UDP broadcast.
     /// </summary>
-    /// <param name="timeout">The timeout duration in milliseconds to wait for all replies.</param>
     /// <param name="options">Bind, broadcast and listen address options.</param>
     /// <returns>A result with an array of GetControllerResponse records or error.</returns>
     /// <remarks>
     /// Invalid individual responses are silently discarded.
     /// </remarks>
-    let FindControllers (timeout: int, options: Options) =
+    let FindControllers (options: Options) =
         let bind = options.bind
         let broadcast = options.broadcast
+        let timeout = options.timeout
         let debug = options.debug
         let request = Encode.getControllerRequest 0u
         let result = UDP.broadcast (request, bind, broadcast, timeout, debug)
@@ -80,14 +81,13 @@ module Uhppoted =
     /// </summary>
     /// <param name="controller">Controller ID.</param>
     /// <param name="card">Card number to retrieve.</param>
-    /// <param name="timeout">Operation timeout (ms).</param>
     /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
     /// <returns>Ok with a Controller record or Error.</returns>
     /// <remarks></remarks>
-    let GetController (controller: uint32, timeout: int, options: Options) =
+    let GetController (controller: uint32, options: Options) =
         let request = Encode.getControllerRequest controller
 
-        match exec controller request Decode.getControllerResponse timeout options with
+        match exec controller request Decode.getControllerResponse options with
         | Ok response ->
             let record: Controller =
                 { controller = response.controller
@@ -108,18 +108,16 @@ module Uhppoted =
     /// <param name="address">Controller IPv4 address.</param>
     /// <param name="netmask">Controller IPv4 netmask.</param>
     /// <param name="gateway">Gateway IPv4 address.</param>
-    /// <param name="timeout">Operation timeout (ms).</param>
     /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
     /// <returns>Ok or Error.</returns>
     /// <remarks>
     /// The controller does not return a response to this request - provided no network (or other) errors occur,
     /// it is assumed to be successful.
     /// </remarks>
-    let SetIPv4
-        (controller: uint32, address: IPAddress, netmask: IPAddress, gateway: IPAddress, timeout: int, options: Options)
-        =
+    let SetIPv4 (controller: uint32, address: IPAddress, netmask: IPAddress, gateway: IPAddress, options: Options) =
         let bind = options.bind
         let broadcast = options.broadcast
+        let timeout = options.timeout
         let debug = options.debug
         let request = Encode.setIPv4Request controller address netmask gateway
 
@@ -137,13 +135,12 @@ module Uhppoted =
     /// Retrieves the controller event listener endpoint and auto-send interval.
     /// </summary>
     /// <param name="controller">Controller ID.</param>
-    /// <param name="timeout">Operation timeout (ms).</param>
     /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
     /// <returns>Ok with an Listener record or Error.</returns>
-    let GetListener (controller: uint32, timeout: int, options: Options) =
+    let GetListener (controller: uint32, options: Options) =
         let request = Encode.getListenerRequest controller
 
-        match exec controller request Decode.getListenerResponse timeout options with
+        match exec controller request Decode.getListenerResponse options with
         | Ok response ->
             Ok
                 { endpoint = response.endpoint
@@ -159,15 +156,14 @@ module Uhppoted =
     /// <param name="controller">Controller ID.</param>
     /// <param name="endpoint">IPv4 endpoint of event listener.</param>
     /// <param name="interval">Auto-send interval (seconds). A zero interval disables auto-send.</param>
-    /// <param name="timeout">Operation timeout (ms).</param>
     /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
     /// <returns>Ok with true if the event listener endpoint was updated or Error.</returns>
-    let SetListener (controller: uint32, endpoint: IPEndPoint, interval: uint8, timeout: int, options: Options) =
+    let SetListener (controller: uint32, endpoint: IPEndPoint, interval: uint8, options: Options) =
         let address = endpoint.Address
         let port = uint16 endpoint.Port
         let request = Encode.setListenerRequest controller address port interval
 
-        match exec controller request Decode.setListenerResponse timeout options with
+        match exec controller request Decode.setListenerResponse options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 
@@ -175,13 +171,12 @@ module Uhppoted =
     /// Retrieves the controller current date and time.
     /// </summary>
     /// <param name="controller">Controller ID.</param>
-    /// <param name="timeout">Operation timeout (ms).</param>
     /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
     /// <returns>Ok with a DateTime value or Error.</returns>
-    let GetTime (controller: uint32, timeout: int, options: Options) =
+    let GetTime (controller: uint32, options: Options) =
         let request = Encode.get_time_request controller
 
-        match exec controller request Decode.get_time_response timeout options with
+        match exec controller request Decode.get_time_response options with
         | Ok response -> Ok response.datetime
         | Error err -> Error err
 
@@ -190,13 +185,12 @@ module Uhppoted =
     /// </summary>
     /// <param name="controller">Controller ID.</param>
     /// <param name="datetime">Date and time to set.</param>
-    /// <param name="timeout">Operation timeout (ms).</param>
     /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
     /// <returns>Ok with the DateTime value from the controller or Error.</returns>
-    let SetTime (controller: uint32, datetime: DateTime, timeout: int, options: Options) =
+    let SetTime (controller: uint32, datetime: DateTime, options: Options) =
         let request = Encode.set_time_request controller datetime
 
-        match exec controller request Decode.set_time_response timeout options with
+        match exec controller request Decode.set_time_response options with
         | Ok response -> Ok response.datetime
         | Error err -> Error err
 
@@ -205,13 +199,12 @@ module Uhppoted =
     /// </summary>
     /// <param name="controller">Controller ID.</param>
     /// <param name="door">Door ID [1..4].</param>
-    /// <param name="timeout">Operation timeout (ms).</param>
     /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
     /// <returns>Ok with the door mode and unlock delay (or null) or Error.</returns>
-    let GetDoor (controller: uint32, door: uint8, timeout: int, options: Options) =
+    let GetDoor (controller: uint32, door: uint8, options: Options) =
         let request = Encode.get_door_request controller door
 
-        match exec controller request Decode.get_door_response timeout options with
+        match exec controller request Decode.get_door_response options with
         | Ok response when response.door <> door -> // incorrect door
             Ok(Nullable())
         | Ok response ->
@@ -227,13 +220,12 @@ module Uhppoted =
     /// </summary>
     /// <param name="controller">Controller ID.</param>
     /// <param name="door">Door ID [1..4].</param>
-    /// <param name="timeout">Operation timeout (ms).</param>
     /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
     /// <returns>Ok with the door mode and unlock delay (or null) or Error.</returns>
-    let SetDoor (controller: uint32, door: uint8, mode: DoorMode, delay: uint8, timeout: int, options: Options) =
+    let SetDoor (controller: uint32, door: uint8, mode: DoorMode, delay: uint8, options: Options) =
         let request = Encode.set_door_request controller door mode delay
 
-        match exec controller request Decode.set_door_response timeout options with
+        match exec controller request Decode.set_door_response options with
         | Ok response when response.door <> door -> // incorrect door
             Ok(Nullable())
         | Ok response ->
@@ -251,12 +243,11 @@ module Uhppoted =
     /// <param name="door">Door number [1..4].</param>
     /// <param name="passcodes">Array of up to 4 passcodes in the range [0..999999], defaulting to 0 ('none')
     ///                         if the list contains less than 4 entries.</param>
-    /// <param name="timeout">Operation timeout (ms).</param>
     /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
     /// <returns>
     /// Returns Ok with true value if the passcodes were updated or Error.
     /// </returns>
-    let SetDoorPasscodes (controller: uint32, door: uint8, passcodes: uint32 array, timeout: int, options: Options) =
+    let SetDoorPasscodes (controller: uint32, door: uint8, passcodes: uint32 array, options: Options) =
         let request =
             Encode.set_door_passcodes_request
                 controller
@@ -266,7 +257,7 @@ module Uhppoted =
                 (passcodes |> Array.tryItem 2 |> Option.defaultValue 0u)
                 (passcodes |> Array.tryItem 3 |> Option.defaultValue 0u)
 
-        match exec controller request Decode.set_door_passcodes_response timeout options with
+        match exec controller request Decode.set_door_passcodes_response options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 
@@ -275,7 +266,6 @@ module Uhppoted =
     /// </summary>
     /// <param name="controller">Controller ID.</param>
     /// <param name="door">Door number [1..4].</param>
-    /// <param name="timeout">Operation timeout (ms).</param>
     /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
     /// <returns>
     /// Returns Ok if the request was processed, error otherwise. The Ok response should be
@@ -283,10 +273,10 @@ module Uhppoted =
     /// </returns>
     /// <remarks>
     /// </remarks>
-    let OpenDoor (controller: uint32, door: uint8, timeout: int, options: Options) =
+    let OpenDoor (controller: uint32, door: uint8, options: Options) =
         let request = Encode.openDoorRequest controller door
 
-        match exec controller request Decode.openDoorResponse timeout options with
+        match exec controller request Decode.openDoorResponse options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 
@@ -294,15 +284,14 @@ module Uhppoted =
     /// Retrieves the current status and most recent event from a controller.
     /// </summary>
     /// <param name="controller">Controller ID.</param>
-    /// <param name="timeout">Operation timeout (ms).</param>
     /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
     /// <returns>
     /// Returns Ok with the controller status record, including the most recent event (if any), or Error.
     /// </returns>
-    let GetStatus (controller: uint32, timeout: int, options: Options) =
+    let GetStatus (controller: uint32, options: Options) =
         let request = Encode.getStatusRequest controller
 
-        match exec controller request Decode.getStatusResponse timeout options with
+        match exec controller request Decode.getStatusResponse options with
         | Ok response ->
             let status: Status =
                 { Door1Open = response.door1Open
@@ -346,15 +335,14 @@ module Uhppoted =
     /// Retrieves the number of card records stored on a controller.
     /// </summary>
     /// <param name="controller">Controller ID and (optionally) address and transport protocol.</param>
-    /// <param name="timeout">Operation timeout (ms).</param>
     /// <param name="options">Optional bind, broadcast and listen addresses.</param>
     /// <returns>
     /// Ok with the number of cards stored on the controller or Error.
     /// </returns>
-    let GetCards (controller: uint32, timeout: int, options: Options) =
+    let GetCards (controller: uint32, options: Options) =
         let request = Encode.getCardsRequest controller
 
-        match exec controller request Decode.getCardsResponse timeout options with
+        match exec controller request Decode.getCardsResponse options with
         | Ok response -> Ok response.cards
         | Error err -> Error err
 
@@ -363,15 +351,14 @@ module Uhppoted =
     /// </summary>
     /// <param name="controller">Controller ID.</param>
     /// <param name="card">Card number to retrieve.</param>
-    /// <param name="timeout">Operation timeout (ms).</param>
     /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
     /// <returns>
     /// Card record matching the card number (or null if not found) or an error if the request failed.
     /// </returns>
-    let GetCard (controller: uint32, card: uint32, timeout: int, options: Options) =
+    let GetCard (controller: uint32, card: uint32, options: Options) =
         let request = Encode.getCardRequest controller card
 
-        match exec controller request Decode.getCardResponse timeout options with
+        match exec controller request Decode.getCardResponse options with
         | Ok response when response.card = 0u -> // not found
             Ok(Nullable())
         | Ok response ->
@@ -393,15 +380,14 @@ module Uhppoted =
     /// </summary>
     /// <param name="controller">Controller ID.</param>
     /// <param name="card">Card number to retrieve.</param>
-    /// <param name="timeout">Operation timeout (ms).</param>
     /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
     /// <returns>
     /// Card record at the index (or null if not found or deleted) or an error if the request failed.
     /// </returns>
-    let GetCardAtIndex (controller: uint32, index: uint32, timeout: int, options: Options) =
+    let GetCardAtIndex (controller: uint32, index: uint32, options: Options) =
         let request = Encode.getCardAtIndexRequest controller index
 
-        match exec controller request Decode.getCardAtIndexResponse timeout options with
+        match exec controller request Decode.getCardAtIndexResponse options with
         | Ok response when response.card = 0u -> // not found
             Ok(Nullable())
         | Ok response when response.card = 0xffffffffu -> // deleted
@@ -425,15 +411,14 @@ module Uhppoted =
     /// </summary>
     /// <param name="controller">Controller ID.</param>
     /// <param name="card">Card record to add or update.</param>
-    /// <param name="timeout">Operation timeout (ms).</param>
     /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
     /// <returns>
     /// Result with the boolean success/fail result or an Error if the request failed.
     /// </returns>
-    let PutCard (controller: uint32, card: Card, timeout: int, options: Options) =
+    let PutCard (controller: uint32, card: Card, options: Options) =
         let request = Encode.putCardRequest controller card
 
-        match exec controller request Decode.putCardResponse timeout options with
+        match exec controller request Decode.putCardResponse options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 
@@ -442,15 +427,14 @@ module Uhppoted =
     /// </summary>
     /// <param name="controller">Controller ID.</param>
     /// <param name="card">Card number to delete.</param>
-    /// <param name="timeout">Operation timeout (ms).</param>
     /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
     /// <returns>
     /// Result with the boolean success/fail result or an Error if the request failed.
     /// </returns>
-    let DeleteCard (controller: uint32, card: uint32, timeout: int, options: Options) =
+    let DeleteCard (controller: uint32, card: uint32, options: Options) =
         let request = Encode.deleteCardRequest controller card
 
-        match exec controller request Decode.deleteCardResponse timeout options with
+        match exec controller request Decode.deleteCardResponse options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 
@@ -458,15 +442,14 @@ module Uhppoted =
     /// Deletes all card records from a controller.
     /// </summary>
     /// <param name="controller">Controller ID.</param>
-    /// <param name="timeout">Operation timeout (ms).</param>
     /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
     /// <returns>
     /// Result with the boolean success/fail result or an Error if the request failed.
     /// </returns>
-    let DeleteAllCards (controller: uint32, timeout: int, options: Options) =
+    let DeleteAllCards (controller: uint32, options: Options) =
         let request = Encode.deleteAllCardsRequest controller
 
-        match exec controller request Decode.deleteAllCardsResponse timeout options with
+        match exec controller request Decode.deleteAllCardsResponse options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 
@@ -475,16 +458,15 @@ module Uhppoted =
     /// </summary>
     /// <param name="controller">Controller ID.</param>
     /// <param name="index">Index of event to retrieve.</param>
-    /// <param name="timeout">Operation timeout (ms).</param>
     /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
     /// <returns>
     /// Event record at the index (or null if not found or deleted) or an error if the request failed. Returns an Ok(null) if the event
     // record does not exist or if the event has been overwritten.
     /// </returns>
-    let GetEvent (controller: uint32, index: uint32, timeout: int, options: Options) =
+    let GetEvent (controller: uint32, index: uint32, options: Options) =
         let request = Encode.getEventRequest controller index
 
-        match exec controller request Decode.getEventResponse timeout options with
+        match exec controller request Decode.getEventResponse options with
         | Ok response when response.event = 0x00uy -> // not found
             Ok(Nullable())
         | Ok response when response.event = 0xffuy -> // overwritten
@@ -507,15 +489,14 @@ module Uhppoted =
     /// Retrieves the current event index from the controller.
     /// </summary>
     /// <param name="controller">Controller ID.</param>
-    /// <param name="timeout">Operation timeout (ms).</param>
     /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
     /// <returns>
     /// Ok with current controller event indexEvent record at the index or Error.
     /// </returns>
-    let GetEventIndex (controller: uint32, timeout: int, options: Options) =
+    let GetEventIndex (controller: uint32, options: Options) =
         let request = Encode.getEventIndexRequest controller
 
-        match exec controller request Decode.getEventIndexResponse timeout options with
+        match exec controller request Decode.getEventIndexResponse options with
         | Ok response -> Ok response.index
         | Error err -> Error err
 
@@ -524,15 +505,14 @@ module Uhppoted =
     /// </summary>
     /// <param name="controller">Controller ID.</param>
     /// <param name="index">Event index.</param>
-    /// <param name="timeout">Operation timeout (ms).</param>
     /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
     /// <returns>
     /// Ok with true if the event index was updated (false if it was unchanged) or Error.
     /// </returns>
-    let SetEventIndex (controller: uint32, index: uint32, timeout: int, options: Options) =
+    let SetEventIndex (controller: uint32, index: uint32, options: Options) =
         let request = Encode.setEventIndexRequest controller index
 
-        match exec controller request Decode.setEventIndexResponse timeout options with
+        match exec controller request Decode.setEventIndexResponse options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 
@@ -541,15 +521,14 @@ module Uhppoted =
     /// </summary>
     /// <param name="controller">Controller ID.</param>
     /// <param name="enable">true to enabled 'special events'.</param>
-    /// <param name="timeout">Operation timeout (ms).</param>
     /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
     /// <returns>
     /// Ok with true if the 'special events' mode was set or Error.
     /// </returns>
-    let RecordSpecialEvents (controller: uint32, enable: bool, timeout: int, options: Options) =
+    let RecordSpecialEvents (controller: uint32, enable: bool, options: Options) =
         let request = Encode.recordSpecialEventsRequest controller enable
 
-        match exec controller request Decode.recordSpecialEventsResponse timeout options with
+        match exec controller request Decode.recordSpecialEventsResponse options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 
@@ -558,15 +537,14 @@ module Uhppoted =
     /// </summary>
     /// <param name="controller">Controller ID.</param>
     /// <param name="profile">Time profile ID [2..254].</param>
-    /// <param name="timeout">Operation timeout (ms).</param>
     /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
     /// <returns>
     /// Ok with time profile, Ok(null) if the requested profile does not exist or Error if the request failed.
     /// </returns>
-    let GetTimeProfile (controller: uint32, profile: uint8, timeout: int, options: Options) =
+    let GetTimeProfile (controller: uint32, profile: uint8, options: Options) =
         let request = Encode.getTimeProfileRequest controller profile
 
-        match exec controller request Decode.getTimeProfileResponse timeout options with
+        match exec controller request Decode.getTimeProfileResponse options with
         | Ok response when response.profile = 0x00uy -> // not found
             Ok(Nullable())
         | Ok response when response.profile <> profile -> // incorrect profile
@@ -599,15 +577,14 @@ module Uhppoted =
     /// </summary>
     /// <param name="controller">Controller ID.</param>
     /// <param name="profile">Access time profile to add or update.</param>
-    /// <param name="timeout">Operation timeout (ms).</param>
     /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
     /// <returns>
     /// Ok with true if the time profile was added/updated, or Error.
     /// </returns>
-    let SetTimeProfile (controller: uint32, profile: TimeProfile, timeout: int, options: Options) =
+    let SetTimeProfile (controller: uint32, profile: TimeProfile, options: Options) =
         let request = Encode.setTimeProfileRequest controller profile
 
-        match exec controller request Decode.setTimeProfileResponse timeout options with
+        match exec controller request Decode.setTimeProfileResponse options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 
@@ -615,15 +592,14 @@ module Uhppoted =
     /// Clears all access time profiles stored on a controller.
     /// </summary>
     /// <param name="controller">Controller ID.</param>
-    /// <param name="timeout">Operation timeout (ms).</param>
     /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
     /// <returns>
     /// Result with the boolean success/fail result or an Error if the request failed.
     /// </returns>
-    let ClearTimeProfiles (controller: uint32, timeout: int, options: Options) =
+    let ClearTimeProfiles (controller: uint32, options: Options) =
         let request = Encode.clearTimeProfilesRequest controller
 
-        match exec controller request Decode.clearTimeProfilesResponse timeout options with
+        match exec controller request Decode.clearTimeProfilesResponse options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 
@@ -633,15 +609,14 @@ module Uhppoted =
     /// </summary>
     /// <param name="controller">Controller ID.</param>
     /// <param name="task">Task definition to add or update.</param>
-    /// <param name="timeout">Operation timeout (ms).</param>
     /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
     /// <returns>
     /// Ok with true if the task was added/updated, or Error.
     /// </returns>
-    let AddTask (controller: uint32, task: Task, timeout: int, options: Options) =
+    let AddTask (controller: uint32, task: Task, options: Options) =
         let request = Encode.addTaskRequest controller task
 
-        match exec controller request Decode.addTaskResponse timeout options with
+        match exec controller request Decode.addTaskResponse options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 
@@ -649,15 +624,14 @@ module Uhppoted =
     /// Clears all scheduled tasks from the controller task list.
     /// </summary>
     /// <param name="controller">Controller ID.</param>
-    /// <param name="timeout">Operation timeout (ms).</param>
     /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
     /// <returns>
     /// Result with the boolean success/fail result or an Error if the request failed.
     /// </returns>
-    let ClearTaskList (controller: uint32, timeout: int, options: Options) =
+    let ClearTaskList (controller: uint32, options: Options) =
         let request = Encode.clearTaskListRequest controller
 
-        match exec controller request Decode.clearTaskListResponse timeout options with
+        match exec controller request Decode.clearTaskListResponse options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 
@@ -665,15 +639,14 @@ module Uhppoted =
     /// Schedules added tasks.
     /// </summary>
     /// <param name="controller">Controller ID.</param>
-    /// <param name="timeout">Operation timeout (ms).</param>
     /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
     /// <returns>
     /// Result with the boolean success/fail result or an Error if the request failed.
     /// </returns>
-    let RefreshTaskList (controller: uint32, timeout: int, options: Options) =
+    let RefreshTaskList (controller: uint32, options: Options) =
         let request = Encode.refreshTaskListRequest controller
 
-        match exec controller request Decode.refreshTaskListResponse timeout options with
+        match exec controller request Decode.refreshTaskListResponse options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 
@@ -683,15 +656,14 @@ module Uhppoted =
     /// </summary>
     /// <param name="controller">Controller ID.</param>
     /// <param name="enable">Enables or disables remote access control management.</param>
-    /// <param name="timeout">Operation timeout (ms).</param>
     /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
     /// <returns>
     /// Result with the boolean success/fail result or an Error if the request failed.
     /// </returns>
-    let SetPCControl (controller: uint32, enable: bool, timeout: int, options: Options) =
+    let SetPCControl (controller: uint32, enable: bool, options: Options) =
         let request = Encode.setPCControlRequest controller enable
 
-        match exec controller request Decode.setPCControlResponse timeout options with
+        match exec controller request Decode.setPCControlResponse options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 
@@ -700,15 +672,14 @@ module Uhppoted =
     /// </summary>
     /// <param name="controller">Controller ID.</param>
     /// <param name="interlock">Door interlocks (none, 1&2, 3&4, 1&2 and 3&4, 1&2&3 or 1&2&3&4.</param>
-    /// <param name="timeout">Operation timeout (ms).</param>
     /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
     /// <returns>
     /// Result with the boolean success/fail result or an Error if the request failed.
     /// </returns>
-    let SetInterlock (controller: uint32, interlock: Interlock, timeout: int, options: Options) =
+    let SetInterlock (controller: uint32, interlock: Interlock, options: Options) =
         let request = Encode.setInterlockRequest controller interlock
 
-        match exec controller request Decode.setInterlockResponse timeout options with
+        match exec controller request Decode.setInterlockResponse options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 
@@ -720,18 +691,17 @@ module Uhppoted =
     /// <param name="reader2">Activates/deactivates the keypad for reader 2.</param>
     /// <param name="reader3">Activates/deactivates the keypad for reader 3.</param>
     /// <param name="reader4">Activates/deactivates the keypad for reader 4.</param>
-    /// <param name="timeout">Operation timeout (ms).</param>
     /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
     /// <returns>
     /// Result with the boolean success/fail result or an Error if the request failed.
     /// </returns>
     let ActivateKeypads
-        (controller: uint32, reader1: bool, reader2: bool, reader3: bool, reader4: bool, timeout: int, options: Options)
+        (controller: uint32, reader1: bool, reader2: bool, reader3: bool, reader4: bool, options: Options)
         =
         let request =
             Encode.activateKeypadsRequest controller reader1 reader2 reader3 reader4
 
-        match exec controller request Decode.activateKeypadsResponse timeout options with
+        match exec controller request Decode.activateKeypadsResponse options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 
@@ -739,15 +709,14 @@ module Uhppoted =
     /// Restores the manufacturer defaults.
     /// </summary>
     /// <param name="controller">Controller ID.</param>
-    /// <param name="timeout">Operation timeout (ms).</param>
     /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
     /// <returns>
     /// Result with the boolean success/fail result or an Error if the request failed.
     /// </returns>
-    let RestoreDefaultParameters (controller: uint32, timeout: int, options: Options) =
+    let RestoreDefaultParameters (controller: uint32, options: Options) =
         let request = Encode.restoreDefaultParametersRequest controller
 
-        match exec controller request Decode.restoreDefaultParametersResponse timeout options with
+        match exec controller request Decode.restoreDefaultParametersResponse options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 

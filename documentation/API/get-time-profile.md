@@ -5,7 +5,6 @@ Retrieves an access time profile from the controller.
 ### Parameters
 - **`controller` (`uint32`)**: Controller ID.
 - **`profile` (`uint8`)**: Time profile ID [2..254].
-- **`timeout` (`int`)**: Operation timeout (ms).
 - **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 ### Returns
@@ -40,10 +39,9 @@ The `TimeProfile` record has the following fields:
 ```fsharp
 let controller = 405419896u
 let profile = 29uy
-let timeout = 5000
-let options = { broadcast = IPAddress.Broadcast; destination=None; protocol=None; debug = true }
+let options = { broadcast = IPAddress.Broadcast; timeout = 1250; debug = true }
 
-match GetTimeProfile controller profile timeout options with
+match GetTimeProfile controller profile options with
 | Ok response when response.HasValue -> printfn "get-time-profile: ok %A" response.Value
 | Ok _ -> printfn "get-time-profile: not found"
 | Error err -> printfn "get-time-profile: error %A" err
@@ -52,9 +50,8 @@ match GetTimeProfile controller profile timeout options with
 ```csharp
 var controller = 405419896u;
 var profile = 29u;
-var timeout = 5000;
-var options = new OptionsBuilder().build();
-var result = GetTimeProfile(controller, profile, timeout, options);
+var options = new OptionsBuilder().WithTimeout(1250).build();
+var result = GetTimeProfile(controller, profile, options);
 
 if (result.IsOk && result.ResultValue.HasValue)
 {
@@ -73,9 +70,8 @@ else
 ```vb
 Dim controller = 405419896
 Dim profile = 29
-Dim timeout = 5000
-Dim options As New OptionsBuilder().build()
-Dim result = GetTimeProfile(controller, profile, timeout, options)
+Dim options As New OptionsBuilder().WithTimeout(1250).build()
+Dim result = GetTimeProfile(controller, profile, options)
 
 If (result.IsOk And result.Value.HasValue) Then
     Console.WriteLine($"get-time-profile: ok {result.ResultValue.Value}")

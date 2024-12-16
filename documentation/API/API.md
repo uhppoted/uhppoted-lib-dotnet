@@ -42,6 +42,7 @@ access controller. The `Options` struct comprises the following fields:
 - **`bind` (`IPEndPoint`)**: IPv4 endpoint to which to bind. Default value is INADDR_ANY (0.0.0.0:0).
 - **`broadcast (`IPEndPoint`)**:  IPv4 endpoint to which to broadcast UDP requests. Default value is '255.255.255.255:60000'.
 - **`listen (`IPEndPoint`)**: IPv4 endpoint on which to listen for controller events. Defaults to '0.0.0.0:60001.
+- **`timeout` (`int`)**: Operation timeout (ms).
 - **`endpoint (`Option<IPEndPoint>`)**: Optional IPv4 controller address:port. Required if the controller is not accessible via UDP broadcast.
 - **`protocol (`Option<string>`)**: Optional 'protocol' to connect to controller. Valid values are currently 'udp' or 'tcp', defaulting to 'udp'.
 - **`debug (`bool`)**: Logs controller requests and responses to the console if enabled.
@@ -52,6 +53,7 @@ let options: Options =
     { bind = IPEndPoint(IPAddress.Any, 0)
       broadcast = IPEndPoint(IPAddress.Broadcast, 60000)
       listen = IPEndPoint(IPAddress.Any, 60001)
+      timeout = 1000
       endpoint = Some(IPEndPoint.Parse("192.168.1.100:60000"))
       protocol = 'tcp'
       debug = true }
@@ -65,6 +67,7 @@ let options: Options =
 - **`WithBind(endpoint: IPEndPoint)`: Sets the `bind` IPv4 endpoint.
 - **`WithBroadcast(endpoint: IPEndPoint)`: Sets the `broadcast` IPv4 endpoint.
 - **`WithListen(endpoint: IPEndPoint)`**: Sets the `listen` endpoint.
+- **`WithTimeout(ms: int)`**: Sets the operation timeout (milliseconds).
 - **`WithEndpoint(endpoint: IPEndPoint)`**: Sets the optional controller endpoint.
 - **`WithProtocol(protocol: string)`**: Sets the optional controller protocol ('udp' or 'tcp').
 - **`WithDebug(enable: bool)`**: Enables (or disables) logging of controller requests and responses to the console.
@@ -74,6 +77,7 @@ let options: Options =
 static readonly Options options = new OptionsBuilder()
                                       .WithEndpoint(IPEndPoint.Parse("192.168.1.100:60000"))
                                       .WithProtocol("udp")
+                                      .WithTimeout(1250)
                                       .WithDebug(true)
                                       .Build();
 ```
@@ -82,6 +86,7 @@ static readonly Options options = new OptionsBuilder()
 Private ReadOnly Dim options = New OptionsBuilder().
                                    WithEndpoint(IPEndPoint.Parse("192.168.1.100:60000")).
                                    WithProtocol("udp").
+                                   WithTimeout(1250).
                                    WithDebug(True).
                                    Build()
 ```

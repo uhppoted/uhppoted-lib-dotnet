@@ -4,7 +4,6 @@ Retrieves a controller status record (and most recent event, if any).
 
 ### Parameters
 - **`controller` (`uint32`)**: Controller ID.
-- **`timeout` (`int`)**: Operation timeout (ms).
 - **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
 
 
@@ -49,9 +48,8 @@ An `Event` record includes the following fields:
 
 ```fsharp
 let controller = 405419896u
-let timeout = 5000
-let options = { broadcast = IPAddress.Broadcast; destination=None; protocol=None; debug = true }
-let result = GetStatus controller timeout options
+let options = { broadcast = IPAddress.Broadcast; timeout = 1250; debug = true }
+let result = GetStatus controller options
 match result with
 | Ok response -> printfn "get-status: ok %A" response
 | Error e -> printfn "get-status: error %A" e
@@ -59,9 +57,8 @@ match result with
 
 ```csharp
 var controller = 405419896u;
-var timeout = 5000;
-var options = new OptionsBuilder().build();
-var result = GetStatus(controller, timeout, options);
+var options = new OptionsBuilder().WithTimeout(1250).build();
+var result = GetStatus(controller, options);
 if (result.IsOk)
 {
     Console.WriteLine("get-status: ok {0}", result.Value);
@@ -74,9 +71,8 @@ else
 
 ```vb
 Dim controller = 405419896
-Dim timeout = 5000
-Dim options As New OptionsBuilder().build()
-Dim result = GetStatus(controller, timeout, options)
+Dim options As New OptionsBuilder().WithTimeout(1250).build()
+Dim result = GetStatus(controller, options)
 If result.IsOk Then
     Console.WriteLine("get-status: ok {0}", result.Value.ok)
 Else
