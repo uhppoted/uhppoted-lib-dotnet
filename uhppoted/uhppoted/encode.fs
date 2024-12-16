@@ -370,23 +370,23 @@ module internal Encode =
         pack packet 0 (byte messages.SOM)
         pack packet 1 (byte messages.SET_TIME_PROFILE)
         pack packet 4 controller
-        pack packet 8 profile.profile
-        pack packet 9 profile.start_date
-        pack packet 13 profile.end_date
-        pack packet 17 profile.monday
-        pack packet 18 profile.tuesday
-        pack packet 19 profile.wednesday
-        pack packet 20 profile.thursday
-        pack packet 21 profile.friday
-        pack packet 22 profile.saturday
-        pack packet 23 profile.sunday
-        pack packet 24 profile.segment1_start
-        pack packet 26 profile.segment1_end
-        pack packet 28 profile.segment2_start
-        pack packet 30 profile.segment2_end
-        pack packet 32 profile.segment3_start
-        pack packet 34 profile.segment3_end
-        pack packet 36 profile.linked_profile
+        pack packet 8 profile.Profile
+        pack packet 9 profile.StartDate
+        pack packet 13 profile.EndDate
+        pack packet 17 profile.Monday
+        pack packet 18 profile.Tuesday
+        pack packet 19 profile.Wednesday
+        pack packet 20 profile.Thursday
+        pack packet 21 profile.Friday
+        pack packet 22 profile.Saturday
+        pack packet 23 profile.Sunday
+        pack packet 24 profile.Segment1Start
+        pack packet 26 profile.Segment1End
+        pack packet 28 profile.Segment2Start
+        pack packet 30 profile.Segment2End
+        pack packet 32 profile.Segment3Start
+        pack packet 34 profile.Segment3End
+        pack packet 36 profile.LinkedProfile
 
         packet
 
@@ -406,19 +406,19 @@ module internal Encode =
         pack packet 0 (byte messages.SOM)
         pack packet 1 (byte messages.ADD_TASK)
         pack packet 4 controller
-        pack packet 8 task.start_date
-        pack packet 12 task.end_date
-        pack packet 16 task.monday
-        pack packet 17 task.tuesday
-        pack packet 18 task.wednesday
-        pack packet 19 task.thursday
-        pack packet 20 task.friday
-        pack packet 21 task.saturday
-        pack packet 22 task.sunday
-        pack packet 23 task.start_time
-        pack packet 25 task.door
-        pack packet 26 task.task
-        pack packet 27 task.more_cards
+        pack packet 8 task.StartDate
+        pack packet 12 task.EndDate
+        pack packet 16 task.Monday
+        pack packet 17 task.Tuesday
+        pack packet 18 task.Wednesday
+        pack packet 19 task.Thursday
+        pack packet 20 task.Friday
+        pack packet 21 task.Saturday
+        pack packet 22 task.Sunday
+        pack packet 23 task.StartTime
+        pack packet 25 task.Door
+        pack packet 26 task.Task
+        pack packet 27 task.MoreCards
 
         packet
 

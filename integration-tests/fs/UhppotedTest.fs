@@ -132,8 +132,8 @@ type TestClass() =
     [<Test>]
     member this.TestGetListener() =
         let expected: Listener =
-            { endpoint = IPEndPoint.Parse("192.168.1.100:60001")
-              interval = 13uy }
+            { Endpoint = IPEndPoint.Parse("192.168.1.100:60001")
+              Interval = 13uy }
 
         options
         |> List.iter (fun opts ->
@@ -498,23 +498,23 @@ type TestClass() =
     [<Test>]
     member this.TestGetTimeProfile() =
         let expected: TimeProfile =
-            { profile = 37uy
-              start_date = Nullable(DateOnly(2024, 11, 26))
-              end_date = Nullable(DateOnly(2024, 12, 29))
-              monday = true
-              tuesday = true
-              wednesday = false
-              thursday = true
-              friday = false
-              saturday = true
-              sunday = true
-              segment1_start = Nullable(TimeOnly(8, 30))
-              segment1_end = Nullable(TimeOnly(09, 45))
-              segment2_start = Nullable(TimeOnly(11, 35))
-              segment2_end = Nullable(TimeOnly(13, 15))
-              segment3_start = Nullable(TimeOnly(14, 01))
-              segment3_end = Nullable(TimeOnly(17, 59))
-              linked_profile = 19uy }
+            { Profile = 37uy
+              StartDate = Nullable(DateOnly(2024, 11, 26))
+              EndDate = Nullable(DateOnly(2024, 12, 29))
+              Monday = true
+              Tuesday = true
+              Wednesday = false
+              Thursday = true
+              Friday = false
+              Saturday = true
+              Sunday = true
+              Segment1Start = Nullable(TimeOnly(8, 30))
+              Segment1End = Nullable(TimeOnly(09, 45))
+              Segment2Start = Nullable(TimeOnly(11, 35))
+              Segment2End = Nullable(TimeOnly(13, 15))
+              Segment3Start = Nullable(TimeOnly(14, 01))
+              Segment3End = Nullable(TimeOnly(17, 59))
+              LinkedProfile = 19uy }
 
         options
         |> List.iter (fun opts ->
@@ -536,23 +536,23 @@ type TestClass() =
         let expected: bool = true
 
         let profile: TimeProfile =
-            { profile = 37uy
-              start_date = Nullable(DateOnly(2024, 11, 26))
-              end_date = Nullable(DateOnly(2024, 12, 29))
-              monday = true
-              tuesday = true
-              wednesday = false
-              thursday = true
-              friday = false
-              saturday = true
-              sunday = true
-              segment1_start = Nullable(TimeOnly(8, 30))
-              segment1_end = Nullable(TimeOnly(09, 45))
-              segment2_start = Nullable(TimeOnly(11, 35))
-              segment2_end = Nullable(TimeOnly(13, 15))
-              segment3_start = Nullable(TimeOnly(14, 01))
-              segment3_end = Nullable(TimeOnly(17, 59))
-              linked_profile = 19uy }
+            { Profile = 37uy
+              StartDate = Nullable(DateOnly(2024, 11, 26))
+              EndDate = Nullable(DateOnly(2024, 12, 29))
+              Monday = true
+              Tuesday = true
+              Wednesday = false
+              Thursday = true
+              Friday = false
+              Saturday = true
+              Sunday = true
+              Segment1Start = Nullable(TimeOnly(8, 30))
+              Segment1End = Nullable(TimeOnly(09, 45))
+              Segment2Start = Nullable(TimeOnly(11, 35))
+              Segment2End = Nullable(TimeOnly(13, 15))
+              Segment3Start = Nullable(TimeOnly(14, 01))
+              Segment3End = Nullable(TimeOnly(17, 59))
+              LinkedProfile = 19uy }
 
         options
         |> List.iter (fun opts ->
@@ -575,19 +575,19 @@ type TestClass() =
         let expected: bool = true
 
         let task: Task =
-            { task = 4uy
-              door = 3uy
-              start_date = Nullable(DateOnly(2024, 11, 26))
-              end_date = Nullable(DateOnly(2024, 12, 29))
-              monday = true
-              tuesday = true
-              wednesday = false
-              thursday = true
-              friday = false
-              saturday = true
-              sunday = true
-              start_time = Nullable(TimeOnly(8, 45))
-              more_cards = 7uy }
+            { Task = 4uy
+              Door = 3uy
+              StartDate = Nullable(DateOnly(2024, 11, 26))
+              EndDate = Nullable(DateOnly(2024, 12, 29))
+              Monday = true
+              Tuesday = true
+              Wednesday = false
+              Thursday = true
+              Friday = false
+              Saturday = true
+              Sunday = true
+              StartTime = Nullable(TimeOnly(8, 45))
+              MoreCards = 7uy }
 
         options
         |> List.iter (fun opts ->

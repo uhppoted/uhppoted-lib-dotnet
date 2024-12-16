@@ -118,8 +118,8 @@ let get_listener args =
     | Ok record ->
         printfn "get-listener"
         printfn "  controller %u" controller
-        printfn "    endpoint %A" record.endpoint
-        printfn "    interval %ds" record.interval
+        printfn "    endpoint %A" record.Endpoint
+        printfn "    interval %ds" record.Interval
         printfn ""
         Ok()
     | Error err -> Error err
@@ -456,23 +456,23 @@ let get_time_profile args =
 
         printfn "get-time-profile"
         printfn "          controller %u" controller
-        printfn "             profile %u" record.profile
-        printfn "          start date %s" (YYYYMMDD record.start_date)
-        printfn "            end date %s" (YYYYMMDD record.end_date)
-        printfn "              monday %b" record.monday
-        printfn "             tuesday %b" record.tuesday
-        printfn "           wednesday %b" record.wednesday
-        printfn "            thursday %b" record.thursday
-        printfn "              friday %b" record.friday
-        printfn "            saturday %b" record.saturday
-        printfn "              sunday %b" record.sunday
-        printfn "   segment 1 - start %s" (HHmm record.segment1_start)
-        printfn "                 end %s" (HHmm record.segment1_end)
-        printfn "   segment 2 - start %s" (HHmm record.segment2_start)
-        printfn "                 end %s" (HHmm record.segment2_end)
-        printfn "   segment 3 - start %s" (HHmm record.segment3_start)
-        printfn "                 end %s" (HHmm record.segment3_end)
-        printfn "      linked profile %u" record.linked_profile
+        printfn "             profile %u" record.Profile
+        printfn "          start date %s" (YYYYMMDD record.StartDate)
+        printfn "            end date %s" (YYYYMMDD record.EndDate)
+        printfn "              monday %b" record.Monday
+        printfn "             tuesday %b" record.Tuesday
+        printfn "           wednesday %b" record.Wednesday
+        printfn "            thursday %b" record.Thursday
+        printfn "              friday %b" record.Friday
+        printfn "            saturday %b" record.Saturday
+        printfn "              sunday %b" record.Sunday
+        printfn "   segment 1 - start %s" (HHmm record.Segment1Start)
+        printfn "                 end %s" (HHmm record.Segment1End)
+        printfn "   segment 2 - start %s" (HHmm record.Segment2Start)
+        printfn "                 end %s" (HHmm record.Segment2End)
+        printfn "   segment 3 - start %s" (HHmm record.Segment3Start)
+        printfn "                 end %s" (HHmm record.Segment3End)
+        printfn "      linked profile %u" record.LinkedProfile
         printfn ""
         Ok()
     | Ok _ -> Error "time profile does not exist"
@@ -480,32 +480,35 @@ let get_time_profile args =
 
 let set_time_profile args =
     let controller = argparse args "--controller" CONTROLLER
+    let profileId = argparse args "--profile" TIME_PROFILE_ID
+    let startDate = argparse args "--start-date" START_DATE
+    let endDate = argparse args "--end-date" END_DATE
 
     let profile =
-        { profile = argparse args "--profile" TIME_PROFILE_ID
-          start_date = Nullable(argparse args "--start-date" START_DATE)
-          end_date = Nullable(argparse args "--end-date" END_DATE)
-          monday = true
-          tuesday = true
-          wednesday = false
-          thursday = true
-          friday = false
-          saturday = true
-          sunday = true
-          segment1_start = Nullable(TimeOnly(8, 30))
-          segment1_end = Nullable(TimeOnly(9, 45))
-          segment2_start = Nullable(TimeOnly(12, 15))
-          segment2_end = Nullable(TimeOnly(13, 15))
-          segment3_start = Nullable(TimeOnly(14, 0))
-          segment3_end = Nullable(TimeOnly(18, 0))
-          linked_profile = argparse args "--linked" 0uy }
+        { Profile = profileId
+          StartDate = Nullable(startDate)
+          EndDate = Nullable(endDate)
+          Monday = true
+          Tuesday = true
+          Wednesday = false
+          Thursday = true
+          Friday = false
+          Saturday = true
+          Sunday = true
+          Segment1Start = Nullable(TimeOnly(8, 30))
+          Segment1End = Nullable(TimeOnly(9, 45))
+          Segment2Start = Nullable(TimeOnly(12, 15))
+          Segment2End = Nullable(TimeOnly(13, 15))
+          Segment3Start = Nullable(TimeOnly(14, 0))
+          Segment3End = Nullable(TimeOnly(18, 0))
+          LinkedProfile = argparse args "--linked" 0uy }
 
 
     match Uhppoted.SetTimeProfile(controller, profile, OPTIONS) with
     | Ok ok ->
         printfn "set-time-profile"
         printfn "  controller %u" controller
-        printfn "     profile %u" profile.profile
+        printfn "     profile %u" profile.Profile
         printfn "          ok %b" ok
         printfn ""
         Ok()
@@ -527,27 +530,27 @@ let add_task args =
     let controller = argparse args "--controller" CONTROLLER
 
     let task =
-        { task = argparse args "--task" TASK_ID
-          door = argparse args "--door" DOOR
-          start_date = Nullable(argparse args "--start-date" START_DATE)
-          end_date = Nullable(argparse args "--end-date" END_DATE)
-          start_time = Nullable(TimeOnly(8, 30))
-          monday = true
-          tuesday = true
-          wednesday = false
-          thursday = true
-          friday = false
-          saturday = true
-          sunday = true
-          more_cards = argparse args "--more-cards" 0uy }
+        { Task = argparse args "--task" TASK_ID
+          Door = argparse args "--door" DOOR
+          StartDate = Nullable(argparse args "--start-date" START_DATE)
+          EndDate = Nullable(argparse args "--end-date" END_DATE)
+          StartTime = Nullable(TimeOnly(8, 30))
+          Monday = true
+          Tuesday = true
+          Wednesday = false
+          Thursday = true
+          Friday = false
+          Saturday = true
+          Sunday = true
+          MoreCards = argparse args "--more-cards" 0uy }
 
 
     match Uhppoted.AddTask(controller, task, OPTIONS) with
     | Ok ok ->
         printfn "add-task"
         printfn "  controller %u" controller
-        printfn "        task %u" task.task
-        printfn "        door %u" task.door
+        printfn "        task %u" task.Task
+        printfn "        door %u" task.Door
         printfn "          ok %b" ok
         printfn ""
         Ok()

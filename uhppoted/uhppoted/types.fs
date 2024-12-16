@@ -66,44 +66,44 @@ type Card =
 
 [<Struct>]
 type TimeProfile =
-    { profile: uint8
-      start_date: DateOnly Nullable
-      end_date: DateOnly Nullable
-      monday: bool
-      tuesday: bool
-      wednesday: bool
-      thursday: bool
-      friday: bool
-      saturday: bool
-      sunday: bool
-      segment1_start: TimeOnly Nullable
-      segment1_end: TimeOnly Nullable
-      segment2_start: TimeOnly Nullable
-      segment2_end: TimeOnly Nullable
-      segment3_start: TimeOnly Nullable
-      segment3_end: TimeOnly Nullable
-      linked_profile: uint8 }
+    { Profile: uint8
+      StartDate: DateOnly Nullable
+      EndDate: DateOnly Nullable
+      Monday: bool
+      Tuesday: bool
+      Wednesday: bool
+      Thursday: bool
+      Friday: bool
+      Saturday: bool
+      Sunday: bool
+      Segment1Start: TimeOnly Nullable
+      Segment1End: TimeOnly Nullable
+      Segment2Start: TimeOnly Nullable
+      Segment2End: TimeOnly Nullable
+      Segment3Start: TimeOnly Nullable
+      Segment3End: TimeOnly Nullable
+      LinkedProfile: uint8 }
 
 [<Struct>]
 type Task =
-    { task: uint8
-      door: uint8
-      start_date: DateOnly Nullable
-      end_date: DateOnly Nullable
-      start_time: TimeOnly Nullable
-      monday: bool
-      tuesday: bool
-      wednesday: bool
-      thursday: bool
-      friday: bool
-      saturday: bool
-      sunday: bool
-      more_cards: uint8 }
+    { Task: uint8
+      Door: uint8
+      StartDate: DateOnly Nullable
+      EndDate: DateOnly Nullable
+      StartTime: TimeOnly Nullable
+      Monday: bool
+      Tuesday: bool
+      Wednesday: bool
+      Thursday: bool
+      Friday: bool
+      Saturday: bool
+      Sunday: bool
+      MoreCards: uint8 }
 
 [<Struct>]
 type Listener =
-    { endpoint: IPEndPoint
-      interval: uint8 }
+    { Endpoint: IPEndPoint
+      Interval: uint8 }
 
 [<Struct>]
 type ListenerEvent =

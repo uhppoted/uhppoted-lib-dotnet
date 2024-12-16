@@ -51,8 +51,8 @@ type CardBuilder(card: uint32) =
           PIN = PIN }
 
 type TimeProfileBuilder(profile: uint8) =
-    let mutable start_date: Nullable<DateOnly> = Nullable()
-    let mutable end_date: Nullable<DateOnly> = Nullable()
+    let mutable startDate: Nullable<DateOnly> = Nullable()
+    let mutable endDate: Nullable<DateOnly> = Nullable()
     let mutable monday: bool = false
     let mutable tuesday: bool = false
     let mutable wednesday: bool = false
@@ -60,20 +60,20 @@ type TimeProfileBuilder(profile: uint8) =
     let mutable friday: bool = false
     let mutable saturday: bool = false
     let mutable sunday: bool = false
-    let mutable segment1_start: Nullable<TimeOnly> = Nullable()
-    let mutable segment1_end: Nullable<TimeOnly> = Nullable()
-    let mutable segment2_start: Nullable<TimeOnly> = Nullable()
-    let mutable segment2_end: Nullable<TimeOnly> = Nullable()
-    let mutable segment3_start: Nullable<TimeOnly> = Nullable()
-    let mutable segment3_end: Nullable<TimeOnly> = Nullable()
+    let mutable segment1Start: Nullable<TimeOnly> = Nullable()
+    let mutable segment1End: Nullable<TimeOnly> = Nullable()
+    let mutable segment2Start: Nullable<TimeOnly> = Nullable()
+    let mutable segment2End: Nullable<TimeOnly> = Nullable()
+    let mutable segment3Start: Nullable<TimeOnly> = Nullable()
+    let mutable segment3End: Nullable<TimeOnly> = Nullable()
     let mutable linked: uint8 = 0uy
 
     member this.WithStartDate(v: DateOnly) =
-        start_date <- Nullable(v)
+        startDate <- Nullable(v)
         this
 
     member this.WithEndDate(v: DateOnly) =
-        end_date <- Nullable(v)
+        endDate <- Nullable(v)
         this
 
     member this.WithWeekdays(mon: bool, tue: bool, wed: bool, thurs: bool, fri: bool, sat: bool, sun: bool) =
@@ -87,48 +87,48 @@ type TimeProfileBuilder(profile: uint8) =
         this
 
     member this.WithSegment1(start_time: TimeOnly, end_time: TimeOnly) =
-        segment1_start <- Nullable(start_time)
-        segment1_end <- Nullable(end_time)
+        segment1Start <- Nullable(start_time)
+        segment1End <- Nullable(end_time)
         this
 
     member this.WithSegment2(start_time: TimeOnly, end_time: TimeOnly) =
-        segment2_start <- Nullable(start_time)
-        segment2_end <- Nullable(end_time)
+        segment2Start <- Nullable(start_time)
+        segment2End <- Nullable(end_time)
         this
 
     member this.WithSegment3(start_time: TimeOnly, end_time: TimeOnly) =
-        segment3_start <- Nullable(start_time)
-        segment3_end <- Nullable(end_time)
+        segment3Start <- Nullable(start_time)
+        segment3End <- Nullable(end_time)
         this
 
-    member this.WithLinkedProfile(v: uint8) =
-        linked <- v
+    member this.WithLinkedProfile(profile: uint8) =
+        linked <- profile
         this
 
     member this.Build() =
-        { profile = profile
-          start_date = start_date
-          end_date = end_date
-          monday = monday
-          tuesday = tuesday
-          wednesday = wednesday
-          thursday = thursday
-          friday = friday
-          saturday = saturday
-          sunday = sunday
-          segment1_start = segment1_start
-          segment1_end = segment1_end
-          segment2_start = segment2_start
-          segment2_end = segment2_end
-          segment3_start = segment3_start
-          segment3_end = segment3_end
-          linked_profile = linked }
+        { Profile = profile
+          StartDate = startDate
+          EndDate = endDate
+          Monday = monday
+          Tuesday = tuesday
+          Wednesday = wednesday
+          Thursday = thursday
+          Friday = friday
+          Saturday = saturday
+          Sunday = sunday
+          Segment1Start = segment1Start
+          Segment1End = segment1End
+          Segment2Start = segment2Start
+          Segment2End = segment2End
+          Segment3Start = segment3Start
+          Segment3End = segment3End
+          LinkedProfile = linked }
 
 
 type TaskBuilder(task: uint8, door: uint8) =
-    let mutable start_date: Nullable<DateOnly> = Nullable()
-    let mutable end_date: Nullable<DateOnly> = Nullable()
-    let mutable start_time: Nullable<TimeOnly> = Nullable()
+    let mutable startDate: Nullable<DateOnly> = Nullable()
+    let mutable endDate: Nullable<DateOnly> = Nullable()
+    let mutable startTime: Nullable<TimeOnly> = Nullable()
     let mutable monday: bool = false
     let mutable tuesday: bool = false
     let mutable wednesday: bool = false
@@ -136,18 +136,18 @@ type TaskBuilder(task: uint8, door: uint8) =
     let mutable friday: bool = false
     let mutable saturday: bool = false
     let mutable sunday: bool = false
-    let mutable more_cards: uint8 = 0uy
+    let mutable moreCards: uint8 = 0uy
 
-    member this.WithStartDate(v: DateOnly) =
-        start_date <- Nullable(v)
+    member this.WithStartDate(date: DateOnly) =
+        startDate <- Nullable(date)
         this
 
-    member this.WithEndDate(v: DateOnly) =
-        end_date <- Nullable(v)
+    member this.WithEndDate(date: DateOnly) =
+        endDate <- Nullable(date)
         this
 
     member this.WithStartTime(time: TimeOnly) =
-        start_time <- Nullable(time)
+        startTime <- Nullable(time)
         this
 
     member this.WithWeekdays(mon: bool, tue: bool, wed: bool, thurs: bool, fri: bool, sat: bool, sun: bool) =
@@ -160,21 +160,21 @@ type TaskBuilder(task: uint8, door: uint8) =
         sunday <- sun
         this
 
-    member this.WithMoreCards(v: uint8) =
-        more_cards <- v
+    member this.WithMoreCards(cards: uint8) =
+        moreCards <- cards
         this
 
     member this.Build() =
-        { task = task
-          door = door
-          start_date = start_date
-          end_date = end_date
-          start_time = start_time
-          monday = monday
-          tuesday = tuesday
-          wednesday = wednesday
-          thursday = thursday
-          friday = friday
-          saturday = saturday
-          sunday = sunday
-          more_cards = more_cards }
+        { Task = task
+          Door = door
+          StartDate = startDate
+          EndDate = endDate
+          StartTime = startTime
+          Monday = monday
+          Tuesday = tuesday
+          Wednesday = wednesday
+          Thursday = thursday
+          Friday = friday
+          Saturday = saturday
+          Sunday = sunday
+          MoreCards = moreCards }

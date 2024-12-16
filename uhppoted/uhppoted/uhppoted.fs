@@ -143,8 +143,8 @@ module Uhppoted =
         match exec controller request Decode.getListenerResponse options with
         | Ok response ->
             Ok
-                { endpoint = response.endpoint
-                  interval = response.interval }
+                { Endpoint = response.endpoint
+                  Interval = response.interval }
 
         | Error err -> Error err
 
@@ -552,23 +552,23 @@ module Uhppoted =
         | Ok response ->
             Ok(
                 Nullable
-                    { profile = response.profile
-                      start_date = response.start_date
-                      end_date = response.end_date
-                      monday = response.monday
-                      tuesday = response.tuesday
-                      wednesday = response.wednesday
-                      thursday = response.thursday
-                      friday = response.friday
-                      saturday = response.saturday
-                      sunday = response.sunday
-                      segment1_start = response.segment1_start
-                      segment1_end = response.segment1_end
-                      segment2_start = response.segment2_start
-                      segment2_end = response.segment2_end
-                      segment3_start = response.segment3_start
-                      segment3_end = response.segment3_end
-                      linked_profile = response.linked_profile }
+                    { Profile = response.profile
+                      StartDate = response.start_date
+                      EndDate = response.end_date
+                      Monday = response.monday
+                      Tuesday = response.tuesday
+                      Wednesday = response.wednesday
+                      Thursday = response.thursday
+                      Friday = response.friday
+                      Saturday = response.saturday
+                      Sunday = response.sunday
+                      Segment1Start = response.segment1_start
+                      Segment1End = response.segment1_end
+                      Segment2Start = response.segment2_start
+                      Segment2End = response.segment2_end
+                      Segment3Start = response.segment3_start
+                      Segment3End = response.segment3_end
+                      LinkedProfile = response.linked_profile }
             )
         | Error err -> Error err
 

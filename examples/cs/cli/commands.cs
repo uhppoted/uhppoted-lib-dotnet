@@ -202,8 +202,8 @@ class Commands
 
             WriteLine("get-listener");
             WriteLine("  controller {0}", controller);
-            WriteLine("    endpoint {0}", record.endpoint);
-            WriteLine("    interval {0}s", record.interval);
+            WriteLine("    endpoint {0}", record.Endpoint);
+            WriteLine("    interval {0}s", record.Interval);
             WriteLine();
         }
         else if (result.IsError)
@@ -724,23 +724,23 @@ class Commands
 
             WriteLine("get-time-profile");
             WriteLine("          controller {0}", controller);
-            WriteLine("             profile {0}", record.profile);
-            WriteLine("          start date {0}", YYYYMMDD(record.start_date));
-            WriteLine("            end date {0}", YYYYMMDD(record.end_date));
-            WriteLine("              monday {0}", record.monday);
-            WriteLine("             tuesday {0}", record.tuesday);
-            WriteLine("           wednesday {0}", record.wednesday);
-            WriteLine("            thursday {0}", record.thursday);
-            WriteLine("              friday {0}", record.friday);
-            WriteLine("            saturday {0}", record.saturday);
-            WriteLine("              sunday {0}", record.sunday);
-            WriteLine("   segment 1 - start {0}", HHmm(record.segment1_start));
-            WriteLine("                 end {0}", HHmm(record.segment1_end));
-            WriteLine("   segment 2 - start {0}", HHmm(record.segment2_start));
-            WriteLine("                 end {0}", HHmm(record.segment2_end));
-            WriteLine("   segment 3 - start {0}", HHmm(record.segment3_start));
-            WriteLine("                 end {0}", HHmm(record.segment3_end));
-            WriteLine("      linked profile {0}", record.linked_profile);
+            WriteLine("             profile {0}", record.Profile);
+            WriteLine("          start date {0}", YYYYMMDD(record.StartDate));
+            WriteLine("            end date {0}", YYYYMMDD(record.EndDate));
+            WriteLine("              monday {0}", record.Monday);
+            WriteLine("             tuesday {0}", record.Tuesday);
+            WriteLine("           wednesday {0}", record.Wednesday);
+            WriteLine("            thursday {0}", record.Thursday);
+            WriteLine("              friday {0}", record.Friday);
+            WriteLine("            saturday {0}", record.Saturday);
+            WriteLine("              sunday {0}", record.Sunday);
+            WriteLine("   segment 1 - start {0}", HHmm(record.Segment1Start));
+            WriteLine("                 end {0}", HHmm(record.Segment1End));
+            WriteLine("   segment 2 - start {0}", HHmm(record.Segment2Start));
+            WriteLine("                 end {0}", HHmm(record.Segment2End));
+            WriteLine("   segment 3 - start {0}", HHmm(record.Segment3Start));
+            WriteLine("                 end {0}", HHmm(record.Segment3End));
+            WriteLine("      linked profile {0}", record.LinkedProfile);
             WriteLine();
         }
         else if (result.IsOk)
@@ -794,7 +794,7 @@ class Commands
 
             WriteLine("set-time-profile");
             WriteLine("  controller {0}", controller);
-            WriteLine("     profile {0}", profile.profile);
+            WriteLine("     profile {0}", profile.Profile);
             WriteLine("          ok {0}", ok);
             WriteLine();
         }
@@ -861,8 +861,8 @@ class Commands
 
             WriteLine("add-task");
             WriteLine("  controller {0}", controller);
-            WriteLine("        task {0}", task.task);
-            WriteLine("        door {0}", task.door);
+            WriteLine("        task {0}", task.Task);
+            WriteLine("        door {0}", task.Door);
             WriteLine("          ok {0}", ok);
             WriteLine();
         }
