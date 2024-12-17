@@ -43,6 +43,19 @@ let OPTIONS: Options =
       protocol = None
       debug = true }
 
+let CONTROLLERS =
+    Map.ofList
+        [ (405419896u,
+           { Controller = 405419896u
+             Endpoint = ENDPOINT
+             Protocol = Some("udp") })
+          (303986753u,
+           { Controller = 405419896u
+             Endpoint = ENDPOINT
+             Protocol = Some("tcp") }) ]
+
+let lookup (controller: uint32) = CONTROLLERS.TryFind controller
+
 let YYYYMMDD (date: Nullable<DateOnly>) =
     if date.HasValue then
         date.Value.ToString("yyyy-MM-dd")
@@ -83,7 +96,12 @@ let find_controllers args =
 let get_controller args =
     let controller = argparse args "--controller" CONTROLLER
 
-    match Uhppoted.GetController(controller, OPTIONS) with
+    let result =
+        match lookup controller with
+        | Some c -> Uhppoted.GetController(c, OPTIONS)
+        | None -> Uhppoted.GetController(controller, OPTIONS)
+
+    match result with
     | Ok record ->
         printfn "get-controller"
         printfn "  controller %u" record.controller

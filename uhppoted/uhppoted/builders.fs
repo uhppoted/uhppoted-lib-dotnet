@@ -1,7 +1,33 @@
 namespace uhppoted
 
 open System
+open System.Net
 
+/// Convenience 'C' builder implementation for C# and VB.NET.
+type ControllerBuilder(controller: uint32) =
+    let mutable endpoint: Option<IPEndPoint> = None
+    let mutable protocol: Option<string> = None
+
+    /// Sets the optional controller endpoint.
+    /// - Parameter `e`: IPv4 controller address:port.
+    /// - Returns: The updated builder instance.
+    member this.WithEndpoint(e: IPEndPoint) =
+        endpoint <- Some(e)
+        this
+
+    /// Sets the optional connection protocol.
+    /// - Parameter `p`: 'udp' or 'tcp'.
+    /// - Returns: The updated builder instance.
+    member this.WithProtocol(p: string) =
+        protocol <- Some(p)
+        this
+
+    /// Builds a `C` struct.
+    /// - Returns: A `C` struct initialised with the controller ID and optional endpoint and protocol.
+    member this.Build() =
+        { Controller = controller
+          Endpoint = endpoint
+          Protocol = protocol }
 
 type CardBuilder(card: uint32) =
     let mutable startDate: Nullable<DateOnly> = Nullable()

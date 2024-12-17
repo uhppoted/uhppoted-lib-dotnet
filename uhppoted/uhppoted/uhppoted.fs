@@ -14,7 +14,45 @@ module Uhppoted =
           protocol = None
           debug = false }
 
+    let private resolve (controller: 'T) (options: Options) : Result<C, string> =
+        match box controller with
+        | :? uint32 as u32 ->
+            Ok
+                { Controller = u32
+                  Endpoint = options.endpoint
+                  Protocol = options.protocol }
+        | :? C as c -> Ok c
+        | _ -> Error "unsupported controller type"
+
     let private exec
+        (controller: C)
+        request
+        (decode: byte[] -> Result<'b, string>)
+        options
+        : Result<'b, string> when 'b :> IResponse =
+        let bind = options.bind
+        let broadcast = options.broadcast
+        let timeout = options.timeout
+        let debug = options.debug
+
+        let endpoint = controller.Endpoint
+        let protocol = controller.Protocol
+
+        let result =
+            match endpoint, protocol with
+            | None, _ -> UDP.broadcast_to (request, bind, broadcast, timeout, debug)
+            | Some(addr), Some("tcp") -> TCP.send_to (request, bind, addr, timeout, debug)
+            | Some(addr), _ -> UDP.send_to (request, bind, addr, timeout, debug)
+
+        match result with
+        | Ok packet ->
+            match decode packet with
+            | Ok response when response.controller = controller.Controller -> Ok response
+            | Ok _ -> Error "invalid response"
+            | Error err -> Error err
+        | Error err -> Error err
+
+    let private exex
         (controller: uint32)
         request
         (decode: byte[] -> Result<'b, string>)
@@ -25,8 +63,11 @@ module Uhppoted =
         let timeout = options.timeout
         let debug = options.debug
 
+        let endpoint = options.endpoint
+        let protocol = options.protocol
+
         let result =
-            match options.endpoint, options.protocol with
+            match endpoint, protocol with
             | None, _ -> UDP.broadcast_to (request, bind, broadcast, timeout, debug)
             | Some(addr), Some("tcp") -> TCP.send_to (request, bind, addr, timeout, debug)
             | Some(addr), _ -> UDP.send_to (request, bind, addr, timeout, debug)
@@ -79,27 +120,29 @@ module Uhppoted =
     /// <summary>
     /// Retrieves the IPv4 configuration, MAC address and version information for an access controller.
     /// </summary>
-    /// <param name="controller">Controller ID.</param>
-    /// <param name="card">Card number to retrieve.</param>
-    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <param name="controller">Controller ID or C struct.</param>
+    /// <param name="options">Bind, broadcast and listen addresses.</param>
     /// <returns>Ok with a Controller record or Error.</returns>
     /// <remarks></remarks>
-    let GetController (controller: uint32, options: Options) =
-        let request = Encode.getControllerRequest controller
-
-        match exec controller request Decode.getControllerResponse options with
-        | Ok response ->
-            let record: Controller =
-                { controller = response.controller
-                  address = response.address
-                  netmask = response.netmask
-                  gateway = response.gateway
-                  MAC = response.MAC
-                  version = response.version
-                  date = response.date }
-
-            Ok record
+    let GetController (controller: 'T, options: Options) =
+        match resolve controller options with
         | Error err -> Error err
+        | Ok c ->
+            let request = Encode.getControllerRequest c.Controller
+
+            match exec c request Decode.getControllerResponse options with
+            | Error err -> Error err
+            | Ok response ->
+                let record: Controller =
+                    { controller = response.controller
+                      address = response.address
+                      netmask = response.netmask
+                      gateway = response.gateway
+                      MAC = response.MAC
+                      version = response.version
+                      date = response.date }
+
+                Ok record
 
     /// <summary>
     /// Sets the controller IPv4 address, netmask and gateway address..
@@ -140,7 +183,7 @@ module Uhppoted =
     let GetListener (controller: uint32, options: Options) =
         let request = Encode.getListenerRequest controller
 
-        match exec controller request Decode.getListenerResponse options with
+        match exex controller request Decode.getListenerResponse options with
         | Ok response ->
             Ok
                 { Endpoint = response.endpoint
@@ -163,7 +206,7 @@ module Uhppoted =
         let port = uint16 endpoint.Port
         let request = Encode.setListenerRequest controller address port interval
 
-        match exec controller request Decode.setListenerResponse options with
+        match exex controller request Decode.setListenerResponse options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 
@@ -176,7 +219,7 @@ module Uhppoted =
     let GetTime (controller: uint32, options: Options) =
         let request = Encode.get_time_request controller
 
-        match exec controller request Decode.get_time_response options with
+        match exex controller request Decode.get_time_response options with
         | Ok response -> Ok response.datetime
         | Error err -> Error err
 
@@ -190,7 +233,7 @@ module Uhppoted =
     let SetTime (controller: uint32, datetime: DateTime, options: Options) =
         let request = Encode.set_time_request controller datetime
 
-        match exec controller request Decode.set_time_response options with
+        match exex controller request Decode.set_time_response options with
         | Ok response -> Ok response.datetime
         | Error err -> Error err
 
@@ -204,7 +247,7 @@ module Uhppoted =
     let GetDoor (controller: uint32, door: uint8, options: Options) =
         let request = Encode.get_door_request controller door
 
-        match exec controller request Decode.get_door_response options with
+        match exex controller request Decode.get_door_response options with
         | Ok response when response.door <> door -> // incorrect door
             Ok(Nullable())
         | Ok response ->
@@ -225,7 +268,7 @@ module Uhppoted =
     let SetDoor (controller: uint32, door: uint8, mode: DoorMode, delay: uint8, options: Options) =
         let request = Encode.set_door_request controller door mode delay
 
-        match exec controller request Decode.set_door_response options with
+        match exex controller request Decode.set_door_response options with
         | Ok response when response.door <> door -> // incorrect door
             Ok(Nullable())
         | Ok response ->
@@ -257,7 +300,7 @@ module Uhppoted =
                 (passcodes |> Array.tryItem 2 |> Option.defaultValue 0u)
                 (passcodes |> Array.tryItem 3 |> Option.defaultValue 0u)
 
-        match exec controller request Decode.set_door_passcodes_response options with
+        match exex controller request Decode.set_door_passcodes_response options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 
@@ -276,7 +319,7 @@ module Uhppoted =
     let OpenDoor (controller: uint32, door: uint8, options: Options) =
         let request = Encode.openDoorRequest controller door
 
-        match exec controller request Decode.openDoorResponse options with
+        match exex controller request Decode.openDoorResponse options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 
@@ -291,7 +334,7 @@ module Uhppoted =
     let GetStatus (controller: uint32, options: Options) =
         let request = Encode.getStatusRequest controller
 
-        match exec controller request Decode.getStatusResponse options with
+        match exex controller request Decode.getStatusResponse options with
         | Ok response ->
             let status: Status =
                 { Door1Open = response.door1Open
@@ -342,7 +385,7 @@ module Uhppoted =
     let GetCards (controller: uint32, options: Options) =
         let request = Encode.getCardsRequest controller
 
-        match exec controller request Decode.getCardsResponse options with
+        match exex controller request Decode.getCardsResponse options with
         | Ok response -> Ok response.cards
         | Error err -> Error err
 
@@ -358,7 +401,7 @@ module Uhppoted =
     let GetCard (controller: uint32, card: uint32, options: Options) =
         let request = Encode.getCardRequest controller card
 
-        match exec controller request Decode.getCardResponse options with
+        match exex controller request Decode.getCardResponse options with
         | Ok response when response.card = 0u -> // not found
             Ok(Nullable())
         | Ok response ->
@@ -387,7 +430,7 @@ module Uhppoted =
     let GetCardAtIndex (controller: uint32, index: uint32, options: Options) =
         let request = Encode.getCardAtIndexRequest controller index
 
-        match exec controller request Decode.getCardAtIndexResponse options with
+        match exex controller request Decode.getCardAtIndexResponse options with
         | Ok response when response.card = 0u -> // not found
             Ok(Nullable())
         | Ok response when response.card = 0xffffffffu -> // deleted
@@ -418,7 +461,7 @@ module Uhppoted =
     let PutCard (controller: uint32, card: Card, options: Options) =
         let request = Encode.putCardRequest controller card
 
-        match exec controller request Decode.putCardResponse options with
+        match exex controller request Decode.putCardResponse options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 
@@ -434,7 +477,7 @@ module Uhppoted =
     let DeleteCard (controller: uint32, card: uint32, options: Options) =
         let request = Encode.deleteCardRequest controller card
 
-        match exec controller request Decode.deleteCardResponse options with
+        match exex controller request Decode.deleteCardResponse options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 
@@ -449,7 +492,7 @@ module Uhppoted =
     let DeleteAllCards (controller: uint32, options: Options) =
         let request = Encode.deleteAllCardsRequest controller
 
-        match exec controller request Decode.deleteAllCardsResponse options with
+        match exex controller request Decode.deleteAllCardsResponse options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 
@@ -466,7 +509,7 @@ module Uhppoted =
     let GetEvent (controller: uint32, index: uint32, options: Options) =
         let request = Encode.getEventRequest controller index
 
-        match exec controller request Decode.getEventResponse options with
+        match exex controller request Decode.getEventResponse options with
         | Ok response when response.event = 0x00uy -> // not found
             Ok(Nullable())
         | Ok response when response.event = 0xffuy -> // overwritten
@@ -496,7 +539,7 @@ module Uhppoted =
     let GetEventIndex (controller: uint32, options: Options) =
         let request = Encode.getEventIndexRequest controller
 
-        match exec controller request Decode.getEventIndexResponse options with
+        match exex controller request Decode.getEventIndexResponse options with
         | Ok response -> Ok response.index
         | Error err -> Error err
 
@@ -512,7 +555,7 @@ module Uhppoted =
     let SetEventIndex (controller: uint32, index: uint32, options: Options) =
         let request = Encode.setEventIndexRequest controller index
 
-        match exec controller request Decode.setEventIndexResponse options with
+        match exex controller request Decode.setEventIndexResponse options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 
@@ -528,7 +571,7 @@ module Uhppoted =
     let RecordSpecialEvents (controller: uint32, enable: bool, options: Options) =
         let request = Encode.recordSpecialEventsRequest controller enable
 
-        match exec controller request Decode.recordSpecialEventsResponse options with
+        match exex controller request Decode.recordSpecialEventsResponse options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 
@@ -544,7 +587,7 @@ module Uhppoted =
     let GetTimeProfile (controller: uint32, profile: uint8, options: Options) =
         let request = Encode.getTimeProfileRequest controller profile
 
-        match exec controller request Decode.getTimeProfileResponse options with
+        match exex controller request Decode.getTimeProfileResponse options with
         | Ok response when response.profile = 0x00uy -> // not found
             Ok(Nullable())
         | Ok response when response.profile <> profile -> // incorrect profile
@@ -584,7 +627,7 @@ module Uhppoted =
     let SetTimeProfile (controller: uint32, profile: TimeProfile, options: Options) =
         let request = Encode.setTimeProfileRequest controller profile
 
-        match exec controller request Decode.setTimeProfileResponse options with
+        match exex controller request Decode.setTimeProfileResponse options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 
@@ -599,7 +642,7 @@ module Uhppoted =
     let ClearTimeProfiles (controller: uint32, options: Options) =
         let request = Encode.clearTimeProfilesRequest controller
 
-        match exec controller request Decode.clearTimeProfilesResponse options with
+        match exex controller request Decode.clearTimeProfilesResponse options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 
@@ -616,7 +659,7 @@ module Uhppoted =
     let AddTask (controller: uint32, task: Task, options: Options) =
         let request = Encode.addTaskRequest controller task
 
-        match exec controller request Decode.addTaskResponse options with
+        match exex controller request Decode.addTaskResponse options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 
@@ -631,7 +674,7 @@ module Uhppoted =
     let ClearTaskList (controller: uint32, options: Options) =
         let request = Encode.clearTaskListRequest controller
 
-        match exec controller request Decode.clearTaskListResponse options with
+        match exex controller request Decode.clearTaskListResponse options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 
@@ -646,7 +689,7 @@ module Uhppoted =
     let RefreshTaskList (controller: uint32, options: Options) =
         let request = Encode.refreshTaskListRequest controller
 
-        match exec controller request Decode.refreshTaskListResponse options with
+        match exex controller request Decode.refreshTaskListResponse options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 
@@ -663,7 +706,7 @@ module Uhppoted =
     let SetPCControl (controller: uint32, enable: bool, options: Options) =
         let request = Encode.setPCControlRequest controller enable
 
-        match exec controller request Decode.setPCControlResponse options with
+        match exex controller request Decode.setPCControlResponse options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 
@@ -679,7 +722,7 @@ module Uhppoted =
     let SetInterlock (controller: uint32, interlock: Interlock, options: Options) =
         let request = Encode.setInterlockRequest controller interlock
 
-        match exec controller request Decode.setInterlockResponse options with
+        match exex controller request Decode.setInterlockResponse options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 
@@ -701,7 +744,7 @@ module Uhppoted =
         let request =
             Encode.activateKeypadsRequest controller reader1 reader2 reader3 reader4
 
-        match exec controller request Decode.activateKeypadsResponse options with
+        match exex controller request Decode.activateKeypadsResponse options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 
@@ -716,7 +759,7 @@ module Uhppoted =
     let RestoreDefaultParameters (controller: uint32, options: Options) =
         let request = Encode.restoreDefaultParametersRequest controller
 
-        match exec controller request Decode.restoreDefaultParametersResponse options with
+        match exex controller request Decode.restoreDefaultParametersResponse options with
         | Ok response -> Ok response.ok
         | Error err -> Error err
 

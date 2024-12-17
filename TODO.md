@@ -1,4 +1,7 @@
 # TODO
+
+- [ ] camelCase internal functions
+
 - [ ] API
     - [x] find-controllers
     - [x] get-controller
@@ -38,6 +41,7 @@
     - [x] Set SO_REUSEADDR option
     - [ ] Rethink the controller/options thing
     - [ ] _Cannot access a disposed object._
+    - [ ] Rework integration tests as seperate broadcast, UDP and TCP test suites
 
 - [ ] argparse
     - [x] --controller
@@ -82,7 +86,6 @@
     - https://localizely.com/getting-started
 
 - [ ] function signature file
-- [ ] camelCase internal functions
 - [ ] Represent error cases and illegal state in types intrinsic to your domain
       - https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/conventions#represent-error-cases-and-illegal-state-in-types-intrinsic-to-your-domain
 - [ ] Prefer namespaces at the top level
