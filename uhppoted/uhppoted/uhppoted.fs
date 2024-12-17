@@ -101,13 +101,13 @@ module Uhppoted =
                 match Decode.getControllerResponse v with
                 | Ok response ->
                     let controller: Controller =
-                        { controller = response.controller
-                          address = response.address
-                          netmask = response.netmask
-                          gateway = response.gateway
+                        { Controller = response.controller
+                          Address = response.address
+                          Netmask = response.netmask
+                          Gateway = response.gateway
                           MAC = response.MAC
-                          version = response.version
-                          date = response.date }
+                          Version = response.version
+                          Date = response.date }
 
                     Some(controller)
 
@@ -134,13 +134,13 @@ module Uhppoted =
             | Error err -> Error err
             | Ok response ->
                 let record: Controller =
-                    { controller = response.controller
-                      address = response.address
-                      netmask = response.netmask
-                      gateway = response.gateway
+                    { Controller = response.controller
+                      Address = response.address
+                      Netmask = response.netmask
+                      Gateway = response.gateway
                       MAC = response.MAC
-                      version = response.version
-                      date = response.date }
+                      Version = response.version
+                      Date = response.date }
 
                 Ok record
 

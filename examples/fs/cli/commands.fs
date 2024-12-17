@@ -81,13 +81,13 @@ let find_controllers args =
 
         controllers
         |> Array.iter (fun v ->
-            printfn "  controller %u" v.controller
-            printfn "    address  %A" v.address
-            printfn "    netmask  %A" v.netmask
-            printfn "    gateway  %A" v.gateway
+            printfn "  controller %u" v.Controller
+            printfn "    address  %A" v.Address
+            printfn "    netmask  %A" v.Netmask
+            printfn "    gateway  %A" v.Gateway
             printfn "    MAC      %A" v.MAC
-            printfn "    version  %s" v.version
-            printfn "    date     %s" (YYYYMMDD v.date)
+            printfn "    version  %s" v.Version
+            printfn "    date     %s" (YYYYMMDD v.Date)
             printfn "")
 
         Ok()
@@ -104,13 +104,13 @@ let get_controller args =
     match result with
     | Ok record ->
         printfn "get-controller"
-        printfn "  controller %u" record.controller
-        printfn "    address  %A" record.address
-        printfn "    netmask  %A" record.netmask
-        printfn "    gateway  %A" record.gateway
+        printfn "  controller %u" record.Controller
+        printfn "    address  %A" record.Address
+        printfn "    netmask  %A" record.Netmask
+        printfn "    gateway  %A" record.Gateway
         printfn "    MAC      %A" record.MAC
-        printfn "    version  %s" record.version
-        printfn "    date     %s" (YYYYMMDD record.date)
+        printfn "    version  %s" record.Version
+        printfn "    date     %s" (YYYYMMDD record.Date)
         printfn ""
         Ok()
     | Error err -> Error err

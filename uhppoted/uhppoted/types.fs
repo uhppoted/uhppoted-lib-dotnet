@@ -19,13 +19,28 @@ type C =
 
 [<Struct>]
 type Controller =
-    { controller: uint32
-      address: IPAddress
-      netmask: IPAddress
-      gateway: IPAddress
-      MAC: PhysicalAddress
-      version: string
-      date: DateOnly Nullable }
+    {
+        /// Controller serial number.
+        Controller: uint32
+
+        /// IPv4 address.
+        Address: IPAddress
+
+        /// IPv4 subnet mask.
+        Netmask: IPAddress
+
+        /// IPv4 gateway address.
+        Gateway: IPAddress
+
+        /// Controller MAC address.
+        MAC: PhysicalAddress
+
+        /// Firmware version.
+        Version: string
+
+        /// Firmware release date.
+        Date: DateOnly Nullable
+    }
 
 
 [<Struct>]

@@ -127,13 +127,13 @@ class Commands
             WriteLine("find-controllers: {0}", controllers.Length);
             foreach (var controller in controllers)
             {
-                WriteLine("  controller {0}", controller.controller);
-                WriteLine("    address  {0}", controller.address);
-                WriteLine("    netmask  {0}", controller.netmask);
-                WriteLine("    gateway  {0}", controller.gateway);
+                WriteLine("  controller {0}", controller.Controller);
+                WriteLine("    address  {0}", controller.Address);
+                WriteLine("    netmask  {0}", controller.Netmask);
+                WriteLine("    gateway  {0}", controller.Gateway);
                 WriteLine("    MAC      {0}", controller.MAC);
-                WriteLine("    version  {0}", controller.version);
-                WriteLine("    date     {0}", YYYYMMDD(controller.date));
+                WriteLine("    version  {0}", controller.Version);
+                WriteLine("    date     {0}", YYYYMMDD(controller.Date));
                 WriteLine();
             }
         }
@@ -154,13 +154,13 @@ class Commands
             var record = result.ResultValue;
 
             WriteLine("get-controller");
-            WriteLine("  controller {0}", record.controller);
-            WriteLine("    address  {0}", record.address);
-            WriteLine("    netmask  {0}", record.netmask);
-            WriteLine("    gateway  {0}", record.gateway);
+            WriteLine("  controller {0}", record.Controller);
+            WriteLine("    address  {0}", record.Address);
+            WriteLine("    netmask  {0}", record.Netmask);
+            WriteLine("    gateway  {0}", record.Gateway);
             WriteLine("    MAC      {0}", record.MAC);
-            WriteLine("    version  {0}", record.version);
-            WriteLine("    date     {0}", YYYYMMDD(record.date));
+            WriteLine("    version  {0}", record.Version);
+            WriteLine("    date     {0}", YYYYMMDD(record.Date));
             WriteLine();
         }
         else if (result.IsError)

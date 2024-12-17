@@ -72,29 +72,29 @@ type TestClass() =
     [<Test>]
     member this.TestFindControllers() =
         let expected: Controller array =
-            [| { controller = 405419896u
-                 address = IPAddress.Parse("192.168.1.100")
-                 netmask = IPAddress.Parse("255.255.255.0")
-                 gateway = IPAddress.Parse("192.168.1.1")
+            [| { Controller = 405419896u
+                 Address = IPAddress.Parse("192.168.1.100")
+                 Netmask = IPAddress.Parse("255.255.255.0")
+                 Gateway = IPAddress.Parse("192.168.1.1")
                  MAC = PhysicalAddress([| 0x00uy; 0x12uy; 0x23uy; 0x34uy; 0x45uy; 0x56uy |])
-                 version = "v8.92"
-                 date = Nullable(DateOnly.ParseExact("2018-11-05", "yyyy-MM-dd")) }
+                 Version = "v8.92"
+                 Date = Nullable(DateOnly.ParseExact("2018-11-05", "yyyy-MM-dd")) }
 
-               { controller = 303986753u
-                 address = IPAddress.Parse("192.168.1.100")
-                 netmask = IPAddress.Parse("255.255.255.0")
-                 gateway = IPAddress.Parse("192.168.1.1")
+               { Controller = 303986753u
+                 Address = IPAddress.Parse("192.168.1.100")
+                 Netmask = IPAddress.Parse("255.255.255.0")
+                 Gateway = IPAddress.Parse("192.168.1.1")
                  MAC = PhysicalAddress([| 0x52uy; 0xfduy; 0xfcuy; 0x07uy; 0x21uy; 0x82uy |])
-                 version = "v8.92"
-                 date = Nullable(DateOnly.ParseExact("2019-08-15", "yyyy-MM-dd")) }
+                 Version = "v8.92"
+                 Date = Nullable(DateOnly.ParseExact("2019-08-15", "yyyy-MM-dd")) }
 
-               { controller = 201020304u
-                 address = IPAddress.Parse("192.168.1.101")
-                 netmask = IPAddress.Parse("255.255.255.0")
-                 gateway = IPAddress.Parse("192.168.1.1")
+               { Controller = 201020304u
+                 Address = IPAddress.Parse("192.168.1.101")
+                 Netmask = IPAddress.Parse("255.255.255.0")
+                 Gateway = IPAddress.Parse("192.168.1.1")
                  MAC = PhysicalAddress([| 0x52uy; 0xfduy; 0xfcuy; 0x07uy; 0x21uy; 0x82uy |])
-                 version = "v6.62"
-                 date = Nullable(DateOnly.ParseExact("2020-01-01", "yyyy-MM-dd")) } |]
+                 Version = "v6.62"
+                 Date = Nullable(DateOnly.ParseExact("2020-01-01", "yyyy-MM-dd")) } |]
 
         match Uhppoted.FindControllers(OPTIONS) with
         | Ok controllers -> Assert.That(controllers, Is.EqualTo(expected))
@@ -103,13 +103,13 @@ type TestClass() =
     [<Test>]
     member this.TestGetController() =
         let expected: Controller =
-            { controller = 405419896u
-              address = IPAddress.Parse("192.168.1.100")
-              netmask = IPAddress.Parse("255.255.255.0")
-              gateway = IPAddress.Parse("192.168.1.1")
+            { Controller = 405419896u
+              Address = IPAddress.Parse("192.168.1.100")
+              Netmask = IPAddress.Parse("255.255.255.0")
+              Gateway = IPAddress.Parse("192.168.1.1")
               MAC = PhysicalAddress([| 0x00uy; 0x66uy; 0x19uy; 0x39uy; 0x55uy; 0x2duy |])
-              version = "v8.92"
-              date = Nullable(DateOnly.ParseExact("2018-08-16", "yyyy-MM-dd")) }
+              Version = "v8.92"
+              Date = Nullable(DateOnly.ParseExact("2018-08-16", "yyyy-MM-dd")) }
 
         options
         |> List.iter (fun opts ->
