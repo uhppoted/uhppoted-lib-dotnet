@@ -33,7 +33,7 @@ Module Program
         WriteLine("  Supported commands:")
 
         For Each command In Commands.commands
-            WriteLine("  - {0,-21}  {1}", command.command, command.description)
+            WriteLine("  - {0,-26}  {1}", command.command, command.description)
         Next
 
         WriteLine()

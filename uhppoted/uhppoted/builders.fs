@@ -3,15 +3,15 @@ namespace uhppoted
 open System
 open System.Net
 
-/// Convenience 'C' builder implementation for C# and VB.NET.
-type ControllerBuilder(controller: uint32) =
+/// Convenience 'C' struct builder implementation for C# and VB.NET.
+type CBuilder(controller: uint32) =
     let mutable endpoint: Option<IPEndPoint> = None
     let mutable protocol: Option<string> = None
 
     /// Sets the optional controller endpoint.
     /// - Parameter `e`: IPv4 controller address:port.
     /// - Returns: The updated builder instance.
-    member this.WithEndpoint(e: IPEndPoint) =
+    member this.WithEndPoint(e: IPEndPoint) =
         endpoint <- Some(e)
         this
 
@@ -25,10 +25,11 @@ type ControllerBuilder(controller: uint32) =
     /// Builds a `C` struct.
     /// - Returns: A `C` struct initialised with the controller ID and optional endpoint and protocol.
     member this.Build() =
-        { Controller = controller
-          Endpoint = endpoint
-          Protocol = protocol }
+        { controller = controller
+          endpoint = endpoint
+          protocol = protocol }
 
+/// Convenience Card struct builder implementation for C# and VB.NET.
 type CardBuilder(card: uint32) =
     let mutable startDate: Nullable<DateOnly> = Nullable()
     let mutable endDate: Nullable<DateOnly> = Nullable()
@@ -38,34 +39,70 @@ type CardBuilder(card: uint32) =
     let mutable door4: uint8 = 0uy
     let mutable PIN: uint32 = 0u
 
-    member this.WithStartDate(v: DateOnly) =
-        startDate <- Nullable(v)
+    /// Sets the card date from which the card is valid.
+    /// - Parameter `date`: Card 'start date'.
+    /// - Returns: The updated builder instance.
+    member this.WithStartDate(date: DateOnly) =
+        startDate <- Nullable(date)
         this
 
-    member this.WithEndDate(v: DateOnly) =
-        endDate <- Nullable(v)
+    /// Sets the card date after which the card is no longer valid.
+    /// - Parameter `date`: Card 'end date'.
+    /// - Returns: The updated builder instance.
+    member this.WithEndDate(date: DateOnly) =
+        endDate <- Nullable(date)
         this
 
+    /// Sets the card date time profile for door 1:
+    /// - 0 is 'no access'
+    /// - 1 is 24/7 access
+    /// - [2..254] are user defined time profiles
+    /// - Parameter `profile`: Time profile to apply for door 1 (defaults to 0).
+    /// - Returns: The updated builder instance.
     member this.WithDoor1(profile: uint8) =
         door1 <- profile
         this
 
+    /// Sets the card date time profile for door 2:
+    /// - 0 is 'no access'
+    /// - 1 is 24/7 access
+    /// - [2..254] are user defined time profiles
+    /// - Parameter `profile`: Time profile to apply for door 2 (defaults to 0).
+    /// - Returns: The updated builder instance.
     member this.WithDoor2(profile: uint8) =
         door2 <- profile
         this
 
+    /// Sets the card date time profile for door 3:
+    /// - 0 is 'no access'
+    /// - 1 is 24/7 access
+    /// - [2..254] are user defined time profiles
+    /// - Parameter `profile`: Time profile to apply for door 3 (defaults to 0).
+    /// - Returns: The updated builder instance.
     member this.WithDoor3(profile: uint8) =
         door3 <- profile
         this
 
+    /// Sets the card date time profile for door 4:
+    /// - 0 is 'no access'
+    /// - 1 is 24/7 access
+    /// - [2..254] are user defined time profiles
+    /// - Parameter `profile`: Time profile to apply for door 4 (defaults to 0).
+    /// - Returns: The updated builder instance.
     member this.WithDoor4(profile: uint8) =
         door4 <- profile
         this
 
-    member this.WithPIN(v: uint32) =
-        PIN <- v
+    /// Sets the (optional) card PIN code for use with a card reader keypad (0 is 'none').
+    /// - Parameter `pin`: PIN code [0..999999]  (defaults to 0).
+    /// - Returns: The updated builder instance.
+    member this.WithPIN(pin: uint32) =
+        PIN <- pin
         this
 
+    /// Builds a Card record.
+    /// - Returns: A Card struct initialised with the card number, start and end dates, door
+    //             permissions and PIN.
     member this.Build() =
         { Card = card
           StartDate = startDate

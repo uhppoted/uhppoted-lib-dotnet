@@ -41,7 +41,7 @@ class CLI
 
         foreach (var command in Commands.commands)
         {
-            WriteLine("  - {0,-21}  {1}", command.command, command.description);
+            WriteLine("  - {0,-26}  {1}", command.command, command.description);
         }
 
         WriteLine();

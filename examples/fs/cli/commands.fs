@@ -13,8 +13,8 @@ type command =
       f: string list -> Result<unit, string> }
 
 let CONTROLLER = 1u
-let ENDPOINT = Some(IPEndPoint(IPAddress.Parse("192.168.1.100"), 60000))
-let PROTOCOL = Some("udp")
+// let ENDPOINT = Some(IPEndPoint(IPAddress.Parse("192.168.1.100"), 60000))
+// let PROTOCOL = Some("udp")
 
 let ADDRESS = IPAddress.Parse "192.168.1.10"
 let NETMASK = IPAddress.Parse "255.255.255.0"
@@ -45,14 +45,14 @@ let OPTIONS: Options =
 
 let CONTROLLERS =
     Map.ofList
-        [ (405419896u,
-           { Controller = 405419896u
-             Endpoint = ENDPOINT
-             Protocol = Some("udp") })
-          (303986753u,
-           { Controller = 405419896u
-             Endpoint = ENDPOINT
-             Protocol = Some("tcp") }) ]
+        [ (303986753u,
+           { controller = 303986753u
+             endpoint = Some(IPEndPoint.Parse("192.168.1.100:60000"))
+             protocol = Some("udp") })
+          (201020304u,
+           { controller = 201020304u
+             endpoint = Some(IPEndPoint.Parse("192.168.1.100:60000"))
+             protocol = Some("tcp") }) ]
 
 let lookup (controller: uint32) = CONTROLLERS.TryFind controller
 
@@ -121,7 +121,12 @@ let set_IPv4 args =
     let netmask = argparse args "--netmask" NETMASK
     let gateway = argparse args "--gateway" GATEWAY
 
-    match Uhppoted.SetIPv4(controller, address, netmask, gateway, OPTIONS) with
+    let result =
+        match lookup controller with
+        | Some c -> Uhppoted.SetIPv4(c, address, netmask, gateway, OPTIONS)
+        | None -> Uhppoted.SetIPv4(controller, address, netmask, gateway, OPTIONS)
+
+    match result with
     | Ok response ->
         printfn "set-IPv4"
         printfn "  ok"
@@ -132,7 +137,12 @@ let set_IPv4 args =
 let get_listener args =
     let controller = argparse args "--controller" CONTROLLER
 
-    match Uhppoted.GetListener(controller, OPTIONS) with
+    let result =
+        match lookup controller with
+        | Some c -> Uhppoted.GetListener(c, OPTIONS)
+        | None -> Uhppoted.GetListener(controller, OPTIONS)
+
+    match result with
     | Ok record ->
         printfn "get-listener"
         printfn "  controller %u" controller
@@ -147,7 +157,12 @@ let set_listener args =
     let listener = argparse args "--listener" LISTENER
     let interval = argparse args "--interval" INTERVAL
 
-    match Uhppoted.SetListener(controller, listener, interval, OPTIONS) with
+    let result =
+        match lookup controller with
+        | Some c -> Uhppoted.SetListener(c, listener, interval, OPTIONS)
+        | None -> Uhppoted.SetListener(controller, listener, interval, OPTIONS)
+
+    match result with
     | Ok ok ->
         printfn "set-listener"
         printfn "  controller %u" controller
@@ -159,7 +174,12 @@ let set_listener args =
 let get_time args =
     let controller = argparse args "--controller" CONTROLLER
 
-    match Uhppoted.GetTime(controller, OPTIONS) with
+    let result =
+        match lookup controller with
+        | Some c -> Uhppoted.GetTime(c, OPTIONS)
+        | None -> Uhppoted.GetTime(controller, OPTIONS)
+
+    match result with
     | Ok datetime ->
         printfn "get-time"
         printfn "  controller %u" controller
@@ -172,7 +192,12 @@ let set_time args =
     let controller = argparse args "--controller" CONTROLLER
     let now = argparse args "--datetime" DateTime.Now
 
-    match Uhppoted.SetTime(controller, now, OPTIONS) with
+    let result =
+        match lookup controller with
+        | Some c -> Uhppoted.SetTime(c, now, OPTIONS)
+        | None -> Uhppoted.SetTime(controller, now, OPTIONS)
+
+    match result with
     | Ok datetime ->
         printfn "set-time"
         printfn "  controller %u" controller
@@ -185,7 +210,12 @@ let get_door args =
     let controller = argparse args "--controller" CONTROLLER
     let door = argparse args "--door" DOOR
 
-    match Uhppoted.GetDoor(controller, door, OPTIONS) with
+    let result =
+        match lookup controller with
+        | Some c -> Uhppoted.GetDoor(c, door, OPTIONS)
+        | None -> Uhppoted.GetDoor(controller, door, OPTIONS)
+
+    match result with
     | Ok v when v.HasValue ->
         let record = v.Value
 
@@ -206,7 +236,12 @@ let set_door args =
     let mode = argparse args "--mode" MODE
     let delay = argparse args "--delay" DELAY
 
-    match Uhppoted.SetDoor(controller, door, mode, delay, OPTIONS) with
+    let result =
+        match lookup controller with
+        | Some c -> Uhppoted.SetDoor(c, door, mode, delay, OPTIONS)
+        | None -> Uhppoted.SetDoor(controller, door, mode, delay, OPTIONS)
+
+    match result with
     | Ok v when v.HasValue ->
         let record = v.Value
 
@@ -225,7 +260,12 @@ let set_door_passcodes args =
     let door = argparse args "--door" DOOR
     let passcodes: uint32 array = argparse args "--passcodes" [||]
 
-    match Uhppoted.SetDoorPasscodes(controller, door, passcodes, OPTIONS) with
+    let result =
+        match lookup controller with
+        | Some c -> Uhppoted.SetDoorPasscodes(c, door, passcodes, OPTIONS)
+        | None -> Uhppoted.SetDoorPasscodes(controller, door, passcodes, OPTIONS)
+
+    match result with
     | Ok ok ->
         printfn "set-door-passcodes"
         printfn "  controller %u" controller
@@ -239,7 +279,12 @@ let open_door args =
     let controller = argparse args "--controller" CONTROLLER
     let door = argparse args "--door" DOOR
 
-    match Uhppoted.OpenDoor(controller, door, OPTIONS) with
+    let result =
+        match lookup controller with
+        | Some c -> Uhppoted.OpenDoor(c, door, OPTIONS)
+        | None -> Uhppoted.OpenDoor(controller, door, OPTIONS)
+
+    match result with
     | Ok ok ->
         printfn "open-door"
         printfn "  controller %u" controller
@@ -251,7 +296,12 @@ let open_door args =
 let get_status args =
     let controller = argparse args "--controller" CONTROLLER
 
-    match Uhppoted.GetStatus(controller, OPTIONS) with
+    let result =
+        match lookup controller with
+        | Some c -> Uhppoted.GetStatus(c, OPTIONS)
+        | None -> Uhppoted.GetStatus(controller, OPTIONS)
+
+    match result with
     | Ok(status, event) ->
         printfn "get-status"
         printfn "         controller %u" controller
@@ -297,7 +347,12 @@ let get_status args =
 let get_cards args =
     let controller = argparse args "--controller" CONTROLLER
 
-    match Uhppoted.GetCards(controller, OPTIONS) with
+    let result =
+        match lookup controller with
+        | Some c -> Uhppoted.GetCards(c, OPTIONS)
+        | None -> Uhppoted.GetCards(controller, OPTIONS)
+
+    match result with
     | Ok cards ->
         printfn "get-cards"
         printfn "  controller %u" controller
@@ -310,7 +365,12 @@ let get_card args =
     let controller = argparse args "--controller" CONTROLLER
     let card = argparse args "--card" CARD
 
-    match Uhppoted.GetCard(controller, card, OPTIONS) with
+    let result =
+        match lookup controller with
+        | Some c -> Uhppoted.GetCard(c, card, OPTIONS)
+        | None -> Uhppoted.GetCard(controller, card, OPTIONS)
+
+    match result with
     | Ok v when v.HasValue ->
         let record = v.Value
 
@@ -333,7 +393,12 @@ let get_card_at_index args =
     let controller = argparse args "--controller" CONTROLLER
     let index = argparse args "--card" CARD_INDEX
 
-    match Uhppoted.GetCardAtIndex(controller, index, OPTIONS) with
+    let result =
+        match lookup controller with
+        | Some c -> Uhppoted.GetCardAtIndex(c, index, OPTIONS)
+        | None -> Uhppoted.GetCardAtIndex(controller, index, OPTIONS)
+
+    match result with
     | Ok v when v.HasValue ->
         let record = v.Value
 
@@ -367,7 +432,12 @@ let put_card args =
           PIN = argparse args "--PIN" 0u }
 
 
-    match Uhppoted.PutCard(controller, card, OPTIONS) with
+    let result =
+        match lookup controller with
+        | Some c -> Uhppoted.PutCard(c, card, OPTIONS)
+        | None -> Uhppoted.PutCard(controller, card, OPTIONS)
+
+    match result with
     | Ok ok ->
         printfn "put-card"
         printfn "  controller %u" controller
@@ -381,7 +451,12 @@ let delete_card args =
     let controller = argparse args "--controller" CONTROLLER
     let card = argparse args "--card" CARD
 
-    match Uhppoted.DeleteCard(controller, card, OPTIONS) with
+    let result =
+        match lookup controller with
+        | Some c -> Uhppoted.DeleteCard(c, card, OPTIONS)
+        | None -> Uhppoted.DeleteCard(controller, card, OPTIONS)
+
+    match result with
     | Ok ok ->
         printfn "delete-card"
         printfn "  controller %u" controller
@@ -394,7 +469,12 @@ let delete_card args =
 let delete_all_cards args =
     let controller = argparse args "--controller" CONTROLLER
 
-    match Uhppoted.DeleteAllCards(controller, OPTIONS) with
+    let result =
+        match lookup controller with
+        | Some c -> Uhppoted.DeleteAllCards(c, OPTIONS)
+        | None -> Uhppoted.DeleteAllCards(controller, OPTIONS)
+
+    match result with
     | Ok ok ->
         printfn "delete-all-cards"
         printfn "  controller %u" controller
@@ -407,7 +487,12 @@ let get_event args =
     let controller = argparse args "--controller" CONTROLLER
     let index = argparse args "--index" EVENT_INDEX
 
-    match Uhppoted.GetEvent(controller, index, OPTIONS) with
+    let result =
+        match lookup controller with
+        | Some c -> Uhppoted.GetEvent(c, index, OPTIONS)
+        | None -> Uhppoted.GetEvent(controller, index, OPTIONS)
+
+    match result with
     | Ok v when v.HasValue ->
         let record = v.Value
 
@@ -429,7 +514,12 @@ let get_event args =
 let get_event_index args =
     let controller = argparse args "--controller" CONTROLLER
 
-    match Uhppoted.GetEventIndex(controller, OPTIONS) with
+    let result =
+        match lookup controller with
+        | Some c -> Uhppoted.GetEventIndex(c, OPTIONS)
+        | None -> Uhppoted.GetEventIndex(controller, OPTIONS)
+
+    match result with
     | Ok index ->
         printfn "get-event-index"
         printfn "  controller %u" controller
@@ -442,7 +532,12 @@ let set_event_index args =
     let controller = argparse args "--controller" CONTROLLER
     let index = argparse args "--index" EVENT_INDEX
 
-    match Uhppoted.SetEventIndex(controller, index, OPTIONS) with
+    let result =
+        match lookup controller with
+        | Some c -> Uhppoted.SetEventIndex(c, index, OPTIONS)
+        | None -> Uhppoted.SetEventIndex(controller, index, OPTIONS)
+
+    match result with
     | Ok ok ->
         printfn "set-event-index"
         printfn "  controller %u" controller
@@ -455,7 +550,12 @@ let record_special_events args =
     let controller = argparse args "--controller" CONTROLLER
     let enable = argparse args "--enable" ENABLE
 
-    match Uhppoted.RecordSpecialEvents(controller, enable, OPTIONS) with
+    let result =
+        match lookup controller with
+        | Some c -> Uhppoted.RecordSpecialEvents(c, enable, OPTIONS)
+        | None -> Uhppoted.RecordSpecialEvents(controller, enable, OPTIONS)
+
+    match result with
     | Ok ok ->
         printfn "record-special-events"
         printfn "  controller %u" controller
@@ -468,7 +568,12 @@ let get_time_profile args =
     let controller = argparse args "--controller" CONTROLLER
     let profile = argparse args "--profile" TIME_PROFILE_ID
 
-    match Uhppoted.GetTimeProfile(controller, profile, OPTIONS) with
+    let result =
+        match lookup controller with
+        | Some c -> Uhppoted.GetTimeProfile(c, profile, OPTIONS)
+        | None -> Uhppoted.GetTimeProfile(controller, profile, OPTIONS)
+
+    match result with
     | Ok v when v.HasValue ->
         let record = v.Value
 
@@ -522,7 +627,12 @@ let set_time_profile args =
           LinkedProfile = argparse args "--linked" 0uy }
 
 
-    match Uhppoted.SetTimeProfile(controller, profile, OPTIONS) with
+    let result =
+        match lookup controller with
+        | Some c -> Uhppoted.SetTimeProfile(c, profile, OPTIONS)
+        | None -> Uhppoted.SetTimeProfile(controller, profile, OPTIONS)
+
+    match result with
     | Ok ok ->
         printfn "set-time-profile"
         printfn "  controller %u" controller
@@ -535,7 +645,12 @@ let set_time_profile args =
 let clear_time_profiles args =
     let controller = argparse args "--controller" CONTROLLER
 
-    match Uhppoted.ClearTimeProfiles(controller, OPTIONS) with
+    let result =
+        match lookup controller with
+        | Some c -> Uhppoted.ClearTimeProfiles(c, OPTIONS)
+        | None -> Uhppoted.ClearTimeProfiles(controller, OPTIONS)
+
+    match result with
     | Ok ok ->
         printfn "clear-time-profiles"
         printfn "  controller %u" controller
@@ -563,7 +678,12 @@ let add_task args =
           MoreCards = argparse args "--more-cards" 0uy }
 
 
-    match Uhppoted.AddTask(controller, task, OPTIONS) with
+    let result =
+        match lookup controller with
+        | Some c -> Uhppoted.AddTask(c, task, OPTIONS)
+        | None -> Uhppoted.AddTask(controller, task, OPTIONS)
+
+    match result with
     | Ok ok ->
         printfn "add-task"
         printfn "  controller %u" controller
@@ -577,7 +697,12 @@ let add_task args =
 let clearTaskList args =
     let controller = argparse args "--controller" CONTROLLER
 
-    match Uhppoted.ClearTaskList(controller, OPTIONS) with
+    let result =
+        match lookup controller with
+        | Some c -> Uhppoted.ClearTaskList(c, OPTIONS)
+        | None -> Uhppoted.ClearTaskList(controller, OPTIONS)
+
+    match result with
     | Ok ok ->
         printfn "clear-tasklist"
         printfn "  controller %u" controller
@@ -589,7 +714,12 @@ let clearTaskList args =
 let refreshTaskList args =
     let controller = argparse args "--controller" CONTROLLER
 
-    match Uhppoted.RefreshTaskList(controller, OPTIONS) with
+    let result =
+        match lookup controller with
+        | Some c -> Uhppoted.RefreshTaskList(c, OPTIONS)
+        | None -> Uhppoted.RefreshTaskList(controller, OPTIONS)
+
+    match result with
     | Ok ok ->
         printfn "refresh-tasklist"
         printfn "  controller %u" controller
@@ -602,7 +732,12 @@ let setPCControl args =
     let controller = argparse args "--controller" CONTROLLER
     let enable = argparse args "--enable" false
 
-    match Uhppoted.SetPCControl(controller, enable, OPTIONS) with
+    let result =
+        match lookup controller with
+        | Some c -> Uhppoted.SetPCControl(c, enable, OPTIONS)
+        | None -> Uhppoted.SetPCControl(controller, enable, OPTIONS)
+
+    match result with
     | Ok ok ->
         printfn "set-pc-control"
         printfn "  controller %u" controller
@@ -616,7 +751,12 @@ let setInterlock args =
     let controller = argparse args "--controller" CONTROLLER
     let interlock = argparse args "--interlock" Interlock.None
 
-    match Uhppoted.SetInterlock(controller, interlock, OPTIONS) with
+    let result =
+        match lookup controller with
+        | Some c -> Uhppoted.SetInterlock(c, interlock, OPTIONS)
+        | None -> Uhppoted.SetInterlock(controller, interlock, OPTIONS)
+
+    match result with
     | Ok ok ->
         printfn "set-interlock"
         printfn "  controller %u" controller
@@ -635,7 +775,12 @@ let activateKeypads args =
     let reader3 = keypads |> List.contains 3uy
     let reader4 = keypads |> List.contains 4uy
 
-    match Uhppoted.ActivateKeypads(controller, reader1, reader2, reader3, reader4, OPTIONS) with
+    let result =
+        match lookup controller with
+        | Some c -> Uhppoted.ActivateKeypads(c, reader1, reader2, reader3, reader4, OPTIONS)
+        | None -> Uhppoted.ActivateKeypads(controller, reader1, reader2, reader3, reader4, OPTIONS)
+
+    match result with
     | Ok ok ->
         printfn "activate-keypads"
         printfn "  controller %u" controller
@@ -651,7 +796,12 @@ let activateKeypads args =
 let restoreDefaultParameters args =
     let controller = argparse args "--controller" CONTROLLER
 
-    match Uhppoted.RestoreDefaultParameters(controller, OPTIONS) with
+    let result =
+        match lookup controller with
+        | Some c -> Uhppoted.RestoreDefaultParameters(c, OPTIONS)
+        | None -> Uhppoted.RestoreDefaultParameters(controller, OPTIONS)
+
+    match result with
     | Ok ok ->
         printfn "restore-default-parameters"
         printfn "  controller %u" controller

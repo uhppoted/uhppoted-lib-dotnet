@@ -4,6 +4,7 @@ Imports System.Threading
 
 Imports UHPPOTE = uhppoted.Uhppoted
 Imports OptionsBuilder = uhppoted.OptionsBuilder
+Imports CBuilder = uhppoted.CBuilder
 Imports DoorMode = uhppoted.DoorMode
 Imports Interlock = uhppoted.Interlock
 
@@ -76,6 +77,18 @@ Module Commands
                                 WithDebug(True).
                                 Build()
 
+    Private ReadOnly CONTROLLERS As New Dictionary(Of UInteger, Uhppoted.C) From {
+        {303986753UI, New CBuilder(303986753UI).
+                          WithEndPoint(IPEndPoint.Parse("192.168.1.100:60000")).
+                          WithProtocol("udp").
+                          Build()
+        },
+        {201020304UI, New CBuilder(201020304UI).
+                          WithEndPoint(IPEndPoint.Parse("192.168.1.100:60000")).
+                          WithProtocol("tcp").
+                          Build()
+        }
+     }
     Public Dim commands As New List(Of Command) From {
            New Command("find-controllers", "Retrieves a list of controllers accessible on the local LAN", AddressOf FindControllers),
            New Command("get-controller", "Retrieves the controller information from a controller", AddressOf GetController),
@@ -136,7 +149,10 @@ Module Commands
 
     Sub GetController(args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
-        Dim result = UHPPOTE.GetController(controller, OPTIONS)
+
+        Dim result = If(CONTROLLERS.TryGetValue(controller, Nothing),
+                        UHPPOTE.GetController(CONTROLLERS(controller), OPTIONS),
+                        UHPPOTE.GetController(controller, OPTIONS))
 
         If (result.IsOk)
             Dim record = result.ResultValue

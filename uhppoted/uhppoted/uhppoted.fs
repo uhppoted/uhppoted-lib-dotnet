@@ -14,13 +14,13 @@ module Uhppoted =
           protocol = None
           debug = false }
 
-    let private resolve (controller: 'T) (options: Options) : Result<C, string> =
+    let private resolve (controller: 'T) : Result<C, string> =
         match box controller with
         | :? uint32 as u32 ->
             Ok
-                { Controller = u32
-                  Endpoint = options.endpoint
-                  Protocol = options.protocol }
+                { controller = u32
+                  endpoint = None
+                  protocol = None }
         | :? C as c -> Ok c
         | _ -> Error "unsupported controller type"
 
@@ -35,8 +35,8 @@ module Uhppoted =
         let timeout = options.timeout
         let debug = options.debug
 
-        let endpoint = controller.Endpoint
-        let protocol = controller.Protocol
+        let endpoint = controller.endpoint
+        let protocol = controller.protocol
 
         let result =
             match endpoint, protocol with
@@ -47,12 +47,12 @@ module Uhppoted =
         match result with
         | Ok packet ->
             match decode packet with
-            | Ok response when response.controller = controller.Controller -> Ok response
+            | Ok response when response.controller = controller.controller -> Ok response
             | Ok _ -> Error "invalid response"
             | Error err -> Error err
         | Error err -> Error err
 
-    let private exex
+    let private xxxx
         (controller: uint32)
         request
         (decode: byte[] -> Result<'b, string>)
@@ -83,7 +83,7 @@ module Uhppoted =
     /// <summary>
     /// Retrieves a list of controllers on the local LAN accessible via a UDP broadcast.
     /// </summary>
-    /// <param name="options">Bind, broadcast and listen address options.</param>
+    /// <param name="options">Bind, broadcast and listen addresses.</param>
     /// <returns>A result with an array of GetControllerResponse records or error.</returns>
     /// <remarks>
     /// Invalid individual responses are silently discarded.
@@ -120,15 +120,15 @@ module Uhppoted =
     /// <summary>
     /// Retrieves the IPv4 configuration, MAC address and version information for an access controller.
     /// </summary>
-    /// <param name="controller">Controller ID or C struct.</param>
+    /// <param name="controller">Controller ID or struct with controller ID, endpoint and protocol.</param>
     /// <param name="options">Bind, broadcast and listen addresses.</param>
     /// <returns>Ok with a Controller record or Error.</returns>
     /// <remarks></remarks>
     let GetController (controller: 'T, options: Options) =
-        match resolve controller options with
+        match resolve controller with
         | Error err -> Error err
         | Ok c ->
-            let request = Encode.getControllerRequest c.Controller
+            let request = Encode.getControllerRequest c.controller
 
             match exec c request Decode.getControllerResponse options with
             | Error err -> Error err
@@ -147,621 +147,709 @@ module Uhppoted =
     /// <summary>
     /// Sets the controller IPv4 address, netmask and gateway address..
     /// </summary>
-    /// <param name="controller">Controller ID.</param>
+    /// <param name="controller">Controller ID or struct with controller ID, endpoint and protocol.</param>
     /// <param name="address">Controller IPv4 address.</param>
     /// <param name="netmask">Controller IPv4 netmask.</param>
     /// <param name="gateway">Gateway IPv4 address.</param>
-    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <param name="options">Bind, broadcast and listen addresses.</param>
     /// <returns>Ok or Error.</returns>
     /// <remarks>
     /// The controller does not return a response to this request - provided no network (or other) errors occur,
     /// it is assumed to be successful.
     /// </remarks>
-    let SetIPv4 (controller: uint32, address: IPAddress, netmask: IPAddress, gateway: IPAddress, options: Options) =
-        let bind = options.bind
-        let broadcast = options.broadcast
-        let timeout = options.timeout
-        let debug = options.debug
-        let request = Encode.setIPv4Request controller address netmask gateway
-
-        let result =
-            match options.endpoint, options.protocol with
-            | None, _ -> UDP.broadcast_to (request, bind, broadcast, timeout, debug)
-            | Some(addr), Some("tcp") -> TCP.send_to (request, bind, addr, timeout, debug)
-            | Some(addr), _ -> UDP.send_to (request, bind, addr, timeout, debug)
-
-        match result with
-        | Ok _ -> Ok()
+    let SetIPv4 (controller: 'T, address: IPAddress, netmask: IPAddress, gateway: IPAddress, options: Options) =
+        match resolve controller with
         | Error err -> Error err
+        | Ok c ->
+            let bind = options.bind
+            let broadcast = options.broadcast
+            let timeout = options.timeout
+            let debug = options.debug
+            let request = Encode.setIPv4Request c.controller address netmask gateway
+
+            let result =
+                match options.endpoint, options.protocol with
+                | None, _ -> UDP.broadcast_to (request, bind, broadcast, timeout, debug)
+                | Some(addr), Some("tcp") -> TCP.send_to (request, bind, addr, timeout, debug)
+                | Some(addr), _ -> UDP.send_to (request, bind, addr, timeout, debug)
+
+            match result with
+            | Ok _ -> Ok()
+            | Error err -> Error err
 
     /// <summary>
     /// Retrieves the controller event listener endpoint and auto-send interval.
     /// </summary>
-    /// <param name="controller">Controller ID.</param>
-    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <param name="controller">Controller ID or struct with controller ID, endpoint and protocol.</param>
+    /// <param name="options">Bind, broadcast and listen addresses.</param>
     /// <returns>Ok with an Listener record or Error.</returns>
-    let GetListener (controller: uint32, options: Options) =
-        let request = Encode.getListenerRequest controller
-
-        match exex controller request Decode.getListenerResponse options with
-        | Ok response ->
-            Ok
-                { Endpoint = response.endpoint
-                  Interval = response.interval }
-
+    let GetListener (controller: 'T, options: Options) =
+        match resolve controller with
         | Error err -> Error err
+        | Ok c ->
+            let request = Encode.getListenerRequest c.controller
+
+            match exec c request Decode.getListenerResponse options with
+            | Ok response ->
+                Ok
+                    { Endpoint = response.endpoint
+                      Interval = response.interval }
+            | Error err -> Error err
+
 
     /// <summary>
     /// Sets the controller event listener IPv4 endpoint and the auto-send interval. The auto-send interval is the interval
     /// at which the controller sends the current status (including the most recent event) to the configured event listener.
     /// (events are always sent as the occur).
     /// </summary>
-    /// <param name="controller">Controller ID.</param>
+    /// <param name="controller">Controller ID or struct with controller ID, endpoint and protocol.</param>
     /// <param name="endpoint">IPv4 endpoint of event listener.</param>
     /// <param name="interval">Auto-send interval (seconds). A zero interval disables auto-send.</param>
-    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <param name="options">Bind, broadcast and listen addresses.</param>
     /// <returns>Ok with true if the event listener endpoint was updated or Error.</returns>
-    let SetListener (controller: uint32, endpoint: IPEndPoint, interval: uint8, options: Options) =
-        let address = endpoint.Address
-        let port = uint16 endpoint.Port
-        let request = Encode.setListenerRequest controller address port interval
-
-        match exex controller request Decode.setListenerResponse options with
-        | Ok response -> Ok response.ok
+    let SetListener (controller: 'T, endpoint: IPEndPoint, interval: uint8, options: Options) =
+        match resolve controller with
         | Error err -> Error err
+        | Ok c ->
+            let address = endpoint.Address
+            let port = uint16 endpoint.Port
+            let request = Encode.setListenerRequest c.controller address port interval
+
+            match exec c request Decode.setListenerResponse options with
+            | Ok response -> Ok response.ok
+            | Error err -> Error err
 
     /// <summary>
     /// Retrieves the controller current date and time.
     /// </summary>
-    /// <param name="controller">Controller ID.</param>
-    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <param name="controller">Controller ID or struct with controller ID, endpoint and protocol.</param>
+    /// <param name="options">Bind, broadcast and listen addresses.</param>
     /// <returns>Ok with a DateTime value or Error.</returns>
-    let GetTime (controller: uint32, options: Options) =
-        let request = Encode.get_time_request controller
-
-        match exex controller request Decode.get_time_response options with
-        | Ok response -> Ok response.datetime
+    let GetTime (controller: 'T, options: Options) =
+        match resolve controller with
         | Error err -> Error err
+        | Ok c ->
+            let request = Encode.get_time_request c.controller
+
+            match exec c request Decode.get_time_response options with
+            | Ok response -> Ok response.datetime
+            | Error err -> Error err
 
     /// <summary>
     /// Sets the controller date and time.
     /// </summary>
-    /// <param name="controller">Controller ID.</param>
+    /// <param name="controller">Controller ID or struct with controller ID, endpoint and protocol.</param>
     /// <param name="datetime">Date and time to set.</param>
-    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <param name="options">Bind, broadcast and listen addresses.</param>
     /// <returns>Ok with the DateTime value from the controller or Error.</returns>
-    let SetTime (controller: uint32, datetime: DateTime, options: Options) =
-        let request = Encode.set_time_request controller datetime
-
-        match exex controller request Decode.set_time_response options with
-        | Ok response -> Ok response.datetime
+    let SetTime (controller: 'T, datetime: DateTime, options: Options) =
+        match resolve controller with
         | Error err -> Error err
+        | Ok c ->
+            let request = Encode.set_time_request c.controller datetime
+
+            match exec c request Decode.set_time_response options with
+            | Ok response -> Ok response.datetime
+            | Error err -> Error err
 
     /// <summary>
     /// Retrieves the control mode and unlocked delay for a door.
     /// </summary>
-    /// <param name="controller">Controller ID.</param>
+    /// <param name="controller">Controller ID or struct with controller ID, endpoint and protocol.</param>
     /// <param name="door">Door ID [1..4].</param>
-    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <param name="options">Bind, broadcast and listen addresses.</param>
     /// <returns>Ok with the door mode and unlock delay (or null) or Error.</returns>
-    let GetDoor (controller: uint32, door: uint8, options: Options) =
-        let request = Encode.get_door_request controller door
-
-        match exex controller request Decode.get_door_response options with
-        | Ok response when response.door <> door -> // incorrect door
-            Ok(Nullable())
-        | Ok response ->
-            Ok(
-                Nullable
-                    { mode = Enums.doorMode response.mode
-                      delay = response.delay }
-            )
+    let GetDoor (controller: 'T, door: uint8, options: Options) =
+        match resolve controller with
         | Error err -> Error err
+        | Ok c ->
+            let request = Encode.get_door_request c.controller door
+
+            match exec c request Decode.get_door_response options with
+            | Ok response when response.door <> door -> // incorrect door
+                Ok(Nullable())
+            | Ok response ->
+                Ok(
+                    Nullable
+                        { mode = Enums.doorMode response.mode
+                          delay = response.delay }
+                )
+            | Error err -> Error err
 
     /// <summary>
     /// Sets the control mode and unlocked delay for a door.
     /// </summary>
-    /// <param name="controller">Controller ID.</param>
+    /// <param name="controller">Controller ID or struct with controller ID, endpoint and protocol.</param>
     /// <param name="door">Door ID [1..4].</param>
-    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <param name="options">Bind, broadcast and listen addresses.</param>
     /// <returns>Ok with the door mode and unlock delay (or null) or Error.</returns>
-    let SetDoor (controller: uint32, door: uint8, mode: DoorMode, delay: uint8, options: Options) =
-        let request = Encode.set_door_request controller door mode delay
-
-        match exex controller request Decode.set_door_response options with
-        | Ok response when response.door <> door -> // incorrect door
-            Ok(Nullable())
-        | Ok response ->
-            Ok(
-                Nullable
-                    { mode = Enums.doorMode response.mode
-                      delay = response.delay }
-            )
+    let SetDoor (controller: 'T, door: uint8, mode: DoorMode, delay: uint8, options: Options) =
+        match resolve controller with
         | Error err -> Error err
+        | Ok c ->
+            let request = Encode.set_door_request c.controller door mode delay
+
+            match exec c request Decode.set_door_response options with
+            | Ok response when response.door <> door -> // incorrect door
+                Ok(Nullable())
+            | Ok response ->
+                Ok(
+                    Nullable
+                        { mode = Enums.doorMode response.mode
+                          delay = response.delay }
+                )
+            | Error err -> Error err
 
     /// <summary>
     /// Sets up to 4 passcodes for a controller door.
     /// </summary>
-    /// <param name="controller">Controller ID.</param>
+    /// <param name="controller">Controller ID or struct with controller ID, endpoint and protocol.</param>
     /// <param name="door">Door number [1..4].</param>
     /// <param name="passcodes">Array of up to 4 passcodes in the range [0..999999], defaulting to 0 ('none')
     ///                         if the list contains less than 4 entries.</param>
-    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <param name="options">Bind, broadcast and listen addresses.</param>
     /// <returns>
     /// Returns Ok with true value if the passcodes were updated or Error.
     /// </returns>
-    let SetDoorPasscodes (controller: uint32, door: uint8, passcodes: uint32 array, options: Options) =
-        let request =
-            Encode.set_door_passcodes_request
-                controller
-                door
-                (passcodes |> Array.tryItem 0 |> Option.defaultValue 0u)
-                (passcodes |> Array.tryItem 1 |> Option.defaultValue 0u)
-                (passcodes |> Array.tryItem 2 |> Option.defaultValue 0u)
-                (passcodes |> Array.tryItem 3 |> Option.defaultValue 0u)
-
-        match exex controller request Decode.set_door_passcodes_response options with
-        | Ok response -> Ok response.ok
+    let SetDoorPasscodes (controller: 'T, door: uint8, passcodes: uint32 array, options: Options) =
+        match resolve controller with
         | Error err -> Error err
+        | Ok c ->
+            let request =
+                Encode.set_door_passcodes_request
+                    c.controller
+                    door
+                    (passcodes |> Array.tryItem 0 |> Option.defaultValue 0u)
+                    (passcodes |> Array.tryItem 1 |> Option.defaultValue 0u)
+                    (passcodes |> Array.tryItem 2 |> Option.defaultValue 0u)
+                    (passcodes |> Array.tryItem 3 |> Option.defaultValue 0u)
+
+            match exec c request Decode.set_door_passcodes_response options with
+            | Ok response -> Ok response.ok
+            | Error err -> Error err
 
     /// <summary>
     /// Unlocks a door controlled by a controller.
     /// </summary>
-    /// <param name="controller">Controller ID.</param>
+    /// <param name="controller">Controller ID or struct with controller ID, endpoint and protocol.</param>
     /// <param name="door">Door number [1..4].</param>
-    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <param name="options">Bind, broadcast and listen addresses.</param>
     /// <returns>
     /// Returns Ok if the request was processed, error otherwise. The Ok response should be
     /// checked for 'true'
     /// </returns>
     /// <remarks>
     /// </remarks>
-    let OpenDoor (controller: uint32, door: uint8, options: Options) =
-        let request = Encode.openDoorRequest controller door
-
-        match exex controller request Decode.openDoorResponse options with
-        | Ok response -> Ok response.ok
+    let OpenDoor (controller: 'T, door: uint8, options: Options) =
+        match resolve controller with
         | Error err -> Error err
+        | Ok c ->
+            let request = Encode.openDoorRequest c.controller door
+
+            match exec c request Decode.openDoorResponse options with
+            | Ok response -> Ok response.ok
+            | Error err -> Error err
 
     /// <summary>
     /// Retrieves the current status and most recent event from a controller.
     /// </summary>
-    /// <param name="controller">Controller ID.</param>
-    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <param name="controller">Controller ID or struct with controller ID, endpoint and protocol.</param>
+    /// <param name="options">Bind, broadcast and listen addresses.</param>
     /// <returns>
     /// Returns Ok with the controller status record, including the most recent event (if any), or Error.
     /// </returns>
-    let GetStatus (controller: uint32, options: Options) =
-        let request = Encode.getStatusRequest controller
-
-        match exex controller request Decode.getStatusResponse options with
-        | Ok response ->
-            let status: Status =
-                { Door1Open = response.door1Open
-                  Door2Open = response.door2Open
-                  Door3Open = response.door3Open
-                  Door4Open = response.door4Open
-                  Button1Pressed = response.door1Button
-                  Button2Pressed = response.door2Button
-                  Button3Pressed = response.door3Button
-                  Button4Pressed = response.door4Button
-                  SystemError = response.systemError
-                  SystemDateTime = response.systemDateTime
-                  SequenceNumber = response.sequenceNumber
-                  SpecialInfo = response.specialInfo
-                  Relay1 = Enums.relay response.relays 0x01uy
-                  Relay2 = Enums.relay response.relays 0x02uy
-                  Relay3 = Enums.relay response.relays 0x04uy
-                  Relay4 = Enums.relay response.relays 0x08uy
-                  Input1 = Enums.input response.inputs 0x01uy
-                  Input2 = Enums.input response.inputs 0x02uy
-                  Input3 = Enums.input response.inputs 0x04uy
-                  Input4 = Enums.input response.inputs 0x08uy }
-
-            let event: Event =
-                { Timestamp = response.evt.timestamp
-                  Index = response.evt.index
-                  Event = response.evt.event
-                  AccessGranted = response.evt.granted
-                  Door = response.evt.door
-                  Direction = Enums.direction response.evt.direction
-                  Card = response.evt.card
-                  Reason = response.evt.reason }
-
-            match event.Index with
-            | 0u -> Ok(status, Nullable())
-            | _ -> Ok(status, Nullable(event))
-
+    let GetStatus (controller: 'T, options: Options) =
+        match resolve controller with
         | Error err -> Error err
+        | Ok c ->
+            let request = Encode.getStatusRequest c.controller
+
+            match exec c request Decode.getStatusResponse options with
+            | Ok response ->
+                let status: Status =
+                    { Door1Open = response.door1Open
+                      Door2Open = response.door2Open
+                      Door3Open = response.door3Open
+                      Door4Open = response.door4Open
+                      Button1Pressed = response.door1Button
+                      Button2Pressed = response.door2Button
+                      Button3Pressed = response.door3Button
+                      Button4Pressed = response.door4Button
+                      SystemError = response.systemError
+                      SystemDateTime = response.systemDateTime
+                      SequenceNumber = response.sequenceNumber
+                      SpecialInfo = response.specialInfo
+                      Relay1 = Enums.relay response.relays 0x01uy
+                      Relay2 = Enums.relay response.relays 0x02uy
+                      Relay3 = Enums.relay response.relays 0x04uy
+                      Relay4 = Enums.relay response.relays 0x08uy
+                      Input1 = Enums.input response.inputs 0x01uy
+                      Input2 = Enums.input response.inputs 0x02uy
+                      Input3 = Enums.input response.inputs 0x04uy
+                      Input4 = Enums.input response.inputs 0x08uy }
+
+                let event: Event =
+                    { Timestamp = response.evt.timestamp
+                      Index = response.evt.index
+                      Event = response.evt.event
+                      AccessGranted = response.evt.granted
+                      Door = response.evt.door
+                      Direction = Enums.direction response.evt.direction
+                      Card = response.evt.card
+                      Reason = response.evt.reason }
+
+                match event.Index with
+                | 0u -> Ok(status, Nullable())
+                | _ -> Ok(status, Nullable(event))
+
+            | Error err -> Error err
 
     /// <summary>
     /// Retrieves the number of card records stored on a controller.
     /// </summary>
-    /// <param name="controller">Controller ID and (optionally) address and transport protocol.</param>
-    /// <param name="options">Optional bind, broadcast and listen addresses.</param>
+    /// <param name="controller">Controller ID or struct with controller ID, endpoint and protocol.</param>
+    /// <param name="options">Bind, broadcast and listen addresses.</param>
     /// <returns>
     /// Ok with the number of cards stored on the controller or Error.
     /// </returns>
-    let GetCards (controller: uint32, options: Options) =
-        let request = Encode.getCardsRequest controller
-
-        match exex controller request Decode.getCardsResponse options with
-        | Ok response -> Ok response.cards
+    let GetCards (controller: 'T, options: Options) =
+        match resolve controller with
         | Error err -> Error err
+        | Ok c ->
+            let request = Encode.getCardsRequest c.controller
+
+            match exec c request Decode.getCardsResponse options with
+            | Ok response -> Ok response.cards
+            | Error err -> Error err
 
     /// <summary>
     /// Retrieves the card record for the requested card number.
     /// </summary>
-    /// <param name="controller">Controller ID.</param>
+    /// <param name="controller">Controller ID or struct with controller ID, endpoint and protocol.</param>
     /// <param name="card">Card number to retrieve.</param>
-    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <param name="options">Bind, broadcast and listen addresses.</param>
     /// <returns>
     /// Card record matching the card number (or null if not found) or an error if the request failed.
     /// </returns>
-    let GetCard (controller: uint32, card: uint32, options: Options) =
-        let request = Encode.getCardRequest controller card
-
-        match exex controller request Decode.getCardResponse options with
-        | Ok response when response.card = 0u -> // not found
-            Ok(Nullable())
-        | Ok response ->
-            Ok(
-                Nullable
-                    { Card = response.card
-                      StartDate = response.start_date
-                      EndDate = response.end_date
-                      Door1 = response.door1
-                      Door2 = response.door2
-                      Door3 = response.door3
-                      Door4 = response.door4
-                      PIN = response.PIN }
-            )
+    let GetCard (controller: 'T, card: uint32, options: Options) =
+        match resolve controller with
         | Error err -> Error err
+        | Ok c ->
+            let request = Encode.getCardRequest c.controller card
+
+            match exec c request Decode.getCardResponse options with
+            | Ok response when response.card = 0u -> // not found
+                Ok(Nullable())
+            | Ok response ->
+                Ok(
+                    Nullable
+                        { Card = response.card
+                          StartDate = response.start_date
+                          EndDate = response.end_date
+                          Door1 = response.door1
+                          Door2 = response.door2
+                          Door3 = response.door3
+                          Door4 = response.door4
+                          PIN = response.PIN }
+                )
+            | Error err -> Error err
 
     /// <summary>
     /// Retrieves the card record at the supplied index.
     /// </summary>
-    /// <param name="controller">Controller ID.</param>
+    /// <param name="controller">Controller ID or struct with controller ID, endpoint and protocol.</param>
     /// <param name="card">Card number to retrieve.</param>
-    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <param name="options">Bind, broadcast and listen addresses.</param>
     /// <returns>
     /// Card record at the index (or null if not found or deleted) or an error if the request failed.
     /// </returns>
-    let GetCardAtIndex (controller: uint32, index: uint32, options: Options) =
-        let request = Encode.getCardAtIndexRequest controller index
-
-        match exex controller request Decode.getCardAtIndexResponse options with
-        | Ok response when response.card = 0u -> // not found
-            Ok(Nullable())
-        | Ok response when response.card = 0xffffffffu -> // deleted
-            Ok(Nullable())
-        | Ok response ->
-            Ok(
-                Nullable
-                    { Card = response.card
-                      StartDate = response.start_date
-                      EndDate = response.end_date
-                      Door1 = response.door1
-                      Door2 = response.door2
-                      Door3 = response.door3
-                      Door4 = response.door4
-                      PIN = response.PIN }
-            )
+    let GetCardAtIndex (controller: 'T, index: uint32, options: Options) =
+        match resolve controller with
         | Error err -> Error err
+        | Ok c ->
+            let request = Encode.getCardAtIndexRequest c.controller index
+
+            match exec c request Decode.getCardAtIndexResponse options with
+            | Ok response when response.card = 0u -> // not found
+                Ok(Nullable())
+            | Ok response when response.card = 0xffffffffu -> // deleted
+                Ok(Nullable())
+            | Ok response ->
+                Ok(
+                    Nullable
+                        { Card = response.card
+                          StartDate = response.start_date
+                          EndDate = response.end_date
+                          Door1 = response.door1
+                          Door2 = response.door2
+                          Door3 = response.door3
+                          Door4 = response.door4
+                          PIN = response.PIN }
+                )
+            | Error err -> Error err
 
     /// <summary>
     /// Adds or updates a card record on a controller.
     /// </summary>
-    /// <param name="controller">Controller ID.</param>
+    /// <param name="controller">Controller ID or struct with controller ID, endpoint and protocol.</param>
     /// <param name="card">Card record to add or update.</param>
-    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <param name="options">Bind, broadcast and listen addresses.</param>
     /// <returns>
     /// Result with the boolean success/fail result or an Error if the request failed.
     /// </returns>
-    let PutCard (controller: uint32, card: Card, options: Options) =
-        let request = Encode.putCardRequest controller card
-
-        match exex controller request Decode.putCardResponse options with
-        | Ok response -> Ok response.ok
+    let PutCard (controller: 'T, card: Card, options: Options) =
+        match resolve controller with
         | Error err -> Error err
+        | Ok c ->
+            let request = Encode.putCardRequest c.controller card
+
+            match exec c request Decode.putCardResponse options with
+            | Ok response -> Ok response.ok
+            | Error err -> Error err
 
     /// <summary>
     /// Deletes a card record from a controller.
     /// </summary>
-    /// <param name="controller">Controller ID.</param>
+    /// <param name="controller">Controller ID or struct with controller ID, endpoint and protocol.</param>
     /// <param name="card">Card number to delete.</param>
-    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <param name="options">Bind, broadcast and listen addresses.</param>
     /// <returns>
     /// Result with the boolean success/fail result or an Error if the request failed.
     /// </returns>
-    let DeleteCard (controller: uint32, card: uint32, options: Options) =
-        let request = Encode.deleteCardRequest controller card
-
-        match exex controller request Decode.deleteCardResponse options with
-        | Ok response -> Ok response.ok
+    let DeleteCard (controller: 'T, card: uint32, options: Options) =
+        match resolve controller with
         | Error err -> Error err
+        | Ok c ->
+            let request = Encode.deleteCardRequest c.controller card
+
+            match exec c request Decode.deleteCardResponse options with
+            | Ok response -> Ok response.ok
+            | Error err -> Error err
 
     /// <summary>
     /// Deletes all card records from a controller.
     /// </summary>
-    /// <param name="controller">Controller ID.</param>
-    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <param name="controller">Controller ID or struct with controller ID, endpoint and protocol.</param>
+    /// <param name="options">Bind, broadcast and listen addresses.</param>
     /// <returns>
     /// Result with the boolean success/fail result or an Error if the request failed.
     /// </returns>
-    let DeleteAllCards (controller: uint32, options: Options) =
-        let request = Encode.deleteAllCardsRequest controller
-
-        match exex controller request Decode.deleteAllCardsResponse options with
-        | Ok response -> Ok response.ok
+    let DeleteAllCards (controller: 'T, options: Options) =
+        match resolve controller with
         | Error err -> Error err
+        | Ok c ->
+            let request = Encode.deleteAllCardsRequest c.controller
+
+            match exec c request Decode.deleteAllCardsResponse options with
+            | Ok response -> Ok response.ok
+            | Error err -> Error err
 
     /// <summary>
     /// Retrieves the event record at the supplied index.
     /// </summary>
-    /// <param name="controller">Controller ID.</param>
+    /// <param name="controller">Controller ID or struct with controller ID, endpoint and protocol.</param>
     /// <param name="index">Index of event to retrieve.</param>
-    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <param name="options">Bind, broadcast and listen addresses.</param>
     /// <returns>
     /// Event record at the index (or null if not found or deleted) or an error if the request failed. Returns an Ok(null) if the event
     // record does not exist or if the event has been overwritten.
     /// </returns>
-    let GetEvent (controller: uint32, index: uint32, options: Options) =
-        let request = Encode.getEventRequest controller index
-
-        match exex controller request Decode.getEventResponse options with
-        | Ok response when response.event = 0x00uy -> // not found
-            Ok(Nullable())
-        | Ok response when response.event = 0xffuy -> // overwritten
-            Ok(Nullable())
-        | Ok response ->
-            Ok(
-                Nullable
-                    { Timestamp = response.timestamp
-                      Index = response.index
-                      Event = response.event
-                      AccessGranted = response.granted
-                      Door = response.door
-                      Direction = Enums.direction response.direction
-                      Card = response.card
-                      Reason = response.reason }
-            )
+    let GetEvent (controller: 'T, index: uint32, options: Options) =
+        match resolve controller with
         | Error err -> Error err
+        | Ok c ->
+            let request = Encode.getEventRequest c.controller index
+
+            match exec c request Decode.getEventResponse options with
+            | Ok response when response.event = 0x00uy -> // not found
+                Ok(Nullable())
+            | Ok response when response.event = 0xffuy -> // overwritten
+                Ok(Nullable())
+            | Ok response ->
+                Ok(
+                    Nullable
+                        { Timestamp = response.timestamp
+                          Index = response.index
+                          Event = response.event
+                          AccessGranted = response.granted
+                          Door = response.door
+                          Direction = Enums.direction response.direction
+                          Card = response.card
+                          Reason = response.reason }
+                )
+            | Error err -> Error err
 
     /// <summary>
     /// Retrieves the current event index from the controller.
     /// </summary>
-    /// <param name="controller">Controller ID.</param>
-    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <param name="controller">Controller ID or struct with controller ID, endpoint and protocol.</param>
+    /// <param name="options">Bind, broadcast and listen addresses.</param>
     /// <returns>
     /// Ok with current controller event indexEvent record at the index or Error.
     /// </returns>
-    let GetEventIndex (controller: uint32, options: Options) =
-        let request = Encode.getEventIndexRequest controller
-
-        match exex controller request Decode.getEventIndexResponse options with
-        | Ok response -> Ok response.index
+    let GetEventIndex (controller: 'T, options: Options) =
+        match resolve controller with
         | Error err -> Error err
+        | Ok c ->
+            let request = Encode.getEventIndexRequest c.controller
+
+            match exec c request Decode.getEventIndexResponse options with
+            | Ok response -> Ok response.index
+            | Error err -> Error err
 
     /// <summary>
     /// Sets the controller event index.
     /// </summary>
-    /// <param name="controller">Controller ID.</param>
+    /// <param name="controller">Controller ID or struct with controller ID, endpoint and protocol.</param>
     /// <param name="index">Event index.</param>
-    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <param name="options">Bind, broadcast and listen addresses.</param>
     /// <returns>
     /// Ok with true if the event index was updated (false if it was unchanged) or Error.
     /// </returns>
-    let SetEventIndex (controller: uint32, index: uint32, options: Options) =
-        let request = Encode.setEventIndexRequest controller index
-
-        match exex controller request Decode.setEventIndexResponse options with
-        | Ok response -> Ok response.ok
+    let SetEventIndex (controller: 'T, index: uint32, options: Options) =
+        match resolve controller with
         | Error err -> Error err
+        | Ok c ->
+            let request = Encode.setEventIndexRequest c.controller index
+
+            match exec c request Decode.setEventIndexResponse options with
+            | Ok response -> Ok response.ok
+            | Error err -> Error err
 
     /// <summary>
     /// Enables or disables events for door open and close, button presses, etc.
     /// </summary>
-    /// <param name="controller">Controller ID.</param>
+    /// <param name="controller">Controller ID or struct with controller ID, endpoint and protocol.</param>
     /// <param name="enable">true to enabled 'special events'.</param>
-    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <param name="options">Bind, broadcast and listen addresses.</param>
     /// <returns>
     /// Ok with true if the 'special events' mode was set or Error.
     /// </returns>
-    let RecordSpecialEvents (controller: uint32, enable: bool, options: Options) =
-        let request = Encode.recordSpecialEventsRequest controller enable
-
-        match exex controller request Decode.recordSpecialEventsResponse options with
-        | Ok response -> Ok response.ok
+    let RecordSpecialEvents (controller: 'T, enable: bool, options: Options) =
+        match resolve controller with
         | Error err -> Error err
+        | Ok c ->
+            let request = Encode.recordSpecialEventsRequest c.controller enable
+
+            match exec c request Decode.recordSpecialEventsResponse options with
+            | Ok response -> Ok response.ok
+            | Error err -> Error err
 
     /// <summary>
     /// Retrieves a time profile from a controller.
     /// </summary>
-    /// <param name="controller">Controller ID.</param>
+    /// <param name="controller">Controller ID or struct with controller ID, endpoint and protocol.</param>
     /// <param name="profile">Time profile ID [2..254].</param>
-    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <param name="options">Bind, broadcast and listen addresses.</param>
     /// <returns>
     /// Ok with time profile, Ok(null) if the requested profile does not exist or Error if the request failed.
     /// </returns>
-    let GetTimeProfile (controller: uint32, profile: uint8, options: Options) =
-        let request = Encode.getTimeProfileRequest controller profile
-
-        match exex controller request Decode.getTimeProfileResponse options with
-        | Ok response when response.profile = 0x00uy -> // not found
-            Ok(Nullable())
-        | Ok response when response.profile <> profile -> // incorrect profile
-            Ok(Nullable())
-        | Ok response ->
-            Ok(
-                Nullable
-                    { Profile = response.profile
-                      StartDate = response.start_date
-                      EndDate = response.end_date
-                      Monday = response.monday
-                      Tuesday = response.tuesday
-                      Wednesday = response.wednesday
-                      Thursday = response.thursday
-                      Friday = response.friday
-                      Saturday = response.saturday
-                      Sunday = response.sunday
-                      Segment1Start = response.segment1_start
-                      Segment1End = response.segment1_end
-                      Segment2Start = response.segment2_start
-                      Segment2End = response.segment2_end
-                      Segment3Start = response.segment3_start
-                      Segment3End = response.segment3_end
-                      LinkedProfile = response.linked_profile }
-            )
+    let GetTimeProfile (controller: 'T, profile: uint8, options: Options) =
+        match resolve controller with
         | Error err -> Error err
+        | Ok c ->
+            let request = Encode.getTimeProfileRequest c.controller profile
+
+            match exec c request Decode.getTimeProfileResponse options with
+            | Ok response when response.profile = 0x00uy -> // not found
+                Ok(Nullable())
+            | Ok response when response.profile <> profile -> // incorrect profile
+                Ok(Nullable())
+            | Ok response ->
+                Ok(
+                    Nullable
+                        { Profile = response.profile
+                          StartDate = response.start_date
+                          EndDate = response.end_date
+                          Monday = response.monday
+                          Tuesday = response.tuesday
+                          Wednesday = response.wednesday
+                          Thursday = response.thursday
+                          Friday = response.friday
+                          Saturday = response.saturday
+                          Sunday = response.sunday
+                          Segment1Start = response.segment1_start
+                          Segment1End = response.segment1_end
+                          Segment2Start = response.segment2_start
+                          Segment2End = response.segment2_end
+                          Segment3Start = response.segment3_start
+                          Segment3End = response.segment3_end
+                          LinkedProfile = response.linked_profile }
+                )
+            | Error err -> Error err
 
     /// <summary>
     /// Adds or updates an access time profile on a controller.
     /// </summary>
-    /// <param name="controller">Controller ID.</param>
+    /// <param name="controller">Controller ID or struct with controller ID, endpoint and protocol.</param>
     /// <param name="profile">Access time profile to add or update.</param>
-    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <param name="options">Bind, broadcast and listen addresses.</param>
     /// <returns>
     /// Ok with true if the time profile was added/updated, or Error.
     /// </returns>
-    let SetTimeProfile (controller: uint32, profile: TimeProfile, options: Options) =
-        let request = Encode.setTimeProfileRequest controller profile
-
-        match exex controller request Decode.setTimeProfileResponse options with
-        | Ok response -> Ok response.ok
+    let SetTimeProfile (controller: 'T, profile: TimeProfile, options: Options) =
+        match resolve controller with
         | Error err -> Error err
+        | Ok c ->
+            let request = Encode.setTimeProfileRequest c.controller profile
+
+            match exec c request Decode.setTimeProfileResponse options with
+            | Ok response -> Ok response.ok
+            | Error err -> Error err
 
     /// <summary>
     /// Clears all access time profiles stored on a controller.
     /// </summary>
-    /// <param name="controller">Controller ID.</param>
-    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <param name="controller">Controller ID or struct with controller ID, endpoint and protocol.</param>
+    /// <param name="options">Bind, broadcast and listen addresses.</param>
     /// <returns>
     /// Result with the boolean success/fail result or an Error if the request failed.
     /// </returns>
-    let ClearTimeProfiles (controller: uint32, options: Options) =
-        let request = Encode.clearTimeProfilesRequest controller
-
-        match exex controller request Decode.clearTimeProfilesResponse options with
-        | Ok response -> Ok response.ok
+    let ClearTimeProfiles (controller: 'T, options: Options) =
+        match resolve controller with
         | Error err -> Error err
+        | Ok c ->
+            let request = Encode.clearTimeProfilesRequest c.controller
+
+            match exec c request Decode.clearTimeProfilesResponse options with
+            | Ok response -> Ok response.ok
+            | Error err -> Error err
 
     /// <summary>
     /// Adds or updates a scheduled task on a controller. Added tasks are not scheduled to run
     /// until the tasklist has been refreshed.
     /// </summary>
-    /// <param name="controller">Controller ID.</param>
+    /// <param name="controller">Controller ID or struct with controller ID, endpoint and protocol.</param>
     /// <param name="task">Task definition to add or update.</param>
-    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <param name="options">Bind, broadcast and listen addresses.</param>
     /// <returns>
     /// Ok with true if the task was added/updated, or Error.
     /// </returns>
-    let AddTask (controller: uint32, task: Task, options: Options) =
-        let request = Encode.addTaskRequest controller task
-
-        match exex controller request Decode.addTaskResponse options with
-        | Ok response -> Ok response.ok
+    let AddTask (controller: 'T, task: Task, options: Options) =
+        match resolve controller with
         | Error err -> Error err
+        | Ok c ->
+            let request = Encode.addTaskRequest c.controller task
+
+            match exec c request Decode.addTaskResponse options with
+            | Ok response -> Ok response.ok
+            | Error err -> Error err
 
     /// <summary>
     /// Clears all scheduled tasks from the controller task list.
     /// </summary>
-    /// <param name="controller">Controller ID.</param>
-    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <param name="controller">Controller ID or struct with controller ID, endpoint and protocol.</param>
+    /// <param name="options">Bind, broadcast and listen addresses.</param>
     /// <returns>
     /// Result with the boolean success/fail result or an Error if the request failed.
     /// </returns>
-    let ClearTaskList (controller: uint32, options: Options) =
-        let request = Encode.clearTaskListRequest controller
-
-        match exex controller request Decode.clearTaskListResponse options with
-        | Ok response -> Ok response.ok
+    let ClearTaskList (controller: 'T, options: Options) =
+        match resolve controller with
         | Error err -> Error err
+        | Ok c ->
+            let request = Encode.clearTaskListRequest c.controller
+
+            match exec c request Decode.clearTaskListResponse options with
+            | Ok response -> Ok response.ok
+            | Error err -> Error err
 
     /// <summary>
     /// Schedules added tasks.
     /// </summary>
-    /// <param name="controller">Controller ID.</param>
-    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <param name="controller">Controller ID or struct with controller ID, endpoint and protocol.</param>
+    /// <param name="options">Bind, broadcast and listen addresses.</param>
     /// <returns>
     /// Result with the boolean success/fail result or an Error if the request failed.
     /// </returns>
-    let RefreshTaskList (controller: uint32, options: Options) =
-        let request = Encode.refreshTaskListRequest controller
-
-        match exex controller request Decode.refreshTaskListResponse options with
-        | Ok response -> Ok response.ok
+    let RefreshTaskList (controller: 'T, options: Options) =
+        match resolve controller with
         | Error err -> Error err
+        | Ok c ->
+            let request = Encode.refreshTaskListRequest c.controller
+
+            match exec c request Decode.refreshTaskListResponse options with
+            | Ok response -> Ok response.ok
+            | Error err -> Error err
 
     /// <summary>
     /// Enables/disables remote access control management. The access controller will revert to standalone access
     /// control managment if it does not receive a command from the 'PC' at least every 30 seconds.
     /// </summary>
-    /// <param name="controller">Controller ID.</param>
+    /// <param name="controller">Controller ID or struct with controller ID, endpoint and protocol.</param>
     /// <param name="enable">Enables or disables remote access control management.</param>
-    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <param name="options">Bind, broadcast and listen addresses.</param>
     /// <returns>
     /// Result with the boolean success/fail result or an Error if the request failed.
     /// </returns>
-    let SetPCControl (controller: uint32, enable: bool, options: Options) =
-        let request = Encode.setPCControlRequest controller enable
-
-        match exex controller request Decode.setPCControlResponse options with
-        | Ok response -> Ok response.ok
+    let SetPCControl (controller: 'T, enable: bool, options: Options) =
+        match resolve controller with
         | Error err -> Error err
+        | Ok c ->
+            let request = Encode.setPCControlRequest c.controller enable
+
+            match exec c request Decode.setPCControlResponse options with
+            | Ok response -> Ok response.ok
+            | Error err -> Error err
 
     /// <summary>
     /// Sets the access controller door interlocks.
     /// </summary>
-    /// <param name="controller">Controller ID.</param>
+    /// <param name="controller">Controller ID or struct with controller ID, endpoint and protocol.</param>
     /// <param name="interlock">Door interlocks (none, 1&2, 3&4, 1&2 and 3&4, 1&2&3 or 1&2&3&4.</param>
-    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <param name="options">Bind, broadcast and listen addresses.</param>
     /// <returns>
     /// Result with the boolean success/fail result or an Error if the request failed.
     /// </returns>
-    let SetInterlock (controller: uint32, interlock: Interlock, options: Options) =
-        let request = Encode.setInterlockRequest controller interlock
-
-        match exex controller request Decode.setInterlockResponse options with
-        | Ok response -> Ok response.ok
+    let SetInterlock (controller: 'T, interlock: Interlock, options: Options) =
+        match resolve controller with
         | Error err -> Error err
+        | Ok c ->
+            let request = Encode.setInterlockRequest c.controller interlock
+
+            match exec c request Decode.setInterlockResponse options with
+            | Ok response -> Ok response.ok
+            | Error err -> Error err
 
     /// <summary>
     /// Activates/deactivates the access reader keypads attached to an access controller.
     /// </summary>
-    /// <param name="controller">Controller ID.</param>
+    /// <param name="controller">Controller ID or struct with controller ID, endpoint and protocol.</param>
     /// <param name="reader1">Activates/deactivates the keypad for reader 1.</param>
     /// <param name="reader2">Activates/deactivates the keypad for reader 2.</param>
     /// <param name="reader3">Activates/deactivates the keypad for reader 3.</param>
     /// <param name="reader4">Activates/deactivates the keypad for reader 4.</param>
-    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <param name="options">Bind, broadcast and listen addresses.</param>
     /// <returns>
     /// Result with the boolean success/fail result or an Error if the request failed.
     /// </returns>
-    let ActivateKeypads
-        (controller: uint32, reader1: bool, reader2: bool, reader3: bool, reader4: bool, options: Options)
-        =
-        let request =
-            Encode.activateKeypadsRequest controller reader1 reader2 reader3 reader4
-
-        match exex controller request Decode.activateKeypadsResponse options with
-        | Ok response -> Ok response.ok
+    let ActivateKeypads (controller: 'T, reader1: bool, reader2: bool, reader3: bool, reader4: bool, options: Options) =
+        match resolve controller with
         | Error err -> Error err
+        | Ok c ->
+            let request =
+                Encode.activateKeypadsRequest c.controller reader1 reader2 reader3 reader4
+
+            match exec c request Decode.activateKeypadsResponse options with
+            | Ok response -> Ok response.ok
+            | Error err -> Error err
 
     /// <summary>
     /// Restores the manufacturer defaults.
     /// </summary>
-    /// <param name="controller">Controller ID.</param>
-    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <param name="controller">Controller ID or struct with controller ID, endpoint and protocol.</param>
+    /// <param name="options">Bind, broadcast and listen addresses.</param>
     /// <returns>
     /// Result with the boolean success/fail result or an Error if the request failed.
     /// </returns>
-    let RestoreDefaultParameters (controller: uint32, options: Options) =
-        let request = Encode.restoreDefaultParametersRequest controller
-
-        match exex controller request Decode.restoreDefaultParametersResponse options with
-        | Ok response -> Ok response.ok
+    let RestoreDefaultParameters (controller: 'T, options: Options) =
+        match resolve controller with
         | Error err -> Error err
+        | Ok c ->
+            let request = Encode.restoreDefaultParametersRequest c.controller
+
+            match exec c request Decode.restoreDefaultParametersResponse options with
+            | Ok response -> Ok response.ok
+            | Error err -> Error err
 
     /// <summary>
     /// Listens for events from access controllers and dispatches received events to a handler.
@@ -769,7 +857,7 @@ module Uhppoted =
     /// <param name="onevent">External event handler function.</param>
     /// <param name="onerror">External error handler function.</param>
     /// <param name="stop">Cancellation token to terminate event listener.</param>
-    /// <param name="options">Bind, broadcast and listen addresses and (optionally) destination address and transport protocol.</param>
+    /// <param name="options">Bind, broadcast and listen addresses.</param>
     /// <returns>
     /// Result with the boolean success/fail result or an Error if the request failed.
     /// </returns>

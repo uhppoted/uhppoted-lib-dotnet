@@ -8,13 +8,13 @@ open System.Net.NetworkInformation
 type C =
     {
         /// Controller serial number.
-        Controller: uint32
+        controller: uint32
 
         /// Optional IPv4 controller address:port. Required if the controller is not accessible via UDP broadcast.
-        Endpoint: Option<IPEndPoint>
+        endpoint: Option<IPEndPoint>
 
         /// Optional 'protocol' to connect to controller. Valid values are currently 'udp' or 'tcp', defaults to 'udp'.
-        Protocol: Option<string>
+        protocol: Option<string>
     }
 
 [<Struct>]

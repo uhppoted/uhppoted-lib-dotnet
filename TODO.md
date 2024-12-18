@@ -3,65 +3,15 @@
 - [ ] camelCase internal functions
 
 - [ ] API
-    - [x] find-controllers
-    - [x] get-controller
-    - [x] set-IPv4
-    - [x] get-listener
-    - [x] set-listener
-    - [x] get-time
-    - [x] set-time
-    - [x] get-door
-    - [x] set-door
-    - [x] set-door-passcodes
-    - [x] open-door
-    - [x] get-status
-    - [x] get-cards
-    - [x] get-card
-    - [x] get-card-at-index
-    - [x] put-card
-    - [x] delete-card
-    - [x] delete-all-cards
-    - [x] get-event
-    - [x] get-event-index
-    - [x] set-event-index
-    - [x] record-special-events
-    - [x] get-time-profile
-    - [x] set-time-profile
-    - [x] clear-time-profiles
-    - [x] add-task
-    - [x] clear-task-list
-    - [x] refresh-task-list
-    - [x] set-pc-control
-    - [x] set-interlock
-    - [x] activate-keypads
-    - [x] restore-default-parameters
-    - [x] listen
-    - [x] Move timeout to Options
-    - [x] Handle v6.62 messages
-    - [x] Set SO_REUSEADDR option
-    - [ ] Rethink the controller/options thing
+    - [ ] Rework endpoint/protocol as controller struct
+          - [ ] F# examples
+          - [ ] C# examples
+          - [ ] VB.NET examples
+          - [ ] Rework integration tests as seperate broadcast, UDP and TCP test suites
+          - [ ] API doc
     - [ ] _Cannot access a disposed object._
-    - [ ] Rework integration tests as seperate broadcast, UDP and TCP test suites
 
 - [ ] argparse
-    - [x] --controller
-    - [x] --card
-    - [x] --address
-    - [x] --netmask
-    - [x] --gateway
-    - [x] --listener
-    - [x] --interval
-    - [x] --index
-    - [x] --time
-    - [x] --enable
-    - [x] --door
-    - [x] --mode
-    - [x] --delay
-    - [x] --passcodes
-    - [x] --start-date
-    - [x] --end-date
-    - [x] --permissions
-    - [x] --PIN
     - [ ] --weekdays
         - [ ] F#
         - [ ] C#

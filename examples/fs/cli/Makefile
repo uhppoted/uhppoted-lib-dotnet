@@ -36,6 +36,12 @@ run: build
 debug:
 	$(CLI) set-IPv4  --controller 303986753 --address 192.168.1.222 --netmask 255.254.253.251 --gateway 192.168.0.0
 
+usage: build
+	$(CLI) 
+
+help: build
+	$(CLI) help
+
 find-controllers: build
 	$(CLI) find-controllers
 
@@ -114,7 +120,7 @@ set-time-profile:build
                                                        --linked 37
 
 clear-time-profiles:build
-	$(CLI) clear-time-profile --controller $(CONTROLLER)
+	$(CLI) clear-time-profiles --controller $(CONTROLLER)
 
 add-task:build
 	$(CLI) add-task --controller $(CONTROLLER) \

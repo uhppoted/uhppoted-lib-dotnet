@@ -60,7 +60,22 @@ class Commands
                                                            .WithDebug(true)
                                                            .Build();
 
+    static readonly Dictionary<uint, uhppoted.C> CONTROLLERS = new Dictionary<uint, uhppoted.C>()
+   {
+    { 303986753u, new uhppoted.CBuilder(303986753u)
+                              .WithEndPoint(IPEndPoint.Parse("192.168.1.100:60000"))
+                              .WithProtocol("udp")
+                              .Build()
+    },
+    { 201020304u, new uhppoted.CBuilder(201020304u)
+                              .WithEndPoint(IPEndPoint.Parse("192.168.1.100:60000"))
+                              .WithProtocol("tcp")
+                              .Build()
+    },
+   };
+
     const uint CONTROLLER = 1u;
+
     const byte INTERVAL = 0;
     const byte DOOR = 1;
     const DoorMode MODE = DoorMode.Controlled;
@@ -146,8 +161,10 @@ class Commands
     public static void GetController(string[] args)
     {
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
-        var options = OPTIONS;
-        var result = Uhppoted.GetController(controller, options);
+
+        var result = CONTROLLERS.TryGetValue(controller, out var c)
+                    ? Uhppoted.GetController(c, OPTIONS)
+                    : Uhppoted.GetController(controller, OPTIONS);
 
         if (result.IsOk)
         {

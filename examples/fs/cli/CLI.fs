@@ -4,7 +4,7 @@ let usage () =
     printfn "Usage: dotnet run <command>\n"
     printfn "  Supported commands:\n"
 
-    commands |> List.iter (fun v -> printfn "  - %-21s  %s" v.command v.description)
+    commands |> List.iter (fun v -> printfn "  - %-26s  %s" v.command v.description)
 
     printfn ""
 
@@ -13,6 +13,10 @@ let main args =
     printfn "** uhppoted-lib-dotnet F# CLI v0.8.10\n"
 
     match args |> List.ofSeq with
+    | "help" :: [] ->
+        usage ()
+        0
+
     | cmd :: opts ->
         match commands |> List.tryFind (fun v -> v.command = cmd) with
         | Some c ->
