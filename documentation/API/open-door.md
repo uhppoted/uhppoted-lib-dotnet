@@ -3,9 +3,9 @@
 Unlocks a door controlled by a controller.
 
 ### Parameters
-- **`controller` (`uint32`)**: Controller ID.
-- **`door`**: Door number `[1..4]`.
-- **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
+- **`controller` (`T`)**: Controller ID or struct with controller ID, endpoint and protocol.
+- **`door`**: Door number `[1.4]`.
+- **`options` (`Options`)**: Bind, broadcast, and listen addresses.
 
 ### Returns
 Returns `Ok` with a `true` if the door was unlocked, `Error` if the request failed.

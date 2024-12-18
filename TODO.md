@@ -4,11 +4,12 @@
 
 - [ ] API
     - [ ] Rework endpoint/protocol as controller struct
-          - [ ] F# examples
+          - [x] F# examples
           - [ ] C# examples
           - [ ] VB.NET examples
           - [ ] Rework integration tests as seperate broadcast, UDP and TCP test suites
           - [ ] API doc
+          - [ ] Remove endpoint and protocol from Options
     - [ ] _Cannot access a disposed object._
 
 - [ ] argparse

@@ -6,11 +6,11 @@ tasklist is refreshed.
 ### Parameters
 - **`controller`**: Controller ID.
 - **`task`**: Task definition.
-- **`options`**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
+- **`options`**: Bind, broadcast, and listen addresses.
 
 The `Task` record has the following fields:
   - `task` (`uint8`): task ID
-  - `door` (`uint8`): door ID [1..4]
+  - `door` (`uint8`): door ID [1.4]
   - `start_date` (`DateOnly`): date from which the task is active
   - `end_date` (`DateOnly`): date after which the task is no longer active
   - `start_time` (`TimeOnly Nullable`):  time at which task is run

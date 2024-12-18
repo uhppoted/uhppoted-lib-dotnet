@@ -3,8 +3,8 @@
 Retrieves the controller date and time.
 
 ### Parameters
-- **`controller` (`uint32`)**: Controller ID.
-- **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
+- **`controller` (`T`)**: Controller ID or struct with controller ID, endpoint and protocol.
+- **`options` (`Options`)**: Bind, broadcast, and listen addresses.
 
 ### Returns
 Returns `Ok` with the controller date and time or `Error`. 

@@ -3,12 +3,12 @@
 Adds or updates an access time profile on a controller.
 
 ### Parameters
-- **`controller` (`uint32`)**: Controller ID.
-- **`profile` (`uint8`) **: Time profile [2..254].
-- **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
+- **`controller` (`T`)**: Controller ID or struct with controller ID, endpoint and protocol.
+- **`profile` (`uint8`) **: Time profile [2.254].
+- **`options` (`Options`)**: Bind, broadcast, and listen addresses.
 
 The `TimeProfile` record has the following fields:
-  - `profile` (`uint8`): profile ID ([2..254])
+  - `profile` (`uint8`): profile ID ([2.254])
   - `start_date` (`DateOnly`): date from which the access time profile is activated
   - `end_date` (`DateOnly`): date after which the access time profile is no longer activated
   - `monday` (`bool`): `true` if the access time profile is activatated on Monday

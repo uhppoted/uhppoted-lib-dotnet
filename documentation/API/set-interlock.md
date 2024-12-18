@@ -7,7 +7,7 @@ the other interlocked doors is already unlocked.
 ### Parameters
 - **`controller` (`uint32`)**: Controller ID.
 - **`interlock` (`Interlock`)**: Door interlock mode.
-- **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
+- **`options` (`Options`)**: Bind, broadcast, and listen addresses.
 
 The `interlock` parameter may take one of the following values:
 - `Interlock.None`: no interlocks

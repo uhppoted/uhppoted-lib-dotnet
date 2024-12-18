@@ -3,12 +3,12 @@
 Activates/deactivates the access reader keypads attached to an access controller.
 
 ### Parameters
-- **`controller` (`uint32`)**: Controller ID.
+- **`controller` (`T`)**: Controller ID or struct with controller ID, endpoint and protocol.
 - **`reader1` (`bool`)**: Activate the keypad for reader 1 if `true`.
 - **`reader2` (`bool`)**: Activate the keypad for reader 2 if `true`.
 - **`reader3` (`bool`)**: Activate the keypad for reader 3 if `true`.
 - **`reader4` (`bool`)**: Activate the keypad for reader 4 if `true`.
-- **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
+- **`options` (`Options`)**: Bind, broadcast, and listen addresses.
 
 ### Returns
 

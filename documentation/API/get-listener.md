@@ -6,8 +6,8 @@ Retrieves the controller event listener endpoint and auto-send interval:
   recent event to the listener. Events are always dispatched as they occur and a zero interval disables auto-send.
 
 ### Parameters
-- **`controller` (`uint32`)**: Controller ID.
-- **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
+- **`controller` (`T`)**: Controller ID or struct with controller ID, endpoint and protocol.
+- **`options` (`Options`)**: Bind, broadcast, and listen addresses.
 
 ### Returns
 

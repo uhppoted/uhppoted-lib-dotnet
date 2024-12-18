@@ -5,9 +5,9 @@ control managment if it does not receive a command from the 'PC' at least every 
 
 
 ### Parameters
-- **`controller` (`uint32`)**: Controller ID.
+- **`controller` (`T`)**: Controller ID or struct with controller ID, endpoint and protocol.
 - **`enable` (`bool`)**: Enables (or disables) remote access control managment.
-- **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
+- **`options` (`Options`)**: Bind, broadcast, and listen addresses.
 
 ### Returns
 

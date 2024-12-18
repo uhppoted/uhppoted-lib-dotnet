@@ -3,11 +3,11 @@
 Sets the controller date and time.
 
 ### Parameters
-- **`controller` (`uint32`)**: Controller ID.
+- **`controller` (`T`)**: Controller ID or struct with controller ID, endpoint and protocol.
 - **`datetime` (`DateTime`)**: Date and time to set.
 - **`controller` (`uint32`)**: Controller ID.
 - **`index` (`uint32`)**: Event index.
-- **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
+- **`options` (`Options`)**: Bind, broadcast, and listen addresses.
 
 ### Returns
 Returns `Ok` with the controller date and time or `Error`. 

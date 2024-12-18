@@ -3,8 +3,8 @@
 Retrieves the number of card records stored on the controller.
 
 ### Parameters
-- **`controller` (`uint32`)**: Controller ID.
-- **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
+- **`controller` (`T`)**: Controller ID or struct with controller ID, endpoint and protocol.
+- **`options` (`Options`)**: Bind, broadcast, and listen addresses.
 
 ### Returns
 Returns `Ok` with the number of cards stored on the controller or `Error`. 

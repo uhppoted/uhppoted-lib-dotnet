@@ -3,9 +3,9 @@
 Deletes a card record from a controller.
 
 ### Parameters
-- **`controller` (`uint32`)**: Controller ID.
+- **`controller` (`T`)**: Controller ID or struct with controller ID, endpoint and protocol.
 - **`card` (`uint32`)**: Card number.
-- **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
+- **`options` (`Options`)**: Bind, broadcast, and listen addresses.
 
 ### Returns
 

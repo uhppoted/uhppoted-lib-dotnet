@@ -3,9 +3,9 @@
 Retrieves the event record (if any) at the index from the controller.
 
 ### Parameters
-- **`controller` (`uint32`)**: Controller ID.
+- **`controller` (`T`)**: Controller ID or struct with controller ID, endpoint and protocol.
 - **`index` (`uint32`)**: Event index.
-- **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
+- **`options` (`Options`)**: Bind, broadcast, and listen addresses.
 
 ### Returns
 Returns `Ok` with a Nullable `Event` record if the request was processed or an `Error` 
@@ -20,7 +20,7 @@ The `Event` record has the following fields:
   - `Index` (`uint32`): Event index.
   - `Event` (`uint8`): Event type.
   - `AccessGranted` (`bool`): `true` if access to the door was granted.
-  - `Door` (`uint8`): Door [1..4] for event.
+  - `Door` (`uint8`): Door [1.4] for event.
   - `Direction` (`Direction`): `In` or `Out`.
   - `Card` (`uint32`): Card number.
   - `Reason (`uint8`): Reason code for access granted/denied.

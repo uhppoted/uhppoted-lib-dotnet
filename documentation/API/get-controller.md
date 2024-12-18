@@ -3,8 +3,8 @@
 Retrieves the IPv4 configuration, MAC address and version information for an access controller.
 
 ### Parameters
-- **`controller`**: Controller ID.
-- **`options`**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
+- **`controller` (`T`)**: Controller ID or struct with controller ID, endpoint and protocol.
+- **`options`**: Bind, broadcast, and listen addresses.
 
 ### Returns
 

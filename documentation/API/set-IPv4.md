@@ -3,11 +3,11 @@
 Sets the controller IPv4 address, netmask and gateway address.
 
 ### Parameters
-- **`controller` (`uint32`)**: Controller ID.
+- **`controller` (`T`)**: Controller ID or struct with controller ID, endpoint and protocol.
 - **`address` (`IPAddress`)**: IPv4 address.
 - **`netmask` (`IPAddress`)**: IPv4 netmask.
 - **`gateway` (`IPAddress`)**: gateway IPv4 address.
-- **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
+- **`options` (`Options`)**: Bind, broadcast, and listen addresses.
 
 ### Returns
 

@@ -3,9 +3,9 @@
 Retrieves a door control mode and unlock delay from a controller.
 
 ### Parameters
-- **`controller` (`uint32`)**: Controller ID.
-- **`door` (`uint8`)**: Door ID [1..4].
-- **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
+- **`controller` (`T`)**: Controller ID or struct with controller ID, endpoint and protocol.
+- **`door` (`uint8`)**: Door ID [1.4].
+- **`options` (`Options`)**: Bind, broadcast, and listen addresses.
 
 ### Returns
 Returns `Ok` with a Nullable `Door` record if the request was processed or an `Error` 

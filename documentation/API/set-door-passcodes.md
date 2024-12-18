@@ -3,11 +3,11 @@
 Sets up to 4 passcodes for a controller door.
 
 ### Parameters
-- **`controller` (`uint32`)**: Controller ID.
-- **`door` (`uint8`)**: Door number `[1..4]`.
-- **`passcodes` (`uint32 array`)**: Array of up to 4 passcodes in the range [0..999999], defaulting to 
+- **`controller` (`T`)**: Controller ID or struct with controller ID, endpoint and protocol.
+- **`door` (`uint8`)**: Door number `[1.4]`.
+- **`passcodes` (`uint32 array`)**: Array of up to 4 passcodes in the range [0.999999], defaulting to 
   0 ('none') if the list contains less than 4 entries.
-- **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
+- **`options` (`Options`)**: Bind, broadcast, and listen addresses.
 
 ### Returns
 Returns `Ok` with a `true` if the passcodes were updated, `Error` if the request failed.

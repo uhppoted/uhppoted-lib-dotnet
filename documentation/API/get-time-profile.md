@@ -3,9 +3,9 @@
 Retrieves an access time profile from the controller.
 
 ### Parameters
-- **`controller` (`uint32`)**: Controller ID.
-- **`profile` (`uint8`)**: Time profile ID [2..254].
-- **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
+- **`controller` (`T`)**: Controller ID or struct with controller ID, endpoint and protocol.
+- **`profile` (`uint8`)**: Time profile ID [2.254].
+- **`options` (`Options`)**: Bind, broadcast, and listen addresses.
 
 ### Returns
 Returns `Ok` with a Nullable `TimeProfile` record if the request was processed or an `Error` 
@@ -15,7 +15,7 @@ The `Ok` value is:
 - `null` if there was no record at the index.
 
 The `TimeProfile` record has the following fields:
-  - `profile` (`uint8`): profile ID ([2..254])
+  - `profile` (`uint8`): profile ID ([2.254])
   - `start_date` (`DateOnly`): date from which the access time profile is activated
   - `end_date` (`DateOnly`): date after which the access time profile is no longer activated
   - `monday` (`bool`): `true` if the access time profile is activatated on Monday

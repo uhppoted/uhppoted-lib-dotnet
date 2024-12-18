@@ -3,20 +3,20 @@
 Adds or updates a card record on a controller.
 
 ### Parameters
-- **`controller` (`uint32`)**: Controller ID.
+- **`controller` (`T`)**: Controller ID or struct with controller ID, endpoint and protocol.
 - **`card` (`Card`)**: Card record.
 - **`startdate`**: Date from which card is valid.
 - **`enddate`**: Date after which card is no longer valid.
-- **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
+- **`options` (`Options`)**: Bind, broadcast, and listen addresses.
 
 A `Card` record has the following fields:
   - `Card` (`uint32`): Card number.
   - `StartDate` (`DateOnly`): Date from which card is valid.
   - `EndDate` (`DateOnly`): Date after which card is no longer valid.
-  - `Door1` (`uint8`): Door 1 access permission (0: NONE, 1: ALWAYS, [2..254]: time profile).
-  - `Door2` (`uint8`): Door 2 access permission (0: NONE, 1: ALWAYS, [2..254]: time profile).
-  - `Door3` (`uint8`): Door 3 access permission (0: NONE, 1: ALWAYS, [2..254]: time profile).
-  - `Door4` (`uint8`): Door 4 access permission (0: NONE, 1: ALWAYS, [2..254]: time profile).
+  - `Door1` (`uint8`): Door 1 access permission (0: NONE, 1: ALWAYS, [2.254]: time profile).
+  - `Door2` (`uint8`): Door 2 access permission (0: NONE, 1: ALWAYS, [2.254]: time profile).
+  - `Door3` (`uint8`): Door 3 access permission (0: NONE, 1: ALWAYS, [2.254]: time profile).
+  - `Door4` (`uint8`): Door 4 access permission (0: NONE, 1: ALWAYS, [2.254]: time profile).
   - `PIN (`uint32`): Optional card PIN (0 for _none_).
 
 #### CardBuilder

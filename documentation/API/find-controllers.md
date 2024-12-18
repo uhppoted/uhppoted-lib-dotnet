@@ -5,7 +5,7 @@ controllers includes all controllers that responded within the `timeout` value s
 
 
 ### Parameters
-- **`options` (`Options`)**: Bind, broadcast, and listen addresses and (optionally) controller address and transport protocol.
+- **`options` (`Options`)**: Bind, broadcast, and listen addresses.
 
 ### Returns
 Array of `Controller` structs that represent the valid decoded responses. Each item includes data about an access controller, 
