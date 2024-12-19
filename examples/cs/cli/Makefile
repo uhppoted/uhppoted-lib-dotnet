@@ -111,7 +111,7 @@ set-time-profile:build
                                                        --linked 37
 
 clear-time-profiles:build
-	$(CLI) clear-time-profile --controller $(CONTROLLER)
+	$(CLI) clear-time-profiles --controller $(CONTROLLER)
 
 add-task:build
 	$(CLI) add-task --controller $(CONTROLLER) \

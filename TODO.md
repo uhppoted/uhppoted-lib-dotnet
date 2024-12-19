@@ -5,7 +5,7 @@
 - [ ] API
     - [ ] Rework endpoint/protocol as controller struct
           - [x] F# examples
-          - [ ] C# examples
+          - [x] C# examples
           - [ ] VB.NET examples
           - [ ] Rework integration tests as seperate broadcast, UDP and TCP test suites
           - [ ] API doc
