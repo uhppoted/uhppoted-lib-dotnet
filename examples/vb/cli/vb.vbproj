@@ -10,11 +10,22 @@
     <TargetFrameworks>net7.0</TargetFrameworks>
   </PropertyGroup>
 
-  <ItemGroup>
-    <Reference Include="uhppoted">
-      <HintPath>../../../uhppoted/uhppoted/bin/Debug/net7.0/uhppoted.dll</HintPath>
-    </Reference>
-  </ItemGroup>
+  <Choose>
+    <When Condition="'$(DOTNET7)' == 'true'">
+      <ItemGroup Condition="'$(DOTNET7)' == 'true'">
+        <Reference Include="uhppoted">
+          <HintPath>../../../uhppoted/uhppoted/bin/Debug/net7.0/uhppoted.dll</HintPath>
+        </Reference>
+      </ItemGroup>
+    </When>
+    <Otherwise>
+      <ItemGroup>
+        <Reference Include="uhppoted">
+          <HintPath>../../../uhppoted/uhppoted/bin/Debug/net9.0/uhppoted.dll</HintPath>
+        </Reference>
+      </ItemGroup>
+    </Otherwise>
+  </Choose>
 
   <ItemGroup>
     <PackageReference Include="FSharp.Core" Version="8.0.401" />
