@@ -6,7 +6,7 @@
     - [ ] Rework endpoint/protocol as controller struct
           - [x] F# examples
           - [x] C# examples
-          - [ ] VB.NET examples
+          - [x] VB.NET examples
           - [ ] Rework integration tests as seperate broadcast, UDP and TCP test suites
           - [ ] API doc
           - [ ] Remove endpoint and protocol from Options

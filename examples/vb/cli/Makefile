@@ -63,7 +63,7 @@ set-door-passcodes: build
 	$(CLI) set-door-passcodes --controller $(CONTROLLER) --door $(DOOR) --passcodes 12345,54321,999999
 
 open-door: build
-	$(CLI) open-door --controller $(CONTROLLER)
+	$(CLI) open-door --controller $(CONTROLLER) --door $(DOOR)
 
 get-status:
 	$(CLI) get-status --controller $(CONTROLLER)
@@ -110,7 +110,7 @@ set-time-profile:build
                                                        --linked 37
 
 clear-time-profiles:build
-	$(CLI) clear-time-profile --controller $(CONTROLLER)
+	$(CLI) clear-time-profiles --controller $(CONTROLLER)
 
 add-task:build
 	$(CLI) add-task --controller $(CONTROLLER) \

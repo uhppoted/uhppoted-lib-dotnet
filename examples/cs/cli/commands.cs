@@ -408,6 +408,7 @@ class Commands
 
             WriteLine("open-door");
             WriteLine("  controller {0}", controller);
+            WriteLine("        door {0}", door);
             WriteLine("          ok {0}", ok);
             WriteLine();
         }

@@ -288,6 +288,7 @@ let open_door args =
     | Ok ok ->
         printfn "open-door"
         printfn "  controller %u" controller
+        printfn "        door %u" door
         printfn "          ok %b" ok
         printfn ""
         Ok()
