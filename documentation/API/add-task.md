@@ -45,7 +45,6 @@ Returns `Ok` with `true` if the task was added or updated updated or an `Error`
 ### Examples
 
 ```fsharp
-let controller = 405419896u
 let task: Task =
     { task = 4uy
       door = 3
@@ -63,13 +62,21 @@ let task: Task =
 
 let options = { broadcast = IPAddress.Broadcast; timeout = 1250; debug = true }
 
+let controller = { 
+    controller=405419896u; 
+    endpoint=Some(IPEndPoint.Parse("192.168.1.100:60000")); 
+    protocol:Some("tcp") }
+
+match AddTask 405419896u task options with
+| Ok response -> printfn "add-task: ok %A" response.Value
+| Error err -> printfn "add-task: error %A" err
+
 match AddTask controller task options with
 | Ok response -> printfn "add-task: ok %A" response.Value
 | Error err -> printfn "add-task: error %A" err
 ```
 
 ```csharp
-var controller = 405419896u;
 var task = new TaskBuilder(4,3)
                   .WithStartDate(DateOnly.Parse("2024-01-01"))
                   .WithEndDate(DateOnly.Parse("2024-12-31"))
@@ -78,8 +85,23 @@ var task = new TaskBuilder(4,3)
                   .WithMoreCards(7)
                   .build();
 var options = new OptionsBuilder().WithTimeout(1250).build();
-var result = AddTask(controller, task, options);
 
+var controller = new uhppoted.CBuilder(405419896u)
+                              .WithEndPoint(IPEndPoint.Parse("192.168.1.100:60000"))
+                              .WithProtocol("udp")
+                              .Build()
+
+var result = AddTask(405419896u, task, options);
+if (result.IsOk)
+{
+    Console.WriteLine($"add-task: ok {result.ResultValue}");
+}
+else
+{
+    Console.WriteLine($"add-task: error '{result.ErrorValue}'");
+}
+
+var result = AddTask(controller, task, options);
 if (result.IsOk)
 {
     Console.WriteLine($"add-task: ok {result.ResultValue}");
@@ -91,7 +113,11 @@ else
 ```
 
 ```vb
-Dim controller = 405419896
+Dim controller As New CBuilder(405419896UI).
+                      WithEndPoint(IPEndPoint.Parse("192.168.1.100:60000")).
+                      WithProtocol("udp").
+                      Build()
+
 DIm task = New TaskBuilder(4,3).
                WithStartDate(DateOnly.Parse("2024-01-01")).
                WithEndDate(DateOnly.Parse("2024-12-31")).
@@ -99,9 +125,17 @@ DIm task = New TaskBuilder(4,3).
                WithWeekdays(true,true,false,false,true,false,false).
                WithMoreCards(7).
                build()
-Dim options As New OptionsBuilder().WithTimeout(1250).build()
-Dim result = AddTask(controller, task, options)
 
+Dim options As New OptionsBuilder().WithTimeout(1250).build()
+
+Dim result = AddTask(405419896UI, task, options)
+If (result.IsOk) Then
+    Console.WriteLine($"add-task: ok {result.ResultValue}")
+Else
+    Console.WriteLine($"add-task: error '{result.ErrorValue}'")
+End If
+
+Dim result = AddTask(controller, task, options)
 If (result.IsOk) Then
     Console.WriteLine($"add-task: ok {result.ResultValue}")
 Else

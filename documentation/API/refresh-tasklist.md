@@ -3,7 +3,7 @@
 Schedules added tasks.
 
 ### Parameters
-- **`controller` (`T`)**: Controller ID or struct with controller ID, endpoint and protocol.
+- **`controller` (`T`)**: Controller ID (`uint32`) or `struct` with controller ID, endpoint and protocol.
 - **`options` (`Options`)**: Bind, broadcast, and listen addresses.
 
 ### Returns
@@ -16,8 +16,16 @@ Returns:
 ### Examples
 
 ```fsharp
-let controller = 405419896u
 let options = { broadcast = IPAddress.Broadcast; timeout = 1250; debug = true }
+
+let controller = { 
+    controller=405419896u; 
+    endpoint=Some(IPEndPoint.Parse("192.168.1.100:60000")); 
+    protocol:Some("tcp") }
+
+match RefreshTaskList 405419896u options with
+| Ok ok -> printfn "refresh-tasklist: ok %A" ok
+| Error err -> printfn "refresh-tasklist: error %A" err
 
 match RefreshTaskList controller options with
 | Ok ok -> printfn "refresh-tasklist: ok %A" ok
@@ -25,10 +33,24 @@ match RefreshTaskList controller options with
 ```
 
 ```csharp
-var controller = 405419896u;
 var options = new OptionsBuilder().WithTimeout(1250).build();
-var result = RefreshTaskList(controller, options);
 
+var controller = new uhppoted.CBuilder(405419896u)
+                              .WithEndPoint(IPEndPoint.Parse("192.168.1.100:60000"))
+                              .WithProtocol("udp")
+                              .Build()
+
+var result = RefreshTaskList(405419896u, options);
+if (result.IsOk)
+{
+    Console.WriteLine($"refresh-tasklist: ok {result.ResultValue}");
+}
+else
+{
+    Console.WriteLine($"refresh-tasklist: error {result.ErrorValue}");
+}
+
+var result = RefreshTaskList(controller, options);
 if (result.IsOk)
 {
     Console.WriteLine($"refresh-tasklist: ok {result.ResultValue}");
@@ -40,10 +62,21 @@ else
 ```
 
 ```vb
-Dim controller = 405419896
-Dim options As New OptionsBuilder().WithTimeout(1250).build()
-Dim result = RefreshTaskList(controller, options)
+Dim controller As New CBuilder(405419896UI).
+                      WithEndPoint(IPEndPoint.Parse("192.168.1.100:60000")).
+                      WithProtocol("udp").
+                      Build()
 
+Dim options As New OptionsBuilder().WithTimeout(1250).build()
+
+Dim result = RefreshTaskList(405419896UI, options)
+If result.IsOk Then
+    Console.WriteLine($"refresh-tasklist: ok {result.ResultValue}")
+Else
+    Console.WriteLine($"refresh-tasklist: error {result.ErrorValue}")
+End If
+
+Dim result = RefreshTaskList(controller, options)
 If result.IsOk Then
     Console.WriteLine($"refresh-tasklist: ok {result.ResultValue}")
 Else

@@ -6,7 +6,7 @@ Sets the controller event listener endpoint and auto-send interval:
   recent event to the listener. Events are always dispatched as they occur and a zero interval disables auto-send.
 
 ### Parameters
-- **`controller` (`T`)**: Controller ID or struct with controller ID, endpoint and protocol.
+- **`controller` (`T`)**: Controller ID (`uint32`) or `struct` with controller ID, endpoint and protocol.
 - **`listener` (`IPEndPoint`)**: Event listener IPv4 endpoint.
 - **`interval` (`uint8`)**: Auto-send interval (seconds).
 - **`options` (`Options`)**: Bind, broadcast, and listen addresses.
@@ -20,10 +20,18 @@ Returns:
 ### Examples
 
 ```fsharp
-let controller = 405419896u
 let listener = IPEndPoint.Parse("192.168.1.100:60001")
 let interval = 30uy
 let options = { broadcast = IPAddress.Broadcast; timeout = 1250; debug = true }
+
+let controller = { 
+    controller=405419896u; 
+    endpoint=Some(IPEndPoint.Parse("192.168.1.100:60000")); 
+    protocol:Some("tcp") }
+
+match SetListener 405419896u listener interval options with
+| Ok ok -> printfn "set-listener: ok %A" ok
+| Error err -> printfn "set-listener: error %A" err
 
 match SetListener controller listener interval options with
 | Ok ok -> printfn "set-listener: ok %A" ok
@@ -31,12 +39,26 @@ match SetListener controller listener interval options with
 ```
 
 ```csharp
-var controller = 405419896u;
 var listener = IPEndPoint.Parse("192.168.1.100:60001");
 var interval = 30uy;
 var options = new OptionsBuilder().WithTimeout(1250).build();
-var result = SetListener(controller, listener, interval, options);
 
+var controller = new uhppoted.CBuilder(405419896u)
+                              .WithEndPoint(IPEndPoint.Parse("192.168.1.100:60000"))
+                              .WithProtocol("udp")
+                              .Build()
+
+var result = SetListener(405419896u, listener, interval, options);
+if (result.IsOk)
+{
+    Console.WriteLine($"set-listener: ok {result.ResultValue}");
+}
+else
+{
+    Console.WriteLine($"set-listener: error {result.ErrorValue}");
+}
+
+var result = SetListener(controller, listener, interval, options);
 if (result.IsOk)
 {
     Console.WriteLine($"set-listener: ok {result.ResultValue}");
@@ -48,12 +70,23 @@ else
 ```
 
 ```vb
-Dim controller = 405419896
+Dim controller As New CBuilder(405419896UI).
+                      WithEndPoint(IPEndPoint.Parse("192.168.1.100:60000")).
+                      WithProtocol("udp").
+                      Build()
+
 Dim listener = IPEndPoint.Parse("192.168.1.100:60001")
 Dim interval = 30uy
 Dim options As New OptionsBuilder().WithTimeout(1250).build()
-Dim result = SetListener(controller, listener, interval, options)
 
+Dim result = SetListener(405419896UI, listener, interval, options)
+If result.IsOk Then
+    Console.WriteLine($"set-listener: ok {result.ResultValue}")
+Else
+    Console.WriteLine($"set-listener: error {result.ErrorValue}")
+End If
+
+Dim result = SetListener(controller, listener, interval, options)
 If result.IsOk Then
     Console.WriteLine($"set-listener: ok {result.ResultValue}")
 Else

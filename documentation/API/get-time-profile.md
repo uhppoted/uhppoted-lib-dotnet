@@ -3,7 +3,7 @@
 Retrieves an access time profile from the controller.
 
 ### Parameters
-- **`controller` (`T`)**: Controller ID or struct with controller ID, endpoint and protocol.
+- **`controller` (`T`)**: Controller ID (`uint32`) or `struct` with controller ID, endpoint and protocol.
 - **`profile` (`uint8`)**: Time profile ID [2.254].
 - **`options` (`Options`)**: Bind, broadcast, and listen addresses.
 
@@ -37,9 +37,18 @@ The `TimeProfile` record has the following fields:
 ### Examples
 
 ```fsharp
-let controller = 405419896u
 let profile = 29uy
 let options = { broadcast = IPAddress.Broadcast; timeout = 1250; debug = true }
+
+let controller = { 
+    controller=405419896u; 
+    endpoint=Some(IPEndPoint.Parse("192.168.1.100:60000")); 
+    protocol:Some("tcp") }
+
+match GetTimeProfile 405419896u profile options with
+| Ok response when response.HasValue -> printfn "get-time-profile: ok %A" response.Value
+| Ok _ -> printfn "get-time-profile: not found"
+| Error err -> printfn "get-time-profile: error %A" err
 
 match GetTimeProfile controller profile options with
 | Ok response when response.HasValue -> printfn "get-time-profile: ok %A" response.Value
@@ -48,11 +57,29 @@ match GetTimeProfile controller profile options with
 ```
 
 ```csharp
-var controller = 405419896u;
 var profile = 29u;
 var options = new OptionsBuilder().WithTimeout(1250).build();
-var result = GetTimeProfile(controller, profile, options);
 
+var controller = new uhppoted.CBuilder(405419896u)
+                              .WithEndPoint(IPEndPoint.Parse("192.168.1.100:60000"))
+                              .WithProtocol("udp")
+                              .Build()
+
+var result = GetTimeProfile(405419896u, profile, options);
+if (result.IsOk && result.ResultValue.HasValue)
+{
+    Console.WriteLine($"get-time-profile: ok {result.ResultValue.Value}");
+}
+else if (result.IsOk)
+{
+    Console.WriteLine($"get-time-profile: error 'not found'");
+}
+else
+{
+    Console.WriteLine($"get-time-profile: error '{result.ErrorValue}'");
+}
+
+var result = GetTimeProfile(controller, profile, options);
 if (result.IsOk && result.ResultValue.HasValue)
 {
     Console.WriteLine($"get-time-profile: ok {result.ResultValue.Value}");
@@ -68,11 +95,24 @@ else
 ```
 
 ```vb
-Dim controller = 405419896
+Dim controller As New CBuilder(405419896UI).
+                      WithEndPoint(IPEndPoint.Parse("192.168.1.100:60000")).
+                      WithProtocol("udp").
+                      Build()
+
 Dim profile = 29
 Dim options As New OptionsBuilder().WithTimeout(1250).build()
-Dim result = GetTimeProfile(controller, profile, options)
 
+Dim result = GetTimeProfile(405419896UI, profile, options)
+If (result.IsOk And result.Value.HasValue) Then
+    Console.WriteLine($"get-time-profile: ok {result.ResultValue.Value}")
+Els If (result.IsOk) Then
+    Console.WriteLine($"get-time-profile: error 'not found'")
+Else
+    Console.WriteLine($"get-time-profile: error '{result.ErrorValue}'")
+End If
+
+Dim result = GetTimeProfile(controller, profile, options)
 If (result.IsOk And result.Value.HasValue) Then
     Console.WriteLine($"get-time-profile: ok {result.ResultValue.Value}")
 Els If (result.IsOk) Then

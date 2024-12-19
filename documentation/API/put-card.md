@@ -3,7 +3,7 @@
 Adds or updates a card record on a controller.
 
 ### Parameters
-- **`controller` (`T`)**: Controller ID or struct with controller ID, endpoint and protocol.
+- **`controller` (`T`)**: Controller ID (`uint32`) or `struct` with controller ID, endpoint and protocol.
 - **`card` (`Card`)**: Card record.
 - **`startdate`**: Date from which card is valid.
 - **`enddate`**: Date after which card is no longer valid.
@@ -17,7 +17,7 @@ A `Card` record has the following fields:
   - `Door2` (`uint8`): Door 2 access permission (0: NONE, 1: ALWAYS, [2.254]: time profile).
   - `Door3` (`uint8`): Door 3 access permission (0: NONE, 1: ALWAYS, [2.254]: time profile).
   - `Door4` (`uint8`): Door 4 access permission (0: NONE, 1: ALWAYS, [2.254]: time profile).
-  - `PIN (`uint32`): Optional card PIN (0 for _none_).
+  - `PIN` (`uint32`): Optional card PIN (0 for _none_).
 
 #### CardBuilder
 
@@ -44,6 +44,11 @@ static readonly Card card = new CardBuilder(10058400u)
 ```
 
 ```vb
+Dim controller As New CBuilder(405419896UI).
+                      WithEndPoint(IPEndPoint.Parse("192.168.1.100:60000")).
+                      WithProtocol("udp").
+                      Build()
+
 Private ReadOnly Dim card = New CardBuilder().
                                 WithStartDate(DateOnly.Parse("2024-01-01")).
                                 WithEndDate(DateOnly.Parse("2024-12-31")).
@@ -65,7 +70,6 @@ Returns:
 ### Examples
 
 ```fsharp
-let controller = 405419896u
 let card: Card = {
     Card = 10058400u
     StartDate = Nullable(DateOnly(2024, 1, 1))
@@ -75,7 +79,21 @@ let card: Card = {
     Door3 = 17uy
     Door4 = 1uy
     PIN = 7531u }
+
 let options = { broadcast = IPAddress.Broadcast; timeout = 1250; debug = true }
+
+                              .WithEndPoint(IPEndPoint.Parse("192.168.1.100:60000"))
+                              .WithProtocol("udp")
+                              .Build()
+
+
+    controller=405419896u; 
+    endpoint=Some(IPEndPoint.Parse("192.168.1.100:60000")); 
+    protocol:Some("tcp") }
+
+match PutCard 405419896u card options with
+| Ok ok -> printfn "put-card: ok %A" ok
+| Error err -> printfn "put-card: error %A" err
 
 match PutCard controller card options with
 | Ok ok -> printfn "put-card: ok %A" ok
@@ -83,7 +101,6 @@ match PutCard controller card options with
 ```
 
 ```csharp
-var controller = 405419896u;
 var card = new CardBuilder(10058400u)
                .WithStartDate(DateOnly.Parse("2024-01-01"))
                .WithEndDate(DateOnly.Parse("2024-12-31"))
@@ -94,8 +111,23 @@ var card = new CardBuilder(10058400u)
                .Build();
 
 var options = new OptionsBuilder().WithTimeout(1250).build();
-var result = PutCard(controller, card, options);
 
+var controller = new uhppoted.CBuilder(405419896u)
+                              .WithEndPoint(IPEndPoint.Parse("192.168.1.100:60000"))
+                              .WithProtocol("udp")
+                              .Build()
+
+var result = PutCard(405419896u, card, options);
+if (result.IsOk)
+{
+    Console.WriteLine($"put-card: ok {result.ResultValue}");
+}
+else
+{
+    Console.WriteLine($"put-card: error {result.ErrorValue}");
+}
+
+var result = PutCard(controller, card, options);
 if (result.IsOk)
 {
     Console.WriteLine($"put-card: ok {result.ResultValue}");
@@ -118,8 +150,15 @@ Dim card = New CardBuilder().
                Build()
 
 Dim options As New OptionsBuilder().WithTimeout(1250).build()
-Dim result = PutCard(controller, card, options)
 
+Dim result = PutCard(405419896UI, card, options)
+If result.IsOk Then
+    Console.WriteLine($"put-card: ok {result.ResultValue}")
+Else
+    Console.WriteLine($"put-card: error {result.ErrorValue}")
+End If
+
+Dim result = PutCard(controller, card, options)
 If result.IsOk Then
     Console.WriteLine($"put-card: ok {result.ResultValue}")
 Else

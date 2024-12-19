@@ -7,8 +7,8 @@
           - [x] F# examples
           - [x] C# examples
           - [x] VB.NET examples
+          - [x] API doc
           - [ ] Rework integration tests as seperate broadcast, UDP and TCP test suites
-          - [ ] API doc
           - [ ] Remove endpoint and protocol from Options
     - [ ] _Cannot access a disposed object._
 

@@ -13,9 +13,6 @@ type command =
       f: string list -> Result<unit, string> }
 
 let CONTROLLER = 1u
-// let ENDPOINT = Some(IPEndPoint(IPAddress.Parse("192.168.1.100"), 60000))
-// let PROTOCOL = Some("udp")
-
 let ADDRESS = IPAddress.Parse "192.168.1.10"
 let NETMASK = IPAddress.Parse "255.255.255.0"
 let GATEWAY = IPAddress.Parse "192.168.1.1"

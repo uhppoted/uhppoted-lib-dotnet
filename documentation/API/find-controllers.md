@@ -13,7 +13,7 @@ including its address, MAC, version, and other relevant details.
 
 ### Examples
 ```fsharp
-let options = { broadcast = IPAddress.Broadcast; timeout = 1250; debug = true }
+let options = { 
     bind = IPEndPoint.Parse(IPAddress.Any, 0)
     broadcast = IPEndPoint(IPAddress.Broadcast, 60000)
     listen = IPEndPoint(IPAddress.Any, 60001)
@@ -47,7 +47,7 @@ else if (result.IsError)
 
 ```vb
 Dim options As New OptionsBuilder().WithTimeout(1250).build()
-Dim result = get_all_controllers(options)
+Dim result = FindControllers(options)
 
 If (result.IsOk)
     Dim controllers = result.ResultValue

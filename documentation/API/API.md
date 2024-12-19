@@ -61,9 +61,8 @@ let options: Options =
 
 ### OptionsBuilder
 
-`OptionsBuilder` is a utility class to simplify construction of an `Options` struct when using C# or VB.NET.
+`OptionsBuilder` is a utility class to simplify construction of an `Options` struct when using C# or VB.NET:
 
-    
 - **`WithBind(endpoint: IPEndPoint)`: Sets the `bind` IPv4 endpoint.
 - **`WithBroadcast(endpoint: IPEndPoint)`: Sets the `broadcast` IPv4 endpoint.
 - **`WithListen(endpoint: IPEndPoint)`**: Sets the `listen` endpoint.
@@ -89,6 +88,64 @@ Private ReadOnly Dim options = New OptionsBuilder().
                                    WithTimeout(1250).
                                    WithDebug(True).
                                    Build()
+```
+
+## C 
+
+The first parameter of every API call (other than `FindControllers` and `Listen`, i.e. every API call
+addressed to a specific controller) is a _controller_ value which may be:
+
+- controller ID (`uint32`): the controller serial number
+- a controller `C` struct which specifies:
+    - the controller ID (`uint32`): the controller serial number
+    - an optional IPv4 endpoint (`IPEndPoint`): the controller IPv4 address:port
+    - an optional protocol (`string`): the controller connection protocol ("udp" or "tcp")
+
+For:
+- a _controller_ defined by controller ID only, UDP broadcast is used as the network transport
+- a _controller_ defined by controller ID and IPv4 address:port, connected UDP sockets are used
+  as the network transport.
+- a _controller_ defined by controller ID, IPv4 address:port and protocol '_tcp_', TCP/IP is used
+  as the network transport.
+
+e.g.
+```
+match GetController 405419896u options with
+| Ok record -> printfn "get-controller: ok %A" record
+| Error err -> printfn "get-controller: error %A" err
+```
+
+```
+let controller = { 
+    controller=405419896u; 
+    endpoint=Some(IPEndPoint.Parse("192.168.1.100:60000")); 
+    protocol:Some("tcp") }
+
+match GetController controller options with
+| Ok record -> printfn "get-controller: ok %A" record
+| Error err -> printfn "get-controller: error %A" err
+```
+
+### ControllerBuilder
+
+`ControllerBuilder` is a utility class to simplify construction of a `C` struct when using C# or VB.NET:
+
+- **`WithEndpoint(endpoint: IPEndPoint)`**: Sets the optional controller endpoint.
+- **`WithProtocol(protocol: string)`**: Sets the optional controller protocol ('udp' or 'tcp').
+- **`Build()`**: Builds the `C` struct.
+
+```csharp
+static readonly controller = new ControllerBuilder(405419896u)
+                                 .WithEndpoint(IPEndPoint.Parse("192.168.1.100:60000"))
+                                 .WithProtocol("tcp")
+                                 .Build();
+```
+
+```vb
+Private ReadOnly Dim controller = New ControllerBuilder(405419896u).
+                                      WithEndpoint(IPEndPoint.Parse("192.168.1.100:60000")).
+                                      WithProtocol("udp").
+                                      Build()
 ```
 
 ## enums

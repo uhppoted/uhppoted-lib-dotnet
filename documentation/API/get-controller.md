@@ -3,7 +3,7 @@
 Retrieves the IPv4 configuration, MAC address and version information for an access controller.
 
 ### Parameters
-- **`controller` (`T`)**: Controller ID or struct with controller ID, endpoint and protocol.
+- **`controller` (`T`)**: Controller ID (`uint32`) or `struct` with controller ID, endpoint and protocol.
 - **`options`**: Bind, broadcast, and listen addresses.
 
 ### Returns
@@ -15,8 +15,16 @@ Returns:
 ### Examples
 
 ```fsharp
-let controller = 405419896u
 let options = { broadcast = IPAddress.Broadcast; timeout = 1250; debug = true }
+
+let controller = { 
+    controller=405419896u; 
+    endpoint=Some(IPEndPoint.Parse("192.168.1.100:60000")); 
+    protocol:Some("tcp") }
+
+match GetController 405419896u options with
+| Ok record -> printfn "get-controller: ok %A" record
+| Error err -> printfn "get-controller: error %A" err
 
 match GetController controller options with
 | Ok record -> printfn "get-controller: ok %A" record
@@ -39,10 +47,21 @@ else
 ```
 
 ```vb
-Dim controller = 405419896
-Dim options As New OptionsBuilder().WithTimeout(1250).build()
-Dim result = GetController(controller, options)
+Dim controller As New CBuilder(405419896UI).
+                      WithEndPoint(IPEndPoint.Parse("192.168.1.100:60000")).
+                      WithProtocol("udp").
+                      Build()
 
+Dim options As New OptionsBuilder().WithTimeout(1250).build()
+
+Dim result = GetController(405419896UI, options)
+If result.IsOk Then
+    Console.WriteLine($"get-controller: ok {result.ResultValue}")
+Else
+    Console.WriteLine($"get-controller: error {result.ErrorValue}")
+End If
+
+Dim result = GetController(controller, options)
 If result.IsOk Then
     Console.WriteLine($"get-controller: ok {result.ResultValue}")
 Else

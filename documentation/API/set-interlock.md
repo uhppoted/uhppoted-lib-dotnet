@@ -26,9 +26,17 @@ Returns:
 ### Examples
 
 ```fsharp
-let controller = 405419896u
 let interlock = Interlock.Doors123
 let options = { broadcast = IPAddress.Broadcast; timeout = 1250; debug = true }
+
+let controller = { 
+    controller=405419896u; 
+    endpoint=Some(IPEndPoint.Parse("192.168.1.100:60000")); 
+    protocol:Some("tcp") }
+
+match SetInterlock 405419896u interlock options with
+| Ok ok -> printfn "set-interlock: ok %A" ok
+| Error err -> printfn "set-interlock: error %A" err
 
 match SetInterlock controller interlock options with
 | Ok ok -> printfn "set-interlock: ok %A" ok
@@ -36,11 +44,25 @@ match SetInterlock controller interlock options with
 ```
 
 ```csharp
-var controller = 405419896u;
 var interlock = Interlock.Doors123;
 var options = new OptionsBuilder().WithTimeout(1250).build();
-var result = SetInterlock(controller, interlock, options);
 
+var controller = new uhppoted.CBuilder(405419896u)
+                              .WithEndPoint(IPEndPoint.Parse("192.168.1.100:60000"))
+                              .WithProtocol("udp")
+                              .Build()
+
+var result = SetInterlock(405419896u, interlock, options);
+if (result.IsOk)
+{
+    Console.WriteLine($"set-interlock: ok {result.ResultValue}");
+}
+else
+{
+    Console.WriteLine($"set-interlock: error {result.ErrorValue}");
+}
+
+var result = SetInterlock(controller, interlock, options);
 if (result.IsOk)
 {
     Console.WriteLine($"set-interlock: ok {result.ResultValue}");
@@ -52,11 +74,22 @@ else
 ```
 
 ```vb
-Dim controller = 405419896
+Dim controller As New CBuilder(405419896UI).
+                      WithEndPoint(IPEndPoint.Parse("192.168.1.100:60000")).
+                      WithProtocol("udp").
+                      Build()
+
 Dim interlock = Interlock.Doors123
 Dim options As New OptionsBuilder().WithTimeout(1250).build()
-Dim result = SetInterlock(controller, interlock, options)
 
+Dim result = SetInterlock(405419896UI, interlock, options)
+If result.IsOk Then
+    Console.WriteLine($"set-interlock: ok {result.ResultValue}")
+Else
+    Console.WriteLine($"set-interlock: error {result.ErrorValue}")
+End If
+
+Dim result = SetInterlock(controller, interlock, options)
 If result.IsOk Then
     Console.WriteLine($"set-interlock: ok {result.ResultValue}")
 Else
