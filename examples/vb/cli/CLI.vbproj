@@ -3,7 +3,7 @@
   <PropertyGroup>
     <OutputType>Exe</OutputType>
     <RootNamespace>vb</RootNamespace>
-    <TargetFrameworks>net8.0;net9.0</TargetFrameworks>
+    <TargetFrameworks>net8.0</TargetFrameworks>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(DOTNET7)' == 'true'">
@@ -21,7 +21,7 @@
     <Otherwise>
       <ItemGroup>
         <Reference Include="uhppoted">
-          <HintPath>../../../uhppoted/uhppoted/bin/Debug/net9.0/uhppoted.dll</HintPath>
+          <HintPath>../../../uhppoted/uhppoted/bin/Debug/net8.0/uhppoted.dll</HintPath>
         </Reference>
       </ItemGroup>
     </Otherwise>
