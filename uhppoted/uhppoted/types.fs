@@ -15,6 +15,7 @@ type C =
 
         /// Optional 'protocol' to connect to controller. Valid values are currently 'udp' or 'tcp', defaults to 'udp'.
         protocol: Option<string>
+
     }
 
 [<Struct>]

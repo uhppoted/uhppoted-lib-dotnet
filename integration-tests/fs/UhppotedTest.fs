@@ -8,11 +8,14 @@ open NUnit.Framework
 
 open uhppoted
 open stub
+open TestCases
 
-[<TestFixture>]
-type TestClass() =
+[<TestFixture("uint32")>]
+type TestClass(tt: string) =
     [<DefaultValue>]
     val mutable emulator: Emulator
+
+    let controller = controllers[tt]
 
     let CONTROLLER = 405419896u
     let CONTROLLER_NO_EVENT = 405419897u
@@ -71,6 +74,8 @@ type TestClass() =
 
     [<Test>]
     member this.TestFindControllers() =
+        printfn ">>>>>>>>>>>>>>>>>>>>>>>>> %A" controller
+
         let expected: Controller array =
             [| { Controller = 405419896u
                  Address = IPAddress.Parse("192.168.1.100")
