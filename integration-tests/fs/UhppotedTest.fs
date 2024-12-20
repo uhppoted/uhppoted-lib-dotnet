@@ -8,12 +8,26 @@ open NUnit.Framework
 
 open uhppoted
 open stub
-open TestCases
+
+type TestCase =
+    | IdCase of uint32
+    | ControllerCase of C
+
 
 [<TestFixture("uint32")>]
+[<TestFixture("controller")>]
 type TestClass(tt: string) =
     [<DefaultValue>]
     val mutable emulator: Emulator
+
+    let controllers =
+        Map.ofList
+            [ ("uint32", IdCase 405419896u)
+              ("controller",
+               ControllerCase
+                   { controller = 405419896u
+                     endpoint = None
+                     protocol = None }) ]
 
     let controller = controllers[tt]
 
@@ -60,10 +74,12 @@ type TestClass(tt: string) =
 
     [<OneTimeSetUp>]
     member this.Initialise() =
+        TestContext.Error.WriteLine ">>>>>>>>>>>>> INIT"
         this.emulator <- Stub.initialise TestContext.Error
 
     [<OneTimeTearDown>]
     member this.Terminate() =
+        TestContext.Error.WriteLine ">>>>>>>>>>>>> TERMINATE"
         Stub.terminate this.emulator TestContext.Error
 
     [<SetUp>]

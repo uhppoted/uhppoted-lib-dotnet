@@ -13,7 +13,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="TestCases.fs" />
     <Compile Include="UhppotedTest.fs" />
     <Compile Include="IntegrationTests.fs" />
   </ItemGroup>

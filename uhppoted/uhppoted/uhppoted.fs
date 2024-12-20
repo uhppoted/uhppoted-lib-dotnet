@@ -3,6 +3,10 @@
 open System
 open System.Net
 open System.Threading
+open System.Runtime.CompilerServices
+
+[<assembly: InternalsVisibleTo("uhppoted.tests")>]
+do ()
 
 module Uhppoted =
     let private defaults =
@@ -14,7 +18,7 @@ module Uhppoted =
           protocol = None
           debug = false }
 
-    let private resolve (controller: 'T) : Result<C, string> =
+    let internal resolve (controller: 'T) : Result<C, string> =
         match box controller with
         | :? uint32 as u32 ->
             Ok
@@ -22,7 +26,7 @@ module Uhppoted =
                   endpoint = None
                   protocol = None }
         | :? C as c -> Ok c
-        | _ -> Error "unsupported controller type"
+        | _ -> Error $"unsupported controller type ({typeof<'T>.FullName}) - expected uint32 or struct"
 
     let private exec
         (controller: C)
@@ -48,34 +52,6 @@ module Uhppoted =
         | Ok packet ->
             match decode packet with
             | Ok response when response.controller = controller.controller -> Ok response
-            | Ok _ -> Error "invalid response"
-            | Error err -> Error err
-        | Error err -> Error err
-
-    let private xxxx
-        (controller: uint32)
-        request
-        (decode: byte[] -> Result<'b, string>)
-        options
-        : Result<'b, string> when 'b :> IResponse =
-        let bind = options.bind
-        let broadcast = options.broadcast
-        let timeout = options.timeout
-        let debug = options.debug
-
-        let endpoint = options.endpoint
-        let protocol = options.protocol
-
-        let result =
-            match endpoint, protocol with
-            | None, _ -> UDP.broadcast_to (request, bind, broadcast, timeout, debug)
-            | Some(addr), Some("tcp") -> TCP.send_to (request, bind, addr, timeout, debug)
-            | Some(addr), _ -> UDP.send_to (request, bind, addr, timeout, debug)
-
-        match result with
-        | Ok packet ->
-            match decode packet with
-            | Ok response when response.controller = controller -> Ok response
             | Ok _ -> Error "invalid response"
             | Error err -> Error err
         | Error err -> Error err
