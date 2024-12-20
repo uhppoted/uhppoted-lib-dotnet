@@ -11,6 +11,7 @@ Returns `Ok` with the controller date and time or `Error`.
 
 ### Examples
 
+#### F#
 ```fsharp
 let options = { broadcast = IPAddress.Broadcast; timeout = 1250; debug = true }
 
@@ -28,6 +29,7 @@ match GetTime controller options with
 | Error err -> printfn "get-time: error %A" err
 ```
 
+#### C#
 ```csharp
 var options = new OptionsBuilder().WithTimeout(1250).build();
 
@@ -57,6 +59,7 @@ else
 }
 ```
 
+#### VB.NET
 ```vb
 Dim controller As New CBuilder(405419896UI).
                       WithEndPoint(IPEndPoint.Parse("192.168.1.100:60000")).

@@ -14,6 +14,7 @@ Returns:
 
 ### Examples
 
+#### F#
 ```fsharp
 let options = { broadcast = IPAddress.Broadcast; timeout = 1250; debug = true }
 
@@ -31,6 +32,7 @@ match GetController controller options with
 | Error err -> printfn "get-controller: error %A" err
 ```
 
+#### C#
 ```csharp
 var controller = 405419896u;
 var options = new OptionsBuilder().WithTimeout(1250).build();
@@ -46,6 +48,7 @@ else
 }
 ```
 
+#### VB.NET
 ```vb
 Dim controller As New CBuilder(405419896UI).
                       WithEndPoint(IPEndPoint.Parse("192.168.1.100:60000")).

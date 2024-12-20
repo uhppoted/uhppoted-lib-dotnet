@@ -18,6 +18,7 @@ Returns:
 
 ### Examples
 
+#### F#
 ```fsharp
 let reader1 = true
 let reader2 = true
@@ -38,6 +39,7 @@ match ActivateKeypads controller reader1 reader2 reader3 reader4 options with
 | Error err -> printfn "activate-keypads: error %A" err
 ```
 
+#### C#
 ```csharp
 var reader1 = true
 var reader2 = true
@@ -71,6 +73,7 @@ else
 }
 ```
 
+#### VB.NET
 ```vb
 Dim controller As New CBuilder(405419896UI).
                       WithEndPoint(IPEndPoint.Parse("192.168.1.100:60000")).

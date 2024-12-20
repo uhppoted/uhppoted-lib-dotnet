@@ -44,6 +44,7 @@ Returns `Ok` with `true` if the task was added or updated updated or an `Error`
 
 ### Examples
 
+#### F#
 ```fsharp
 let task: Task =
     { task = 4uy
@@ -76,6 +77,7 @@ match AddTask controller task options with
 | Error err -> printfn "add-task: error %A" err
 ```
 
+#### C#
 ```csharp
 var task = new TaskBuilder(4,3)
                   .WithStartDate(DateOnly.Parse("2024-01-01"))
@@ -112,6 +114,7 @@ else
 }
 ```
 
+#### VB.NET
 ```vb
 Dim controller As New CBuilder(405419896UI).
                       WithEndPoint(IPEndPoint.Parse("192.168.1.100:60000")).

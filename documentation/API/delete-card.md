@@ -16,6 +16,7 @@ Returns:
 
 ### Examples
 
+#### F#
 ```fsharp
 let card = 10058400u
 let options = { broadcast = IPAddress.Broadcast; timeout = 1250; debug = true }
@@ -34,6 +35,7 @@ match DeleteCard controller card options with
 | Error err -> printfn "delete-card: error %A" err
 ```
 
+#### C#
 ```csharp
 var card = 10058400u;
 var options = new OptionsBuilder().WithTimeout(1250).build();
@@ -64,6 +66,7 @@ else
 }
 ```
 
+#### VB.NET
 ```vb
 Dim controller As New CBuilder(405419896UI).
                       WithEndPoint(IPEndPoint.Parse("192.168.1.100:60000")).

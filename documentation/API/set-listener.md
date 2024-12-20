@@ -19,6 +19,7 @@ Returns:
 
 ### Examples
 
+#### F#
 ```fsharp
 let listener = IPEndPoint.Parse("192.168.1.100:60001")
 let interval = 30uy
@@ -38,6 +39,7 @@ match SetListener controller listener interval options with
 | Error err -> printfn "set-listener: error %A" err
 ```
 
+#### C#
 ```csharp
 var listener = IPEndPoint.Parse("192.168.1.100:60001");
 var interval = 30uy;
@@ -69,6 +71,7 @@ else
 }
 ```
 
+#### VB.NET
 ```vb
 Dim controller As New CBuilder(405419896UI).
                       WithEndPoint(IPEndPoint.Parse("192.168.1.100:60000")).

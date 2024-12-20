@@ -69,6 +69,7 @@ Returns:
 
 ### Examples
 
+#### F#
 ```fsharp
 let card: Card = {
     Card = 10058400u
@@ -100,6 +101,7 @@ match PutCard controller card options with
 | Error err -> printfn "put-card: error %A" err
 ```
 
+#### C#
 ```csharp
 var card = new CardBuilder(10058400u)
                .WithStartDate(DateOnly.Parse("2024-01-01"))
@@ -138,6 +140,7 @@ else
 }
 ```
 
+#### VB.NET
 ```vb
 Dim controller = 405419896
 Dim card = New CardBuilder().

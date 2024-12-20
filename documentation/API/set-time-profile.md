@@ -32,6 +32,7 @@ Returns `Ok` with `true` if the time profile was updated or an `Error`
 
 ### Examples
 
+#### F#
 ```fsharp
 let profile: TimeProfile =
     { profile = 37uy
@@ -68,6 +69,7 @@ match SetTimeProfile controller profile options with
 | Error err -> printfn "set-time-profile: error %A" err
 ```
 
+#### C#
 ```csharp
 var profile = new TimeProfileBuilder(29)
                   .WithStartDate(DateOnly.Parse("2024-01-01"))
@@ -106,6 +108,7 @@ else
 }
 ```
 
+#### VB.NET
 ```vb
 Dim controller As New CBuilder(405419896UI).
                       WithEndPoint(IPEndPoint.Parse("192.168.1.100:60000")).

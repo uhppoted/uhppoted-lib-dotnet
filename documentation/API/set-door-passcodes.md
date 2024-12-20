@@ -14,6 +14,7 @@ Returns `Ok` with a `true` if the passcodes were updated, `Error` if the request
 
 
 ### Examples
+#### F#
 ```fsharp
 let door = 4uy
 let passcodes = [| 12345u; 54321u; 999999u |]
@@ -33,6 +34,7 @@ match SetDoorPasscodes controller door passcodes options with
 | Error err -> printfn "set-door-passcodes: error %A" err
 ```
 
+#### C#
 ```csharp
 var door = 4u;
 var passcodes = new uint[] {12345u, 54321u, 999999u };
@@ -64,6 +66,7 @@ else
 }
 ```
 
+#### VB.NET
 ```vb
 Dim controller As New CBuilder(405419896UI).
                       WithEndPoint(IPEndPoint.Parse("192.168.1.100:60000")).

@@ -12,6 +12,7 @@ Array of `Controller` structs that represent the valid decoded responses. Each i
 including its address, MAC, version, and other relevant details.
 
 ### Examples
+#### F#
 ```fsharp
 let options = { 
     bind = IPEndPoint.Parse(IPAddress.Any, 0)
@@ -27,6 +28,7 @@ match find_controllers(options) with
 )
 ```
 
+#### C#
 ```csharp
 var options = new OptionsBuilder().WithTimeout(1250).build();
 var result = FindControllers(options);
@@ -45,6 +47,7 @@ else if (result.IsError)
 }
 ```
 
+#### VB.NET
 ```vb
 Dim options As New OptionsBuilder().WithTimeout(1250).build()
 Dim result = FindControllers(options)

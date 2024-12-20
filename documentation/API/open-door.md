@@ -11,6 +11,7 @@ Unlocks a door controlled by a controller.
 Returns `Ok` with a `true` if the door was unlocked, `Error` if the request failed.
 
 ### Examples
+#### F#
 ```fsharp
 let door = 4uy
 let options = { broadcast = IPAddress.Broadcast; timeout = 1250; debug = true }
@@ -29,6 +30,7 @@ match OpenDoor controller door options with
 | Error err -> printfn "open-door: error %A" err
 ```
 
+#### C#
 ```csharp
 var door = 4u;
 var options = new OptionsBuilder().WithTimeout(1250).build();
@@ -59,6 +61,7 @@ else
 }
 ```
 
+#### VB.NET
 ```vb
 Dim controller As New CBuilder(405419896UI).
                       WithEndPoint(IPEndPoint.Parse("192.168.1.100:60000")).

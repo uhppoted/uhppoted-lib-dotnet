@@ -14,6 +14,7 @@ Returns:
 
 ### Examples
 
+#### F#
 ```fsharp
 let enable = true
 let options = { broadcast = IPAddress.Broadcast; timeout = 1250; debug = true }
@@ -32,6 +33,7 @@ match RecordSpecialEvents controller enable options with
 | Error err -> printfn "record-special-events: error %A" err
 ```
 
+#### C#
 ```csharp
 var enable = true;
 var options = new OptionsBuilder().WithTimeout(1250).build();
@@ -62,6 +64,7 @@ else
 }
 ```
 
+#### VB.NET
 ```vb
 Dim controller As New CBuilder(405419896UI).
                       WithEndPoint(IPEndPoint.Parse("192.168.1.100:60000")).

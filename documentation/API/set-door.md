@@ -24,6 +24,7 @@ The `Door` record has the following fields:
 
 ### Examples
 
+#### F#
 ```fsharp
 let door = 3uy
 let mode = DoorMode.NormallyClosed
@@ -45,6 +46,7 @@ match SetDoor controller door mode delay options with
 | Error err -> printfn "set-door: error %A" err
 ```
 
+#### C#
 ```csharp
 var door = 3u;
 var mode = DoorMode.NormallyClosed;
@@ -85,6 +87,7 @@ else
 }
 ```
 
+#### VB.NET
 ```vb
 Dim controller As New CBuilder(405419896UI).
                       WithEndPoint(IPEndPoint.Parse("192.168.1.100:60000")).
