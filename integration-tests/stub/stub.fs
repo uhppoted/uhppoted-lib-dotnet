@@ -7,8 +7,8 @@ open System.Net.Sockets
 open System.Threading.Tasks
 
 type Emulator =
-    { udp: (UdpClient * Task)
-      tcp: (TcpListener * Task) }
+    { udp: Option<(UdpClient * Task)>
+      tcp: Option<(TcpListener * Task)> }
 
 module Stub =
     let dump packet (logger: TextWriter) =
@@ -93,27 +93,54 @@ module Stub =
                     let stream = connection.GetStream()
 
                     read stream logger |> Async.Start
+
             with
             | :? ObjectDisposedException -> ()
+            | :? AggregateException as x ->
+                match x.InnerException with
+                | :? SocketException as xx when xx.SocketErrorCode = SocketError.OperationAborted -> ()
+                | _ -> logger.WriteLine("** ERROR {0}", x.Message)
             | err -> logger.WriteLine("** ERROR {0}", err.Message)
         }
 
-    let initialise (logger: TextWriter) : Emulator =
-        let udp = new UdpClient(59999)
-        let udprx = recv udp logger |> Async.StartAsTask
+    let initialise (mode: string) (logger: TextWriter) : Emulator =
+        match mode with
+        | "broadcast" ->
+            let udp = new UdpClient(59999)
+            let udprx = recv udp logger |> Async.StartAsTask
 
-        let tcp = new TcpListener(IPAddress.Any, 59999)
-        let tcprx = listen tcp logger |> Async.StartAsTask
+            { udp = Some(udp, udprx); tcp = None }
 
-        { udp = (udp, udprx)
-          tcp = (tcp, tcprx) }
+        | "connected udp" ->
+            let udp = new UdpClient(59998)
+            let udprx = recv udp logger |> Async.StartAsTask
+
+            { udp = Some(udp, udprx); tcp = None }
+
+        | "tcp" ->
+            let tcp = new TcpListener(IPAddress.Any, 59997)
+            let tcprx = listen tcp logger |> Async.StartAsTask
+
+            { udp = None; tcp = Some(tcp, tcprx) }
+
+        | _ ->
+            logger.WriteLine("unknown emulator mode ({0})", mode)
+            { udp = None; tcp = None }
 
     let terminate (emulator: Emulator) (logger: TextWriter) =
-        (fst emulator.udp).Close()
-        (fst emulator.tcp).Stop()
+        match emulator.udp with
+        | Some udp -> (fst udp).Close()
+        | None -> ()
+
+        match emulator.tcp with
+        | Some tcp -> (fst tcp).Stop()
+        | None -> ()
 
     let event (emulator: Emulator) (event: byte array) (logger: TextWriter) =
         let listener = IPEndPoint.Parse("127.0.0.1:60001")
-        let socket = fst emulator.udp
+        let socket = new UdpClient()
 
-        socket.Send(event, event.Length, listener) |> ignore
+        try
+            socket.Send(event, event.Length, listener) |> ignore
+        finally
+            socket.Close()

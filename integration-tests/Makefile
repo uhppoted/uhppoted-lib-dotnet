@@ -12,5 +12,5 @@ test: build
 	dotnet test
 
 debug: build
-	dotnet test -- NUnit.Where="test =~ /TestGetDoorSettings/" 
+	dotnet test -- NUnit.Where="test =~ /TestGetController/" 
 
