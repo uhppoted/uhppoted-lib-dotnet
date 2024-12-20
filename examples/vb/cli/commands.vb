@@ -71,11 +71,9 @@ Module Commands
     Private ReadOnly Dim END_DATE As DateOnly = New DateOnly(2024, 12, 31)
 
     Private ReadOnly Dim OPTIONS = New OptionsBuilder().
-                                WithEndpoint(IPEndPoint.Parse("192.168.1.100:60000")).
-                                WithProtocol("udp").
-                                WithTimeout(1000).
-                                WithDebug(True).
-                                Build()
+                                       WithTimeout(1000).
+                                       WithDebug(True).
+                                       Build()
 
     Private ReadOnly CONTROLLERS As New Dictionary(Of UInteger, Uhppoted.C) From {
         {303986753UI, New CBuilder(303986753UI).

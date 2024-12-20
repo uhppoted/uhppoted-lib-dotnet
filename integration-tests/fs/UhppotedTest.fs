@@ -24,8 +24,6 @@ type TestFindAPI() =
           broadcast = IPEndPoint(IPAddress.Broadcast, 59999)
           listen = IPEndPoint(IPAddress.Any, 60001)
           timeout = 500
-          endpoint = None
-          protocol = None
           debug = false }
 
     [<OneTimeSetUp>]
@@ -134,8 +132,6 @@ type TestAPI(tt: string) =
           broadcast = IPEndPoint(IPAddress.Broadcast, 59999)
           listen = IPEndPoint(IPAddress.Any, 60001)
           timeout = 500
-          endpoint = None
-          protocol = None
           debug = false }
 
     [<OneTimeSetUp>]

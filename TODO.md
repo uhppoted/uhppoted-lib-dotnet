@@ -3,13 +3,13 @@
 - [ ] camelCase internal functions
 
 - [ ] API
-    - [ ] Rework endpoint/protocol as controller struct
+    - [x] Rework endpoint/protocol as controller struct
           - [x] F# examples
           - [x] C# examples
           - [x] VB.NET examples
           - [x] API doc
           - [x] Rework integration tests as seperate broadcast, UDP and TCP test suites
-          - [ ] Remove endpoint and protocol from Options
+          - [x] Remove endpoint and protocol from Options
     - [ ] _Cannot access a disposed object._
 
 - [ ] argparse

@@ -54,8 +54,6 @@ public readonly struct TimeSegment
 class Commands
 {
     static readonly uhppoted.Options OPTIONS = new uhppoted.OptionsBuilder()
-                                                           .WithEndpoint(IPEndPoint.Parse("192.168.1.100:60000"))
-                                                           .WithProtocol("udp")
                                                            .WithTimeout(1000)
                                                            .WithDebug(true)
                                                            .Build();

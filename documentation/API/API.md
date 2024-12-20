@@ -43,8 +43,6 @@ access controller. The `Options` struct comprises the following fields:
 - **`broadcast (`IPEndPoint`)**:  IPv4 endpoint to which to broadcast UDP requests. Default value is '255.255.255.255:60000'.
 - **`listen (`IPEndPoint`)**: IPv4 endpoint on which to listen for controller events. Defaults to '0.0.0.0:60001.
 - **`timeout` (`int`)**: Operation timeout (ms).
-- **`endpoint (`Option<IPEndPoint>`)**: Optional IPv4 controller address:port. Required if the controller is not accessible via UDP broadcast.
-- **`protocol (`Option<string>`)**: Optional 'protocol' to connect to controller. Valid values are currently 'udp' or 'tcp', defaulting to 'udp'.
 - **`debug (`bool`)**: Logs controller requests and responses to the console if enabled.
 
 e.g.
@@ -54,8 +52,6 @@ let options: Options =
       broadcast = IPEndPoint(IPAddress.Broadcast, 60000)
       listen = IPEndPoint(IPAddress.Any, 60001)
       timeout = 1000
-      endpoint = Some(IPEndPoint.Parse("192.168.1.100:60000"))
-      protocol = 'tcp'
       debug = true }
 ```
 
@@ -67,8 +63,6 @@ let options: Options =
 - **`WithBroadcast(endpoint: IPEndPoint)`: Sets the `broadcast` IPv4 endpoint.
 - **`WithListen(endpoint: IPEndPoint)`**: Sets the `listen` endpoint.
 - **`WithTimeout(ms: int)`**: Sets the operation timeout (milliseconds).
-- **`WithEndpoint(endpoint: IPEndPoint)`**: Sets the optional controller endpoint.
-- **`WithProtocol(protocol: string)`**: Sets the optional controller protocol ('udp' or 'tcp').
 - **`WithDebug(enable: bool)`**: Enables (or disables) logging of controller requests and responses to the console.
 - **`Build()`**: Builds the `Options` struct.
 
@@ -101,12 +95,12 @@ addressed to a specific controller) is a _controller_ value which may be:
     - an optional IPv4 endpoint (`IPEndPoint`): the controller IPv4 address:port
     - an optional protocol (`string`): the controller connection protocol ("udp" or "tcp")
 
-For:
-- a _controller_ defined by controller ID only, UDP broadcast is used as the network transport
-- a _controller_ defined by controller ID and IPv4 address:port, connected UDP sockets are used
-  as the network transport.
-- a _controller_ defined by controller ID, IPv4 address:port and protocol '_tcp_', TCP/IP is used
-  as the network transport.
+| Configuration                                            | Network Transport |
+|----------------------------------------------------------|-------------------|
+| `uint32` controller ID                                   | UDP broadcast     |
+| `struct` with controller ID                              | UDP broadcast     |
+| `struct` with controller ID and endpoint                 | connected UDP     |
+| `struct` with controller ID, endpoint and 'tcp' protocol | TCP/IP            |
 
 e.g.
 ```

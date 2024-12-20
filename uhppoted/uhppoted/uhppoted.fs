@@ -14,8 +14,6 @@ module Uhppoted =
           broadcast = IPEndPoint(IPAddress.Broadcast, 60000)
           listen = IPEndPoint(IPAddress.Any, 60001)
           timeout = 1000
-          endpoint = None
-          protocol = None
           debug = false }
 
     let internal resolve (controller: 'T) : Result<C, string> =
@@ -141,10 +139,13 @@ module Uhppoted =
             let broadcast = options.broadcast
             let timeout = options.timeout
             let debug = options.debug
+
+            let endpoint = c.endpoint
+            let protocol = c.protocol
             let request = Encode.setIPv4Request c.controller address netmask gateway
 
             let result =
-                match options.endpoint, options.protocol with
+                match endpoint, protocol with
                 | None, _ -> UDP.broadcast_to (request, bind, broadcast, timeout, debug)
                 | Some(addr), Some("tcp") -> TCP.send_to (request, bind, addr, timeout, debug)
                 | Some(addr), _ -> UDP.send_to (request, bind, addr, timeout, debug)

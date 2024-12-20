@@ -36,8 +36,6 @@ let OPTIONS: Options =
       broadcast = IPEndPoint(IPAddress.Broadcast, 60000)
       listen = IPEndPoint(IPAddress.Any, 60001)
       timeout = 1000
-      endpoint = None
-      protocol = None
       debug = true }
 
 let CONTROLLERS =
