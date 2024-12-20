@@ -12,6 +12,15 @@ Returns:
 - `Ok` with a `Controller` record if the controller responded.
 - `Error` if the request failed
 
+The `Controller` record contains the following fields:
+  - `controller` (`uint32`): The controller identifier.
+  - `address` (`IPAddress option`): The IP address of the controller, or `None` if not available.
+  - `netmask` (`IPAddress`): The netmask associated with the controller.
+  - `gateway` (`IPAddress`): The gateway associated with the controller.
+  - `MAC` (`PhysicalAddress`): The MAC address of the controller.
+  - `version` (`string`): The version of the controller firmware.
+  - `date` (`Nullable<DateOnly>`): The date associated with the controller, if available.
+
 ### Examples
 
 #### F#
@@ -34,10 +43,24 @@ match GetController controller options with
 
 #### C#
 ```csharp
-var controller = 405419896u;
 var options = new OptionsBuilder().WithTimeout(1250).build();
-var result = GetController(controller, options);
 
+var controller = new uhppoted.CBuilder(405419896u)
+                              .WithEndPoint(IPEndPoint.Parse("192.168.1.100:60000"))
+                              .WithProtocol("udp")
+                              .Build()
+
+var result = GetController(405419896u, options);
+if (result.IsOk)
+{
+    Console.WriteLine($"get-controller: ok {result.ResultValue}");
+}
+else
+{
+    Console.WriteLine($"get-controller: error {result.ErrorValue}");
+}
+
+var result = GetController(controller, options);
 if (result.IsOk)
 {
     Console.WriteLine($"get-controller: ok {result.ResultValue}");
@@ -74,11 +97,3 @@ End If
 
 ### Notes
 
-- The `Controller` record defines the following fields:
-  - `controller` (`uint32`): The controller identifier.
-  - `address` (`IPAddress option`): The IP address of the controller, or `None` if not available.
-  - `netmask` (`IPAddress`): The netmask associated with the controller.
-  - `gateway` (`IPAddress`): The gateway associated with the controller.
-  - `MAC` (`PhysicalAddress`): The MAC address of the controller.
-  - `version` (`string`): The version of the controller firmware.
-  - `date` (`Nullable<DateOnly>`): The date associated with the controller, if available.
