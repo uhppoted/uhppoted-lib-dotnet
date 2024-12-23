@@ -39,7 +39,8 @@ integration-tests:
 	cd ../integration-tests && make test
 
 release: build test integration-tests
-	cd uhppoted && make release
+	rm -rf dist
+	dotnet pack --configuration Release --output dist
 
 debug: build
 	dotnet run --project ../examples/fs/cli --framework net7.0 find-controllers --controller $(CONTROLLER)

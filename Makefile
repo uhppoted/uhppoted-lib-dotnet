@@ -21,6 +21,8 @@ PIN ?= 7531
 INTERLOCK ?= "1&2,3&4"
 KEYPADS ?= "1,2,4"
 
+.PHONY: integration-tests
+
 clean:
 	cd uhppoted && make clean
 	cd integration-tests && make clean
