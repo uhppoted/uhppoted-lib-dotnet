@@ -18,6 +18,7 @@
     <Compile Include="encode_test.fs" />
     <Compile Include="decode_test.fs" />
     <Compile Include="resolve_test.fs" />
+    <Compile Include="internationalisation_test.fs" />
     <Compile Include="UnitTests.fs" />
   </ItemGroup>
 

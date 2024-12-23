@@ -3,16 +3,14 @@ namespace uhppoted
 open System.Resources
 open System.Threading
 open System.Globalization
+open System.Runtime.CompilerServices
+
+[<assembly: InternalsVisibleTo("uhppoted.tests")>]
+do ()
 
 module internal internationalisation =
-    let translate () =
-        Thread.CurrentThread.CurrentCulture <- CultureInfo("en-US")
-        Thread.CurrentThread.CurrentUICulture <- CultureInfo("en-US")
-
+    let translate (e: string) : string =
         let rm =
             ResourceManager("uhppoted.strings", System.Reflection.Assembly.GetExecutingAssembly())
 
-        printfn ">>>>>>>>>>>>>>> translate %A" rm
-        let s = rm.GetString("event.reason.1")
-        printfn ">>>>>>>>>>>>>>> event.reason.1 %A" s
-        printfn ""
+        rm.GetString(e)

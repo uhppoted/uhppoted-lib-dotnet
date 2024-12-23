@@ -8,6 +8,10 @@
 6. https://samlearnsazure.blog/2021/07/27/publishing-a-nuget-package-to-github-packages
 7. https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-nuget-registry
 8. https://www.meziantou.net/publishing-a-nuget-package-following-best-practices-using-github.htm
+9. https://stackoverflow.com/questions/2689446/how-to-manage-resources-in-an-f-project
+10. https://fsprojects.github.io/FSharp.Configuration/ResXProvider.html
+11. https://poeditor.com/kb/resx-editor
+12. https://localizely.com/getting-started
 
 ## C#
 

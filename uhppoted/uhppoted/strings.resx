@@ -47,14 +47,14 @@
         <value>overwritten</value>
     </data>
 
-    <!-- event direction -->
-    <data name="event.direction.unknown">
+    <!-- door direction -->
+    <data name="door.direction.unknown">
         <value>unknown</value>
     </data>
-   <data name="event.direction.1">
+   <data name="door.direction.1">
         <value>in</value>
     </data>
-   <data name="event.direction.2">
+   <data name="door.direction.2">
         <value>out</value>
     </data>
 
@@ -172,6 +172,95 @@
         <value>remote open door (USB reader)</value>
     </data>
     <data name="event.reason.unknown">
+        <value>unknown</value>
+    </data>
+
+    <!-- tasks -->
+    <data name="task.1">
+        <value>control door</value>
+    </data>
+    <data name="task.2">
+        <value>unlock door</value>
+    </data>
+    <data name="task.3">
+        <value>lock door</value>
+    </data>
+    <data name="task.4">
+        <value>disable time profile</value>
+    </data>
+    <data name="task.5">
+        <value>enable time profile</value>
+    </data>
+    <data name="task.6">
+        <value>enable card, no password</value>
+    </data>
+    <data name="task.7">
+        <value>enable card+IN password</value>
+    </data>
+    <data name="task.8">
+        <value>enable card+password</value>
+    </data>
+    <data name="task.9">
+        <value>enable more cards</value>
+    </data>
+    <data name="task.10">
+        <value>disable more cards</value>
+    </data>
+    <data name="task.11">
+        <value>trigger once</value>
+    </data>
+    <data name="task.12">
+        <value>disable pushbutton</value>
+    </data>
+    <data name="task.13">
+        <value>enable pushbutton</value>
+    </data>
+    <data name="task.unknown">
+        <value>unknown</value>
+    </data>
+
+    <!-- door interlocks -->
+    <data name="doors.interlock.0">
+        <value>no interlock</value>
+    </data>
+    <data name="doors.interlock.1">
+        <value>doors 1&amp;2</value>
+    </data>
+    <data name="doors.interlock.2">
+        <value>doors 3&amp;4</value>
+    </data>
+    <data name="doors.interlock.3">
+        <value>doors 1&amp;2 and doors 3&amp;4</value>
+    </data>
+    <data name="doors.interlock.4">
+        <value>doors 1&amp;2&amp;3</value>
+    </data>
+    <data name="doors.interlock.8">
+        <value>doors 1&amp;2&amp;3&amp;4</value>
+    </data>
+    <data name="doors.interlock.unknown">
+        <value>unknown</value>
+    </data>
+
+    <!-- relays -->
+    <data name="relay.1">
+        <value>locked</value>
+    </data>
+    <data name="relay.2">
+        <value>unlocked</value>
+    </data>
+    <data name="relay.unknown">
+        <value>unknown</value>
+    </data>
+
+    <!-- inputs -->
+    <data name="inputs.1">
+        <value>off</value>
+    </data>
+    <data name="inputs.2">
+        <value>on</value>
+    </data>
+    <data name="inputs.unknown">
         <value>unknown</value>
     </data>
 </root>

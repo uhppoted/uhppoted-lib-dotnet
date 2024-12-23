@@ -16,18 +16,14 @@
     - [ ] --keypads
 
 - [ ] translations & enums
-    - [ ] door mode
-    - [ ] event types
-    - [ ] event reasons
-    - [ ] event direction
-    - [ ] tasks
-    - [ ] interlock
-    - [ ] relays
-    - [ ] inputs
-    - https://stackoverflow.com/questions/2689446/how-to-manage-resources-in-an-f-project
-    - https://fsprojects.github.io/FSharp.Configuration/ResXProvider.html
-    - https://poeditor.com/kb/resx-editor
-    - https://localizely.com/getting-started
+    - [x] door mode
+    - [x] event types
+    - [x] event reasons
+    - [x] event direction
+    - [x] tasks
+    - [x] interlock
+    - [x] relays
+    - [x] inputs
 
 - [ ] function signature file
 - [ ] Represent error cases and illegal state in types intrinsic to your domain
