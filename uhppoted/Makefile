@@ -38,8 +38,7 @@ test:
 integration-tests:
 	cd ../integration-tests && make test
 
-# release: build test integration-tests
-release: build test
+release: build test integration-tests
 	cd uhppoted && make release
 
 debug: build

@@ -1,5 +1,10 @@
 # TODO
 
+- [ ] nightly builds
+      - [ ] use different ports integration tests (59997 seems to be in use)
+      - [ ] check open sockets (lsof -i :8000)
+      - [ ] set SO_REUSEADDR
+
 - [ ] camelCase internal functions
 
 - [ ] API
