@@ -17,9 +17,12 @@ module internal UDP =
             let right = String.Join(" ", hex.[p + 8 .. q + 8])
             printfn "    %s  %s" left right
 
-    let rec receive_all (socket: UdpClient) (packets: (byte[] * IPEndPoint) list) =
+    let rec receive_all (socket: UdpClient) (closing: CancellationToken) (packets: (byte[] * IPEndPoint) list) =
         async {
             try
+                if closing.IsCancellationRequested || socket.Client.SafeHandle.IsInvalid then
+                    return ()
+
                 let! (packet, remote) =
                     Async.FromBeginEnd(
                         (fun (callback, state) -> socket.BeginReceive(callback, state)),
@@ -29,7 +32,7 @@ module internal UDP =
                             (packet, !addr))
                     )
 
-                return! receive_all socket ((packet, remote) :: packets)
+                return! receive_all socket closing ((packet, remote) :: packets)
 
             with
             | :? ObjectDisposedException -> return Ok(List.rev packets)
@@ -57,9 +60,16 @@ module internal UDP =
                 return Error err.Message
         }
 
-    let rec receive_event (socket: UdpClient) (handler: byte array * IPEndPoint -> unit) : Async<Result<unit, string>> =
+    let rec receive_event
+        (socket: UdpClient)
+        (handler: byte array * IPEndPoint -> unit)
+        (closing: CancellationToken)
+        : Async<Result<unit, string>> =
         async {
             try
+                if closing.IsCancellationRequested || socket.Client.SafeHandle.IsInvalid then
+                    return ()
+
                 let! (packet, remote) =
                     Async.FromBeginEnd(
                         (fun (callback, state) -> socket.BeginReceive(callback, state)),
@@ -72,7 +82,7 @@ module internal UDP =
                 if packet.Length = 64 then
                     handler (packet, remote)
 
-                return! receive_event socket handler
+                return! receive_event socket handler closing
 
             with
             | :? ObjectDisposedException -> return Ok()
@@ -81,9 +91,10 @@ module internal UDP =
 
     let broadcast (request: byte array, bind: IPEndPoint, broadcast: IPEndPoint, timeout: int, debug: bool) =
         let socket = new UdpClient(bind)
+        let closing = new CancellationTokenSource()
 
         try
-            let rx = receive_all socket [] |> Async.StartAsTask
+            let rx = receive_all socket closing.Token [] |> Async.StartAsTask
 
             socket.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true)
             socket.EnableBroadcast <- true
@@ -94,6 +105,7 @@ module internal UDP =
                 dump request
 
             Thread.Sleep timeout
+            closing.Cancel()
             socket.Close()
 
             match rx.Result with
@@ -209,6 +221,7 @@ module internal UDP =
 
     let listen (bind: IPEndPoint) (callback: byte array -> unit) (token: CancellationToken) (debug: bool) =
         let socket = new UdpClient(bind)
+        let closing = new CancellationTokenSource()
 
         socket.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true)
 
@@ -220,9 +233,10 @@ module internal UDP =
             callback packet
 
         try
-            receive_event socket handler |> Async.StartAsTask |> ignore
+            receive_event socket handler closing.Token |> Async.StartAsTask |> ignore
 
             token.WaitHandle.WaitOne() |> ignore
+            closing.Cancel()
             socket.Close()
             Ok()
 
