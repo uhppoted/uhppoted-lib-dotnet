@@ -18,10 +18,10 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <Compile Include="internationalisation.fs" />
     <Compile Include="options.fs" />
     <Compile Include="enums.fs" />
     <Compile Include="types.fs" />
+    <Compile Include="internationalisation.fs" />
     <Compile Include="responses.fs" />
     <Compile Include="builders.fs" />
     <Compile Include="codec.fs" />

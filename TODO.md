@@ -9,26 +9,30 @@
 
 - [ ] API
     - [ ] _Cannot access a disposed object._
+    - [ ] Rework inputs:
+          - [ ] fire alarm
+          - [ ] tamper detect
+          - [ ] set of bool
 
 - [ ] argparse
+    - [x] --interlock
     - [ ] --weekdays
         - [ ] F#
         - [ ] C#
         - [ ] VB.NET
     - [ ] --segments
     - [ ] --task
-    - [ ] --interlock
     - [ ] --keypads
 
 - [ ] translations & enums
     - [x] door mode
-    - [x] event types
-    - [x] event reasons
-    - [x] event direction
-    - [x] tasks
+    - [x] door direction
     - [x] interlock
     - [x] relays
     - [x] inputs
+    - [ ] event types
+    - [ ] event reasons
+    - [ ] tasks
 
 - [ ] function signature file
 - [ ] Represent error cases and illegal state in types intrinsic to your domain

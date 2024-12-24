@@ -29,7 +29,7 @@ type TestInternationalisation() =
 
         events
         |> List.iter (fun t ->
-            let message = Uhppoted.TranslateEventType t.event
+            let message = internationalisation.TranslateEventType t.event
 
             Assert.That(message, Is.EqualTo(t.expected)))
 
@@ -108,7 +108,7 @@ type TestInternationalisation() =
 
         reasons
         |> List.iter (fun t ->
-            let message = Uhppoted.TranslateEventReason t.reason
+            let message = internationalisation.TranslateEventReason t.reason
 
             Assert.That(message, Is.EqualTo(t.expected)))
 
@@ -127,7 +127,7 @@ type TestInternationalisation() =
 
         directions
         |> List.iter (fun t ->
-            let message = Uhppoted.TranslateDoorDirection t.direction
+            let message = internationalisation.TranslateDoorDirection t.direction
 
             Assert.That(message, Is.EqualTo(t.expected)))
 
@@ -150,7 +150,7 @@ type TestInternationalisation() =
 
         modes
         |> List.iter (fun t ->
-            let message = Uhppoted.TranslateDoorMode t.mode
+            let message = internationalisation.TranslateDoorMode t.mode
 
             Assert.That(message, Is.EqualTo(t.expected)))
 
@@ -167,7 +167,7 @@ type TestInternationalisation() =
               {| interlock = 2uy
                  expected = "doors 3&4" |}
               {| interlock = 3uy
-                 expected = "doors 1&2 and doors 3&4" |}
+                 expected = "doors 1&2,doors 3&4" |}
               {| interlock = 4uy
                  expected = "doors 1&2&3" |}
               {| interlock = 8uy
@@ -177,7 +177,7 @@ type TestInternationalisation() =
 
         interlocks
         |> List.iter (fun t ->
-            let message = Uhppoted.TranslateDoorInterlock t.interlock
+            let message = internationalisation.TranslateDoorInterlock t.interlock
 
             Assert.That(message, Is.EqualTo(t.expected)))
 
@@ -219,7 +219,7 @@ type TestInternationalisation() =
 
         tasks
         |> List.iter (fun t ->
-            let message = Uhppoted.TranslateTaskCode t.task
+            let message = internationalisation.TranslateTaskCode t.task
 
             Assert.That(message, Is.EqualTo(t.expected)))
 
@@ -238,7 +238,7 @@ type TestInternationalisation() =
 
         relays
         |> List.iter (fun t ->
-            let message = Uhppoted.TranslateRelayState t.relay
+            let message = internationalisation.TranslateRelayState t.relay
 
             Assert.That(message, Is.EqualTo(t.expected)))
 
@@ -257,6 +257,6 @@ type TestInternationalisation() =
 
         inputs
         |> List.iter (fun t ->
-            let message = Uhppoted.TranslateInputState t.input
+            let message = internationalisation.TranslateInputState t.input
 
             Assert.That(message, Is.EqualTo(t.expected)))

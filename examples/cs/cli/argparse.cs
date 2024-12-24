@@ -69,6 +69,29 @@ static class ArgParse
                     }
                     break;
 
+                case Interlock:
+                    switch (args[ix])
+                    {
+                        case "none":
+                            return (T)(object)Interlock.None;
+
+                        case "1&2":
+                            return (T)(object)Interlock.Doors12;
+
+                        case "3&4":
+                            return (T)(object)Interlock.Doors34;
+
+                        case "1&2,3&4":
+                            return (T)(object)Interlock.Doors12And34;
+
+                        case "1&2&3":
+                            return (T)(object)Interlock.Doors123;
+
+                        case "1&2&3&4":
+                            return (T)(object)Interlock.Doors1234;
+                    }
+                    break;
+
                 case UInt32[]:
                     foreach (var token in args[ix].Split(','))
                     {

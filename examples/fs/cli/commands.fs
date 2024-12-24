@@ -69,6 +69,9 @@ let HHmm (time: Nullable<TimeOnly>) =
     else
         "---"
 
+let translate v : string =
+     Uhppoted.Translate v
+
 let find_controllers args =
     match Uhppoted.FindControllers(OPTIONS) with
     | Ok controllers ->
@@ -217,7 +220,7 @@ let get_door args =
         printfn "get-door"
         printfn "  controller %u" controller
         printfn "        door %d" door
-        printfn "        mode %A" record.mode
+        printfn "        mode %s" (translate record.mode)
         printfn "       delay %ds" record.delay
         printfn ""
         printfn ""
@@ -243,7 +246,7 @@ let set_door args =
         printfn "set-door"
         printfn "  controller %u" controller
         printfn "        door %d" door
-        printfn "        mode %A" record.mode
+        printfn "        mode %s" (translate record.mode)
         printfn "       delay %ds" record.delay
         printfn ""
         Ok()
@@ -313,14 +316,14 @@ let get_status args =
         printfn "   system date/time %A" (YYYYMMDDHHmmss(status.SystemDateTime))
         printfn "       sequence no. %u" status.SequenceNumber
         printfn "       special info %u" status.SpecialInfo
-        printfn "            relay 1 %A" status.Relay1
-        printfn "            relay 2 %A" status.Relay2
-        printfn "            relay 3 %A" status.Relay3
-        printfn "            relay 4 %A" status.Relay4
-        printfn "            input 1 %A" status.Input1
-        printfn "            input 2 %A" status.Input2
-        printfn "            input 3 %A" status.Input3
-        printfn "            input 4 %A" status.Input4
+        printfn "            relay 1 %s" (translate status.Relay1)
+        printfn "            relay 2 %s" (translate status.Relay2)
+        printfn "            relay 3 %s" (translate status.Relay3)
+        printfn "            relay 4 %s" (translate status.Relay4)
+        printfn "            input 1 %s" (translate status.Input1)
+        printfn "            input 2 %s" (translate status.Input2)
+        printfn "            input 3 %s" (translate status.Input3)
+        printfn "            input 4 %s" (translate status.Input4)
         printfn ""
 
         if event.HasValue then
@@ -328,7 +331,7 @@ let get_status args =
             printfn "          event     %u" event.Value.Event
             printfn "          granted   %b" event.Value.AccessGranted
             printfn "          door      %u" event.Value.Door
-            printfn "          direction %A" event.Value.Direction
+            printfn "          direction %s" (translate event.Value.Direction)
             printfn "          card      %u" event.Value.Card
             printfn "          timestamp %A" (YYYYMMDDHHmmss(event.Value.Timestamp))
             printfn "          reason    %u" event.Value.Reason
@@ -499,7 +502,7 @@ let get_event args =
         printfn "       event %u" record.Event
         printfn "     granted %b" record.AccessGranted
         printfn "        door %u" record.Door
-        printfn "   direction %A" record.Direction
+        printfn "   direction %s" (translate record.Direction)
         printfn "        card %u" record.Card
         printfn "      reason %u" record.Reason
         printfn ""
@@ -756,7 +759,7 @@ let setInterlock args =
     | Ok ok ->
         printfn "set-interlock"
         printfn "  controller %u" controller
-        printfn "   interlock %A" interlock
+        printfn "   interlock %s" (translate interlock)
         printfn "          ok %b" ok
         printfn ""
         Ok()
@@ -833,14 +836,14 @@ let listen args =
         printfn "   system date/time %s" (YYYYMMDDHHmmss(status.SystemDateTime))
         printfn "       sequence no. %u" status.SequenceNumber
         printfn "       special info %u" status.SpecialInfo
-        printfn "            relay 1 %A" status.Relay1
-        printfn "            relay 2 %A" status.Relay2
-        printfn "            relay 3 %A" status.Relay3
-        printfn "            relay 4 %A" status.Relay4
-        printfn "            input 1 %A" status.Input1
-        printfn "            input 2 %A" status.Input2
-        printfn "            input 3 %A" status.Input3
-        printfn "            input 4 %A" status.Input4
+        printfn "            relay 1 %s" (translate status.Relay1)
+        printfn "            relay 2 %s" (translate status.Relay2)
+        printfn "            relay 3 %s" (translate status.Relay3)
+        printfn "            relay 4 %s" (translate status.Relay4)
+        printfn "            input 1 %s" (translate status.Input1)
+        printfn "            input 2 %s" (translate status.Input2)
+        printfn "            input 3 %s" (translate status.Input3)
+        printfn "            input 4 %s" (translate status.Input4)
         printfn ""
 
         if event.HasValue then
@@ -849,7 +852,7 @@ let listen args =
             printfn "              event %u" event.Value.Event
             printfn "            granted %b" event.Value.AccessGranted
             printfn "               door %u" event.Value.Door
-            printfn "          direction %A" event.Value.Direction
+            printfn "          direction %s" (translate event.Value.Direction)
             printfn "               card %u" event.Value.Card
             printfn "             reason %u" event.Value.Reason
             printfn ""

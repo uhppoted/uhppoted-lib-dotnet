@@ -281,7 +281,7 @@ Module Commands
             WriteLine("get-door")
             WriteLine("  controller {0}", controller)
             WriteLine("        door {0}", door)
-            WriteLine("        mode {0}", record.mode)
+            WriteLine("        mode {0}", translate(record.mode))
             WriteLine("       delay {0}s", record.delay)
             WriteLine()
         Else If (result.IsOk)
@@ -307,7 +307,7 @@ Module Commands
             WriteLine("set-door")
             WriteLine("  controller {0}", controller)
             WriteLine("        door {0}", door)
-            WriteLine("        mode {0}", record.mode)
+            WriteLine("        mode {0}", translate(record.mode))
             WriteLine("       delay {0}s", record.delay)
             WriteLine()
         Else If (result.IsOk)
@@ -385,14 +385,14 @@ Module Commands
             WriteLine("   system date/time {0}", YYYYMMDDHHmmss(status.SystemDateTime))
             WriteLine("       sequence no. {0}", status.SequenceNumber)
             WriteLine("       special info {0}", status.SpecialInfo)
-            WriteLine("            relay 1 {0}", status.Relay1)
-            WriteLine("            relay 2 {0}", status.Relay2)
-            WriteLine("            relay 3 {0}", status.Relay3)
-            WriteLine("            relay 4 {0}", status.Relay4)
-            WriteLine("            input 1 {0}", status.Input1)
-            WriteLine("            input 2 {0}", status.Input2)
-            WriteLine("            input 3 {0}", status.Input3)
-            WriteLine("            input 4 {0}", status.Input4)
+            WriteLine("            relay 1 {0}", translate(status.Relay1))
+            WriteLine("            relay 2 {0}", translate(status.Relay2))
+            WriteLine("            relay 3 {0}", translate(status.Relay3))
+            WriteLine("            relay 4 {0}", translate(status.Relay4))
+            WriteLine("            input 1 {0}", translate(status.Input1))
+            WriteLine("            input 2 {0}", translate(status.Input2))
+            WriteLine("            input 3 {0}", translate(status.Input3))
+            WriteLine("            input 4 {0}", translate(status.Input4))
             WriteLine()
 
             If evt.HasValue Then
@@ -400,7 +400,7 @@ Module Commands
                 WriteLine("          event     {0}", evt.Value.Event)
                 WriteLine("          granted   {0}", evt.Value.AccessGranted)
                 WriteLine("          door      {0}", evt.Value.Door)
-                WriteLine("          direction {0}", evt.Value.Direction)
+                WriteLine("          direction {0}", translate(evt.Value.Direction))
                 WriteLine("          card      {0}", evt.Value.Card)
                 WriteLine("          timestamp {0}", YYYYMMDDHHmmss(evt.Value.Timestamp))
                 WriteLine("          reason    {0}", evt.Value.Reason)
@@ -592,7 +592,7 @@ Module Commands
             WriteLine("       event {0}", record.Event)
             WriteLine("     granted {0}", record.AccessGranted)
             WriteLine("        door {0}", record.Door)
-            WriteLine("   direction {0}", record.Direction)
+            WriteLine("   direction {0}", translate(record.Direction))
             WriteLine("        card {0}", record.Card)
             WriteLine("      reason {0}", record.Reason)
             WriteLine()
@@ -883,7 +883,7 @@ Module Commands
 
             WriteLine("set-interlock")
             WriteLine("  controller {0}", controller)
-            WriteLine("   interlock {0}", interlock)
+            WriteLine("   interlock {0}", translate(interlock))
             WriteLine("          ok {0}", ok)
             WriteLine()
         Else If (result.IsError)
@@ -974,14 +974,14 @@ Module Commands
         WriteLine($"   system date/time {YYYYMMDDHHmmss(status.SystemDateTime)}")
         WriteLine($"       sequence no. {status.SequenceNumber}")
         WriteLine($"       special info {status.SpecialInfo}")
-        WriteLine($"            relay 1 {status.Relay1}")
-        WriteLine($"            relay 2 {status.Relay2}")
-        WriteLine($"            relay 3 {status.Relay3}")
-        WriteLine($"            relay 4 {status.Relay4}")
-        WriteLine($"            input 1 {status.Input1}")
-        WriteLine($"            input 2 {status.Input2}")
-        WriteLine($"            input 3 {status.Input3}")
-        WriteLine($"            input 4 {status.Input4}")
+        WriteLine($"            relay 1 {translate(status.Relay1)}")
+        WriteLine($"            relay 2 {translate(status.Relay2)}")
+        WriteLine($"            relay 3 {translate(status.Relay3)}")
+        WriteLine($"            relay 4 {translate(status.Relay4)}")
+        WriteLine($"            input 1 {translate(status.Input1)}")
+        WriteLine($"            input 2 {translate(status.Input2)}")
+        WriteLine($"            input 3 {translate(status.Input3)}")
+        WriteLine($"            input 4 {translate(status.Input4)}")
         WriteLine("")
 
         If evt.HasValue Then
@@ -991,7 +991,7 @@ Module Commands
             WriteLine($"              event {v.Event}")
             WriteLine($"            granted {v.AccessGranted}")
             WriteLine($"               door {v.Door}")
-            WriteLine($"          direction {v.Direction}")
+            WriteLine($"          direction {translate(v.Direction)}")
             WriteLine($"               card {v.Card}")
             WriteLine($"             reason {v.Reason}")
             WriteLine("")
@@ -1027,6 +1027,10 @@ Module Commands
         Else
             Return "---"
         End If
+    End Function
+
+    Private Function translate(val) As String
+        return UHPPOTE.Translate(val)
     End Function
 
 End Module

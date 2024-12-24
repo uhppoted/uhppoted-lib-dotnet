@@ -1,6 +1,7 @@
 Imports System.Console
 Imports System.Net
 Imports DoorMode = uhppoted.DoorMode
+Imports Interlock = uhppoted.Interlock
 
 Module ArgParse
 
@@ -69,6 +70,30 @@ Module ArgParse
 
                         Case "controlled"
                             Return CType(CObj(DoorMode.Controlled), T)
+
+                        Case Else
+                            Return defval
+                    End Select
+
+                Case "Interlock" :
+                    Select Case args(ix).ToLowerInvariant()
+                        Case "none"
+                            Return CType(CObj(Interlock.None), T)
+
+                        Case "1&2"
+                            Return CType(CObj(Interlock.Doors12), T)
+
+                        Case "3&4"
+                            Return CType(CObj(Interlock.Doors34), T)
+
+                        Case "1&2,3&4"
+                            Return CType(CObj(Interlock.Doors12And34), T)
+
+                        Case "1&2&3"
+                            Return CType(CObj(Interlock.Doors123), T)
+
+                        Case "1&2&3&4"
+                            Return CType(CObj(Interlock.Doors1234), T)
 
                         Case Else
                             Return defval

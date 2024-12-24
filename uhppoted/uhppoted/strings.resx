@@ -230,7 +230,7 @@
         <value>doors 3&amp;4</value>
     </data>
     <data name="doors.interlock.3">
-        <value>doors 1&amp;2 and doors 3&amp;4</value>
+        <value>doors 1&amp;2,doors 3&amp;4</value>
     </data>
     <data name="doors.interlock.4">
         <value>doors 1&amp;2&amp;3</value>
@@ -254,13 +254,13 @@
     </data>
 
     <!-- inputs -->
-    <data name="inputs.1">
+    <data name="input.1">
         <value>off</value>
     </data>
-    <data name="inputs.2">
+    <data name="input.2">
         <value>on</value>
     </data>
-    <data name="inputs.unknown">
+    <data name="input.unknown">
         <value>unknown</value>
     </data>
 </root>

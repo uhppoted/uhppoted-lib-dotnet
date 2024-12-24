@@ -46,6 +46,16 @@ let (|DoorMode|_|) (value: string) =
     | "controlled" -> Some DoorMode.Controlled
     | _ -> None
 
+let (|Interlock|_|) (value: string) =
+    match value.ToLowerInvariant() with
+    | "none" -> Some Interlock.None
+    | "1&2" -> Some Interlock.Doors12
+    | "3&4" -> Some Interlock.Doors34
+    | "1&2,3&4" -> Some Interlock.Doors12And34
+    | "1&2&3" -> Some Interlock.Doors123
+    | "1&2&3&4" -> Some Interlock.Doors1234
+    | _ -> None
+
 let (|Uint32List|_|) (value: string) =
     try
         let parsed =
@@ -94,6 +104,7 @@ let rec argparse (args: string list) flag (defval: 'T) : 'T =
         | :? DateTime, DateTime parsed -> unbox parsed
         | :? DateOnly, DateOnly parsed -> unbox parsed
         | :? DoorMode, DoorMode parsed -> unbox parsed
+        | :? Interlock, Interlock parsed -> unbox parsed
         | _ when typeof<'T> = typeof<System.UInt32[]> ->
             match value with
             | Uint32List parsed -> unbox parsed

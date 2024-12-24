@@ -231,7 +231,7 @@
         <value>doors 3&amp;4</value>
     </data>
     <data name="doors.interlock.3">
-        <value>doors 1&amp;2 and doors 3&amp;4</value>
+        <value>doors 1&amp;2,doors 3&amp;4</value>
     </data>
     <data name="doors.interlock.4">
         <value>doors 1&amp;2&amp;3</value>
