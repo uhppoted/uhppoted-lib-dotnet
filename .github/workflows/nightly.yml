@@ -31,6 +31,7 @@ jobs:
 
     - name: Build
       run: |
+        ss --tcp -all
         make build-all
         make integration-tests
 
