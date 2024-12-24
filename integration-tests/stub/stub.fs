@@ -107,18 +107,27 @@ module Stub =
         match mode with
         | "broadcast" ->
             let udp = new UdpClient(59999)
+
+            udp.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true)
+
             let udprx = recv udp logger |> Async.StartAsTask
 
             { udp = Some(udp, udprx); tcp = None }
 
         | "connected udp" ->
             let udp = new UdpClient(59998)
+
+            udp.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true)
+
             let udprx = recv udp logger |> Async.StartAsTask
 
             { udp = Some(udp, udprx); tcp = None }
 
         | "tcp" ->
             let tcp = new TcpListener(IPAddress.Any, 59997)
+
+            tcp.Server.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true)
+
             let tcprx = listen tcp logger |> Async.StartAsTask
 
             { udp = None; tcp = Some(tcp, tcprx) }
