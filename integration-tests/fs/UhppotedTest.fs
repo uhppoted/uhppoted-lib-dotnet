@@ -144,10 +144,12 @@ type TestAPI(tt: string) =
         | "controller+endpoint+tcp" -> this.emulator <- Stub.initialise "tcp" TestContext.Error
         | _ -> failwith "unknown test case"
 
+        Thread.Sleep 2500
 
     [<OneTimeTearDown>]
     member this.Terminate() =
         Stub.terminate this.emulator TestContext.Error
+        Thread.Sleep 2500
 
     [<SetUp>]
     member this.Setup() = ()

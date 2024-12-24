@@ -1,4 +1,5 @@
 ![build](https://github.com/uhppoted/uhppoted-lib-dotnet/workflows/build/badge.svg)
+![integration-tests](https://github.com/uhppoted/uhppoted-lib-dotnet/workflows/integration-tests/badge.svg)
 ![nightly](https://github.com/uhppoted/uhppoted-lib-dotnet/workflows/nightly/badge.svg)
 
 # uhppoted-lib-dotnet
