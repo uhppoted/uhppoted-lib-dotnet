@@ -1,11 +1,7 @@
 # TODO
 
-- [ ] nightly builds
-      - (?) maybe use different ports integration tests (59997 seems to be in use)
-      - [x] check open sockets (lsof -i :8000)
-      - [x] set SO_REUSEADDR
-
-- [ ] camelCase internal functions
+- [x] nightly builds
+- [x] camelCase internal functions
 
 - [ ] API
     - [ ] _Cannot access a disposed object._
@@ -15,7 +11,6 @@
           - [ ] set of bool
 
 - [ ] argparse
-    - [x] --interlock
     - [ ] --weekdays
         - [ ] F#
         - [ ] C#

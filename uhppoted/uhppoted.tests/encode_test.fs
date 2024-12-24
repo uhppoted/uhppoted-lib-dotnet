@@ -61,7 +61,7 @@ type TestEncoder() =
         let expected = TestRequests.getTime
 
         let controller = 405419896u
-        let packet = Encode.get_time_request controller
+        let packet = Encode.getTimeRequest controller
 
         Assert.That(packet, Is.EqualTo(expected))
 
@@ -74,7 +74,7 @@ type TestEncoder() =
         let datetime =
             DateTime.ParseExact("2024-11-04 12:34:56", "yyyy-MM-dd HH:mm:ss", null)
 
-        let packet = Encode.set_time_request controller datetime
+        let packet = Encode.setTimeRequest controller datetime
 
         Assert.That(packet, Is.EqualTo(expected))
 
@@ -84,7 +84,7 @@ type TestEncoder() =
 
         let controller = 405419896u
         let door = 3uy
-        let packet = Encode.get_door_request controller door
+        let packet = Encode.getDoorRequest controller door
 
         Assert.That(packet, Is.EqualTo(expected))
 
@@ -96,7 +96,7 @@ type TestEncoder() =
         let door = 3uy
         let mode = DoorMode.NormallyClosed
         let delay = 17uy
-        let packet = Encode.set_door_request controller door mode delay
+        let packet = Encode.setDoorRequest controller door mode delay
 
         Assert.That(packet, Is.EqualTo(expected))
 
@@ -109,7 +109,7 @@ type TestEncoder() =
         let passcodes = [| 123456u; 234567u; 345678u; 456789u |]
 
         let packet =
-            Encode.set_door_passcodes_request controller door passcodes[0] passcodes[1] passcodes[2] passcodes[3]
+            Encode.setDoorPasscodesRequest controller door passcodes[0] passcodes[1] passcodes[2] passcodes[3]
 
         Assert.That(packet, Is.EqualTo(expected))
 
@@ -122,7 +122,7 @@ type TestEncoder() =
         let passcodes = [| 123456u; 1234567u; 345678u; 456789u |]
 
         let packet =
-            Encode.set_door_passcodes_request controller door passcodes[0] passcodes[1] passcodes[2] passcodes[3]
+            Encode.setDoorPasscodesRequest controller door passcodes[0] passcodes[1] passcodes[2] passcodes[3]
 
         Assert.That(packet, Is.EqualTo(expected))
 

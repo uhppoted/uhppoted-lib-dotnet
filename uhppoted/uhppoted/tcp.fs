@@ -39,7 +39,7 @@ module internal TCP =
                 return Error err.Message
         }
 
-    let send_to (request: byte array, src: IPEndPoint, dest: IPEndPoint, timeout: int, debug: bool) =
+    let sendTo (request: byte array, src: IPEndPoint, dest: IPEndPoint, timeout: int, debug: bool) =
         let socket = new TcpClient(src)
 
         let timer (timeout: int) : Async<Result<byte array * IPEndPoint, string>> =

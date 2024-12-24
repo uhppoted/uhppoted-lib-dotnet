@@ -42,9 +42,9 @@ module Uhppoted =
 
         let result =
             match endpoint, protocol with
-            | None, _ -> UDP.broadcast_to (request, bind, broadcast, timeout, debug)
-            | Some(addr), Some("tcp") -> TCP.send_to (request, bind, addr, timeout, debug)
-            | Some(addr), _ -> UDP.send_to (request, bind, addr, timeout, debug)
+            | None, _ -> UDP.broadcastTo (request, bind, broadcast, timeout, debug)
+            | Some(addr), Some("tcp") -> TCP.sendTo (request, bind, addr, timeout, debug)
+            | Some(addr), _ -> UDP.sendTo (request, bind, addr, timeout, debug)
 
         match result with
         | Ok packet ->
@@ -146,9 +146,9 @@ module Uhppoted =
 
             let result =
                 match endpoint, protocol with
-                | None, _ -> UDP.broadcast_to (request, bind, broadcast, timeout, debug)
-                | Some(addr), Some("tcp") -> TCP.send_to (request, bind, addr, timeout, debug)
-                | Some(addr), _ -> UDP.send_to (request, bind, addr, timeout, debug)
+                | None, _ -> UDP.broadcastTo (request, bind, broadcast, timeout, debug)
+                | Some(addr), Some("tcp") -> TCP.sendTo (request, bind, addr, timeout, debug)
+                | Some(addr), _ -> UDP.sendTo (request, bind, addr, timeout, debug)
 
             match result with
             | Ok _ -> Ok()
@@ -206,9 +206,9 @@ module Uhppoted =
         match resolve controller with
         | Error err -> Error err
         | Ok c ->
-            let request = Encode.get_time_request c.controller
+            let request = Encode.getTimeRequest c.controller
 
-            match exec c request Decode.get_time_response options with
+            match exec c request Decode.getTimeResponse options with
             | Ok response -> Ok response.datetime
             | Error err -> Error err
 
@@ -223,9 +223,9 @@ module Uhppoted =
         match resolve controller with
         | Error err -> Error err
         | Ok c ->
-            let request = Encode.set_time_request c.controller datetime
+            let request = Encode.setTimeRequest c.controller datetime
 
-            match exec c request Decode.set_time_response options with
+            match exec c request Decode.setTimeResponse options with
             | Ok response -> Ok response.datetime
             | Error err -> Error err
 
@@ -240,9 +240,9 @@ module Uhppoted =
         match resolve controller with
         | Error err -> Error err
         | Ok c ->
-            let request = Encode.get_door_request c.controller door
+            let request = Encode.getDoorRequest c.controller door
 
-            match exec c request Decode.get_door_response options with
+            match exec c request Decode.getDoorResponse options with
             | Ok response when response.door <> door -> // incorrect door
                 Ok(Nullable())
             | Ok response ->
@@ -264,9 +264,9 @@ module Uhppoted =
         match resolve controller with
         | Error err -> Error err
         | Ok c ->
-            let request = Encode.set_door_request c.controller door mode delay
+            let request = Encode.setDoorRequest c.controller door mode delay
 
-            match exec c request Decode.set_door_response options with
+            match exec c request Decode.setDoorResponse options with
             | Ok response when response.door <> door -> // incorrect door
                 Ok(Nullable())
             | Ok response ->
@@ -293,7 +293,7 @@ module Uhppoted =
         | Error err -> Error err
         | Ok c ->
             let request =
-                Encode.set_door_passcodes_request
+                Encode.setDoorPasscodesRequest
                     c.controller
                     door
                     (passcodes |> Array.tryItem 0 |> Option.defaultValue 0u)
@@ -301,7 +301,7 @@ module Uhppoted =
                     (passcodes |> Array.tryItem 2 |> Option.defaultValue 0u)
                     (passcodes |> Array.tryItem 3 |> Option.defaultValue 0u)
 
-            match exec c request Decode.set_door_passcodes_response options with
+            match exec c request Decode.setDoorPasscodesResponse options with
             | Ok response -> Ok response.ok
             | Error err -> Error err
 
@@ -421,8 +421,8 @@ module Uhppoted =
                 Ok(
                     Nullable
                         { Card = response.card
-                          StartDate = response.start_date
-                          EndDate = response.end_date
+                          StartDate = response.startDate
+                          EndDate = response.endDate
                           Door1 = response.door1
                           Door2 = response.door2
                           Door3 = response.door3
@@ -455,8 +455,8 @@ module Uhppoted =
                 Ok(
                     Nullable
                         { Card = response.card
-                          StartDate = response.start_date
-                          EndDate = response.end_date
+                          StartDate = response.startDate
+                          EndDate = response.endDate
                           Door1 = response.door1
                           Door2 = response.door2
                           Door3 = response.door3
@@ -636,8 +636,8 @@ module Uhppoted =
                 Ok(
                     Nullable
                         { Profile = response.profile
-                          StartDate = response.start_date
-                          EndDate = response.end_date
+                          StartDate = response.startDate
+                          EndDate = response.endDate
                           Monday = response.monday
                           Tuesday = response.tuesday
                           Wednesday = response.wednesday
@@ -645,13 +645,13 @@ module Uhppoted =
                           Friday = response.friday
                           Saturday = response.saturday
                           Sunday = response.sunday
-                          Segment1Start = response.segment1_start
-                          Segment1End = response.segment1_end
-                          Segment2Start = response.segment2_start
-                          Segment2End = response.segment2_end
-                          Segment3Start = response.segment3_start
-                          Segment3End = response.segment3_end
-                          LinkedProfile = response.linked_profile }
+                          Segment1Start = response.segment1Start
+                          Segment1End = response.segment1End
+                          Segment2Start = response.segment2Start
+                          Segment2End = response.segment2End
+                          Segment3Start = response.segment3Start
+                          Segment3End = response.segment3End
+                          LinkedProfile = response.linkedProfile }
                 )
             | Error err -> Error err
 

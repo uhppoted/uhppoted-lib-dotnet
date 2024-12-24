@@ -119,8 +119,8 @@ type GetCardsResponse =
 type GetCardResponse =
     { controller: uint32
       card: uint32
-      start_date: DateOnly Nullable
-      end_date: DateOnly Nullable
+      startDate: DateOnly Nullable
+      endDate: DateOnly Nullable
       door1: uint8
       door2: uint8
       door3: uint8
@@ -133,8 +133,8 @@ type GetCardResponse =
 type internal GetCardAtIndexResponse =
     { controller: uint32
       card: uint32
-      start_date: DateOnly Nullable
-      end_date: DateOnly Nullable
+      startDate: DateOnly Nullable
+      endDate: DateOnly Nullable
       door1: uint8
       door2: uint8
       door3: uint8
@@ -203,8 +203,8 @@ type internal RecordSpecialEventsResponse =
 type internal GetTimeProfileResponse =
     { controller: uint32
       profile: uint8
-      start_date: DateOnly Nullable
-      end_date: DateOnly Nullable
+      startDate: DateOnly Nullable
+      endDate: DateOnly Nullable
       monday: bool
       tuesday: bool
       wednesday: bool
@@ -212,13 +212,13 @@ type internal GetTimeProfileResponse =
       friday: bool
       saturday: bool
       sunday: bool
-      segment1_start: TimeOnly Nullable
-      segment1_end: TimeOnly Nullable
-      segment2_start: TimeOnly Nullable
-      segment2_end: TimeOnly Nullable
-      segment3_start: TimeOnly Nullable
-      segment3_end: TimeOnly Nullable
-      linked_profile: uint8 }
+      segment1Start: TimeOnly Nullable
+      segment1End: TimeOnly Nullable
+      segment2Start: TimeOnly Nullable
+      segment2End: TimeOnly Nullable
+      segment3Start: TimeOnly Nullable
+      segment3End: TimeOnly Nullable
+      linkedProfile: uint8 }
 
     interface IResponse with
         member this.controller = this.controller

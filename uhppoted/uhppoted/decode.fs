@@ -121,7 +121,7 @@ module internal Decode =
                 { controller = unpackU32 packet[4..]
                   ok = unpackBool packet[8..] }
 
-    let get_time_response (packet: byte array) : Result<GetTimeResponse, string> =
+    let getTimeResponse (packet: byte array) : Result<GetTimeResponse, string> =
         if packet[0] <> messages.SOM then
             Error("invalid controller response")
         else if packet[1] <> messages.GET_TIME then
@@ -131,7 +131,7 @@ module internal Decode =
                 { controller = unpackU32 packet[4..]
                   datetime = unpackDateTime (packet[8..]) }
 
-    let set_time_response (packet: byte array) : Result<SetTimeResponse, string> =
+    let setTimeResponse (packet: byte array) : Result<SetTimeResponse, string> =
         if packet[0] <> messages.SOM then
             Error("invalid controller response")
         else if packet[1] <> messages.SET_TIME then
@@ -141,7 +141,7 @@ module internal Decode =
                 { controller = unpackU32 packet[4..]
                   datetime = unpackDateTime (packet[8..]) }
 
-    let get_door_response (packet: byte array) : Result<GetDoorResponse, string> =
+    let getDoorResponse (packet: byte array) : Result<GetDoorResponse, string> =
         if packet[0] <> messages.SOM then
             Error("invalid controller response")
         else if packet[1] <> messages.GET_DOOR then
@@ -153,7 +153,7 @@ module internal Decode =
                   mode = unpackU8 (packet[9..])
                   delay = unpackU8 (packet[10..]) }
 
-    let set_door_response (packet: byte array) : Result<SetDoorResponse, string> =
+    let setDoorResponse (packet: byte array) : Result<SetDoorResponse, string> =
         if packet[0] <> messages.SOM then
             Error("invalid controller response")
         else if packet[1] <> messages.SET_DOOR then
@@ -165,7 +165,7 @@ module internal Decode =
                   mode = unpackU8 (packet[9..])
                   delay = unpackU8 (packet[10..]) }
 
-    let set_door_passcodes_response (packet: byte array) : Result<SetDoorPasscodesResponse, string> =
+    let setDoorPasscodesResponse (packet: byte array) : Result<SetDoorPasscodesResponse, string> =
         if packet[0] <> messages.SOM then
             Error("invalid controller response")
         else if packet[1] <> messages.SET_DOOR_PASSCODES then
@@ -244,8 +244,8 @@ module internal Decode =
             Ok
                 { controller = unpackU32 packet[4..]
                   card = unpackU32 packet[8..]
-                  start_date = unpackDate (packet[12..])
-                  end_date = unpackDate (packet[16..])
+                  startDate = unpackDate (packet[12..])
+                  endDate = unpackDate (packet[16..])
                   door1 = unpackU8 (packet[20..])
                   door2 = unpackU8 (packet[21..])
                   door3 = unpackU8 (packet[22..])
@@ -261,8 +261,8 @@ module internal Decode =
             Ok
                 { controller = unpackU32 packet[4..]
                   card = unpackU32 packet[8..]
-                  start_date = unpackDate (packet[12..])
-                  end_date = unpackDate (packet[16..])
+                  startDate = unpackDate (packet[12..])
+                  endDate = unpackDate (packet[16..])
                   door1 = unpackU8 (packet[20..])
                   door2 = unpackU8 (packet[21..])
                   door3 = unpackU8 (packet[22..])
@@ -355,8 +355,8 @@ module internal Decode =
             Ok
                 { controller = unpackU32 packet[4..]
                   profile = unpackU8 packet[8..]
-                  start_date = unpackDate (packet[9..])
-                  end_date = unpackDate (packet[13..])
+                  startDate = unpackDate (packet[9..])
+                  endDate = unpackDate (packet[13..])
                   monday = unpackBool (packet[17..])
                   tuesday = unpackBool (packet[18..])
                   wednesday = unpackBool (packet[19..])
@@ -364,13 +364,13 @@ module internal Decode =
                   friday = unpackBool (packet[21..])
                   saturday = unpackBool (packet[22..])
                   sunday = unpackBool (packet[23..])
-                  segment1_start = unpackHHmm (packet[24..])
-                  segment1_end = unpackHHmm (packet[26..])
-                  segment2_start = unpackHHmm (packet[28..])
-                  segment2_end = unpackHHmm (packet[30..])
-                  segment3_start = unpackHHmm (packet[32..])
-                  segment3_end = unpackHHmm (packet[34..])
-                  linked_profile = unpackU8 packet[36..] }
+                  segment1Start = unpackHHmm (packet[24..])
+                  segment1End = unpackHHmm (packet[26..])
+                  segment2Start = unpackHHmm (packet[28..])
+                  segment2End = unpackHHmm (packet[30..])
+                  segment3Start = unpackHHmm (packet[32..])
+                  segment3End = unpackHHmm (packet[34..])
+                  linkedProfile = unpackU8 packet[36..] }
 
     let setTimeProfileResponse (packet: byte array) : Result<SetTimeProfileResponse, string> =
         if packet[0] <> messages.SOM then

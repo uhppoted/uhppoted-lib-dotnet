@@ -69,8 +69,7 @@ let HHmm (time: Nullable<TimeOnly>) =
     else
         "---"
 
-let translate v : string =
-     Uhppoted.Translate v
+let translate v : string = Uhppoted.Translate v
 
 let find_controllers args =
     match Uhppoted.FindControllers(OPTIONS) with

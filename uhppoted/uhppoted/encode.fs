@@ -159,7 +159,7 @@ module internal Encode =
 
         packet
 
-    let get_time_request (controller: uint32) =
+    let getTimeRequest (controller: uint32) =
         let packet: byte array = Array.zeroCreate 64
 
         pack packet 0 (byte messages.SOM)
@@ -168,7 +168,7 @@ module internal Encode =
 
         packet
 
-    let set_time_request (controller: uint32) (datetime: DateTime) =
+    let setTimeRequest (controller: uint32) (datetime: DateTime) =
         let packet: byte array = Array.zeroCreate 64
 
         pack packet 0 (byte messages.SOM)
@@ -178,7 +178,7 @@ module internal Encode =
 
         packet
 
-    let get_door_request (controller: uint32) (door: uint8) =
+    let getDoorRequest (controller: uint32) (door: uint8) =
         let packet: byte array = Array.zeroCreate 64
 
         pack packet 0 (byte messages.SOM)
@@ -188,7 +188,7 @@ module internal Encode =
 
         packet
 
-    let set_door_request (controller: uint32) (door: uint8) (mode: DoorMode) (delay: uint8) =
+    let setDoorRequest (controller: uint32) (door: uint8) (mode: DoorMode) (delay: uint8) =
         let packet: byte array = Array.zeroCreate 64
 
         pack packet 0 (byte messages.SOM)
@@ -200,7 +200,7 @@ module internal Encode =
 
         packet
 
-    let set_door_passcodes_request
+    let setDoorPasscodesRequest
         (controller: uint32)
         (door: uint8)
         (passcode1: uint32)

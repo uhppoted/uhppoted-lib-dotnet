@@ -17,7 +17,7 @@ module internal UDP =
             let right = String.Join(" ", hex.[p + 8 .. q + 8])
             printfn "    %s  %s" left right
 
-    let rec receive_all (socket: UdpClient) (closing: CancellationToken) (packets: (byte[] * IPEndPoint) list) =
+    let rec receiveAll (socket: UdpClient) (closing: CancellationToken) (packets: (byte[] * IPEndPoint) list) =
         async {
             try
                 if closing.IsCancellationRequested || socket.Client.SafeHandle.IsInvalid then
@@ -32,7 +32,7 @@ module internal UDP =
                             (packet, !addr))
                     )
 
-                return! receive_all socket closing ((packet, remote) :: packets)
+                return! receiveAll socket closing ((packet, remote) :: packets)
 
             with
             | :? ObjectDisposedException -> return Ok(List.rev packets)
@@ -60,7 +60,7 @@ module internal UDP =
                 return Error err.Message
         }
 
-    let rec receive_event
+    let rec receiveEvent
         (socket: UdpClient)
         (handler: byte array * IPEndPoint -> unit)
         (closing: CancellationToken)
@@ -82,7 +82,7 @@ module internal UDP =
                 if packet.Length = 64 then
                     handler (packet, remote)
 
-                return! receive_event socket handler closing
+                return! receiveEvent socket handler closing
 
             with
             | :? ObjectDisposedException -> return Ok()
@@ -94,7 +94,7 @@ module internal UDP =
         let closing = new CancellationTokenSource()
 
         try
-            let rx = receive_all socket closing.Token [] |> Async.StartAsTask
+            let rx = receiveAll socket closing.Token [] |> Async.StartAsTask
 
             socket.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true)
             socket.EnableBroadcast <- true
@@ -124,7 +124,7 @@ module internal UDP =
         with error ->
             Error error.Message
 
-    let broadcast_to (request: byte array, bind: IPEndPoint, broadcast: IPEndPoint, timeout: int, debug: bool) =
+    let broadcastTo (request: byte array, bind: IPEndPoint, broadcast: IPEndPoint, timeout: int, debug: bool) =
         let socket = new UdpClient(bind)
 
         let timer (timeout: int) : Async<Result<byte array * IPEndPoint, string>> =
@@ -171,7 +171,7 @@ module internal UDP =
         finally
             socket.Close()
 
-    let send_to (request: byte array, src: IPEndPoint, dest: IPEndPoint, timeout: int, debug: bool) =
+    let sendTo (request: byte array, src: IPEndPoint, dest: IPEndPoint, timeout: int, debug: bool) =
         let socket = new UdpClient(src)
 
         let timer (timeout: int) : Async<Result<byte array * IPEndPoint, string>> =
@@ -233,7 +233,7 @@ module internal UDP =
             callback packet
 
         try
-            receive_event socket handler closing.Token |> Async.StartAsTask |> ignore
+            receiveEvent socket handler closing.Token |> Async.StartAsTask |> ignore
 
             token.WaitHandle.WaitOne() |> ignore
             closing.Cancel()

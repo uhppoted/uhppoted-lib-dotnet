@@ -74,7 +74,7 @@ type TestDecoder() =
             { controller = 405419896u
               datetime = Nullable(DateTime.ParseExact("2024-11-01 12:34:56", "yyyy-MM-dd HH:mm:ss", null)) }
 
-        match Decode.get_time_response packet with
+        match Decode.getTimeResponse packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)
 
@@ -86,7 +86,7 @@ type TestDecoder() =
             { controller = 405419896u
               datetime = Nullable() }
 
-        match Decode.get_time_response packet with
+        match Decode.getTimeResponse packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)
 
@@ -98,7 +98,7 @@ type TestDecoder() =
             { controller = 405419896u
               datetime = Nullable(DateTime.ParseExact("2024-11-04 12:34:56", "yyyy-MM-dd HH:mm:ss", null)) }
 
-        match Decode.set_time_response packet with
+        match Decode.setTimeResponse packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)
 
@@ -110,7 +110,7 @@ type TestDecoder() =
             { controller = 405419896u
               datetime = Nullable() }
 
-        match Decode.set_time_response packet with
+        match Decode.setTimeResponse packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)
 
@@ -124,7 +124,7 @@ type TestDecoder() =
               mode = 01uy
               delay = 05uy }
 
-        match Decode.get_door_response packet with
+        match Decode.getDoorResponse packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)
 
@@ -138,7 +138,7 @@ type TestDecoder() =
               mode = 02uy
               delay = 17uy }
 
-        match Decode.set_door_response packet with
+        match Decode.setDoorResponse packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)
 
@@ -148,7 +148,7 @@ type TestDecoder() =
 
         let expected: SetDoorPasscodesResponse = { controller = 405419896u; ok = true }
 
-        match Decode.set_door_passcodes_response packet with
+        match Decode.setDoorPasscodesResponse packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
         | Error err -> Assert.Fail(err)
 
@@ -215,8 +215,8 @@ type TestDecoder() =
         let expected: GetCardResponse =
             { controller = 405419896u
               card = 10058400u
-              start_date = Nullable(DateOnly(2024, 1, 1))
-              end_date = Nullable(DateOnly(2024, 12, 31))
+              startDate = Nullable(DateOnly(2024, 1, 1))
+              endDate = Nullable(DateOnly(2024, 12, 31))
               door1 = 1uy
               door2 = 0uy
               door3 = 17uy
@@ -234,8 +234,8 @@ type TestDecoder() =
         let expected: GetCardAtIndexResponse =
             { controller = 405419896u
               card = 10058400u
-              start_date = Nullable(DateOnly(2024, 1, 1))
-              end_date = Nullable(DateOnly(2024, 12, 31))
+              startDate = Nullable(DateOnly(2024, 1, 1))
+              endDate = Nullable(DateOnly(2024, 12, 31))
               door1 = 1uy
               door2 = 0uy
               door3 = 17uy
@@ -334,8 +334,8 @@ type TestDecoder() =
         let expected: GetTimeProfileResponse =
             { controller = 405419896u
               profile = 37uy
-              start_date = Nullable(DateOnly(2024, 11, 26))
-              end_date = Nullable(DateOnly(2024, 12, 29))
+              startDate = Nullable(DateOnly(2024, 11, 26))
+              endDate = Nullable(DateOnly(2024, 12, 29))
               monday = true
               tuesday = true
               wednesday = false
@@ -343,13 +343,13 @@ type TestDecoder() =
               friday = false
               saturday = true
               sunday = true
-              segment1_start = Nullable(TimeOnly(8, 30))
-              segment1_end = Nullable(TimeOnly(09, 45))
-              segment2_start = Nullable(TimeOnly(11, 35))
-              segment2_end = Nullable(TimeOnly(13, 15))
-              segment3_start = Nullable(TimeOnly(14, 01))
-              segment3_end = Nullable(TimeOnly(17, 59))
-              linked_profile = 19uy }
+              segment1Start = Nullable(TimeOnly(8, 30))
+              segment1End = Nullable(TimeOnly(09, 45))
+              segment2Start = Nullable(TimeOnly(11, 35))
+              segment2End = Nullable(TimeOnly(13, 15))
+              segment3Start = Nullable(TimeOnly(14, 01))
+              segment3End = Nullable(TimeOnly(17, 59))
+              linkedProfile = 19uy }
 
         match Decode.getTimeProfileResponse packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
