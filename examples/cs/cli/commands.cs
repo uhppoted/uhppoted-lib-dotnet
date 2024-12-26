@@ -1038,7 +1038,7 @@ class Commands
     public static void ActivateKeypads(string[] args)
     {
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
-        var keypads = ArgParse.Parse(args, "--keypads", new List<byte> { });
+        var keypads = ArgParse.Parse(args, "--keypads", new byte[] { });
 
         var reader1 = keypads.Contains((byte)1);
         var reader2 = keypads.Contains((byte)2);

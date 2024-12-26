@@ -86,6 +86,33 @@ let (|Uint32List|_|) (value: string) =
     with _ ->
         None
 
+let (|Uint8List|_|) (value: string) =
+    try
+        let parsed =
+            value.Split(',')
+            |> Array.choose (fun v ->
+                match System.Byte.TryParse(v.Trim()) with
+                | true, parsed -> Some parsed
+                | _ -> None)
+            |> Array.toList
+
+        Some parsed
+    with _ ->
+        None
+
+let (|Uint8Array|_|) (value: string) =
+    try
+        let parsed =
+            value.Split(',')
+            |> Array.choose (fun v ->
+                match System.Byte.TryParse(v.Trim()) with
+                | true, parsed -> Some parsed
+                | _ -> None)
+
+        Some parsed
+    with _ ->
+        None
+
 let (|Permissions|_|) (value: string) =
     try
         let parsed =
@@ -123,14 +150,27 @@ let rec argparse (args: string list) flag (defval: 'T) : 'T =
         | :? DoorMode, DoorMode parsed -> unbox parsed
         | :? Interlock, Interlock parsed -> unbox parsed
         | :? TaskCode, TaskCode parsed -> unbox parsed
+
         | _ when typeof<'T> = typeof<System.UInt32[]> ->
             match value with
             | Uint32List parsed -> unbox parsed
             | _ -> defval
+
+        | _ when typeof<'T> = typeof<byte list> ->
+            match value with
+            | Uint8List parsed -> unbox parsed
+            | _ -> defval
+
+        | _ when typeof<'T> = typeof<System.Byte[]> ->
+            match value with
+            | Uint8Array parsed -> unbox parsed
+            | _ -> defval
+
         | _ when typeof<'T> = typeof<Map<Int32, Byte>> ->
             match value with
             | Permissions parsed -> unbox parsed
             | _ -> defval
+
         | _ -> defval
 
     | _ :: rest -> argparse rest flag defval

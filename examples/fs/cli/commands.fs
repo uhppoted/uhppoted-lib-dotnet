@@ -766,7 +766,7 @@ let setInterlock args =
 
 let activateKeypads args =
     let controller = argparse args "--controller" CONTROLLER
-    let keypads = argparse args "--keypads" []
+    let keypads = argparse args "--keypads" ([]: uint8 list)
 
     let reader1 = keypads |> List.contains 1uy
     let reader2 = keypads |> List.contains 2uy

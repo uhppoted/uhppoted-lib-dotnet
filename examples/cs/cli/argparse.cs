@@ -16,6 +16,7 @@ static class ArgParse
         DateTime datetime;
         DateOnly date;
         List<uint> passcodes = new List<uint>();
+        List<byte> keypads = new List<byte>();
         Dictionary<int, byte> permissions = new Dictionary<int, byte>();
 
         if (ix >= 0 && ix + 1 < args.Length)
@@ -136,7 +137,6 @@ static class ArgParse
                     }
                     break;
 
-
                 case UInt32[]:
                     foreach (var token in args[ix].Split(','))
                     {
@@ -144,6 +144,14 @@ static class ArgParse
                     }
 
                     return (T)(object)passcodes.ToArray();
+
+                case Byte[]:
+                    foreach (var token in args[ix].Split(','))
+                    {
+                        if (Byte.TryParse(token.Trim(), out u8)) keypads.Add(u8);
+                    }
+
+                    return (T)(object)keypads.ToArray();
 
                 case Dictionary<Int32, Byte>:
                     foreach (var token in args[ix].Split(','))

@@ -9,12 +9,12 @@
 
 - [ ] argparse
     - [x] --task
+    - [x] --keypads
     - [ ] --weekdays
         - [ ] F#
         - [ ] C#
         - [ ] VB.NET
     - [ ] --segments
-    - [ ] --keypads
 
 - [ ] translations & enums
     - [x] door mode

@@ -893,7 +893,7 @@ Module Commands
 
     Sub ActivateKeypads(args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
-        Dim keypads = ArgParse.Parse(args, "--keypads", New List(Of Byte)({1, 2, 4}))
+        Dim keypads = ArgParse.Parse(args, "--keypads", new Byte() {})
 
         Dim reader1 = keypads.Contains(1)
         Dim reader2 = keypads.Contains(2)

@@ -16,6 +16,7 @@ Module ArgParse
         Dim adatetime As DateTime
         Dim adate As DateOnly
         Dim passcodes As New List(Of UInteger)()
+        Dim keypads As New List(Of Byte)()
         Dim permissions As New Dictionary(Of Integer, Byte)()
 
         If ix >= 0 AndAlso ix + 1 < args.Length Then
@@ -142,7 +143,6 @@ Module ArgParse
                             return CType(CObj(TaskCode.EnablePushbutton), T)
                     End Select
 
-
                 Case "UInteger()"
                     For Each token In args(ix).Split(","c)
                         If Uint32.TryParse(token.Trim(), u32) Then
@@ -150,6 +150,14 @@ Module ArgParse
                         End If
                     Next
                     Return CType(CObj(passcodes.ToArray()), T)
+
+                Case "Byte()"
+                    For Each token In args(ix).Split(","c)
+                        If Byte.TryParse(token.Trim(), u8) Then
+                            keypads.Add(u8)
+                        End If
+                    Next
+                    Return CType(CObj(keypads.ToArray()), T)
 
                 Case "Dictionary(Of Integer,Byte)"
                     For Each token In args(ix).Split(","c)
