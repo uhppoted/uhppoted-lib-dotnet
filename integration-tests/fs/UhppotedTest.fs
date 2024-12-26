@@ -820,7 +820,7 @@ type TestAPI(tt: string) =
         let expected: bool = true
 
         let task: Task =
-            { Task = 4uy
+            { Task = TaskCode.DisableTimeProfiles
               Door = 3uy
               StartDate = Nullable(DateOnly(2024, 11, 26))
               EndDate = Nullable(DateOnly(2024, 12, 29))

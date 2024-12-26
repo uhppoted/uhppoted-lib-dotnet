@@ -1,8 +1,5 @@
 # TODO
 
-- [x] nightly builds
-- [x] camelCase internal functions
-
 - [ ] API
     - [ ] _Cannot access a disposed object._
     - [ ] Rework inputs:
@@ -11,12 +8,12 @@
           - [ ] set of bool
 
 - [ ] argparse
+    - [x] --task
     - [ ] --weekdays
         - [ ] F#
         - [ ] C#
         - [ ] VB.NET
     - [ ] --segments
-    - [ ] --task
     - [ ] --keypads
 
 - [ ] translations & enums
@@ -25,9 +22,9 @@
     - [x] interlock
     - [x] relays
     - [x] inputs
+    - [x] tasks
     - [ ] event types
     - [ ] event reasons
-    - [ ] tasks
 
 - [ ] function signature file
 - [ ] Represent error cases and illegal state in types intrinsic to your domain

@@ -27,7 +27,7 @@ let CARD_INDEX = 1u
 let EVENT_INDEX = 1u
 let ENABLE = true
 let TIME_PROFILE_ID = 2uy
-let TASK_ID = 0uy
+let TASK_CODE = TaskCode.Unknown
 let START_DATE = DateOnly(2024, 1, 1)
 let END_DATE = DateOnly(2024, 12, 31)
 
@@ -327,13 +327,13 @@ let get_status args =
 
         if event.HasValue then
             printfn "    event index     %u" event.Value.Index
-            printfn "          event     %u" event.Value.Event
+            printfn "          event     %s" (translate event.Value.Event)
             printfn "          granted   %b" event.Value.AccessGranted
             printfn "          door      %u" event.Value.Door
             printfn "          direction %s" (translate event.Value.Direction)
             printfn "          card      %u" event.Value.Card
             printfn "          timestamp %A" (YYYYMMDDHHmmss(event.Value.Timestamp))
-            printfn "          reason    %u" event.Value.Reason
+            printfn "          reason    %s" (translate event.Value.Reason)
             printfn ""
         else
             printfn "    (no event)"
@@ -498,12 +498,12 @@ let get_event args =
         printfn "  controller %u" controller
         printfn "   timestamp %s" (YYYYMMDDHHmmss(record.Timestamp))
         printfn "       index %u" record.Index
-        printfn "       event %u" record.Event
+        printfn "       event %s" (translate record.Event)
         printfn "     granted %b" record.AccessGranted
         printfn "        door %u" record.Door
         printfn "   direction %s" (translate record.Direction)
         printfn "        card %u" record.Card
-        printfn "      reason %u" record.Reason
+        printfn "      reason %s" (translate record.Reason)
         printfn ""
         Ok()
     | Ok _ -> Error "event not found"
@@ -661,7 +661,7 @@ let add_task args =
     let controller = argparse args "--controller" CONTROLLER
 
     let task =
-        { Task = argparse args "--task" TASK_ID
+        { Task = argparse args "--task" TASK_CODE
           Door = argparse args "--door" DOOR
           StartDate = Nullable(argparse args "--start-date" START_DATE)
           EndDate = Nullable(argparse args "--end-date" END_DATE)
@@ -685,7 +685,7 @@ let add_task args =
     | Ok ok ->
         printfn "add-task"
         printfn "  controller %u" controller
-        printfn "        task %u" task.Task
+        printfn "        task %s" (translate task.Task)
         printfn "        door %u" task.Door
         printfn "          ok %b" ok
         printfn ""
@@ -848,12 +848,12 @@ let listen args =
         if event.HasValue then
             printfn "    event timestamp %s" (YYYYMMDDHHmmss(event.Value.Timestamp))
             printfn "              index %u" event.Value.Index
-            printfn "              event %u" event.Value.Event
+            printfn "              event %s" (translate event.Value.Event)
             printfn "            granted %b" event.Value.AccessGranted
             printfn "               door %u" event.Value.Door
             printfn "          direction %s" (translate event.Value.Direction)
             printfn "               card %u" event.Value.Card
-            printfn "             reason %u" event.Value.Reason
+            printfn "             reason %s" (translate event.Value.Reason)
             printfn ""
         else
             printfn "   (no event)"

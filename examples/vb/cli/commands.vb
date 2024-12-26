@@ -61,7 +61,7 @@ Module Commands
     Private Const EVENT_INDEX As UInt32 = 1
     Private Const ENABLE as Boolean = True
     Private Const TIME_PROFILE_ID as Byte = 0
-    Private Const TASK_ID as Byte = 0
+    Private Const TASK_CODE as Uhppoted.TaskCode = Uhppoted.TaskCode.Unknown
 
     Private ReadOnly Dim IPv4_ADDRESS = IPAddress.Parse("192.168.1.10")
     Private ReadOnly Dim IPv4_NETMASK = IPAddress.Parse("255.255.255.0")
@@ -397,13 +397,13 @@ Module Commands
 
             If evt.HasValue Then
                 WriteLine("    event index     {0}", evt.Value.Index)
-                WriteLine("          event     {0}", evt.Value.Event)
+                WriteLine("          event     {0}", translate(evt.Value.Event))
                 WriteLine("          granted   {0}", evt.Value.AccessGranted)
                 WriteLine("          door      {0}", evt.Value.Door)
                 WriteLine("          direction {0}", translate(evt.Value.Direction))
                 WriteLine("          card      {0}", evt.Value.Card)
                 WriteLine("          timestamp {0}", YYYYMMDDHHmmss(evt.Value.Timestamp))
-                WriteLine("          reason    {0}", evt.Value.Reason)
+                WriteLine("          reason    {0}", translate(evt.Value.Reason))
                 WriteLine()
             Else
                 WriteLine("    (no event)")
@@ -589,12 +589,12 @@ Module Commands
             WriteLine("  controller {0}", controller)
             WriteLine("   timestamp {0}", (YYYYMMDDHHmmss(record.Timestamp)))
             WriteLine("       index {0}", record.Index)
-            WriteLine("       event {0}", record.Event)
+            WriteLine("       event {0}", translate(record.Event))
             WriteLine("     granted {0}", record.AccessGranted)
             WriteLine("        door {0}", record.Door)
             WriteLine("   direction {0}", translate(record.Direction))
             WriteLine("        card {0}", record.Card)
-            WriteLine("      reason {0}", record.Reason)
+            WriteLine("      reason {0}", translate(record.Reason))
             WriteLine()
         Else If (result.IsOk)
             Throw New Exception("event not found")
@@ -769,13 +769,13 @@ Module Commands
 
     Sub AddTask(args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
-        Dim _task_id As Byte = ArgParse.Parse(args, "--task", TASK_ID)
-        Dim door_id As Byte = ArgParse.Parse(args, "--door", DOOR)
-        Dim start_date As DateOnly = ArgParse.Parse(args, "--start_date", START_DATE)
-        Dim end_date As DateOnly = ArgParse.Parse(args, "--end_date", END_DATE)
-        Dim start_time = ArgParse.Parse(args, "--start_time", TimeOnly.Parse("00:00"))
+        Dim taskCode As Byte = ArgParse.Parse(args, "--task", TASK_CODE)
+        Dim doorId As Byte = ArgParse.Parse(args, "--door", DOOR)
+        Dim startDate As DateOnly = ArgParse.Parse(args, "--start_date", START_DATE)
+        Dim endDate As DateOnly = ArgParse.Parse(args, "--end_date", END_DATE)
+        Dim startTime = ArgParse.Parse(args, "--start_time", TimeOnly.Parse("00:00"))
         Dim weekdays = ArgParse.Parse(args, "--weekdays", New Weekdays(True, True, False, False, True, False, False))
-        Dim more_cards As Byte = ArgParse.Parse(args, "--more-cards", CType(0, Byte))
+        Dim moreCards As Byte = ArgParse.Parse(args, "--more-cards", CType(0, Byte))
 
         Dim monday = weekdays.monday
         Dim tuesday = weekdays.tuesday
@@ -785,12 +785,12 @@ Module Commands
         Dim saturday = weekdays.saturday
         Dim sunday = weekdays.sunday
 
-        Dim task = New uhppoted.TaskBuilder(_task_id, door_id).
-                                WithStartDate(start_date).
-                                WithEndDate(end_date).
-                                WithStartTime(start_time).
+        Dim task = New uhppoted.TaskBuilder(taskCode, doorId).
+                                WithStartDate(startDate).
+                                WithEndDate(endDate).
+                                WithStartTime(startTime).
                                 WithWeekdays(monday, tuesday, wednesday, thursday, friday, saturday, sunday).
-                                WithMoreCards(more_cards).
+                                WithMoreCards(moreCards).
                                 build()
 
         Dim result = If(CONTROLLERS.ContainsKey(controller),
@@ -802,7 +802,7 @@ Module Commands
 
             WriteLine("add-task")
             WriteLine("  controller {0}", controller)
-            WriteLine("        task {0}", task.Task)
+            WriteLine("        task {0}", translate(task.Task))
             WriteLine("        door {0}", task.Door)
             WriteLine("          ok {0}", ok)
             WriteLine()
@@ -988,12 +988,12 @@ Module Commands
             Dim v = evt.Value
             WriteLine($"    event timestamp {YYYYMMDDHHmmss(v.Timestamp)}")
             WriteLine($"              index {v.Index}")
-            WriteLine($"              event {v.Event}")
+            WriteLine($"              event {translate(v.Event)}")
             WriteLine($"            granted {v.AccessGranted}")
             WriteLine($"               door {v.Door}")
             WriteLine($"          direction {translate(v.Direction)}")
             WriteLine($"               card {v.Card}")
-            WriteLine($"             reason {v.Reason}")
+            WriteLine($"             reason {translate(v.Reason)}")
             WriteLine("")
         Else
             WriteLine("   (no event)")

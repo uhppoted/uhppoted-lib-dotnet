@@ -11,7 +11,7 @@ INTERVAL ?= 30
 EVENT_INDEX ?= 23
 RECORD_SPECIAL_EVENTS ?= true
 TIME_PROFILE ?= 29
-TASK ?= 4
+TASK ?= "enable time profiles"
 PCCONTROL ?= true
 START_DATE ?= 2024-02-03
 END_DATE ?= 2024-12-29
@@ -24,7 +24,7 @@ clean:
 	dotnet clean
 
 format:
-	dotnet format
+	dotnet format .
 
 build: format
 	dotnet build

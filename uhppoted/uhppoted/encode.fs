@@ -417,7 +417,7 @@ module internal Encode =
         pack packet 22 task.Sunday
         pack packet 23 task.StartTime
         pack packet 25 task.Door
-        pack packet 26 task.Task
+        pack packet 26 (uint8 task.Task)
         pack packet 27 task.MoreCards
 
         packet

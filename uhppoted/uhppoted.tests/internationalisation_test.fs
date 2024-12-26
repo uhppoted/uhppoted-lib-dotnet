@@ -195,9 +195,9 @@ type TestInternationalisation() =
                  expected = "unlock door" |}
               {| task = 3uy; expected = "lock door" |}
               {| task = 4uy
-                 expected = "disable time profile" |}
+                 expected = "disable time profiles" |}
               {| task = 5uy
-                 expected = "enable time profile" |}
+                 expected = "enable time profiles" |}
               {| task = 6uy
                  expected = "enable card, no password" |}
               {| task = 7uy

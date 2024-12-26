@@ -188,7 +188,7 @@ type TimeProfileBuilder(profile: uint8) =
           LinkedProfile = linked }
 
 
-type TaskBuilder(task: uint8, door: uint8) =
+type TaskBuilder(task: TaskCode, door: uint8) =
     let mutable startDate: Nullable<DateOnly> = Nullable()
     let mutable endDate: Nullable<DateOnly> = Nullable()
     let mutable startTime: Nullable<TimeOnly> = Nullable()

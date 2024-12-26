@@ -56,6 +56,23 @@ let (|Interlock|_|) (value: string) =
     | "1&2&3&4" -> Some Interlock.Doors1234
     | _ -> None
 
+let (|TaskCode|_|) (value: string) =
+    match value.ToLowerInvariant() with
+    | "control door" -> Some TaskCode.ControlDoor
+    | "unlock door" -> Some TaskCode.UnlockDoor
+    | "lock door" -> Some TaskCode.LockDoor
+    | "disable time profiles" -> Some TaskCode.DisableTimeProfiles
+    | "enable time profiles" -> Some TaskCode.EnableTimeProfiles
+    | "enable card + no PIN" -> Some TaskCode.EnableCardNoPIN
+    | "enable card + IN PIN" -> Some TaskCode.EnableCardInPIN
+    | "enable card + IN/OUT PIN" -> Some TaskCode.EnableCardInOutPIN
+    | "enable more cards" -> Some TaskCode.EnableMoreCards
+    | "disable more cards" -> Some TaskCode.DisableMoreCards
+    | "trigger once" -> Some TaskCode.TriggerOnce
+    | "disable pushbutton" -> Some TaskCode.DisablePushbutton
+    | "enable pushbutton" -> Some TaskCode.EnablePushbutton
+    | _ -> None
+
 let (|Uint32List|_|) (value: string) =
     try
         let parsed =
@@ -105,6 +122,7 @@ let rec argparse (args: string list) flag (defval: 'T) : 'T =
         | :? DateOnly, DateOnly parsed -> unbox parsed
         | :? DoorMode, DoorMode parsed -> unbox parsed
         | :? Interlock, Interlock parsed -> unbox parsed
+        | :? TaskCode, TaskCode parsed -> unbox parsed
         | _ when typeof<'T> = typeof<System.UInt32[]> ->
             match value with
             | Uint32List parsed -> unbox parsed

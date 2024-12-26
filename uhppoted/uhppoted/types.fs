@@ -118,7 +118,7 @@ type TimeProfile =
 
 [<Struct>]
 type Task =
-    { Task: uint8
+    { Task: TaskCode
       Door: uint8
       StartDate: DateOnly Nullable
       EndDate: DateOnly Nullable

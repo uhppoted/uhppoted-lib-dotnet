@@ -92,6 +92,51 @@ static class ArgParse
                     }
                     break;
 
+                case TaskCode:
+                    switch (args[ix])
+                    {
+                        case "control door":
+                            return (T)(object)TaskCode.ControlDoor;
+
+                        case "unlock door":
+                            return (T)(object)TaskCode.UnlockDoor;
+
+                        case "lock door":
+                            return (T)(object)TaskCode.LockDoor;
+
+                        case "disable time profiles":
+                            return (T)(object)TaskCode.DisableTimeProfiles;
+
+                        case "enable time profiles":
+                            return (T)(object)TaskCode.EnableTimeProfiles;
+
+                        case "enable card + no PIN":
+                            return (T)(object)TaskCode.EnableCardNoPIN;
+
+                        case "enable card + IN PIN":
+                            return (T)(object)TaskCode.EnableCardInPIN;
+
+                        case "enable card + IN/OUT PIN":
+                            return (T)(object)TaskCode.EnableCardInOutPIN;
+
+                        case "enable more cards":
+                            return (T)(object)TaskCode.EnableMoreCards;
+
+                        case "disable more cards":
+                            return (T)(object)TaskCode.DisableMoreCards;
+
+                        case "trigger once":
+                            return (T)(object)TaskCode.TriggerOnce;
+
+                        case "disable pushbutton":
+                            return (T)(object)TaskCode.DisablePushbutton;
+
+                        case "enable pushbutton":
+                            return (T)(object)TaskCode.EnablePushbutton;
+                    }
+                    break;
+
+
                 case UInt32[]:
                     foreach (var token in args[ix].Split(','))
                     {

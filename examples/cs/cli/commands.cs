@@ -83,7 +83,7 @@ class Commands
     const uint EVENT_INDEX = 1u;
     const bool ENABLE = true;
     const byte TIME_PROFILE_ID = 0;
-    const byte TASK_ID = 0;
+    const TaskCode TASK_CODE = TaskCode.Unknown;
 
     static readonly IPAddress ADDRESS = IPAddress.Parse("192.168.1.10");
     static readonly IPAddress NETMASK = IPAddress.Parse("255.255.255.0");
@@ -456,13 +456,13 @@ class Commands
             if (evt.HasValue)
             {
                 WriteLine("    event index     {0}", evt.Value.Index);
-                WriteLine("          event     {0}", evt.Value.Event);
+                WriteLine("          event     {0}", translate(evt.Value.Event));
                 WriteLine("          granted   {0}", evt.Value.AccessGranted);
                 WriteLine("          door      {0}", evt.Value.Door);
                 WriteLine("          direction {0}", translate(evt.Value.Direction));
                 WriteLine("          card      {0}", evt.Value.Card);
                 WriteLine("          timestamp {0}", YYYYMMDDHHmmss(evt.Value.Timestamp));
-                WriteLine("          reason    {0}", evt.Value.Reason);
+                WriteLine("          reason    {0}", translate(evt.Value.Reason));
                 WriteLine();
             }
             else
@@ -681,12 +681,12 @@ class Commands
             WriteLine("  controller {0}", controller);
             WriteLine("   timestamp {0}", (YYYYMMDDHHmmss(record.Timestamp)));
             WriteLine("       index {0}", record.Index);
-            WriteLine("       event {0}", record.Event);
+            WriteLine("       event {0}", translate(record.Event));
             WriteLine("     granted {0}", record.AccessGranted);
             WriteLine("        door {0}", record.Door);
             WriteLine("   direction {0}", translate(record.Direction));
             WriteLine("        card {0}", record.Card);
-            WriteLine("      reason {0}", record.Reason);
+            WriteLine("      reason {0}", translate(record.Reason));
             WriteLine();
         }
         else if (result.IsOk)
@@ -893,7 +893,7 @@ class Commands
     public static void AddTask(string[] args)
     {
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
-        var task_id = ArgParse.Parse(args, "--task", TASK_ID);
+        var task_code = ArgParse.Parse(args, "--task", TASK_CODE);
         var door = ArgParse.Parse(args, "--door", DOOR);
         var start_date = ArgParse.Parse(args, "--start_date", START_DATE);
         var end_date = ArgParse.Parse(args, "--end_date", END_DATE);
@@ -909,7 +909,7 @@ class Commands
         bool saturday = weekdays.saturday;
         bool sunday = weekdays.sunday;
 
-        var task = new uhppoted.TaskBuilder(task_id, door)
+        var task = new uhppoted.TaskBuilder(task_code, door)
                                   .WithStartDate(start_date)
                                   .WithEndDate(end_date)
                                   .WithStartTime(start_time)
@@ -928,7 +928,7 @@ class Commands
 
             WriteLine("add-task");
             WriteLine("  controller {0}", controller);
-            WriteLine("        task {0}", task.Task);
+            WriteLine("        task {0}", translate(task.Task));
             WriteLine("        door {0}", task.Door);
             WriteLine("          ok {0}", ok);
             WriteLine();
@@ -1140,12 +1140,12 @@ class Commands
 
                 WriteLine($"    event timestamp {YYYYMMDDHHmmss(v.Timestamp)}");
                 WriteLine($"              index {v.Index}");
-                WriteLine($"              event {v.Event}");
+                WriteLine($"              event {translate(v.Event)}");
                 WriteLine($"            granted {v.AccessGranted}");
                 WriteLine($"               door {v.Door}");
                 WriteLine($"          direction {translate(v.Direction)}");
                 WriteLine($"               card {v.Card}");
-                WriteLine($"             reason {v.Reason}");
+                WriteLine($"             reason {translate(v.Reason)}");
                 WriteLine("");
             }
             else

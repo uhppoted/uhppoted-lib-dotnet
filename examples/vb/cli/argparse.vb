@@ -2,6 +2,7 @@ Imports System.Console
 Imports System.Net
 Imports DoorMode = uhppoted.DoorMode
 Imports Interlock = uhppoted.Interlock
+Imports TaskCode = uhppoted.TaskCode
 
 Module ArgParse
 
@@ -98,6 +99,49 @@ Module ArgParse
                         Case Else
                             Return defval
                     End Select
+
+                case "TaskCode" :
+                    Select Case args(ix).ToLowerInvariant()
+                        Case "control door"
+                            return CType(CObj(TaskCode.ControlDoor), T)
+
+                        Case "unlock door"
+                            return CType(CObj(TaskCode.UnlockDoor), T)
+
+                        Case "lock door"
+                            return CType(CObj(TaskCode.LockDoor), T)
+
+                        Case "disable time profiles"
+                            return CType(CObj(TaskCode.DisableTimeProfiles), T)
+
+                        Case "enable time profiles"
+                            return CType(CObj(TaskCode.EnableTimeProfiles), T)
+
+                        Case "enable card + no PIN"
+                            return CType(CObj(TaskCode.EnableCardNoPIN), T)
+
+                        Case "enable card + IN PIN"
+                            return CType(CObj(TaskCode.EnableCardInPIN), T)
+
+                        Case "enable card + IN/OUT PIN"
+                            return CType(CObj(TaskCode.EnableCardInOutPIN), T)
+
+                        Case "enable more cards"
+                            return CType(CObj(TaskCode.EnableMoreCards), T)
+
+                        Case "disable more cards"
+                            return CType(CObj(TaskCode.DisableMoreCards), T)
+
+                        Case "trigger once"
+                            return CType(CObj(TaskCode.TriggerOnce), T)
+
+                        Case "disable pushbutton"
+                            return CType(CObj(TaskCode.DisablePushbutton), T)
+
+                        Case "enable pushbutton"
+                            return CType(CObj(TaskCode.EnablePushbutton), T)
+                    End Select
+
 
                 Case "UInteger()"
                     For Each token In args(ix).Split(","c)

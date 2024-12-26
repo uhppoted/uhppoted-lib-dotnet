@@ -910,4 +910,7 @@ module Uhppoted =
         | :? Interlock as interlock -> internationalisation.TranslateDoorInterlock(uint8 interlock)
         | :? Relay as relay -> internationalisation.TranslateRelayState(uint8 relay)
         | :? Input as input -> internationalisation.TranslateInputState(uint8 input)
+        | :? TaskCode as task -> internationalisation.TranslateTaskCode(uint8 task)
+        // | :? EventType as event -> internationalisation.TranslateEventType(uint8 event)
+        // | :? EventReason as reason -> internationalisation.TranslateEventReason(uint8 reason)
         | _ -> $"#{v}"

@@ -72,6 +72,50 @@ type Input =
     /// <summary>Input contact is in the 'closed' state.</summary>
     | Closed = 2
 
+/// <summary>Defines the known task codes
+type TaskCode =
+    /// <summary>Unknown state.</summary>
+    | Unknown = 0
+
+    /// <summary>Sets a door mode to 'controlled.</summary>
+    | ControlDoor = 1
+
+    /// <summary>Sets a door mode to 'normally open'.</summary>
+    | UnlockDoor = 2
+
+    /// <summary>Sets a door mode to 'normally closed'.</summary>
+    | LockDoor = 3
+
+    /// <summary>Disables time profiles.</summary>
+    | DisableTimeProfiles = 4
+
+    /// <summary>Enables time profiles.</summary>
+    | EnableTimeProfiles = 5
+
+    /// <summary>Allows card entry without a PIN.</summary>
+    | EnableCardNoPIN = 6
+
+    /// <summary>Requires a card+PIN for IN access.</summary>
+    | EnableCardInPIN = 7
+
+    /// <summary>Requires a card+PIN for both IN and OUT access.</summary>
+    | EnableCardInOutPIN = 8
+
+    /// <summary>Enables 'more cards' access.</summary>
+    | EnableMoreCards = 9
+
+    /// <summary>Disables 'more cards' access.</summary>
+    | DisableMoreCards = 10
+
+    /// <summary>Trigger 'once'.</summary>
+    | TriggerOnce = 11
+
+    /// <summary>Disables pushbutton access.</summary>
+    | DisablePushbutton = 12
+
+    /// <summary>Enables pushbutton access.</summary>
+    | EnablePushbutton = 13
+
 module internal Enums =
     let internal doorMode (v: uint8) : DoorMode =
         match v with

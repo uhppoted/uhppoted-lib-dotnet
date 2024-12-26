@@ -186,10 +186,10 @@
         <value>lock door</value>
     </data>
     <data name="task.4">
-        <value>disable time profile</value>
+        <value>disable time profiles</value>
     </data>
     <data name="task.5">
-        <value>enable time profile</value>
+        <value>enable time profiles</value>
     </data>
     <data name="task.6">
         <value>enable card, no password</value>
