@@ -36,7 +36,7 @@ test:
 	dotnet test
 
 integration-tests:
-	cd ../integration-tests && make test
+	cd ../integration-tests && export NODELAY="true" && make test
 
 release: build test integration-tests
 	cd uhppoted && make release

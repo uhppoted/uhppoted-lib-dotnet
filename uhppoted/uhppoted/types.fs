@@ -4,6 +4,9 @@ open System
 open System.Net
 open System.Net.NetworkInformation
 
+type EventType = uint8
+type EventReason = uint8
+
 [<Struct>]
 type C =
     {
@@ -74,12 +77,12 @@ type Status =
 type Event =
     { Timestamp: DateTime Nullable
       Index: uint32
-      Event: uint8
+      Event: EventType
       AccessGranted: bool
       Door: uint8
       Direction: Direction
       Card: uint32
-      Reason: uint8 }
+      Reason: EventReason }
 
 
 [<Struct>]

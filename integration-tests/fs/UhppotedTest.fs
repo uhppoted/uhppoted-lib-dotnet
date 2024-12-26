@@ -144,49 +144,27 @@ type TestAPI(tt: string) =
         | "controller+endpoint+tcp" -> this.emulator <- Stub.initialise "tcp" TestContext.Error
         | _ -> failwith "unknown test case"
 
-        Thread.Sleep 2500
+        let nodelay = Environment.GetEnvironmentVariable("NODELAY")
+
+        match Boolean.TryParse nodelay with
+        | true, v -> ()
+        | _ -> Thread.Sleep 500
 
     [<OneTimeTearDown>]
     member this.Terminate() =
         Stub.terminate this.emulator TestContext.Error
-        Thread.Sleep 2500
+
+        let nodelay = Environment.GetEnvironmentVariable("NODELAY")
+
+        match Boolean.TryParse nodelay with
+        | true, v -> ()
+        | _ -> Thread.Sleep 500
 
     [<SetUp>]
     member this.Setup() = ()
 
     [<TearDown>]
     member this.TearDown() = ()
-
-    //    [<Test>]
-    //    member this.TestFindControllers() =
-    //        let expected: Controller array =
-    //            [| { Controller = 405419896u
-    //                 Address = IPAddress.Parse("192.168.1.100")
-    //                 Netmask = IPAddress.Parse("255.255.255.0")
-    //                 Gateway = IPAddress.Parse("192.168.1.1")
-    //                 MAC = PhysicalAddress([| 0x00uy; 0x12uy; 0x23uy; 0x34uy; 0x45uy; 0x56uy |])
-    //                 Version = "v8.92"
-    //                 Date = Nullable(DateOnly.ParseExact("2018-11-05", "yyyy-MM-dd")) }
-    //
-    //               { Controller = 303986753u
-    //                 Address = IPAddress.Parse("192.168.1.100")
-    //                 Netmask = IPAddress.Parse("255.255.255.0")
-    //                 Gateway = IPAddress.Parse("192.168.1.1")
-    //                 MAC = PhysicalAddress([| 0x52uy; 0xfduy; 0xfcuy; 0x07uy; 0x21uy; 0x82uy |])
-    //                 Version = "v8.92"
-    //                 Date = Nullable(DateOnly.ParseExact("2019-08-15", "yyyy-MM-dd")) }
-    //
-    //               { Controller = 201020304u
-    //                 Address = IPAddress.Parse("192.168.1.101")
-    //                 Netmask = IPAddress.Parse("255.255.255.0")
-    //                 Gateway = IPAddress.Parse("192.168.1.1")
-    //                 MAC = PhysicalAddress([| 0x52uy; 0xfduy; 0xfcuy; 0x07uy; 0x21uy; 0x82uy |])
-    //                 Version = "v6.62"
-    //                 Date = Nullable(DateOnly.ParseExact("2020-01-01", "yyyy-MM-dd")) } |]
-    //
-    //        match Uhppoted.FindControllers(OPTIONS) with
-    //        | Ok controllers -> Assert.That(controllers, Is.EqualTo(expected))
-    //        | Error err -> Assert.Fail(err)
 
     [<Test>]
     member this.TestGetController() =
