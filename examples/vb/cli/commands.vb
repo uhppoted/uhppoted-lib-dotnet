@@ -397,7 +397,7 @@ Module Commands
 
             If evt.HasValue Then
                 WriteLine("    event index     {0}", evt.Value.Index)
-                WriteLine("          event     {0}", translate(evt.Value.Event))
+                WriteLine("          event     {0} ({1})", evt.Value.Event.Text, evt.Value.Event.Code)
                 WriteLine("          granted   {0}", evt.Value.AccessGranted)
                 WriteLine("          door      {0}", evt.Value.Door)
                 WriteLine("          direction {0}", translate(evt.Value.Direction))
@@ -589,7 +589,7 @@ Module Commands
             WriteLine("  controller {0}", controller)
             WriteLine("   timestamp {0}", (YYYYMMDDHHmmss(record.Timestamp)))
             WriteLine("       index {0}", record.Index)
-            WriteLine("       event {0}", translate(record.Event))
+            WriteLine("       event {0} ({1})", record.Event.Text, record.Event.Code)
             WriteLine("     granted {0}", record.AccessGranted)
             WriteLine("        door {0}", record.Door)
             WriteLine("   direction {0}", translate(record.Direction))
@@ -988,7 +988,7 @@ Module Commands
             Dim v = evt.Value
             WriteLine($"    event timestamp {YYYYMMDDHHmmss(v.Timestamp)}")
             WriteLine($"              index {v.Index}")
-            WriteLine($"              event {translate(v.Event)}")
+            WriteLine($"              event {v.Event.Text} ({v.Event.Code})")
             WriteLine($"            granted {v.AccessGranted}")
             WriteLine($"               door {v.Door}")
             WriteLine($"          direction {translate(v.Direction)}")

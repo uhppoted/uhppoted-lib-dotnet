@@ -16,15 +16,15 @@
         - [ ] VB.NET
     - [ ] --segments
 
-- [ ] translations & enums
+- [x] translations & enums
     - [x] door mode
     - [x] door direction
     - [x] interlock
     - [x] relays
     - [x] inputs
     - [x] tasks
-    - [ ] event types
-    - [ ] event reasons
+    - [x] event types
+    - [x] event reasons
 
 - [ ] function signature file
 - [ ] Represent error cases and illegal state in types intrinsic to your domain

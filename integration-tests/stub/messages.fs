@@ -34,36 +34,36 @@ module Messages =
             responses = [ Responses.setListener ] }
 
           { test = "get-time"
-            request = Requests.get_time
-            responses = [ Responses.get_time ] }
+            request = Requests.getTime
+            responses = [ Responses.getTime ] }
 
           { test = "set-time"
-            request = Requests.set_time
-            responses = [ Responses.set_time ] }
+            request = Requests.setTime
+            responses = [ Responses.setTime ] }
 
           { test = "get-door"
-            request = Requests.get_door
-            responses = [ Responses.get_door ] }
+            request = Requests.getDoor
+            responses = [ Responses.getDoor ] }
 
           { test = "get-door-not-found"
-            request = Requests.get_door_not_found
-            responses = [ Responses.get_door_not_found ] }
+            request = Requests.getDoorNotFound
+            responses = [ Responses.getDoorNotFound ] }
 
           { test = "set-door"
-            request = Requests.set_door
-            responses = [ Responses.set_door ] }
+            request = Requests.setDoor
+            responses = [ Responses.setDoor ] }
 
           { test = "set-door-not-found"
-            request = Requests.set_door_not_found
-            responses = [ Responses.set_door_not_found ] }
+            request = Requests.setDoorNotFound
+            responses = [ Responses.setDoorNotFound ] }
 
           { test = "set-door-passcodes"
-            request = Requests.set_door_passcodes
-            responses = [ Responses.set_door_passcodes ] }
+            request = Requests.setDoorPasscodes
+            responses = [ Responses.setDoorPasscodes ] }
 
           { test = "open-door"
-            request = Requests.open_door
-            responses = [ Responses.open_door ] }
+            request = Requests.openDoor
+            responses = [ Responses.openDoor ] }
 
           { test = "get-status"
             request = Requests.getStatus

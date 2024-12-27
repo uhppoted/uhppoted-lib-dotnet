@@ -23,7 +23,7 @@ type TestInternationalisation() =
               {| event = 2uy; expected = "door" |}
               {| event = 3uy; expected = "alarm" |}
               {| event = 254uy
-                 expected = "unknown (254)" |}
+                 expected = "unknown" |}
               {| event = 255uy
                  expected = "overwritten" |} ]
 
@@ -104,7 +104,7 @@ type TestInternationalisation() =
               {| reason = 45uy
                  expected = "remote open door (USB reader)" |}
               {| reason = 255uy
-                 expected = "unknown (255)" |} ]
+                 expected = "unknown" |} ]
 
         reasons
         |> List.iter (fun t ->

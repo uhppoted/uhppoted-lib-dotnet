@@ -368,12 +368,16 @@ module Uhppoted =
                 let event: Event =
                     { Timestamp = response.evt.timestamp
                       Index = response.evt.index
-                      Event = response.evt.event
+                      Event =
+                        { Code = response.evt.event
+                          Text = internationalisation.TranslateEventType(response.evt.event) }
                       AccessGranted = response.evt.granted
                       Door = response.evt.door
                       Direction = Enums.direction response.evt.direction
                       Card = response.evt.card
-                      Reason = response.evt.reason }
+                      Reason =
+                        { Code = response.evt.reason
+                          Text = internationalisation.TranslateEventReason(response.evt.reason) } }
 
                 match event.Index with
                 | 0u -> Ok(status, Nullable())
@@ -547,12 +551,16 @@ module Uhppoted =
                     Nullable
                         { Timestamp = response.timestamp
                           Index = response.index
-                          Event = response.event
+                          Event =
+                            { Code = response.event
+                              Text = internationalisation.TranslateEventType(response.event) }
                           AccessGranted = response.granted
                           Door = response.door
                           Direction = Enums.direction response.direction
                           Card = response.card
-                          Reason = response.reason }
+                          Reason =
+                            { Code = response.reason
+                              Text = internationalisation.TranslateEventReason(response.reason) } }
                 )
             | Error err -> Error err
 
@@ -880,12 +888,16 @@ module Uhppoted =
                             Nullable(
                                 { Timestamp = e.event.timestamp
                                   Index = e.event.index
-                                  Event = e.event.event
+                                  Event =
+                                    { Code = e.event.event
+                                      Text = internationalisation.TranslateEventType(e.event.event) }
                                   AccessGranted = e.event.granted
                                   Door = e.event.door
                                   Direction = Enums.direction e.event.direction
                                   Card = e.event.card
-                                  Reason = e.event.reason }
+                                  Reason =
+                                    { Code = e.event.reason
+                                      Text = internationalisation.TranslateEventReason(e.event.reason) } }
                             ) }
 
                 onevent.Invoke(event)
@@ -911,6 +923,6 @@ module Uhppoted =
         | :? Relay as relay -> internationalisation.TranslateRelayState(uint8 relay)
         | :? Input as input -> internationalisation.TranslateInputState(uint8 input)
         | :? TaskCode as task -> internationalisation.TranslateTaskCode(uint8 task)
-        // | :? EventType as event -> internationalisation.TranslateEventType(uint8 event)
-        // | :? EventReason as reason -> internationalisation.TranslateEventReason(uint8 reason)
+        | :? EventType as event -> internationalisation.TranslateEventType(event.Code)
+        | :? EventReason as reason -> internationalisation.TranslateEventReason(reason.Code)
         | _ -> $"#{v}"

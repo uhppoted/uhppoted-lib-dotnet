@@ -396,12 +396,14 @@ type TestAPI(tt: string) =
         let event: Event =
             { Timestamp = Nullable(DateTime.ParseExact("2024-11-10 12:34:56", "yyyy-MM-dd HH:mm:ss", null))
               Index = 75312u
-              Event = 19uy
+              Event = { Code = 3uy; Text = "alarm" }
               AccessGranted = true
               Door = 4uy
               Direction = Direction.Out
               Card = 10058400u
-              Reason = 6uy }
+              Reason =
+                { Code = 6uy
+                  Text = "no access rights" } }
 
         let expected = (status, Nullable(event))
 
@@ -626,12 +628,12 @@ type TestAPI(tt: string) =
         let expected: Event =
             { Timestamp = Nullable(DateTime.ParseExact("2024-11-17 12:34:56", "yyyy-MM-dd HH:mm:ss", null))
               Index = 13579u
-              Event = 2uy
+              Event = { Code = 2uy; Text = "door" }
               AccessGranted = true
               Door = 4uy
               Direction = Direction.Out
               Card = 10058400u
-              Reason = 21uy }
+              Reason = { Code = 18uy; Text = "access denied" } }
 
         match controllers[tt] with
         | Id controller ->
@@ -1000,12 +1002,14 @@ type TestAPI(tt: string) =
         let event =
             { Timestamp = Nullable(DateTime.ParseExact("2024-11-10 12:34:56", "yyyy-MM-dd HH:mm:ss", null))
               Index = 75312u
-              Event = 19uy
+              Event = { Code = 3uy; Text = "alarm" }
               AccessGranted = true
               Door = 4uy
               Direction = Direction.Out
               Card = 10058400u
-              Reason = 6uy }
+              Reason =
+                { Code = 6uy
+                  Text = "no access rights" } }
 
         let expected =
             [ { Controller = 405419896u

@@ -327,13 +327,13 @@ let get_status args =
 
         if event.HasValue then
             printfn "    event index     %u" event.Value.Index
-            printfn "          event     %s" (translate event.Value.Event)
+            printfn "          event     %s (%u)" event.Value.Event.Text event.Value.Event.Code
             printfn "          granted   %b" event.Value.AccessGranted
             printfn "          door      %u" event.Value.Door
             printfn "          direction %s" (translate event.Value.Direction)
             printfn "          card      %u" event.Value.Card
-            printfn "          timestamp %A" (YYYYMMDDHHmmss(event.Value.Timestamp))
-            printfn "          reason    %s" (translate event.Value.Reason)
+            printfn "          timestamp %s" (YYYYMMDDHHmmss(event.Value.Timestamp))
+            printfn "          reason    %s (%u)" event.Value.Reason.Text event.Value.Reason.Code
             printfn ""
         else
             printfn "    (no event)"
@@ -498,12 +498,12 @@ let get_event args =
         printfn "  controller %u" controller
         printfn "   timestamp %s" (YYYYMMDDHHmmss(record.Timestamp))
         printfn "       index %u" record.Index
-        printfn "       event %s" (translate record.Event)
+        printfn "       event %s (%u)" record.Event.Text record.Event.Code
         printfn "     granted %b" record.AccessGranted
         printfn "        door %u" record.Door
         printfn "   direction %s" (translate record.Direction)
         printfn "        card %u" record.Card
-        printfn "      reason %s" (translate record.Reason)
+        printfn "      reason %s (%u)" record.Reason.Text record.Reason.Code
         printfn ""
         Ok()
     | Ok _ -> Error "event not found"
@@ -848,12 +848,12 @@ let listen args =
         if event.HasValue then
             printfn "    event timestamp %s" (YYYYMMDDHHmmss(event.Value.Timestamp))
             printfn "              index %u" event.Value.Index
-            printfn "              event %s" (translate event.Value.Event)
+            printfn "              event %s (%u)" event.Value.Event.Text event.Value.Event.Code
             printfn "            granted %b" event.Value.AccessGranted
             printfn "               door %u" event.Value.Door
             printfn "          direction %s" (translate event.Value.Direction)
             printfn "               card %u" event.Value.Card
-            printfn "             reason %s" (translate event.Value.Reason)
+            printfn "             reason %s (%u)" event.Value.Reason.Text event.Value.Reason.Code
             printfn ""
         else
             printfn "   (no event)"

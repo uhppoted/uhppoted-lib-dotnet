@@ -31,7 +31,7 @@ module internal internationalisation =
         if not <| String.IsNullOrEmpty(message) then
             message
         else if not <| String.IsNullOrEmpty(unknown) then
-            $"{unknown} ({event})"
+            $"{unknown}"
         else
             $"#{event}"
 
@@ -50,7 +50,7 @@ module internal internationalisation =
         if not <| String.IsNullOrEmpty(message) then
             message
         else if not <| String.IsNullOrEmpty(unknown) then
-            $"{unknown} ({reason})"
+            $"{unknown}"
         else
             $"#{reason}"
 

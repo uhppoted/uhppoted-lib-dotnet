@@ -4,8 +4,6 @@ open System
 open System.Net
 open System.Net.NetworkInformation
 
-type EventType = uint8
-type EventReason = uint8
 
 [<Struct>]
 type C =
@@ -72,6 +70,12 @@ type Status =
       Input2: Input
       Input3: Input
       Input4: Input }
+
+[<Struct>]
+type EventType = { Code: uint8; Text: string }
+
+[<Struct>]
+type EventReason = { Code: uint8; Text: string }
 
 [<Struct>]
 type Event =
