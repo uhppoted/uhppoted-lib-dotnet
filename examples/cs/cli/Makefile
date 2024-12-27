@@ -106,7 +106,7 @@ get-time-profile:build
 set-time-profile:build
 	$(CLI) set-time-profile --controller $(CONTROLLER) --profile $(TIME_PROFILE) \
                                                        --start 2024-01-01 --end 2024-12-31 \
-                                                       --weekdays Mon,Tues,Fri \
+                                                       --weekdays Mon,Tue,Fri \
                                                        --segments 08:30-11:30,12:15-16:45,19:30-21:15 \
                                                        --linked 37
 

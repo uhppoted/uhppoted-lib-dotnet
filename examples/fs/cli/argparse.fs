@@ -73,6 +73,10 @@ let (|TaskCode|_|) (value: string) =
     | "enable pushbutton" -> Some TaskCode.EnablePushbutton
     | _ -> None
 
+// let (|Weekdays|_|) (value: string) =
+//     printfn ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> AWOOOGAH"
+//     None
+
 let (|Uint32List|_|) (value: string) =
     try
         let parsed =
@@ -136,6 +140,27 @@ let (|Permissions|_|) (value: string) =
     with _ ->
         None
 
+let (|Weekdays|_|) (value: string) =
+    try
+        let parsed =
+            value.Split(',')
+            |> Seq.choose (fun v ->
+                match v with
+                | "Mon" -> Some("monday")
+                | "Tue" -> Some("tuesday")
+                | "Wed" -> Some("wednesday")
+                | "Thu" -> Some("thursday")
+                | "Fri" -> Some("friday")
+                | "Sat" -> Some("saturday")
+                | "Sun" -> Some("sunday")
+                | _ -> None)
+            |> Set.ofSeq
+            |> Set.toList
+
+        Some parsed
+    with _ ->
+        None
+
 let rec argparse (args: string list) flag (defval: 'T) : 'T =
     match args with
     | arg :: value :: rest when arg = flag ->
@@ -169,6 +194,11 @@ let rec argparse (args: string list) flag (defval: 'T) : 'T =
         | _ when typeof<'T> = typeof<Map<Int32, Byte>> ->
             match value with
             | Permissions parsed -> unbox parsed
+            | _ -> defval
+
+        | _ when typeof<'T> = typeof<string list> ->
+            match value with
+            | Weekdays parsed -> unbox parsed
             | _ -> defval
 
         | _ -> defval

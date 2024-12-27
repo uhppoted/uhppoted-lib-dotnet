@@ -17,28 +17,6 @@ public readonly struct Command
     }
 }
 
-public readonly struct Weekdays
-{
-    public readonly bool monday;
-    public readonly bool tuesday;
-    public readonly bool wednesday;
-    public readonly bool thursday;
-    public readonly bool friday;
-    public readonly bool saturday;
-    public readonly bool sunday;
-
-    public Weekdays(bool monday, bool tuesday, bool wednesday, bool thursday, bool friday, bool saturday, bool sunday)
-    {
-        this.monday = monday;
-        this.tuesday = tuesday;
-        this.wednesday = wednesday;
-        this.thursday = thursday;
-        this.friday = friday;
-        this.saturday = saturday;
-        this.sunday = sunday;
-    }
-}
-
 public readonly struct TimeSegment
 {
     public readonly TimeOnly start;
@@ -821,20 +799,20 @@ class Commands
         var linked = ArgParse.Parse(args, "--linked", (byte)0);
         var start_date = ArgParse.Parse(args, "--start_date", START_DATE);
         var end_date = ArgParse.Parse(args, "--end_date", END_DATE);
-        var weekdays = ArgParse.Parse(args, "--weekdays", new Weekdays(true, true, false, false, true, false, false));
+        var weekdays = ArgParse.Parse(args, "--weekdays", new string[] { });
         var segments = ArgParse.Parse(args, "--segments", new TimeSegment[] {
             new TimeSegment(TimeOnly.Parse("08:30"), TimeOnly.Parse("09:45")),
             new TimeSegment(TimeOnly.Parse("12:15"), TimeOnly.Parse("13:15")),
             new TimeSegment(TimeOnly.Parse("14:00"), TimeOnly.Parse("18:00")),
             });
 
-        bool monday = weekdays.monday;
-        bool tuesday = weekdays.tuesday;
-        bool wednesday = weekdays.wednesday;
-        bool thursday = weekdays.thursday;
-        bool friday = weekdays.friday;
-        bool saturday = weekdays.saturday;
-        bool sunday = weekdays.sunday;
+        bool monday = Array.Exists(weekdays, v => v == "monday");
+        bool tuesday = Array.Exists(weekdays, v => v == "tuesday");
+        bool wednesday = Array.Exists(weekdays, v => v == "wednesday");
+        bool thursday = Array.Exists(weekdays, v => v == "thursday");
+        bool friday = Array.Exists(weekdays, v => v == "friday");
+        bool saturday = Array.Exists(weekdays, v => v == "saturday");
+        bool sunday = Array.Exists(weekdays, v => v == "sunday");
 
         var profile = new uhppoted.TimeProfileBuilder(profile_id)
                                   .WithStartDate(start_date)
@@ -845,7 +823,6 @@ class Commands
                                   .WithSegment3(segments[2].start, segments[2].end)
                                   .WithLinkedProfile(linked)
                                   .Build();
-
 
         var result = CONTROLLERS.TryGetValue(controller, out var c)
                      ? Uhppoted.SetTimeProfile(c, profile, OPTIONS)
@@ -898,16 +875,16 @@ class Commands
         var start_date = ArgParse.Parse(args, "--start_date", START_DATE);
         var end_date = ArgParse.Parse(args, "--end_date", END_DATE);
         var start_time = ArgParse.Parse(args, "--start-time", TimeOnly.Parse("00:00"));
-        var weekdays = ArgParse.Parse(args, "--weekdays", new Weekdays(true, true, false, false, true, false, false));
+        var weekdays = ArgParse.Parse(args, "--weekdays", new string[] { });
         var more_cards = ArgParse.Parse(args, "--more-cards", (byte)0);
 
-        bool monday = weekdays.monday;
-        bool tuesday = weekdays.tuesday;
-        bool wednesday = weekdays.wednesday;
-        bool thursday = weekdays.thursday;
-        bool friday = weekdays.friday;
-        bool saturday = weekdays.saturday;
-        bool sunday = weekdays.sunday;
+        bool monday = Array.Exists(weekdays, v => v == "monday");
+        bool tuesday = Array.Exists(weekdays, v => v == "tuesday");
+        bool wednesday = Array.Exists(weekdays, v => v == "wednesday");
+        bool thursday = Array.Exists(weekdays, v => v == "thursday");
+        bool friday = Array.Exists(weekdays, v => v == "friday");
+        bool saturday = Array.Exists(weekdays, v => v == "saturday");
+        bool sunday = Array.Exists(weekdays, v => v == "sunday");
 
         var task = new uhppoted.TaskBuilder(task_code, door)
                                   .WithStartDate(start_date)

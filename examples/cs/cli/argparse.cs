@@ -17,6 +17,7 @@ static class ArgParse
         DateOnly date;
         List<uint> passcodes = new List<uint>();
         List<byte> keypads = new List<byte>();
+        List<string> weekdays = new List<string>();
         Dictionary<int, byte> permissions = new Dictionary<int, byte>();
 
         if (ix >= 0 && ix + 1 < args.Length)
@@ -152,6 +153,43 @@ static class ArgParse
                     }
 
                     return (T)(object)keypads.ToArray();
+
+                case String[]:
+                    foreach (var token in args[ix].Split(','))
+                    {
+                        switch (token)
+                        {
+                            case "Mon":
+                                weekdays.Add("monday");
+                                break;
+
+                            case "Tue":
+                                weekdays.Add("tuesday");
+                                break;
+
+                            case "Wed":
+                                weekdays.Add("wednesday");
+                                break;
+
+                            case "Thu":
+                                weekdays.Add("thursday");
+                                break;
+
+                            case "Fri":
+                                weekdays.Add("friday");
+                                break;
+
+                            case "Sat":
+                                weekdays.Add("saturday");
+                                break;
+
+                            case "Sun":
+                                weekdays.Add("sunday");
+                                break;
+                        }
+                    }
+
+                    return (T)(object)weekdays.ToArray();
 
                 case Dictionary<Int32, Byte>:
                     foreach (var token in args[ix].Split(','))

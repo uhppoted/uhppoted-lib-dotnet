@@ -10,10 +10,7 @@
 - [ ] argparse
     - [x] --task
     - [x] --keypads
-    - [ ] --weekdays
-        - [ ] F#
-        - [ ] C#
-        - [ ] VB.NET
+    - [x] --weekdays
     - [ ] --segments
 
 - [x] translations & enums

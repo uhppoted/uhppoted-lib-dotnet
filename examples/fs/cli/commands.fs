@@ -604,18 +604,19 @@ let set_time_profile args =
     let profileId = argparse args "--profile" TIME_PROFILE_ID
     let startDate = argparse args "--start-date" START_DATE
     let endDate = argparse args "--end-date" END_DATE
+    let weekdays: string list = argparse args "--weekdays" []
 
     let profile =
         { Profile = profileId
           StartDate = Nullable(startDate)
           EndDate = Nullable(endDate)
-          Monday = true
-          Tuesday = true
-          Wednesday = false
-          Thursday = true
-          Friday = false
-          Saturday = true
-          Sunday = true
+          Monday = List.exists (fun v -> v = "monday") weekdays
+          Tuesday = List.exists (fun v -> v = "tuesday") weekdays
+          Wednesday = List.exists (fun v -> v = "wednesday") weekdays
+          Thursday = List.exists (fun v -> v = "thursday") weekdays
+          Friday = List.exists (fun v -> v = "friday") weekdays
+          Saturday = List.exists (fun v -> v = "saturday") weekdays
+          Sunday = List.exists (fun v -> v = "sunday") weekdays
           Segment1Start = Nullable(TimeOnly(8, 30))
           Segment1End = Nullable(TimeOnly(9, 45))
           Segment2Start = Nullable(TimeOnly(12, 15))
@@ -623,7 +624,6 @@ let set_time_profile args =
           Segment3Start = Nullable(TimeOnly(14, 0))
           Segment3End = Nullable(TimeOnly(18, 0))
           LinkedProfile = argparse args "--linked" 0uy }
-
 
     let result =
         match lookup controller with
@@ -659,6 +659,7 @@ let clear_time_profiles args =
 
 let add_task args =
     let controller = argparse args "--controller" CONTROLLER
+    let weekdays: string list = argparse args "--weekdays" []
 
     let task =
         { Task = argparse args "--task" TASK_CODE
@@ -666,13 +667,13 @@ let add_task args =
           StartDate = Nullable(argparse args "--start-date" START_DATE)
           EndDate = Nullable(argparse args "--end-date" END_DATE)
           StartTime = Nullable(TimeOnly(8, 30))
-          Monday = true
-          Tuesday = true
-          Wednesday = false
-          Thursday = true
-          Friday = false
-          Saturday = true
-          Sunday = true
+          Monday = List.exists (fun v -> v = "monday") weekdays
+          Tuesday = List.exists (fun v -> v = "tuesday") weekdays
+          Wednesday = List.exists (fun v -> v = "wednesday") weekdays
+          Thursday = List.exists (fun v -> v = "thursday") weekdays
+          Friday = List.exists (fun v -> v = "friday") weekdays
+          Saturday = List.exists (fun v -> v = "saturday") weekdays
+          Sunday = List.exists (fun v -> v = "sunday") weekdays
           MoreCards = argparse args "--more-cards" 0uy }
 
 

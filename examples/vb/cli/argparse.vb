@@ -17,6 +17,7 @@ Module ArgParse
         Dim adate As DateOnly
         Dim passcodes As New List(Of UInteger)()
         Dim keypads As New List(Of Byte)()
+        Dim weekdays As New List(Of String)()
         Dim permissions As New Dictionary(Of Integer, Byte)()
 
         If ix >= 0 AndAlso ix + 1 < args.Length Then
@@ -158,6 +159,27 @@ Module ArgParse
                         End If
                     Next
                     Return CType(CObj(keypads.ToArray()), T)
+
+                Case "String()"
+                    For Each token In args(ix).Split(","c)
+                        Select Case token
+                            Case "Mon"
+                                weekdays.Add("monday")
+                            Case "Tue"
+                                weekdays.Add("tuesday")
+                            Case "Wed"
+                                weekdays.Add("wednesday")
+                            Case "Thu"
+                                weekdays.Add("thursday")
+                            Case "Fri"
+                                weekdays.Add("friday")
+                            Case "Sat"
+                                weekdays.Add("saturday")
+                            Case "Sun"
+                                weekdays.Add("sunday")
+                        End Select
+                    Next
+                    Return CType(CObj(weekdays.ToArray()), T)
 
                 Case "Dictionary(Of Integer,Byte)"
                     For Each token In args(ix).Split(","c)

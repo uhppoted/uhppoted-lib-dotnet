@@ -20,26 +20,6 @@ Public Structure Command
     End Sub
 End Structure
 
-Public Structure Weekdays
-    Public ReadOnly monday As Boolean
-    Public ReadOnly tuesday As Boolean
-    Public ReadOnly wednesday As Boolean
-    Public ReadOnly thursday As Boolean
-    Public ReadOnly friday As Boolean
-    Public ReadOnly saturday As Boolean
-    Public ReadOnly sunday As Boolean
-
-    Public Sub New(monday As Boolean, tuesday As Boolean, wednesday As Boolean, thursday As Boolean, friday As Boolean, saturday As Boolean, sunday As Boolean)
-        Me.monday = monday
-        Me.tuesday = tuesday
-        Me.wednesday = wednesday
-        Me.thursday = thursday
-        Me.friday = friday
-        Me.saturday = saturday
-        Me.sunday = sunday
-    End Sub
-End Structure
-
 Public Structure TimeSegment
     Public ReadOnly StartTime As TimeOnly
     Public ReadOnly EndTime As TimeOnly
@@ -706,20 +686,20 @@ Module Commands
         Dim linked As Byte = ArgParse.Parse(args, "--linked", CType(0, Byte))
         Dim start_date As DateOnly = ArgParse.Parse(args, "--start_date", START_DATE)
         Dim end_date As DateOnly = ArgParse.Parse(args, "--end_date", END_DATE)
-        Dim weekdays = ArgParse.Parse(args, "--weekdays", New Weekdays(True, True, False, False, True, False, False))
+        Dim weekdays = ArgParse.Parse(args, "--weekdays", new String() {})
         Dim segments = ArgParse.Parse(args, "--segments", New TimeSegment() {
             New TimeSegment(TimeOnly.Parse("08:30"), TimeOnly.Parse("09:45")),
             New TimeSegment(TimeOnly.Parse("12:15"), TimeOnly.Parse("13:15")),
             New TimeSegment(TimeOnly.Parse("14:00"), TimeOnly.Parse("18:00"))
         })
 
-        Dim monday = weekdays.monday
-        Dim tuesday = weekdays.tuesday
-        Dim wednesday = weekdays.wednesday
-        Dim thursday = weekdays.thursday
-        Dim friday = weekdays.friday
-        Dim saturday = weekdays.saturday
-        Dim sunday = weekdays.sunday
+        Dim monday = weekdays.Contains("monday")
+        Dim tuesday = weekdays.Contains("tuesday")
+        Dim wednesday = weekdays.Contains("wednesday")
+        Dim thursday = weekdays.Contains("thursday")
+        Dim friday = weekdays.Contains("friday")
+        Dim saturday = weekdays.Contains("saturday")
+        Dim sunday = weekdays.Contains("sunday")
 
         Dim profile = New uhppoted.TimeProfileBuilder(profile_id).
                                    WithStartDate(start_date).
@@ -774,16 +754,16 @@ Module Commands
         Dim startDate As DateOnly = ArgParse.Parse(args, "--start_date", START_DATE)
         Dim endDate As DateOnly = ArgParse.Parse(args, "--end_date", END_DATE)
         Dim startTime = ArgParse.Parse(args, "--start_time", TimeOnly.Parse("00:00"))
-        Dim weekdays = ArgParse.Parse(args, "--weekdays", New Weekdays(True, True, False, False, True, False, False))
+        Dim weekdays = ArgParse.Parse(args, "--weekdays", new String() {})
         Dim moreCards As Byte = ArgParse.Parse(args, "--more-cards", CType(0, Byte))
 
-        Dim monday = weekdays.monday
-        Dim tuesday = weekdays.tuesday
-        Dim wednesday = weekdays.wednesday
-        Dim thursday = weekdays.thursday
-        Dim friday = weekdays.friday
-        Dim saturday = weekdays.saturday
-        Dim sunday = weekdays.sunday
+        Dim monday = weekdays.Contains("monday")
+        Dim tuesday = weekdays.Contains("tuesday")
+        Dim wednesday = weekdays.Contains("wednesday")
+        Dim thursday = weekdays.Contains("thursday")
+        Dim friday = weekdays.Contains("friday")
+        Dim saturday = weekdays.Contains("saturday")
+        Dim sunday = weekdays.Contains("sunday")
 
         Dim task = New uhppoted.TaskBuilder(taskCode, doorId).
                                 WithStartDate(startDate).
