@@ -605,6 +605,7 @@ let set_time_profile args =
     let startDate = argparse args "--start-date" START_DATE
     let endDate = argparse args "--end-date" END_DATE
     let weekdays: string list = argparse args "--weekdays" []
+    let segments: TimeOnly array = argparse args "--segments" [||]
 
     let profile =
         { Profile = profileId
@@ -617,12 +618,12 @@ let set_time_profile args =
           Friday = List.exists (fun v -> v = "friday") weekdays
           Saturday = List.exists (fun v -> v = "saturday") weekdays
           Sunday = List.exists (fun v -> v = "sunday") weekdays
-          Segment1Start = Nullable(TimeOnly(8, 30))
-          Segment1End = Nullable(TimeOnly(9, 45))
-          Segment2Start = Nullable(TimeOnly(12, 15))
-          Segment2End = Nullable(TimeOnly(13, 15))
-          Segment3Start = Nullable(TimeOnly(14, 0))
-          Segment3End = Nullable(TimeOnly(18, 0))
+          Segment1Start = segments |> Array.tryItem 0 |> Option.toNullable
+          Segment1End = segments |> Array.tryItem 1 |> Option.toNullable
+          Segment2Start = segments |> Array.tryItem 2 |> Option.toNullable
+          Segment2End = segments |> Array.tryItem 3 |> Option.toNullable
+          Segment3Start = segments |> Array.tryItem 4 |> Option.toNullable
+          Segment3End = segments |> Array.tryItem 5 |> Option.toNullable
           LinkedProfile = argparse args "--linked" 0uy }
 
     let result =

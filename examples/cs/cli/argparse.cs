@@ -18,6 +18,7 @@ static class ArgParse
         List<uint> passcodes = new List<uint>();
         List<byte> keypads = new List<byte>();
         List<string> weekdays = new List<string>();
+        TimeOnly[] segments = new TimeOnly[6];
         Dictionary<int, byte> permissions = new Dictionary<int, byte>();
 
         if (ix >= 0 && ix + 1 < args.Length)
@@ -190,6 +191,29 @@ static class ArgParse
                     }
 
                     return (T)(object)weekdays.ToArray();
+
+                case TimeOnly[]:
+                    {
+                        var i = 0;
+
+                        foreach (var token in args[ix].Split(','))
+                        {
+                            var parts = token.Split('-');
+                            if (parts.Length > 1)
+                            {
+                                TimeOnly start;
+                                TimeOnly end;
+
+                                if (TimeOnly.TryParse(parts[0].Trim(), out start) && TimeOnly.TryParse(parts[1].Trim(), out end))
+                                {
+                                    if (i < segments.Length) segments[i++] = start;
+                                    if (i < segments.Length) segments[i++] = end;
+                                }
+                            }
+
+                        }
+                        return (T)(object)segments.ToArray();
+                    }
 
                 case Dictionary<Int32, Byte>:
                     foreach (var token in args[ix].Split(','))

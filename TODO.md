@@ -9,11 +9,13 @@
     - [x] Rework status.relays as struct
     - [ ] _Cannot access a disposed object._
 
-- [ ] argparse
-    - [x] --task
-    - [x] --keypads
-    - [x] --weekdays
-    - [ ] --segments
+- [ ] examples
+    - [x] argparse
+        - [x] --task
+        - [x] --keypads
+        - [x] --weekdays
+        - [x] --segments
+    - [ ] F#: camelCase functions
 
 - [ ] function signature file
 - [ ] Represent error cases and illegal state in types intrinsic to your domain

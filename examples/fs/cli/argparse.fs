@@ -73,16 +73,12 @@ let (|TaskCode|_|) (value: string) =
     | "enable pushbutton" -> Some TaskCode.EnablePushbutton
     | _ -> None
 
-// let (|Weekdays|_|) (value: string) =
-//     printfn ">>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>> AWOOOGAH"
-//     None
-
 let (|Uint32List|_|) (value: string) =
     try
         let parsed =
             value.Split(',')
             |> Array.choose (fun v ->
-                match System.UInt32.TryParse(v.Trim()) with
+                match UInt32.TryParse(v.Trim()) with
                 | true, parsed -> Some parsed
                 | _ -> None)
 
@@ -95,7 +91,7 @@ let (|Uint8List|_|) (value: string) =
         let parsed =
             value.Split(',')
             |> Array.choose (fun v ->
-                match System.Byte.TryParse(v.Trim()) with
+                match Byte.TryParse(v.Trim()) with
                 | true, parsed -> Some parsed
                 | _ -> None)
             |> Array.toList
@@ -109,7 +105,7 @@ let (|Uint8Array|_|) (value: string) =
         let parsed =
             value.Split(',')
             |> Array.choose (fun v ->
-                match System.Byte.TryParse(v.Trim()) with
+                match Byte.TryParse(v.Trim()) with
                 | true, parsed -> Some parsed
                 | _ -> None)
 
@@ -126,11 +122,11 @@ let (|Permissions|_|) (value: string) =
 
                 match parts with
                 | [| key; value |] ->
-                    match System.Int32.TryParse(key.Trim()), System.Byte.TryParse(value.Trim()) with
+                    match Int32.TryParse(key.Trim()), Byte.TryParse(value.Trim()) with
                     | (true, k), (true, v) -> Some(k, v)
                     | _ -> None
                 | [| key |] ->
-                    match System.Int32.TryParse(key.Trim()) with
+                    match Int32.TryParse(key.Trim()) with
                     | true, k -> Some(k, 1uy)
                     | _ -> None
                 | _ -> None)
@@ -161,6 +157,27 @@ let (|Weekdays|_|) (value: string) =
     with _ ->
         None
 
+let (|Segments|_|) (value: string) =
+    try
+        let parsed =
+            value.Split(',')
+            |> Seq.choose (fun v ->
+                let parts = v.Split('-')
+
+                match parts with
+                | [| startTime; endTime |] ->
+                    match TimeOnly.TryParse(startTime.Trim()), TimeOnly.TryParse(endTime.Trim()) with
+                    | (true, p), (true, q) -> Some([ p; q ])
+                    | _ -> None
+                | _ -> None)
+            |> Seq.toList
+            |> List.concat
+            |> List.toArray
+
+        Some parsed
+    with _ ->
+        None
+
 let rec argparse (args: string list) flag (defval: 'T) : 'T =
     match args with
     | arg :: value :: rest when arg = flag ->
@@ -176,7 +193,7 @@ let rec argparse (args: string list) flag (defval: 'T) : 'T =
         | :? Interlock, Interlock parsed -> unbox parsed
         | :? TaskCode, TaskCode parsed -> unbox parsed
 
-        | _ when typeof<'T> = typeof<System.UInt32[]> ->
+        | _ when typeof<'T> = typeof<UInt32[]> ->
             match value with
             | Uint32List parsed -> unbox parsed
             | _ -> defval
@@ -186,7 +203,7 @@ let rec argparse (args: string list) flag (defval: 'T) : 'T =
             | Uint8List parsed -> unbox parsed
             | _ -> defval
 
-        | _ when typeof<'T> = typeof<System.Byte[]> ->
+        | _ when typeof<'T> = typeof<Byte[]> ->
             match value with
             | Uint8Array parsed -> unbox parsed
             | _ -> defval
@@ -199,6 +216,11 @@ let rec argparse (args: string list) flag (defval: 'T) : 'T =
         | _ when typeof<'T> = typeof<string list> ->
             match value with
             | Weekdays parsed -> unbox parsed
+            | _ -> defval
+
+        | _ when typeof<'T> = typeof<TimeOnly array> ->
+            match value with
+            | Segments parsed -> unbox parsed
             | _ -> defval
 
         | _ -> defval

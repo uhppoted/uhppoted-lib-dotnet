@@ -18,6 +18,7 @@ Module ArgParse
         Dim passcodes As New List(Of UInteger)()
         Dim keypads As New List(Of Byte)()
         Dim weekdays As New List(Of String)()
+        Dim segments = New TimeOnly(6) {}
         Dim permissions As New Dictionary(Of Integer, Byte)()
 
         If ix >= 0 AndAlso ix + 1 < args.Length Then
@@ -180,6 +181,29 @@ Module ArgParse
                         End Select
                     Next
                     Return CType(CObj(weekdays.ToArray()), T)
+
+                Case "TimeOnly()"
+                    Dim i = 0
+
+                    For Each token In args(ix).Split(","c)
+                        Dim parts = token.Split("-"c)
+                        If parts.Length > 1 Then
+                            Dim startTime As TimeOnly
+                            Dim endTime As TimeOnly
+                            If TimeOnly.TryParse(parts(0).Trim(), startTime) And TimeOnly.TryParse(parts(1).Trim(), endTime) Then
+                                If i < segments.Length Then
+                                    segments(i) = startTime
+                                    i += 1
+                                End If
+
+                                If i < segments.Length Then
+                                    segments(i) = endTime
+                                    i += 1
+                                End If
+                            End If
+                        End If
+                    Next
+                    Return CType(CObj(segments), T)
 
                 Case "Dictionary(Of Integer,Byte)"
                     For Each token In args(ix).Split(","c)

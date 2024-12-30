@@ -20,16 +20,6 @@ Public Structure Command
     End Sub
 End Structure
 
-Public Structure TimeSegment
-    Public ReadOnly StartTime As TimeOnly
-    Public ReadOnly EndTime As TimeOnly
-
-    Public Sub New(startTime As TimeOnly, endTime As TimeOnly)
-        Me.StartTime = startTime
-        Me.EndTime = endTime
-    End Sub
-End Structure
-
 Module Commands
     Private Const CONTROLLER_ID As UInt32 = 1
     Private Const EVENT_INTERVAL as Byte = 0
@@ -681,11 +671,7 @@ Module Commands
         Dim start_date As DateOnly = ArgParse.Parse(args, "--start_date", START_DATE)
         Dim end_date As DateOnly = ArgParse.Parse(args, "--end_date", END_DATE)
         Dim weekdays = ArgParse.Parse(args, "--weekdays", new String() {})
-        Dim segments = ArgParse.Parse(args, "--segments", New TimeSegment() {
-            New TimeSegment(TimeOnly.Parse("08:30"), TimeOnly.Parse("09:45")),
-            New TimeSegment(TimeOnly.Parse("12:15"), TimeOnly.Parse("13:15")),
-            New TimeSegment(TimeOnly.Parse("14:00"), TimeOnly.Parse("18:00"))
-        })
+        Dim segments = ArgParse.Parse(args, "--segments", New TimeOnly(6) {})
 
         Dim monday = weekdays.Contains("monday")
         Dim tuesday = weekdays.Contains("tuesday")
@@ -699,9 +685,9 @@ Module Commands
                                    WithStartDate(start_date).
                                    WithEndDate(end_date).
                                    WithWeekdays(monday, tuesday, wednesday, thursday, friday, saturday, sunday).
-                                   WithSegment1(segments(0).StartTime, segments(0).EndTime).
-                                   WithSegment2(segments(1).StartTime, segments(1).EndTime).
-                                   WithSegment3(segments(2).StartTime, segments(2).EndTime).
+                                   WithSegment1(segments(0), segments(1)).
+                                   WithSegment2(segments(2), segments(3)).
+                                   WithSegment3(segments(4), segments(5)).
                                    WithLinkedProfile(linked).
                                    build()
 

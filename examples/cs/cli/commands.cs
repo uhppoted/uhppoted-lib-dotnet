@@ -17,18 +17,6 @@ public readonly struct Command
     }
 }
 
-public readonly struct TimeSegment
-{
-    public readonly TimeOnly start;
-    public readonly TimeOnly end;
-
-    public TimeSegment(TimeOnly start, TimeOnly end)
-    {
-        this.start = start;
-        this.end = end;
-    }
-}
-
 class Commands
 {
     static readonly uhppoted.Options OPTIONS = new uhppoted.OptionsBuilder()
@@ -794,11 +782,7 @@ class Commands
         var start_date = ArgParse.Parse(args, "--start_date", START_DATE);
         var end_date = ArgParse.Parse(args, "--end_date", END_DATE);
         var weekdays = ArgParse.Parse(args, "--weekdays", new string[] { });
-        var segments = ArgParse.Parse(args, "--segments", new TimeSegment[] {
-            new TimeSegment(TimeOnly.Parse("08:30"), TimeOnly.Parse("09:45")),
-            new TimeSegment(TimeOnly.Parse("12:15"), TimeOnly.Parse("13:15")),
-            new TimeSegment(TimeOnly.Parse("14:00"), TimeOnly.Parse("18:00")),
-            });
+        var segments = ArgParse.Parse(args, "--segments", new TimeOnly[6]);
 
         bool monday = Array.Exists(weekdays, v => v == "monday");
         bool tuesday = Array.Exists(weekdays, v => v == "tuesday");
@@ -812,9 +796,9 @@ class Commands
                                   .WithStartDate(start_date)
                                   .WithEndDate(end_date)
                                   .WithWeekdays(monday, tuesday, wednesday, thursday, friday, saturday, sunday)
-                                  .WithSegment1(segments[0].start, segments[0].end)
-                                  .WithSegment2(segments[1].start, segments[1].end)
-                                  .WithSegment3(segments[2].start, segments[2].end)
+                                  .WithSegment1(segments[0], segments[1])
+                                  .WithSegment2(segments[2], segments[3])
+                                  .WithSegment3(segments[4], segments[5])
                                   .WithLinkedProfile(linked)
                                   .Build();
 
