@@ -131,7 +131,6 @@ module internal internationalisation =
             $"#{task}"
 
     /// <summary>
-    /// (PROVISIONAL)
     /// Translates a relay open/closed state into a human readable string using the active 'CurrentCulture' setting.
     /// (e.g. Thread.CurrentThread.CurrentCulture <- CultureInfo("en-US"))
     /// </summary>
@@ -151,11 +150,10 @@ module internal internationalisation =
             $"#{relay}"
 
     /// <summary>
-    /// (PROVISIONAL)
-    /// Translates an input state into a human readable string using the active 'CurrentCulture' setting.
+    /// Translates an input on/off state into a human readable string using the active 'CurrentCulture' setting.
     /// (e.g. Thread.CurrentThread.CurrentCulture <- CultureInfo("en-US"))
     /// </summary>
-    /// <param name="relay">Relay state.</param>
+    /// <param name="input">Input state.</param>
     /// <returns>
     /// Human readable input state or "unknown (<code>)".
     /// </returns>

@@ -1,27 +1,19 @@
 # TODO
 
+- [x] translations & enums
+
 - [ ] API
+    - [x] Rework status.inputs:
+          - [x] fire alarm
+          - [x] lock forced
+    - [x] Rework status.relays as struct
     - [ ] _Cannot access a disposed object._
-    - [ ] Rework inputs:
-          - [ ] fire alarm
-          - [ ] tamper detect
-          - [ ] set of bool
 
 - [ ] argparse
     - [x] --task
     - [x] --keypads
     - [x] --weekdays
     - [ ] --segments
-
-- [x] translations & enums
-    - [x] door mode
-    - [x] door direction
-    - [x] interlock
-    - [x] relays
-    - [x] inputs
-    - [x] tasks
-    - [x] event types
-    - [x] event reasons
 
 - [ ] function signature file
 - [ ] Represent error cases and illegal state in types intrinsic to your domain

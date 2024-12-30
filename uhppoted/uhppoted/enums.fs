@@ -66,11 +66,11 @@ type Input =
     /// <summary>Unknown state.</summary>
     | Unknown = 0
 
-    /// <summary>Input contact is in the 'open' state.</summary>
-    | Open = 1
+    /// <summary>Input contact is in the 'off' state.</summary>
+    | Off = 1
 
-    /// <summary>Input contact is in the 'closed' state.</summary>
-    | Closed = 2
+    /// <summary>Input contact is in the 'on' state.</summary>
+    | On = 2
 
 /// <summary>Defines the known task codes
 type TaskCode =
@@ -144,4 +144,4 @@ module internal Enums =
         if v &&& mask = mask then Relay.Closed else Relay.Open
 
     let internal input (v: uint8) (mask: uint8) : Input =
-        if v &&& mask = mask then Input.Closed else Input.Open
+        if v &&& mask = mask then Input.On else Input.Off

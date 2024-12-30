@@ -409,10 +409,10 @@ class Commands
 
             WriteLine("get-status");
             WriteLine("         controller {0}", controller);
-            WriteLine("        door 1 open {0}", status.Door1Open);
-            WriteLine("        door 2 open {0}", status.Door2Open);
-            WriteLine("        door 3 open {0}", status.Door3Open);
-            WriteLine("        door 4 open {0}", status.Door4Open);
+            WriteLine("             door 1 {1},{0}", status.Door1Open ? "open" : "closed", translate(status.Relays.Door1));
+            WriteLine("             door 2 {1},{0}", status.Door2Open ? "open" : "closed", translate(status.Relays.Door2));
+            WriteLine("             door 3 {1},{0}", status.Door3Open ? "open" : "closed", translate(status.Relays.Door3));
+            WriteLine("             door 4 {1},{0}", status.Door4Open ? "open" : "closed", translate(status.Relays.Door4));
             WriteLine("   button 1 pressed {0}", status.Button1Pressed);
             WriteLine("   button 2 pressed {0}", status.Button2Pressed);
             WriteLine("   button 3 pressed {0}", status.Button3Pressed);
@@ -421,14 +421,8 @@ class Commands
             WriteLine("   system date/time {0}", YYYYMMDDHHmmss(status.SystemDateTime));
             WriteLine("       sequence no. {0}", status.SequenceNumber);
             WriteLine("       special info {0}", status.SpecialInfo);
-            WriteLine("            relay 1 {0}", translate(status.Relay1));
-            WriteLine("            relay 2 {0}", translate(status.Relay2));
-            WriteLine("            relay 3 {0}", translate(status.Relay3));
-            WriteLine("            relay 4 {0}", translate(status.Relay4));
-            WriteLine("            input 1 {0}", translate(status.Input1));
-            WriteLine("            input 2 {0}", translate(status.Input2));
-            WriteLine("            input 3 {0}", translate(status.Input3));
-            WriteLine("            input 4 {0}", translate(status.Input4));
+            WriteLine("        lock forced {0}", translate(status.Inputs.LockForced));
+            WriteLine("         fire alarm {0}", translate(status.Inputs.FireAlarm));
             WriteLine();
 
             if (evt.HasValue)
@@ -1089,10 +1083,10 @@ class Commands
             WriteLine($"         controller {controller}");
             WriteLine("");
 
-            WriteLine($"        door 1 open {status.Door1Open}");
-            WriteLine($"        door 2 open {status.Door2Open}");
-            WriteLine($"        door 3 open {status.Door3Open}");
-            WriteLine($"        door 4 open {status.Door4Open}");
+            WriteLine("              door 1 {1},{0}", status.Door1Open ? "open" : "closed", translate(status.Relays.Door1));
+            WriteLine("              door 2 {1},{0}", status.Door2Open ? "open" : "closed", translate(status.Relays.Door2));
+            WriteLine("              door 3 {1},{0}", status.Door3Open ? "open" : "closed", translate(status.Relays.Door3));
+            WriteLine("              door 4 {1},{0}", status.Door4Open ? "open" : "closed", translate(status.Relays.Door4));
             WriteLine($"   button 1 pressed {status.Button1Pressed}");
             WriteLine($"   button 2 pressed {status.Button2Pressed}");
             WriteLine($"   button 3 pressed {status.Button3Pressed}");
@@ -1101,14 +1095,8 @@ class Commands
             WriteLine($"   system date/time {YYYYMMDDHHmmss(status.SystemDateTime)}");
             WriteLine($"       sequence no. {status.SequenceNumber}");
             WriteLine($"       special info {status.SpecialInfo}");
-            WriteLine($"            relay 1 {translate(status.Relay1)}");
-            WriteLine($"            relay 2 {translate(status.Relay2)}");
-            WriteLine($"            relay 3 {translate(status.Relay3)}");
-            WriteLine($"            relay 4 {translate(status.Relay4)}");
-            WriteLine($"            input 1 {translate(status.Input1)}");
-            WriteLine($"            input 2 {translate(status.Input2)}");
-            WriteLine($"            input 3 {translate(status.Input3)}");
-            WriteLine($"            input 4 {translate(status.Input4)}");
+            WriteLine($"        lock forced {translate(status.Inputs.LockForced)}");
+            WriteLine($"         fire alarm {translate(status.Inputs.FireAlarm)}");
             WriteLine("");
 
             if (evt.HasValue)

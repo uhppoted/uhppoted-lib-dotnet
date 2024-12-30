@@ -294,6 +294,12 @@ let open_door args =
 let get_status args =
     let controller = argparse args "--controller" CONTROLLER
 
+    let door isopen relay =
+        if isopen then
+            $"{translate relay},open"
+        else
+            $"{translate relay},closed"
+
     let result =
         match lookup controller with
         | Some c -> Uhppoted.GetStatus(c, OPTIONS)
@@ -303,10 +309,10 @@ let get_status args =
     | Ok(status, event) ->
         printfn "get-status"
         printfn "         controller %u" controller
-        printfn "        door 1 open %b" status.Door1Open
-        printfn "        door 2 open %b" status.Door2Open
-        printfn "        door 3 open %b" status.Door3Open
-        printfn "        door 4 open %b" status.Door4Open
+        printfn "             door 1 %s" (door status.Door1Open status.Relays.Door1)
+        printfn "             door 2 %s" (door status.Door2Open status.Relays.Door2)
+        printfn "             door 3 %s" (door status.Door3Open status.Relays.Door3)
+        printfn "             door 4 %s" (door status.Door4Open status.Relays.Door4)
         printfn "   button 1 pressed %b" status.Button1Pressed
         printfn "   button 2 pressed %b" status.Button2Pressed
         printfn "   button 3 pressed %b" status.Button3Pressed
@@ -315,14 +321,8 @@ let get_status args =
         printfn "   system date/time %A" (YYYYMMDDHHmmss(status.SystemDateTime))
         printfn "       sequence no. %u" status.SequenceNumber
         printfn "       special info %u" status.SpecialInfo
-        printfn "            relay 1 %s" (translate status.Relay1)
-        printfn "            relay 2 %s" (translate status.Relay2)
-        printfn "            relay 3 %s" (translate status.Relay3)
-        printfn "            relay 4 %s" (translate status.Relay4)
-        printfn "            input 1 %s" (translate status.Input1)
-        printfn "            input 2 %s" (translate status.Input2)
-        printfn "            input 3 %s" (translate status.Input3)
-        printfn "            input 4 %s" (translate status.Input4)
+        printfn "        lock forced %s" (translate status.Inputs.LockForced)
+        printfn "         fire alarm %s" (translate status.Inputs.FireAlarm)
         printfn ""
 
         if event.HasValue then
@@ -821,13 +821,19 @@ let listen args =
         let status = e.Status
         let event = e.Event
 
+        let door isopen relay =
+            if isopen then
+                $"{translate relay},open"
+            else
+                $"{translate relay},closed"
+
         printfn "-- EVENT"
         printfn "         controller %u" controller
         printfn ""
-        printfn "        door 1 open %b" status.Door1Open
-        printfn "        door 2 open %b" status.Door2Open
-        printfn "        door 3 open %b" status.Door3Open
-        printfn "        door 4 open %b" status.Door4Open
+        printfn "             door 1 %s" (door status.Door1Open status.Relays.Door1)
+        printfn "             door 2 %s" (door status.Door2Open status.Relays.Door2)
+        printfn "             door 3 %s" (door status.Door3Open status.Relays.Door3)
+        printfn "             door 4 %s" (door status.Door4Open status.Relays.Door4)
         printfn "   button 1 pressed %b" status.Button1Pressed
         printfn "   button 2 pressed %b" status.Button2Pressed
         printfn "   button 3 pressed %b" status.Button3Pressed
@@ -836,14 +842,8 @@ let listen args =
         printfn "   system date/time %s" (YYYYMMDDHHmmss(status.SystemDateTime))
         printfn "       sequence no. %u" status.SequenceNumber
         printfn "       special info %u" status.SpecialInfo
-        printfn "            relay 1 %s" (translate status.Relay1)
-        printfn "            relay 2 %s" (translate status.Relay2)
-        printfn "            relay 3 %s" (translate status.Relay3)
-        printfn "            relay 4 %s" (translate status.Relay4)
-        printfn "            input 1 %s" (translate status.Input1)
-        printfn "            input 2 %s" (translate status.Input2)
-        printfn "            input 3 %s" (translate status.Input3)
-        printfn "            input 4 %s" (translate status.Input4)
+        printfn "        lock forced %s" (translate status.Inputs.LockForced)
+        printfn "         fire alarm %s" (translate status.Inputs.FireAlarm)
         printfn ""
 
         if event.HasValue then

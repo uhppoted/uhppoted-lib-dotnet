@@ -62,14 +62,24 @@ type Status =
       SystemDateTime: DateTime Nullable
       SequenceNumber: uint32
       SpecialInfo: uint8
-      Relay1: Relay
-      Relay2: Relay
-      Relay3: Relay
-      Relay4: Relay
-      Input1: Input
-      Input2: Input
+      Relays: Relays
+      Inputs: Inputs }
+
+and [<Struct>] Relays =
+    { Door1: Relay
+      Door2: Relay
+      Door3: Relay
+      Door4: Relay }
+
+and [<Struct>] Inputs =
+    { LockForced: Input
+      FireAlarm: Input
       Input3: Input
-      Input4: Input }
+      Input4: Input
+      Input5: Input
+      Input6: Input
+      Input7: Input
+      Input8: Input }
 
 [<Struct>]
 type EventType = { Code: uint8; Text: string }
