@@ -55,22 +55,22 @@ type Relay =
     /// <summary>Unknown state.</summary>
     | Unknown = 0
 
-    /// <summary>Relay is in the 'open' state.</summary>
-    | Open = 1
+    /// <summary>Relay is in the 'inactive' state.</summary>
+    | Inactive = 1
 
-    /// <summary>Relay is in the 'closed' state.</summary>
-    | Closed = 2
+    /// <summary>Relay is in the 'active' state.</summary>
+    | Active = 2
 
 /// <summary>Defines whether an input contact is open or closed.</summary>
 type Input =
     /// <summary>Unknown state.</summary>
     | Unknown = 0
 
-    /// <summary>Input contact is in the 'off' state.</summary>
-    | Off = 1
+    /// <summary>Input contact is 'unmade'.</summary>
+    | Clear = 1
 
-    /// <summary>Input contact is in the 'on' state.</summary>
-    | On = 2
+    /// <summary>Input contact is 'made'.</summary>
+    | Set = 2
 
 /// <summary>Defines the known task codes
 type TaskCode =
@@ -141,7 +141,7 @@ module internal Enums =
         | _ -> Direction.Unknown
 
     let internal relay (v: uint8) (mask: uint8) : Relay =
-        if v &&& mask = mask then Relay.Closed else Relay.Open
+        if v &&& mask = mask then Relay.Active else Relay.Inactive
 
     let internal input (v: uint8) (mask: uint8) : Input =
-        if v &&& mask = mask then Input.On else Input.Off
+        if v &&& mask = mask then Input.Set else Input.Clear

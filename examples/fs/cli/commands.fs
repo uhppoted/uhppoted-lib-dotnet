@@ -71,7 +71,7 @@ let HHmm (time: Nullable<TimeOnly>) =
 
 let translate v : string = Uhppoted.Translate v
 
-let find_controllers args =
+let findControllers args =
     match Uhppoted.FindControllers(OPTIONS) with
     | Ok controllers ->
         printfn "find-controllers: %d" controllers.Length
@@ -90,7 +90,7 @@ let find_controllers args =
         Ok()
     | Error err -> Error err
 
-let get_controller args =
+let getController args =
     let controller = argparse args "--controller" CONTROLLER
 
     let result =
@@ -112,7 +112,7 @@ let get_controller args =
         Ok()
     | Error err -> Error err
 
-let set_IPv4 args =
+let setIPv4 args =
     let controller = argparse args "--controller" CONTROLLER
     let address = argparse args "--address" ADDRESS
     let netmask = argparse args "--netmask" NETMASK
@@ -131,7 +131,7 @@ let set_IPv4 args =
         Ok()
     | Error err -> Error err
 
-let get_listener args =
+let getListener args =
     let controller = argparse args "--controller" CONTROLLER
 
     let result =
@@ -149,7 +149,7 @@ let get_listener args =
         Ok()
     | Error err -> Error err
 
-let set_listener args =
+let setListener args =
     let controller = argparse args "--controller" CONTROLLER
     let listener = argparse args "--listener" LISTENER
     let interval = argparse args "--interval" INTERVAL
@@ -168,7 +168,7 @@ let set_listener args =
         Ok()
     | Error err -> Error err
 
-let get_time args =
+let getTime args =
     let controller = argparse args "--controller" CONTROLLER
 
     let result =
@@ -185,7 +185,7 @@ let get_time args =
         Ok()
     | Error err -> Error err
 
-let set_time args =
+let setTime args =
     let controller = argparse args "--controller" CONTROLLER
     let now = argparse args "--datetime" DateTime.Now
 
@@ -203,7 +203,7 @@ let set_time args =
         Ok()
     | Error err -> Error err
 
-let get_door args =
+let getDoor args =
     let controller = argparse args "--controller" CONTROLLER
     let door = argparse args "--door" DOOR
 
@@ -227,7 +227,7 @@ let get_door args =
     | Ok _ -> Error "door does not exist"
     | Error err -> Error err
 
-let set_door args =
+let setDoor args =
     let controller = argparse args "--controller" CONTROLLER
     let door = argparse args "--door" DOOR
     let mode = argparse args "--mode" MODE
@@ -252,7 +252,7 @@ let set_door args =
     | Ok _ -> Error "door not updated"
     | Error err -> Error err
 
-let set_door_passcodes args =
+let setDoorPasscodes args =
     let controller = argparse args "--controller" CONTROLLER
     let door = argparse args "--door" DOOR
     let passcodes: uint32 array = argparse args "--passcodes" [||]
@@ -272,7 +272,7 @@ let set_door_passcodes args =
         Ok()
     | Error err -> Error err
 
-let open_door args =
+let openDoor args =
     let controller = argparse args "--controller" CONTROLLER
     let door = argparse args "--door" DOOR
 
@@ -291,7 +291,7 @@ let open_door args =
         Ok()
     | Error err -> Error err
 
-let get_status args =
+let getStatus args =
     let controller = argparse args "--controller" CONTROLLER
 
     let door isopen relay =
@@ -342,7 +342,7 @@ let get_status args =
         Ok()
     | Error err -> Error err
 
-let get_cards args =
+let getCards args =
     let controller = argparse args "--controller" CONTROLLER
 
     let result =
@@ -359,7 +359,7 @@ let get_cards args =
         Ok()
     | Error err -> Error(err)
 
-let get_card args =
+let getCard args =
     let controller = argparse args "--controller" CONTROLLER
     let card = argparse args "--card" CARD
 
@@ -387,7 +387,7 @@ let get_card args =
     | Ok _ -> Error "card not found"
     | Error err -> Error(err)
 
-let get_card_at_index args =
+let getCardAtIndex args =
     let controller = argparse args "--controller" CONTROLLER
     let index = argparse args "--card" CARD_INDEX
 
@@ -415,7 +415,7 @@ let get_card_at_index args =
     | Ok _ -> Error "card not found"
     | Error err -> Error(err)
 
-let put_card args =
+let putCard args =
     let controller = argparse args "--controller" CONTROLLER
     let permissions = argparse args "--permissions" Map.empty
 
@@ -445,7 +445,7 @@ let put_card args =
         Ok()
     | Error err -> Error(err)
 
-let delete_card args =
+let deleteCard args =
     let controller = argparse args "--controller" CONTROLLER
     let card = argparse args "--card" CARD
 
@@ -464,7 +464,7 @@ let delete_card args =
         Ok()
     | Error err -> Error(err)
 
-let delete_all_cards args =
+let deleteAllCards args =
     let controller = argparse args "--controller" CONTROLLER
 
     let result =
@@ -481,7 +481,7 @@ let delete_all_cards args =
         Ok()
     | Error err -> Error(err)
 
-let get_event args =
+let getEvent args =
     let controller = argparse args "--controller" CONTROLLER
     let index = argparse args "--index" EVENT_INDEX
 
@@ -509,7 +509,7 @@ let get_event args =
     | Ok _ -> Error "event not found"
     | Error err -> Error(err)
 
-let get_event_index args =
+let getEventIndex args =
     let controller = argparse args "--controller" CONTROLLER
 
     let result =
@@ -526,7 +526,7 @@ let get_event_index args =
         Ok()
     | Error err -> Error(err)
 
-let set_event_index args =
+let setEventIndex args =
     let controller = argparse args "--controller" CONTROLLER
     let index = argparse args "--index" EVENT_INDEX
 
@@ -544,7 +544,7 @@ let set_event_index args =
         Ok()
     | Error err -> Error(err)
 
-let record_special_events args =
+let recordSpecialEvents args =
     let controller = argparse args "--controller" CONTROLLER
     let enable = argparse args "--enable" ENABLE
 
@@ -562,7 +562,7 @@ let record_special_events args =
         Ok()
     | Error err -> Error(err)
 
-let get_time_profile args =
+let getTimeProfile args =
     let controller = argparse args "--controller" CONTROLLER
     let profile = argparse args "--profile" TIME_PROFILE_ID
 
@@ -599,7 +599,7 @@ let get_time_profile args =
     | Ok _ -> Error "time profile does not exist"
     | Error err -> Error(err)
 
-let set_time_profile args =
+let setTimeProfile args =
     let controller = argparse args "--controller" CONTROLLER
     let profileId = argparse args "--profile" TIME_PROFILE_ID
     let startDate = argparse args "--start-date" START_DATE
@@ -641,7 +641,7 @@ let set_time_profile args =
         Ok()
     | Error err -> Error(err)
 
-let clear_time_profiles args =
+let clearTimeProfiles args =
     let controller = argparse args "--controller" CONTROLLER
 
     let result =
@@ -658,7 +658,7 @@ let clear_time_profiles args =
         Ok()
     | Error err -> Error(err)
 
-let add_task args =
+let addTask args =
     let controller = argparse args "--controller" CONTROLLER
     let weekdays: string list = argparse args "--weekdays" []
 
@@ -872,107 +872,107 @@ let listen args =
 let commands =
     [ { command = "find-controllers"
         description = "Retrieves a list of controllers accessible on the local LAN"
-        f = find_controllers }
+        f = findControllers }
 
       { command = "get-controller"
         description = "Retrieves the controller information from a controller"
-        f = get_controller }
+        f = getController }
 
       { command = "set-IPv4"
         description = "Sets a controller IPv4 address, netmask and gateway"
-        f = set_IPv4 }
+        f = setIPv4 }
 
       { command = "get-listener"
         description = "Retrieves a controller event listener address:port and auto-send interval"
-        f = get_listener }
+        f = getListener }
 
       { command = "set-listener"
         description = "Sets a controller event listener address:port and auto-send interval"
-        f = set_listener }
+        f = setListener }
 
       { command = "get-time"
         description = "Retrieves a controller system date and time"
-        f = get_time }
+        f = getTime }
 
       { command = "set-time"
         description = "Sets a controller system date and time"
-        f = set_time }
+        f = setTime }
 
       { command = "get-door"
         description = "Retrieves a controller door mode and delay settings"
-        f = get_door }
+        f = getDoor }
 
       { command = "set-door"
         description = "Sets a controller door mode and delay"
-        f = set_door }
+        f = setDoor }
 
       { command = "set-door-passcodes"
         description = "Sets the supervisor passcodes for a controller door"
-        f = set_door_passcodes }
+        f = setDoorPasscodes }
 
       { command = "open-door"
         description = "Unlocks a door controlled by a controller"
-        f = open_door }
+        f = openDoor }
 
       { command = "get-status"
         description = "Retrieves the current status of a controller"
-        f = get_status }
+        f = getStatus }
 
       { command = "get-cards"
         description = "Retrieves the number of cards stored on a controller"
-        f = get_cards }
+        f = getCards }
 
       { command = "get-card"
         description = "Retrieves a card record from a controller"
-        f = get_card }
+        f = getCard }
 
       { command = "get-card-at-index"
         description = "Retrieves the card record stored at the index from a controller"
-        f = get_card_at_index }
+        f = getCardAtIndex }
 
       { command = "put-card"
         description = "Adds or updates a card record on a controller"
-        f = put_card }
+        f = putCard }
 
       { command = "delete-card"
         description = "Deletes a card record from a controller"
-        f = delete_card }
+        f = deleteCard }
 
       { command = "delete-all-cards"
         description = "Deletes all card records from a controller"
-        f = delete_all_cards }
+        f = deleteAllCards }
 
       { command = "get-event"
         description = "Retrieves the event record stored at the index from a controller"
-        f = get_event }
+        f = getEvent }
 
       { command = "get-event-index"
         description = "Retrieves the current event index from a controller"
-        f = get_event_index }
+        f = getEventIndex }
 
       { command = "set-event-index"
         description = "Sets a controller event index"
-        f = set_event_index }
+        f = setEventIndex }
 
       { command = "record-special-events"
         description = "Enables events for door open/close, button press, etc"
-        f = record_special_events }
+        f = recordSpecialEvents }
 
       { command = "get-time-profile"
         description = "Retrieves an access time profile from a controller"
-        f = get_time_profile }
+        f = getTimeProfile }
 
       { command = "set-time-profile"
         description = "Adds or updates an access time profile on a controller"
-        f = set_time_profile }
+        f = setTimeProfile }
 
       { command = "clear-time-profiles"
         description = "Clears all access time profiles stored on a controller"
-        f = clear_time_profiles }
+        f = clearTimeProfiles }
 
       { command = "add-task"
         description = "Adds or updates a scheduled task stored on a controller"
-        f = add_task }
+        f = addTask }
 
       { command = "clear-tasklist"
         description = "Clears all scheduled tasks from the controller task list"

@@ -24,14 +24,12 @@ A `Status` record includes the following fields:
 - `SystemDateTime` (`Nullable<DateOnly>`): Current controller date/time.
 - `SequenceNumber` (`uint32`): Message sequence number.
 - `SpecialInfo` (`uint8`): Special info code.
-- `Relay1` (`Relay`): Relay 1 state (`Open` or `Closed`).
-- `Relay2` (`Relay`): Relay 2 state (`Open` or `Closed`).
-- `Relay3` (`Relay`): Relay 3 state (`Open` or `Closed`).
-- `Relay4` (`Relay`): Relay 4 state (`Open` or `Closed`).
-- `Input1` (`Input`): Input 1 contact state (`Open` or `Closed`).
-- `Input2` (`Input`): Input 2 contact state (`Open` or `Closed`).
-- `Input3` (`Input`): Input 3 contact state (`Open` or `Closed`).
-- `Input4` (`Input`): Input 4 contact state (`Open` or `Closed`).
+- `Relays.Door1` (`Relay`): door 1 relay state (`Active` or `Inactive`).
+- `Relays.Door2` (`Relay`): door 2 relay state (`Active` or `Inactive`).
+- `Relays.Door3` (`Relay`): door 3 relay state (`Active` or `Inactive`).
+- `Relays.Door4` (`Relay`): door 4 relay state (`Active` or `Inactive`).
+- `Inputs.LockForced` (`Input`): input 1 contact state (`Set` or `Clear`).
+- `Inputs.FireAlarm` (`Input`): input 2 contact state (`Set` or `Clear`).
 
 An `Event` record includes the following fields:
 - `Index` (`uint32`) Index of most recent event (0 if none).

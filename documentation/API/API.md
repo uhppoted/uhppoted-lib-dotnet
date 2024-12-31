@@ -154,3 +154,10 @@ Defines the door interlocks for an access controller:
 - `Doors12And34`: interlocks doors 1 & 2 and doors 3 & 4
 - `Doors123`: interlock between doors 1, 2 & 3
 - `Doors1234`: interlocks all doors
+
+### Relay
+
+Defines the relay contact states for the door unlock relays:
+
+- `Open`: the relay is deactivated i.e. the _normally open_ contact is open and the _normally closed_ contact is closed
+- `Closed`: the relay is activated i.e. the _normally open_ contact is closed  and the _normally closed_ contact is open

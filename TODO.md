@@ -1,25 +1,16 @@
 # TODO
 
-- [x] translations & enums
-
 - [ ] API
-    - [x] Rework status.inputs:
-          - [x] fire alarm
-          - [x] lock forced
-    - [x] Rework status.relays as struct
     - [ ] _Cannot access a disposed object._
+    - [ ] Represent error cases and illegal state in types intrinsic to your domain
+          - https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/conventions#represent-error-cases-and-illegal-state-in-types-intrinsic-to-your-domain
 
 - [ ] examples
-    - [x] argparse
-        - [x] --task
-        - [x] --keypads
-        - [x] --weekdays
-        - [x] --segments
-    - [ ] F#: camelCase functions
+    - [x] F#: camelCase functions
+    - [ ] GUI
+          - https://mauiman.dev/maui_cli_commandlineinterface.html
 
 - [ ] function signature file
-- [ ] Represent error cases and illegal state in types intrinsic to your domain
-      - https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/conventions#represent-error-cases-and-illegal-state-in-types-intrinsic-to-your-domain
 - [ ] Prefer namespaces at the top level
       - https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/conventions
 - [ ] Add .NET 9 as a target framework
