@@ -18,12 +18,19 @@
   </PropertyGroup>
   
   <ItemGroup>
-    <Compile Include="options.fs" />
+    <Compile Include="enums.fsi" />
+    <Compile Include="types.fsi" />
+    <Compile Include="builders.fsi" />
+    <Compile Include="options.fsi" />
+    <Compile Include="responses.fsi" />
+    <Compile Include="uhppoted.fsi" />
+
     <Compile Include="enums.fs" />
     <Compile Include="types.fs" />
+    <Compile Include="builders.fs" />
+    <Compile Include="options.fs" />
     <Compile Include="internationalisation.fs" />
     <Compile Include="responses.fs" />
-    <Compile Include="builders.fs" />
     <Compile Include="codec.fs" />
     <Compile Include="encode.fs" />
     <Compile Include="decode.fs" />

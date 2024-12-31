@@ -1,16 +1,17 @@
 # TODO
 
 - [ ] API
-    - [ ] _Cannot access a disposed object._
+    - [x] function signature files
+          - [ ] types.fs: comments
     - [ ] Represent error cases and illegal state in types intrinsic to your domain
           - https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/conventions#represent-error-cases-and-illegal-state-in-types-intrinsic-to-your-domain
+    - [ ] _Cannot access a disposed object._
 
 - [ ] examples
     - [x] F#: camelCase functions
     - [ ] GUI
           - https://mauiman.dev/maui_cli_commandlineinterface.html
 
-- [ ] function signature file
 - [ ] Prefer namespaces at the top level
       - https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/conventions
 - [ ] Add .NET 9 as a target framework

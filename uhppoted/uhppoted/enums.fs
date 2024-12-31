@@ -50,7 +50,8 @@ type Interlock =
     /// <summary>Unknown interlock mode.</summary>
     | Unknown = 255
 
-/// <summary>Defines whether a relay is open or closed.</summary>
+
+/// <summary>Defines whether a relay is active or inactive.</summary>
 type Relay =
     /// <summary>Unknown state.</summary>
     | Unknown = 0
@@ -60,6 +61,7 @@ type Relay =
 
     /// <summary>Relay is in the 'active' state.</summary>
     | Active = 2
+
 
 /// <summary>Defines whether an input contact is open or closed.</summary>
 type Input =
@@ -72,7 +74,8 @@ type Input =
     /// <summary>Input contact is 'made'.</summary>
     | Set = 2
 
-/// <summary>Defines the known task codes
+
+/// <summary>Defines the known task codes for the scheduled tasks.
 type TaskCode =
     /// <summary>Unknown state.</summary>
     | Unknown = 0
@@ -115,6 +118,7 @@ type TaskCode =
 
     /// <summary>Enables pushbutton access.</summary>
     | EnablePushbutton = 13
+
 
 module internal Enums =
     let internal doorMode (v: uint8) : DoorMode =

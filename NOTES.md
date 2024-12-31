@@ -13,6 +13,9 @@
 11. https://poeditor.com/kb/resx-editor
 12. https://localizely.com/getting-started
 
+## F#
+1. https://stackoverflow.com/questions/58781292/how-to-generate-f-signature-file-without-visual-studio
+
 ## C#
 
 1. https://stackoverflow.com/questions/35163327/working-with-f-options-in-c-e-g-fsharpoptiondictionaryguid-membershipuser

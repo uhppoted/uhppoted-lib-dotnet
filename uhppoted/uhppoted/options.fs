@@ -2,7 +2,7 @@ namespace uhppoted
 
 open System.Net
 
-/// Container class for the network configuration used to connect to an access controller.application.
+/// Container class for the network configuration used to connect to an access controller.
 type Options =
     {
         /// IPv4 endpoint to which to bind. Default value is INADDR_ANY (0.0.0.0:0).

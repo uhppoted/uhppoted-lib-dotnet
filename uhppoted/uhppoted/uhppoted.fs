@@ -920,8 +920,17 @@ module Uhppoted =
         UDP.listen bind handler stop debug
 
     /// <summary>
-    /// Translates an enum into a human readable string using the active 'CurrentCulture' setting.
-    /// (e.g. Thread.CurrentThread.CurrentCulture <- CultureInfo("en-US"))
+    /// Translates an internal symbolic value into a human readable string using the active 'CurrentCulture'
+    /// setting (e.g. Thread.CurrentThread.CurrentCulture <- CultureInfo("en-US")).
+    /// The translated symbols include:
+    /// - event type
+    /// - event reason
+    /// - event door direction
+    /// - door control mode
+    /// - door interlock code
+    /// - task code
+    /// - relay state
+    /// - input state
     /// </summary>
     /// <param name="value">enumerated value to translate.</param>
     /// <returns>
