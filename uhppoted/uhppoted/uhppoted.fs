@@ -9,13 +9,6 @@ open System.Runtime.CompilerServices
 do ()
 
 module Uhppoted =
-    let private defaults =
-        { bind = IPEndPoint(IPAddress.Any, 0)
-          broadcast = IPEndPoint(IPAddress.Broadcast, 60000)
-          listen = IPEndPoint(IPAddress.Any, 60001)
-          timeout = 1000
-          debug = false }
-
     let internal resolve (controller: 'T) : Result<C, string> =
         match box controller with
         | :? uint32 as u32 ->
@@ -248,8 +241,8 @@ module Uhppoted =
             | Ok response ->
                 Ok(
                     Nullable
-                        { mode = Enums.doorMode response.mode
-                          delay = response.delay }
+                        { Mode = Enums.doorMode response.mode
+                          Delay = response.delay }
                 )
             | Error err -> Error err
 
@@ -272,8 +265,8 @@ module Uhppoted =
             | Ok response ->
                 Ok(
                     Nullable
-                        { mode = Enums.doorMode response.mode
-                          delay = response.delay }
+                        { Mode = Enums.doorMode response.mode
+                          Delay = response.delay }
                 )
             | Error err -> Error err
 
@@ -354,7 +347,6 @@ module Uhppoted =
                       Button4Pressed = response.door4Button
                       SystemError = response.systemError
                       SystemDateTime = response.systemDateTime
-                      SequenceNumber = response.sequenceNumber
                       SpecialInfo = response.specialInfo
                       Relays =
                         { Door1 = Enums.relay response.relays 0x01uy
@@ -870,7 +862,6 @@ module Uhppoted =
                       Button4Pressed = e.door4Button
                       SystemError = e.systemError
                       SystemDateTime = e.systemDateTime
-                      SequenceNumber = e.sequenceNumber
                       SpecialInfo = e.specialInfo
                       Relays =
                         { Door1 = Enums.relay e.relays 0x01uy

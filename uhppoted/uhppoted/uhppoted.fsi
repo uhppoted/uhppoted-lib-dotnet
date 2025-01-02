@@ -1,16 +1,7 @@
 namespace uhppoted
 
 module Uhppoted =
-    val private defaults: Options
     val internal resolve: controller: 'T -> Result<C, string>
-
-    val private exec:
-        controller: C ->
-        request: byte array ->
-        decode: (byte array -> Result<'b, string>) ->
-        options: Options ->
-            Result<'b, string>
-            when 'b :> IResponse
 
     /// Retrieves a list of controllers on the local LAN accessible via a UDP broadcast.
     val FindControllers: options: Options -> Result<Controller array, string>

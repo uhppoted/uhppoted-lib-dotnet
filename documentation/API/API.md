@@ -1,5 +1,24 @@
 # API
 
+**Contents**:
+1. [Types](#types)
+2. [Functions](#functions)
+3. [Options](#options)
+4. [C](#c)
+
+## Types
+
+- [`Controller`](types.md#controller)
+- [`Door`](types.md#door)
+- [`Status`](types.md#status)
+- [`Event`](types.md#event)
+- [`Card`](types.md#card)
+- [`TimeProfile`](types.md#timeprofile)
+- [`Task`](types.md#task)
+- [`Listener`](types.md#listener)
+- [`ListenerEvent`](types.md#listenerevent)
+
+## Functions
 - [`FindControllers`](find-controllers.md)
 - [`GetController`](get-controller.md)
 - [`SetIPv4`](set-IPv4.md)

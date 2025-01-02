@@ -277,8 +277,8 @@ type TestAPI(tt: string) =
     [<Test>]
     member this.TestGetDoor() =
         let expected: Door =
-            { mode = DoorMode.Controlled
-              delay = 7uy }
+            { Mode = DoorMode.Controlled
+              Delay = 7uy }
 
         match controllers[tt] with
         | Id controller ->
@@ -309,8 +309,8 @@ type TestAPI(tt: string) =
     [<Test>]
     member this.TestSetDoor() =
         let expected: Door =
-            { mode = DoorMode.NormallyClosed
-              delay = 17uy }
+            { Mode = DoorMode.NormallyClosed
+              Delay = 17uy }
 
         match controllers[tt] with
         | Id controller ->
@@ -382,7 +382,6 @@ type TestAPI(tt: string) =
               Button4Pressed = true
               SystemError = 27uy
               SystemDateTime = Nullable(DateTime.ParseExact("2024-11-13 14:37:53", "yyyy-MM-dd HH:mm:ss", null))
-              SequenceNumber = 21987u
               SpecialInfo = 154uy
               Relays =
                 { Door1 = Relay.Active
@@ -437,7 +436,6 @@ type TestAPI(tt: string) =
               Button4Pressed = true
               SystemError = 27uy
               SystemDateTime = Nullable(DateTime.ParseExact("2024-11-13 14:37:53", "yyyy-MM-dd HH:mm:ss", null))
-              SequenceNumber = 21987u
               SpecialInfo = 154uy
               Relays =
                 { Door1 = Relay.Active
@@ -1000,7 +998,6 @@ type TestAPI(tt: string) =
               Button4Pressed = true
               SystemError = 27uy
               SystemDateTime = Nullable(DateTime.ParseExact("2024-11-13 14:37:53", "yyyy-MM-dd HH:mm:ss", null))
-              SequenceNumber = 21987u
               SpecialInfo = 154uy
               Relays =
                 { Door1 = Relay.Active

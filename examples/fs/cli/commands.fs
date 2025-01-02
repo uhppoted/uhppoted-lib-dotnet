@@ -219,8 +219,8 @@ let getDoor args =
         printfn "get-door"
         printfn "  controller %u" controller
         printfn "        door %d" door
-        printfn "        mode %s" (translate record.mode)
-        printfn "       delay %ds" record.delay
+        printfn "        mode %s" (translate record.Mode)
+        printfn "       delay %ds" record.Delay
         printfn ""
         printfn ""
         Ok()
@@ -245,8 +245,8 @@ let setDoor args =
         printfn "set-door"
         printfn "  controller %u" controller
         printfn "        door %d" door
-        printfn "        mode %s" (translate record.mode)
-        printfn "       delay %ds" record.delay
+        printfn "        mode %s" (translate record.Mode)
+        printfn "       delay %ds" record.Delay
         printfn ""
         Ok()
     | Ok _ -> Error "door not updated"
@@ -319,7 +319,6 @@ let getStatus args =
         printfn "   button 4 pressed %b" status.Button4Pressed
         printfn "       system error %u" status.SystemError
         printfn "   system date/time %A" (YYYYMMDDHHmmss(status.SystemDateTime))
-        printfn "       sequence no. %u" status.SequenceNumber
         printfn "       special info %u" status.SpecialInfo
         printfn "        lock forced %s" (translate status.Inputs.LockForced)
         printfn "         fire alarm %s" (translate status.Inputs.FireAlarm)
@@ -841,7 +840,6 @@ let listen args =
         printfn "   button 4 pressed %b" status.Button4Pressed
         printfn "       system error %u" status.SystemError
         printfn "   system date/time %s" (YYYYMMDDHHmmss(status.SystemDateTime))
-        printfn "       sequence no. %u" status.SequenceNumber
         printfn "       special info %u" status.SpecialInfo
         printfn "        lock forced %s" (translate status.Inputs.LockForced)
         printfn "         fire alarm %s" (translate status.Inputs.FireAlarm)

@@ -22,7 +22,6 @@
     <Compile Include="types.fsi" />
     <Compile Include="builders.fsi" />
     <Compile Include="options.fsi" />
-    <Compile Include="responses.fsi" />
     <Compile Include="uhppoted.fsi" />
 
     <Compile Include="enums.fs" />
