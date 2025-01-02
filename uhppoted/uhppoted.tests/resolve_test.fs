@@ -69,9 +69,21 @@ type TestResolve() =
 
     [<Test>]
     member this.TestResolveInt32() =
+        let expected: C =
+            { controller = 405419896u
+              endpoint = None
+              protocol = None }
+
+        match Uhppoted.resolve (405419896) with
+        | Ok response -> Assert.That(response, Is.EqualTo(expected))
+        | Error err -> Assert.Fail(err)
+
+
+    [<Test>]
+    member this.TestResolveNegativeInt32() =
         let expected =
             "unsupported controller type (System.Int32) - expected uint32 or struct"
 
-        match Uhppoted.resolve (405419896) with
+        match Uhppoted.resolve (-405419896) with
         | Ok response -> Assert.Fail()
         | Error err -> Assert.That(err, Is.EqualTo(expected))

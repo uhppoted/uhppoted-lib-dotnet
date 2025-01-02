@@ -3,13 +3,12 @@
 - [ ] API
     - [x] function signature files
           - [x] types.fs: comments
-    - [ ] allow Int32 for controller ID in uhppoted::resolve
+    - [x] allow Int32 for controller ID in uhppoted::resolve
     - [ ] Represent error cases and illegal state in types intrinsic to your domain
           - https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/conventions#represent-error-cases-and-illegal-state-in-types-intrinsic-to-your-domain
     - [ ] _Cannot access a disposed object._
 
 - [ ] examples
-    - [x] F#: camelCase functions
     - [ ] GUI
           - https://mauiman.dev/maui_cli_commandlineinterface.html
 

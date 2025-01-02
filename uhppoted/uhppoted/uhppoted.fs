@@ -11,6 +11,12 @@ do ()
 module Uhppoted =
     let internal resolve (controller: 'T) : Result<C, string> =
         match box controller with
+        | :? int32 as i32 when i32 >= 0 ->
+            Ok
+                { controller = uint32 i32
+                  endpoint = None
+                  protocol = None }
+
         | :? uint32 as u32 ->
             Ok
                 { controller = u32
