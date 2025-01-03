@@ -1,13 +1,13 @@
 namespace uhppoted
 
 module Uhppoted =
-    val internal resolve: controller: 'T -> Result<C, string>
+    val internal resolve: controller: 'T -> Result<C, ErrX>
 
     /// Retrieves a list of controllers on the local LAN accessible via a UDP broadcast.
-    val FindControllers: options: Options -> Result<Controller array, string>
+    val FindControllers: options: Options -> Result<Controller array, ErrX>
 
     /// Retrieves the IPv4 configuration, MAC address and version information for an access controller.
-    val GetController: controller: 'T * options: Options -> Result<Controller, string>
+    val GetController: controller: 'T * options: Options -> Result<Controller, ErrX>
 
     /// Sets the controller IPv4 address, netmask and gateway address..
     val SetIPv4:
@@ -16,43 +16,42 @@ module Uhppoted =
         netmask: System.Net.IPAddress *
         gateway: System.Net.IPAddress *
         options: Options ->
-            Result<unit, string>
+            Result<unit, ErrX>
 
     /// Retrieves the controller event listener endpoint and auto-send interval.
-    val GetListener: controller: 'T * options: Options -> Result<Listener, string>
+    val GetListener: controller: 'T * options: Options -> Result<Listener, ErrX>
 
     /// Sets the controller event listener IPv4 endpoint and the auto-send interval.
     val SetListener:
-        controller: 'T * endpoint: System.Net.IPEndPoint * interval: uint8 * options: Options -> Result<bool, string>
+        controller: 'T * endpoint: System.Net.IPEndPoint * interval: uint8 * options: Options -> Result<bool, ErrX>
 
     /// Retrieves the controller current date and time.
-    val GetTime: controller: 'T * options: Options -> Result<System.Nullable<System.DateTime>, string>
+    val GetTime: controller: 'T * options: Options -> Result<System.Nullable<System.DateTime>, ErrX>
 
     /// Sets the controller date and time.
     val SetTime:
-        controller: 'T * datetime: System.DateTime * options: Options ->
-            Result<System.Nullable<System.DateTime>, string>
+        controller: 'T * datetime: System.DateTime * options: Options -> Result<System.Nullable<System.DateTime>, ErrX>
 
     /// Retrieves the control mode and unlocked delay for a door.
-    val GetDoor: controller: 'T * door: uint8 * options: Options -> Result<System.Nullable<Door>, string>
+    val GetDoor: controller: 'T * door: uint8 * options: Options -> Result<System.Nullable<Door>, ErrX>
 
     /// Sets the control mode and unlocked delay for a door.
     val SetDoor:
         controller: 'T * door: uint8 * mode: DoorMode * delay: uint8 * options: Options ->
-            Result<System.Nullable<Door>, string>
+            Result<System.Nullable<Door>, ErrX>
 
     /// Sets up to 4 passcodes for a controller door.
     val SetDoorPasscodes:
-        controller: 'T * door: uint8 * passcodes: uint32 array * options: Options -> Result<bool, string>
+        controller: 'T * door: uint8 * passcodes: uint32 array * options: Options -> Result<bool, ErrX>
 
     /// Unlocks a door controlled by a controller.
-    val OpenDoor: controller: 'T * door: uint8 * options: Options -> Result<bool, string>
+    val OpenDoor: controller: 'T * door: uint8 * options: Options -> Result<bool, ErrX>
 
     /// Retrieves the current status and most recent event from a controller.
-    val GetStatus: controller: 'T * options: Options -> Result<(Status * System.Nullable<Event>), string>
+    val GetStatus: controller: 'T * options: Options -> Result<(Status * System.Nullable<Event>), ErrX>
 
     /// Retrieves the number of card records stored on a controller.
-    val GetCards: controller: 'T * options: Options -> Result<uint32, string>
+    val GetCards: controller: 'T * options: Options -> Result<uint32, ErrX>
 
     /// <summary>
     /// Retrieves the card record for the requested card number.
@@ -63,7 +62,7 @@ module Uhppoted =
     /// <returns>
     /// Card record matching the card number (or null if not found) or an error if the request failed.
     /// </returns>
-    val GetCard: controller: 'T * card: uint32 * options: Options -> Result<System.Nullable<Card>, string>
+    val GetCard: controller: 'T * card: uint32 * options: Options -> Result<System.Nullable<Card>, ErrX>
 
     /// <summary>
     /// Retrieves the card record at the supplied index.
@@ -74,7 +73,7 @@ module Uhppoted =
     /// <returns>
     /// Card record at the index (or null if not found or deleted) or an error if the request failed.
     /// </returns>
-    val GetCardAtIndex: controller: 'T * index: uint32 * options: Options -> Result<System.Nullable<Card>, string>
+    val GetCardAtIndex: controller: 'T * index: uint32 * options: Options -> Result<System.Nullable<Card>, ErrX>
 
     /// <summary>
     /// Adds or updates a card record on a controller.
@@ -85,7 +84,7 @@ module Uhppoted =
     /// <returns>
     /// Result with the boolean success/fail result or an Error if the request failed.
     /// </returns>
-    val PutCard: controller: 'T * card: Card * options: Options -> Result<bool, string>
+    val PutCard: controller: 'T * card: Card * options: Options -> Result<bool, ErrX>
 
     /// <summary>
     /// Deletes a card record from a controller.
@@ -96,7 +95,7 @@ module Uhppoted =
     /// <returns>
     /// Result with the boolean success/fail result or an Error if the request failed.
     /// </returns>
-    val DeleteCard: controller: 'T * card: uint32 * options: Options -> Result<bool, string>
+    val DeleteCard: controller: 'T * card: uint32 * options: Options -> Result<bool, ErrX>
 
     /// <summary>
     /// Deletes all card records from a controller.
@@ -106,10 +105,10 @@ module Uhppoted =
     /// <returns>
     /// Result with the boolean success/fail result or an Error if the request failed.
     /// </returns>
-    val DeleteAllCards: controller: 'T * options: Options -> Result<bool, string>
+    val DeleteAllCards: controller: 'T * options: Options -> Result<bool, ErrX>
 
     /// </returns>
-    val GetEvent: controller: 'T * index: uint32 * options: Options -> Result<System.Nullable<Event>, string>
+    val GetEvent: controller: 'T * index: uint32 * options: Options -> Result<System.Nullable<Event>, ErrX>
 
     /// <summary>
     /// Retrieves the current event index from the controller.
@@ -119,7 +118,7 @@ module Uhppoted =
     /// <returns>
     /// Ok with current controller event indexEvent record at the index or Error.
     /// </returns>
-    val GetEventIndex: controller: 'T * options: Options -> Result<uint32, string>
+    val GetEventIndex: controller: 'T * options: Options -> Result<uint32, ErrX>
 
     /// <summary>
     /// Sets the controller event index.
@@ -130,7 +129,7 @@ module Uhppoted =
     /// <returns>
     /// Ok with true if the event index was updated (false if it was unchanged) or Error.
     /// </returns>
-    val SetEventIndex: controller: 'T * index: uint32 * options: Options -> Result<bool, string>
+    val SetEventIndex: controller: 'T * index: uint32 * options: Options -> Result<bool, ErrX>
 
     /// <summary>
     /// Enables or disables events for door open and close, button presses, etc.
@@ -141,7 +140,7 @@ module Uhppoted =
     /// <returns>
     /// Ok with true if the 'special events' mode was set or Error.
     /// </returns>
-    val RecordSpecialEvents: controller: 'T * enable: bool * options: Options -> Result<bool, string>
+    val RecordSpecialEvents: controller: 'T * enable: bool * options: Options -> Result<bool, ErrX>
 
     /// <summary>
     /// Retrieves a time profile from a controller.
@@ -152,8 +151,7 @@ module Uhppoted =
     /// <returns>
     /// Ok with time profile, Ok(null) if the requested profile does not exist or Error if the request failed.
     /// </returns>
-    val GetTimeProfile:
-        controller: 'T * profile: uint8 * options: Options -> Result<System.Nullable<TimeProfile>, string>
+    val GetTimeProfile: controller: 'T * profile: uint8 * options: Options -> Result<System.Nullable<TimeProfile>, ErrX>
 
     /// <summary>
     /// Adds or updates an access time profile on a controller.
@@ -164,7 +162,7 @@ module Uhppoted =
     /// <returns>
     /// Ok with true if the time profile was added/updated, or Error.
     /// </returns>
-    val SetTimeProfile: controller: 'T * profile: TimeProfile * options: Options -> Result<bool, string>
+    val SetTimeProfile: controller: 'T * profile: TimeProfile * options: Options -> Result<bool, ErrX>
 
     /// <summary>
     /// Clears all access time profiles stored on a controller.
@@ -174,7 +172,7 @@ module Uhppoted =
     /// <returns>
     /// Result with the boolean success/fail result or an Error if the request failed.
     /// </returns>
-    val ClearTimeProfiles: controller: 'T * options: Options -> Result<bool, string>
+    val ClearTimeProfiles: controller: 'T * options: Options -> Result<bool, ErrX>
 
     /// <summary>
     /// Adds or updates a scheduled task on a controller. Added tasks are not scheduled to run
@@ -186,7 +184,7 @@ module Uhppoted =
     /// <returns>
     /// Ok with true if the task was added/updated, or Error.
     /// </returns>
-    val AddTask: controller: 'T * task: Task * options: Options -> Result<bool, string>
+    val AddTask: controller: 'T * task: Task * options: Options -> Result<bool, ErrX>
 
     /// <summary>
     /// Clears all scheduled tasks from the controller task list.
@@ -196,7 +194,7 @@ module Uhppoted =
     /// <returns>
     /// Result with the boolean success/fail result or an Error if the request failed.
     /// </returns>
-    val ClearTaskList: controller: 'T * options: Options -> Result<bool, string>
+    val ClearTaskList: controller: 'T * options: Options -> Result<bool, ErrX>
 
     /// <summary>
     /// Schedules added tasks.
@@ -206,7 +204,7 @@ module Uhppoted =
     /// <returns>
     /// Result with the boolean success/fail result or an Error if the request failed.
     /// </returns>
-    val RefreshTaskList: controller: 'T * options: Options -> Result<bool, string>
+    val RefreshTaskList: controller: 'T * options: Options -> Result<bool, ErrX>
 
     /// <summary>
     /// Enables/disables remote access control management. The access controller will revert to standalone access
@@ -218,7 +216,7 @@ module Uhppoted =
     /// <returns>
     /// Result with the boolean success/fail result or an Error if the request failed.
     /// </returns>
-    val SetPCControl: controller: 'T * enable: bool * options: Options -> Result<bool, string>
+    val SetPCControl: controller: 'T * enable: bool * options: Options -> Result<bool, ErrX>
 
     /// <summary>
     /// Sets the access controller door interlocks.
@@ -229,7 +227,7 @@ module Uhppoted =
     /// <returns>
     /// Result with the boolean success/fail result or an Error if the request failed.
     /// </returns>
-    val SetInterlock: controller: 'T * interlock: Interlock * options: Options -> Result<bool, string>
+    val SetInterlock: controller: 'T * interlock: Interlock * options: Options -> Result<bool, ErrX>
 
     /// <summary>
     /// Activates/deactivates the access reader keypads attached to an access controller.
@@ -245,7 +243,7 @@ module Uhppoted =
     /// </returns>
     val ActivateKeypads:
         controller: 'T * reader1: bool * reader2: bool * reader3: bool * reader4: bool * options: Options ->
-            Result<bool, string>
+            Result<bool, ErrX>
 
     /// <summary>
     /// Restores the manufacturer defaults.
@@ -255,7 +253,7 @@ module Uhppoted =
     /// <returns>
     /// Result with the boolean success/fail result or an Error if the request failed.
     /// </returns>
-    val RestoreDefaultParameters: controller: 'T * options: Options -> Result<bool, string>
+    val RestoreDefaultParameters: controller: 'T * options: Options -> Result<bool, ErrX>
 
     /// <summary>
     /// Listens for events from access controllers and dispatches received events to a handler.
@@ -269,7 +267,7 @@ module Uhppoted =
     /// </returns>
     val Listen:
         onevent: OnEvent * onerror: OnError * stop: System.Threading.CancellationToken * options: Options ->
-            Result<unit, string>
+            Result<unit, ErrX>
 
     /// <summary>
     /// Translates an enum into a human readable string using the active 'CurrentCulture' setting.

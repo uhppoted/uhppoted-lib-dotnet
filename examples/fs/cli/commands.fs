@@ -88,7 +88,7 @@ let findControllers args =
             printfn "")
 
         Ok()
-    | Error err -> Error err
+    | Error err -> Error(translate err)
 
 let getController args =
     let controller = argparse args "--controller" CONTROLLER
@@ -110,7 +110,7 @@ let getController args =
         printfn "    date     %s" (YYYYMMDD record.Date)
         printfn ""
         Ok()
-    | Error err -> Error err
+    | Error err -> Error(translate err)
 
 let setIPv4 args =
     let controller = argparse args "--controller" CONTROLLER
@@ -129,7 +129,7 @@ let setIPv4 args =
         printfn "  ok"
         printfn ""
         Ok()
-    | Error err -> Error err
+    | Error err -> Error(translate err)
 
 let getListener args =
     let controller = argparse args "--controller" CONTROLLER
@@ -147,7 +147,7 @@ let getListener args =
         printfn "    interval %ds" record.Interval
         printfn ""
         Ok()
-    | Error err -> Error err
+    | Error err -> Error(translate err)
 
 let setListener args =
     let controller = argparse args "--controller" CONTROLLER
@@ -166,7 +166,7 @@ let setListener args =
         printfn "          ok %A" ok
         printfn ""
         Ok()
-    | Error err -> Error err
+    | Error err -> Error(translate err)
 
 let getTime args =
     let controller = argparse args "--controller" CONTROLLER
@@ -183,7 +183,7 @@ let getTime args =
         printfn "    datetime %s" (YYYYMMDDHHmmss datetime)
         printfn ""
         Ok()
-    | Error err -> Error err
+    | Error err -> Error(translate err)
 
 let setTime args =
     let controller = argparse args "--controller" CONTROLLER
@@ -201,7 +201,7 @@ let setTime args =
         printfn "    datetime %s" (YYYYMMDDHHmmss datetime)
         printfn ""
         Ok()
-    | Error err -> Error err
+    | Error err -> Error(translate err)
 
 let getDoor args =
     let controller = argparse args "--controller" CONTROLLER
@@ -225,7 +225,7 @@ let getDoor args =
         printfn ""
         Ok()
     | Ok _ -> Error "door does not exist"
-    | Error err -> Error err
+    | Error err -> Error(translate err)
 
 let setDoor args =
     let controller = argparse args "--controller" CONTROLLER
@@ -250,7 +250,7 @@ let setDoor args =
         printfn ""
         Ok()
     | Ok _ -> Error "door not updated"
-    | Error err -> Error err
+    | Error err -> Error(translate err)
 
 let setDoorPasscodes args =
     let controller = argparse args "--controller" CONTROLLER
@@ -270,7 +270,7 @@ let setDoorPasscodes args =
         printfn "          ok %b" ok
         printfn ""
         Ok()
-    | Error err -> Error err
+    | Error err -> Error(translate err)
 
 let openDoor args =
     let controller = argparse args "--controller" CONTROLLER
@@ -289,7 +289,7 @@ let openDoor args =
         printfn "          ok %b" ok
         printfn ""
         Ok()
-    | Error err -> Error err
+    | Error err -> Error(translate err)
 
 let getStatus args =
     let controller = argparse args "--controller" CONTROLLER
@@ -339,7 +339,7 @@ let getStatus args =
             printfn ""
 
         Ok()
-    | Error err -> Error err
+    | Error err -> Error(translate err)
 
 let getCards args =
     let controller = argparse args "--controller" CONTROLLER
@@ -356,7 +356,7 @@ let getCards args =
         printfn "       cards %u" cards
         printfn ""
         Ok()
-    | Error err -> Error(err)
+    | Error err -> Error(translate err)
 
 let getCard args =
     let controller = argparse args "--controller" CONTROLLER
@@ -384,7 +384,7 @@ let getCard args =
         printfn ""
         Ok()
     | Ok _ -> Error "card not found"
-    | Error err -> Error(err)
+    | Error err -> Error(translate err)
 
 let getCardAtIndex args =
     let controller = argparse args "--controller" CONTROLLER
@@ -412,7 +412,7 @@ let getCardAtIndex args =
         printfn ""
         Ok()
     | Ok _ -> Error "card not found"
-    | Error err -> Error(err)
+    | Error err -> Error(translate err)
 
 let putCard args =
     let controller = argparse args "--controller" CONTROLLER
@@ -442,7 +442,7 @@ let putCard args =
         printfn "          ok %b" ok
         printfn ""
         Ok()
-    | Error err -> Error(err)
+    | Error err -> Error(translate err)
 
 let deleteCard args =
     let controller = argparse args "--controller" CONTROLLER
@@ -461,7 +461,7 @@ let deleteCard args =
         printfn "          ok %b" ok
         printfn ""
         Ok()
-    | Error err -> Error(err)
+    | Error err -> Error(translate err)
 
 let deleteAllCards args =
     let controller = argparse args "--controller" CONTROLLER
@@ -478,7 +478,7 @@ let deleteAllCards args =
         printfn "          ok %b" ok
         printfn ""
         Ok()
-    | Error err -> Error(err)
+    | Error err -> Error(translate err)
 
 let getEvent args =
     let controller = argparse args "--controller" CONTROLLER
@@ -506,7 +506,7 @@ let getEvent args =
         printfn ""
         Ok()
     | Ok _ -> Error "event not found"
-    | Error err -> Error(err)
+    | Error err -> Error(translate err)
 
 let getEventIndex args =
     let controller = argparse args "--controller" CONTROLLER
@@ -523,7 +523,7 @@ let getEventIndex args =
         printfn "       index %u" index
         printfn ""
         Ok()
-    | Error err -> Error(err)
+    | Error err -> Error(translate err)
 
 let setEventIndex args =
     let controller = argparse args "--controller" CONTROLLER
@@ -541,7 +541,7 @@ let setEventIndex args =
         printfn "          ok %b" ok
         printfn ""
         Ok()
-    | Error err -> Error(err)
+    | Error err -> Error(translate err)
 
 let recordSpecialEvents args =
     let controller = argparse args "--controller" CONTROLLER
@@ -559,7 +559,7 @@ let recordSpecialEvents args =
         printfn "          ok %b" ok
         printfn ""
         Ok()
-    | Error err -> Error(err)
+    | Error err -> Error(translate err)
 
 let getTimeProfile args =
     let controller = argparse args "--controller" CONTROLLER
@@ -596,7 +596,7 @@ let getTimeProfile args =
         printfn ""
         Ok()
     | Ok _ -> Error "time profile does not exist"
-    | Error err -> Error(err)
+    | Error err -> Error(translate err)
 
 let setTimeProfile args =
     let controller = argparse args "--controller" CONTROLLER
@@ -638,7 +638,7 @@ let setTimeProfile args =
         printfn "          ok %b" ok
         printfn ""
         Ok()
-    | Error err -> Error(err)
+    | Error err -> Error(translate err)
 
 let clearTimeProfiles args =
     let controller = argparse args "--controller" CONTROLLER
@@ -655,7 +655,7 @@ let clearTimeProfiles args =
         printfn "          ok %b" ok
         printfn ""
         Ok()
-    | Error err -> Error(err)
+    | Error err -> Error(translate err)
 
 let addTask args =
     let controller = argparse args "--controller" CONTROLLER
@@ -676,7 +676,6 @@ let addTask args =
           Sunday = List.exists (fun v -> v = "sunday") weekdays
           MoreCards = argparse args "--more-cards" 0uy }
 
-
     let result =
         match lookup controller with
         | Some c -> Uhppoted.AddTask(c, task, OPTIONS)
@@ -691,7 +690,7 @@ let addTask args =
         printfn "          ok %b" ok
         printfn ""
         Ok()
-    | Error err -> Error(err)
+    | Error err -> Error(translate err)
 
 let clearTaskList args =
     let controller = argparse args "--controller" CONTROLLER
@@ -708,7 +707,7 @@ let clearTaskList args =
         printfn "          ok %b" ok
         printfn ""
         Ok()
-    | Error err -> Error(err)
+    | Error err -> Error(translate err)
 
 let refreshTaskList args =
     let controller = argparse args "--controller" CONTROLLER
@@ -725,7 +724,7 @@ let refreshTaskList args =
         printfn "          ok %b" ok
         printfn ""
         Ok()
-    | Error err -> Error(err)
+    | Error err -> Error(translate err)
 
 let setPCControl args =
     let controller = argparse args "--controller" CONTROLLER
@@ -744,7 +743,7 @@ let setPCControl args =
         printfn "          ok %b" ok
         printfn ""
         Ok()
-    | Error err -> Error(err)
+    | Error err -> Error(translate err)
 
 let setInterlock args =
     let controller = argparse args "--controller" CONTROLLER
@@ -763,7 +762,7 @@ let setInterlock args =
         printfn "          ok %b" ok
         printfn ""
         Ok()
-    | Error err -> Error(err)
+    | Error err -> Error(translate err)
 
 let activateKeypads args =
     let controller = argparse args "--controller" CONTROLLER
@@ -790,7 +789,7 @@ let activateKeypads args =
         printfn "          ok %b" ok
         printfn ""
         Ok()
-    | Error err -> Error(err)
+    | Error err -> Error(translate err)
 
 let restoreDefaultParameters args =
     let controller = argparse args "--controller" CONTROLLER
@@ -807,7 +806,7 @@ let restoreDefaultParameters args =
         printfn "          ok %b" ok
         printfn ""
         Ok()
-    | Error err -> Error(err)
+    | Error err -> Error(translate err)
 
 let listen args =
     let cancel = new CancellationTokenSource()
@@ -859,13 +858,14 @@ let listen args =
             printfn "   (no event)"
             printfn ""
 
-    let errorHandler err = printfn "** ERROR %A" err
+    let errorHandler err = printfn "** ERROR %A" (translate err)
 
     let onevent: OnEvent = new OnEvent(eventHandler)
     let onerror: OnError = new OnError(errorHandler)
 
-    Uhppoted.Listen(onevent, onerror, cancel.Token, OPTIONS)
-
+    match Uhppoted.Listen(onevent, onerror, cancel.Token, OPTIONS) with
+    | Ok _ -> Ok()
+    | Error err -> Error(translate err)
 
 let commands =
     [ { command = "find-controllers"

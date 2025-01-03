@@ -4,6 +4,15 @@ open System
 open System.Net
 open System.Net.NetworkInformation
 
+type ErrX =
+    | Timeout
+    | ReceiveError
+    | ListenError
+    | PacketError
+    | InvalidPacket
+    | InvalidResponse
+    | InvalidControllerType
+    | Ooops
 
 /// Container configuration struct for controllers that require 'connected UDP' or TCP/IP.
 [<Struct>]
@@ -336,4 +345,4 @@ type ListenerEvent =
 type OnEvent = delegate of (ListenerEvent) -> unit
 
 /// Handler for 'listen' errors.
-type OnError = delegate of (string) -> unit
+type OnError = delegate of (ErrX) -> unit

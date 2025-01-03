@@ -17,6 +17,25 @@ module internal internationalisation =
         rm.GetString(e)
 
     /// <summary>
+    /// Translates an error into a human readable string using the active 'CurrentCulture' setting.
+    /// (e.g. Thread.CurrentThread.CurrentCulture <- CultureInfo("en-US"))
+    /// </summary>
+    /// <param name="err">Error value.</param>
+    /// <returns>
+    /// Human readable error string or the type".
+    /// </returns>
+    let TranslateError (err: ErrX) =
+        let message = translate ($"error.{err}")
+        let unknown = translate ("error.unknown")
+
+        if not <| String.IsNullOrEmpty(message) then
+            message
+        else if not <| String.IsNullOrEmpty(unknown) then
+            $"{unknown}"
+        else
+            $"{err}"
+
+    /// <summary>
     /// Translates an event type into a human readable string using the active 'CurrentCulture' setting.
     /// (e.g. Thread.CurrentThread.CurrentCulture <- CultureInfo("en-US"))
     /// </summary>

@@ -9,7 +9,7 @@ open System.Runtime.CompilerServices
 do ()
 
 module Uhppoted =
-    let internal resolve (controller: 'T) : Result<C, string> =
+    let internal resolve (controller: 'T) : Result<C, ErrX> =
         match box controller with
         | :? int32 as i32 when i32 >= 0 ->
             Ok
@@ -23,14 +23,14 @@ module Uhppoted =
                   endpoint = None
                   protocol = None }
         | :? C as c -> Ok c
-        | _ -> Error $"unsupported controller type ({typeof<'T>.FullName}) - expected uint32 or struct"
+        | _ -> Error InvalidControllerType // $"unsupported controller type ({typeof<'T>.FullName}) - expected uint32 or struct"
 
     let private exec
         (controller: C)
         request
         (decode: byte[] -> Result<'b, string>)
         options
-        : Result<'b, string> when 'b :> IResponse =
+        : Result<'b, ErrX> when 'b :> IResponse =
         let bind = options.bind
         let broadcast = options.broadcast
         let timeout = options.timeout
@@ -49,8 +49,8 @@ module Uhppoted =
         | Ok packet ->
             match decode packet with
             | Ok response when response.controller = controller.controller -> Ok response
-            | Ok _ -> Error "invalid response"
-            | Error err -> Error err
+            | Ok _ -> Error InvalidResponse // "invalid response"
+            | Error err -> Error PacketError // err
         | Error err -> Error err
 
     /// <summary>
@@ -911,7 +911,7 @@ module Uhppoted =
 
                 onevent.Invoke(event)
 
-            | Error err -> onerror.Invoke(err)
+            | Error err -> onerror.Invoke(PacketError) // (err)
 
 
         UDP.listen bind handler stop debug
@@ -920,6 +920,7 @@ module Uhppoted =
     /// Translates an internal symbolic value into a human readable string using the active 'CurrentCulture'
     /// setting (e.g. Thread.CurrentThread.CurrentCulture <- CultureInfo("en-US")).
     /// The translated symbols include:
+    /// - errors
     /// - event type
     /// - event reason
     /// - event door direction
@@ -943,4 +944,5 @@ module Uhppoted =
         | :? TaskCode as task -> internationalisation.TranslateTaskCode(uint8 task)
         | :? EventType as event -> internationalisation.TranslateEventType(event.Code)
         | :? EventReason as reason -> internationalisation.TranslateEventReason(reason.Code)
+        | :? ErrX as err -> internationalisation.TranslateError(err)
         | _ -> $"#{v}"

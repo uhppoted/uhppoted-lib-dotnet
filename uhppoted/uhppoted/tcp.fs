@@ -42,10 +42,10 @@ module internal TCP =
     let sendTo (request: byte array, src: IPEndPoint, dest: IPEndPoint, timeout: int, debug: bool) =
         let socket = new TcpClient(src)
 
-        let timer (timeout: int) : Async<Result<byte array * IPEndPoint, string>> =
+        let timer (timeout: int) : Async<Result<byte array * IPEndPoint, ErrX>> =
             async {
                 do! Async.Sleep timeout
-                return Error "timeout"
+                return Error ErrX.Timeout // "timeout"
             }
 
         try
@@ -78,13 +78,13 @@ module internal TCP =
                                 dump packet
 
                             Ok packet
-                        | Ok(_) -> Error "invalid packet"
-                        | Error err -> Error err
+                        | Ok(_) -> Error InvalidPacket // "invalid packet"
+                        | Error err -> Error ReceiveError // err
                     else
-                        Error "timeout waiting for reply from controller"
+                        Error ErrX.Timeout // "timeout waiting for reply from controller"
 
             with error ->
-                Error error.Message
+                Error ReceiveError // error.Message
 
         finally
             socket.Close()

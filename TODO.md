@@ -1,12 +1,17 @@
 # TODO
 
 - [ ] API
-    - [x] function signature files
-          - [x] types.fs: comments
-    - [x] allow Int32 for controller ID in uhppoted::resolve
     - [ ] Represent error cases and illegal state in types intrinsic to your domain
           - https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/conventions#represent-error-cases-and-illegal-state-in-types-intrinsic-to-your-domain
+        - [ ] `TranslateError` + unit test
+        - [ ] CardNotFound
+        - [ ] EventOverwritten
+        - [ ] InvalidDoor
+        - [ ] EventNotFound
+        - [ ] TimeProfileDoesNotExist
+
     - [ ] _Cannot access a disposed object._
+    - [ ] Add `Translate` to API.md
 
 - [ ] examples
     - [ ] GUI

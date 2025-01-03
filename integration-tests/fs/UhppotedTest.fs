@@ -69,7 +69,7 @@ type TestFindAPI() =
 
         match Uhppoted.FindControllers(OPTIONS) with
         | Ok controllers -> Assert.That(controllers, Is.EqualTo(expected))
-        | Error err -> Assert.Fail(err)
+        | Error err -> Assert.Fail($"{err}")
 
 
 [<TestFixture("uint32")>]
@@ -181,12 +181,12 @@ type TestAPI(tt: string) =
         | Id controller ->
             match Uhppoted.GetController(controller, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.GetController(controller, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestSetIPv4() =
@@ -198,12 +198,12 @@ type TestAPI(tt: string) =
         | Id controller ->
             match Uhppoted.SetIPv4(controller, address, netmask, gateway, OPTIONS) with
             | Ok _ -> Assert.Pass()
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.SetIPv4(controller, address, netmask, gateway, OPTIONS) with
             | Ok _ -> Assert.Pass()
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestGetListener() =
@@ -215,12 +215,12 @@ type TestAPI(tt: string) =
         | Id controller ->
             match Uhppoted.GetListener(controller, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.GetListener(controller, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestSetListener() =
@@ -232,12 +232,12 @@ type TestAPI(tt: string) =
         | Id controller ->
             match Uhppoted.SetListener(controller, listener, interval, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.SetListener(controller, listener, interval, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestGetTime() =
@@ -248,12 +248,12 @@ type TestAPI(tt: string) =
         | Id controller ->
             match Uhppoted.GetTime(controller, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.GetTime(controller, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestSetTime() =
@@ -267,12 +267,12 @@ type TestAPI(tt: string) =
         | Id controller ->
             match Uhppoted.SetTime(controller, datetime, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.SetTime(controller, datetime, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestGetDoor() =
@@ -284,12 +284,12 @@ type TestAPI(tt: string) =
         | Id controller ->
             match Uhppoted.GetDoor(controller, DOOR, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.GetDoor(controller, DOOR, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestGetDoorNotFound() =
@@ -298,13 +298,13 @@ type TestAPI(tt: string) =
             match Uhppoted.GetDoor(controller, DOOR_NOT_FOUND, OPTIONS) with
             | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
             | Ok _ -> Assert.Pass()
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.GetDoor(controller, DOOR_NOT_FOUND, OPTIONS) with
             | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
             | Ok _ -> Assert.Pass()
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestSetDoor() =
@@ -316,12 +316,12 @@ type TestAPI(tt: string) =
         | Id controller ->
             match Uhppoted.SetDoor(controller, DOOR, MODE, DELAY, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.SetDoor(controller, DOOR, MODE, DELAY, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestSetDoorNotFound() =
@@ -330,13 +330,13 @@ type TestAPI(tt: string) =
             match Uhppoted.SetDoor(controller, DOOR_NOT_FOUND, MODE, DELAY, OPTIONS) with
             | Ok result when result.HasValue -> Assert.Fail("expected 'null'")
             | Ok _ -> Assert.Pass()
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.SetDoor(controller, DOOR_NOT_FOUND, MODE, DELAY, OPTIONS) with
             | Ok result when result.HasValue -> Assert.Fail("expected 'null'")
             | Ok _ -> Assert.Pass()
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestSetDoorPasscodes() =
@@ -347,12 +347,12 @@ type TestAPI(tt: string) =
         | Id controller ->
             match Uhppoted.SetDoorPasscodes(controller, DOOR, passcodes, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.SetDoorPasscodes(controller, DOOR, passcodes, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestOpenDoor() =
@@ -362,12 +362,12 @@ type TestAPI(tt: string) =
         | Id controller ->
             match Uhppoted.OpenDoor(controller, DOOR, OPTIONS) with
             | Ok result -> Assert.That(result, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.OpenDoor(controller, DOOR, OPTIONS) with
             | Ok result -> Assert.That(result, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestGetStatus() =
@@ -416,12 +416,12 @@ type TestAPI(tt: string) =
         | Id controller ->
             match Uhppoted.GetStatus(controller, OPTIONS) with
             | Ok result -> Assert.That(result, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.GetStatus(controller, OPTIONS) with
             | Ok result -> Assert.That(result, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestGetStatusNoEvent() =
@@ -460,7 +460,7 @@ type TestAPI(tt: string) =
 
             match Uhppoted.GetStatus(controller, OPTIONS) with
             | Ok result -> Assert.That(result, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
         | Controller c ->
             let controller =
@@ -470,7 +470,7 @@ type TestAPI(tt: string) =
 
             match Uhppoted.GetStatus(controller, OPTIONS) with
             | Ok result -> Assert.That(result, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestGetCards() =
@@ -480,12 +480,12 @@ type TestAPI(tt: string) =
         | Id controller ->
             match Uhppoted.GetCards(controller, OPTIONS) with
             | Ok cards -> Assert.That(cards, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.GetCards(controller, OPTIONS) with
             | Ok cards -> Assert.That(cards, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestGetCard() =
@@ -503,12 +503,12 @@ type TestAPI(tt: string) =
         | Id controller ->
             match Uhppoted.GetCard(controller, CARD, OPTIONS) with
             | Ok response -> Assert.That(response.Value, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.GetCard(controller, CARD, OPTIONS) with
             | Ok response -> Assert.That(response.Value, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestGetCardNotFound() =
@@ -517,13 +517,13 @@ type TestAPI(tt: string) =
             match Uhppoted.GetCard(controller, MISSING_CARD, OPTIONS) with
             | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
             | Ok _ -> Assert.Pass()
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.GetCard(controller, MISSING_CARD, OPTIONS) with
             | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
             | Ok _ -> Assert.Pass()
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestGetCardAtIndex() =
@@ -541,12 +541,12 @@ type TestAPI(tt: string) =
         | Id controller ->
             match Uhppoted.GetCardAtIndex(controller, CARD_INDEX, OPTIONS) with
             | Ok response -> Assert.That(response.Value, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.GetCardAtIndex(controller, CARD_INDEX, OPTIONS) with
             | Ok response -> Assert.That(response.Value, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestGetCardAtIndexNotFound() =
@@ -555,13 +555,13 @@ type TestAPI(tt: string) =
             match Uhppoted.GetCardAtIndex(controller, CARD_INDEX_NOT_FOUND, OPTIONS) with
             | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
             | Ok _ -> Assert.Pass()
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.GetCardAtIndex(controller, CARD_INDEX_NOT_FOUND, OPTIONS) with
             | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
             | Ok _ -> Assert.Pass()
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestGetCardAtIndexDeleted() =
@@ -570,13 +570,13 @@ type TestAPI(tt: string) =
             match Uhppoted.GetCardAtIndex(controller, CARD_INDEX_DELETED, OPTIONS) with
             | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
             | Ok _ -> Assert.Pass()
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.GetCardAtIndex(controller, CARD_INDEX_DELETED, OPTIONS) with
             | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
             | Ok _ -> Assert.Pass()
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestPutCard() =
@@ -596,12 +596,12 @@ type TestAPI(tt: string) =
         | Id controller ->
             match Uhppoted.PutCard(controller, card, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.PutCard(controller, card, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestDeleteCard() =
@@ -611,12 +611,12 @@ type TestAPI(tt: string) =
         | Id controller ->
             match Uhppoted.DeleteCard(controller, CARD, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.DeleteCard(controller, CARD, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestDeleteAllCards() =
@@ -626,12 +626,12 @@ type TestAPI(tt: string) =
         | Id controller ->
             match Uhppoted.DeleteAllCards(controller, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.DeleteAllCards(controller, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestGetEvent() =
@@ -649,12 +649,12 @@ type TestAPI(tt: string) =
         | Id controller ->
             match Uhppoted.GetEvent(controller, EVENT_INDEX, OPTIONS) with
             | Ok response -> Assert.That(response.Value, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.GetEvent(controller, EVENT_INDEX, OPTIONS) with
             | Ok response -> Assert.That(response.Value, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestGetEventNotFound() =
@@ -663,13 +663,13 @@ type TestAPI(tt: string) =
             match Uhppoted.GetEvent(controller, EVENT_INDEX_NOT_FOUND, OPTIONS) with
             | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
             | Ok _ -> Assert.Pass()
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.GetEvent(controller, EVENT_INDEX_NOT_FOUND, OPTIONS) with
             | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
             | Ok _ -> Assert.Pass()
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestGetEventOverwritten() =
@@ -678,13 +678,13 @@ type TestAPI(tt: string) =
             match Uhppoted.GetEvent(controller, EVENT_INDEX_OVERWRITTEN, OPTIONS) with
             | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
             | Ok _ -> Assert.Pass()
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.GetEvent(controller, EVENT_INDEX_OVERWRITTEN, OPTIONS) with
             | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
             | Ok _ -> Assert.Pass()
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestGetEventIndex() =
@@ -694,12 +694,12 @@ type TestAPI(tt: string) =
         | Id controller ->
             match Uhppoted.GetEventIndex(controller, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.GetEventIndex(controller, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestSetEventIndex() =
@@ -709,12 +709,12 @@ type TestAPI(tt: string) =
         | Id controller ->
             match Uhppoted.SetEventIndex(controller, EVENT_INDEX, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.SetEventIndex(controller, EVENT_INDEX, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestRecordSpecialEvents() =
@@ -724,12 +724,12 @@ type TestAPI(tt: string) =
         | Id controller ->
             match Uhppoted.RecordSpecialEvents(controller, true, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.RecordSpecialEvents(controller, true, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestGetTimeProfile() =
@@ -756,12 +756,12 @@ type TestAPI(tt: string) =
         | Id controller ->
             match Uhppoted.GetTimeProfile(controller, TIME_PROFILE_ID, OPTIONS) with
             | Ok response -> Assert.That(response.Value, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.GetTimeProfile(controller, TIME_PROFILE_ID, OPTIONS) with
             | Ok response -> Assert.That(response.Value, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestGetTimeProfileNotFound() =
@@ -770,13 +770,13 @@ type TestAPI(tt: string) =
             match Uhppoted.GetTimeProfile(controller, TIME_PROFILE_ID_NOT_FOUND, OPTIONS) with
             | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
             | Ok _ -> Assert.Pass()
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.GetTimeProfile(controller, TIME_PROFILE_ID_NOT_FOUND, OPTIONS) with
             | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
             | Ok _ -> Assert.Pass()
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestSetTimeProfile() =
@@ -805,12 +805,12 @@ type TestAPI(tt: string) =
         | Id controller ->
             match Uhppoted.SetTimeProfile(controller, profile, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.SetTimeProfile(controller, profile, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestClearTimeProfiles() =
@@ -820,12 +820,12 @@ type TestAPI(tt: string) =
         | Id controller ->
             match Uhppoted.ClearTimeProfiles(controller, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.ClearTimeProfiles(controller, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestAddTask() =
@@ -850,12 +850,12 @@ type TestAPI(tt: string) =
         | Id controller ->
             match Uhppoted.AddTask(controller, task, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.AddTask(controller, task, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestClearTaskList() =
@@ -865,12 +865,12 @@ type TestAPI(tt: string) =
         | Id controller ->
             match Uhppoted.ClearTaskList(controller, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.ClearTaskList(controller, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestRefreshTaskList() =
@@ -880,12 +880,12 @@ type TestAPI(tt: string) =
         | Id controller ->
             match Uhppoted.RefreshTaskList(controller, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.RefreshTaskList(controller, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestSetPCControl() =
@@ -895,12 +895,12 @@ type TestAPI(tt: string) =
         | Id controller ->
             match Uhppoted.SetPCControl(controller, true, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.SetPCControl(controller, true, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestSetInterlock() =
@@ -910,12 +910,12 @@ type TestAPI(tt: string) =
         | Id controller ->
             match Uhppoted.SetInterlock(controller, Interlock.Doors1234, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.SetInterlock(controller, Interlock.Doors1234, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestActivateKeypads() =
@@ -925,12 +925,12 @@ type TestAPI(tt: string) =
         | Id controller ->
             match Uhppoted.ActivateKeypads(controller, true, true, false, true, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.ActivateKeypads(controller, true, true, false, true, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestRestoreDefaultParameters() =
@@ -940,12 +940,12 @@ type TestAPI(tt: string) =
         | Id controller ->
             match Uhppoted.RestoreDefaultParameters(controller, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.RestoreDefaultParameters(controller, OPTIONS) with
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
-            | Error err -> Assert.Fail(err)
+            | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestListen() =
@@ -1040,4 +1040,5 @@ type TestAPI(tt: string) =
                 Event = Nullable() } ]
 
         Assert.That(events, Is.EqualTo(expected))
-        Assert.That(errors, Is.EqualTo([ "invalid listen-event packet" ]))
+        Assert.That(errors, Is.EqualTo([ PacketError ]))
+//      Assert.That(errors, Is.EqualTo([ "invalid listen-event packet" ]))

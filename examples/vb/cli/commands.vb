@@ -111,7 +111,7 @@ Module Commands
                 WriteLine()
             Next
         Else If (result.IsError)
-            Throw New Exception(result.ErrorValue)
+            Throw New Exception(translate(result.ErrorValue))
         End If
     End Sub
 
@@ -135,7 +135,7 @@ Module Commands
             WriteLine("    date     {0}", YYYYMMDD(record.Date))
             WriteLine()
         Else If (result.IsError)
-            Throw New Exception(result.ErrorValue)
+            Throw New Exception(translate(result.ErrorValue))
         End If
     End Sub
 
@@ -153,7 +153,7 @@ Module Commands
             WriteLine("set-IPv4")
             WriteLine("  ok")
         Else If (result.IsError)
-            Throw New Exception(result.ErrorValue)
+            Throw New Exception(translate(result.ErrorValue))
         End If
     End Sub
 
@@ -173,7 +173,7 @@ Module Commands
             WriteLine("    interval {0}s", record.Interval)
             WriteLine()
         Else If (result.IsError)
-            Throw New Exception(result.ErrorValue)
+            Throw New Exception(translate(result.ErrorValue))
         End If
     End Sub
 
@@ -194,7 +194,7 @@ Module Commands
             WriteLine("          ok {0}", ok)
             WriteLine()
         Else If (result.IsError)
-            Throw New Exception(result.ErrorValue)
+            Throw New Exception(translate(result.ErrorValue))
         End If
     End Sub
 
@@ -213,7 +213,7 @@ Module Commands
             WriteLine("    datetime {0}", YYYYMMDDHHmmss(datetime))
             WriteLine()
         Else If (result.IsError)
-            Throw New Exception(result.ErrorValue)
+            Throw New Exception(translate(result.ErrorValue))
         End If
     End Sub
 
@@ -233,7 +233,7 @@ Module Commands
             WriteLine("    datetime {0}", YYYYMMDDHHmmss(datetime))
             WriteLine()
         Else If (result.IsError)
-            Throw New Exception(result.ErrorValue)
+            Throw New Exception(translate(result.ErrorValue))
         End If
     End Sub
 
@@ -257,7 +257,7 @@ Module Commands
         Else If (result.IsOk)
             Throw New Exception("door does not exist")
         Else If (result.IsError)
-            Throw New Exception(result.ErrorValue)
+            Throw New Exception(translate(result.ErrorValue))
         End If
     End Sub
 
@@ -283,7 +283,7 @@ Module Commands
         Else If (result.IsOk)
             Throw New Exception("door not updated")
         Else If (result.IsError)
-            Throw New Exception(result.ErrorValue)
+            Throw New Exception(translate(result.ErrorValue))
         End If
     End Sub
 
@@ -305,7 +305,7 @@ Module Commands
             WriteLine("          ok {0}", ok)
             WriteLine()
         Else If (result.IsError)
-            Throw New Exception(result.ErrorValue)
+            Throw New Exception(translate(result.ErrorValue))
         End If
     End Sub
 
@@ -326,7 +326,7 @@ Module Commands
             WriteLine("          ok {0}", ok)
             WriteLine()
         Else If (result.IsError)
-            Throw New Exception(result.ErrorValue)
+            Throw New Exception(translate(result.ErrorValue))
         End If
     End Sub
 
@@ -374,7 +374,7 @@ Module Commands
             End If
 
         Else If (result.IsError)
-            Throw New Exception(result.ErrorValue)
+            Throw New Exception(translate(result.ErrorValue))
         End If
     End Sub
 
@@ -393,7 +393,7 @@ Module Commands
             WriteLine("       cards {0}", cards)
             WriteLine()
         Else If (result.IsError)
-            Throw New Exception(result.ErrorValue)
+            Throw New Exception(translate(result.ErrorValue))
         End If
     End Sub
 
@@ -422,7 +422,7 @@ Module Commands
         Else If (result.IsOk)
             Throw New Exception("card not found")
         Else If (result.IsError)
-            Throw New Exception(result.ErrorValue)
+            Throw New Exception(translate(result.ErrorValue))
         End If
     End Sub
 
@@ -451,7 +451,7 @@ Module Commands
         Else If (result.IsOk)
             Throw New Exception("card not found")
         Else If (result.IsError)
-            Throw New Exception(result.ErrorValue)
+            Throw New Exception(translate(result.ErrorValue))
         End If
     End Sub
 
@@ -493,7 +493,7 @@ Module Commands
             WriteLine("          ok {0}", ok)
             WriteLine()
         Else If (result.IsError)
-            Throw New Exception(result.ErrorValue)
+            Throw New Exception(translate(result.ErrorValue))
         End If
     End Sub
 
@@ -514,7 +514,7 @@ Module Commands
             WriteLine("          ok {0}", ok)
             WriteLine()
         Else If (result.IsError)
-            Throw New Exception(result.ErrorValue)
+            Throw New Exception(translate(result.ErrorValue))
         End If
     End Sub
 
@@ -533,7 +533,7 @@ Module Commands
             WriteLine("          ok {0}", ok)
             WriteLine()
         Else If (result.IsError)
-            Throw New Exception(result.ErrorValue)
+            Throw New Exception(translate(result.ErrorValue))
         End If
     End Sub
 
@@ -562,7 +562,7 @@ Module Commands
         Else If (result.IsOk)
             Throw New Exception("event not found")
         Else If (result.IsError)
-            Throw New Exception(result.ErrorValue)
+            Throw New Exception(translate(result.ErrorValue))
         End If
     End Sub
 
@@ -581,7 +581,7 @@ Module Commands
             WriteLine("       index {0}", index)
             WriteLine()
         Else If (result.IsError)
-            Throw New Exception(result.ErrorValue)
+            Throw New Exception(translate(result.ErrorValue))
         End If
     End Sub
 
@@ -601,7 +601,7 @@ Module Commands
             WriteLine("          ok {0}", ok)
             WriteLine()
         Else If (result.IsError)
-            Throw New Exception(result.ErrorValue)
+            Throw New Exception(translate(result.ErrorValue))
         End If
     End Sub
 
@@ -621,7 +621,7 @@ Module Commands
             WriteLine("          ok {0}", ok)
             WriteLine()
         Else If (result.IsError)
-            Throw New Exception(result.ErrorValue)
+            Throw New Exception(translate(result.ErrorValue))
         End If
     End Sub
 
@@ -659,7 +659,7 @@ Module Commands
         Else If (result.IsOk)
             Throw New Exception("time profile does not exist")
         Else If (result.IsError)
-            Throw New Exception(result.ErrorValue)
+            Throw New Exception(translate(result.ErrorValue))
         End If
     End Sub
 
@@ -703,7 +703,7 @@ Module Commands
             WriteLine("          ok {0}", ok)
             WriteLine()
         Else If (result.IsError)
-            Throw New Exception(result.ErrorValue)
+            Throw New Exception(translate(result.ErrorValue))
         End If
     End Sub
 
@@ -722,7 +722,7 @@ Module Commands
             WriteLine("          ok {0}", ok)
             WriteLine()
         Else If (result.IsError)
-            Throw New Exception(result.ErrorValue)
+            Throw New Exception(translate(result.ErrorValue))
         End If
     End Sub
 
@@ -766,7 +766,7 @@ Module Commands
             WriteLine("          ok {0}", ok)
             WriteLine()
         Else If (result.IsError)
-            Throw New Exception(result.ErrorValue)
+            Throw New Exception(translate(result.ErrorValue))
         End If
     End Sub
 
@@ -785,7 +785,7 @@ Module Commands
             WriteLine("          ok {0}", ok)
             WriteLine()
         Else If (result.IsError)
-            Throw New Exception(result.ErrorValue)
+            Throw New Exception(translate(result.ErrorValue))
         End If
     End Sub
 
@@ -804,7 +804,7 @@ Module Commands
             WriteLine("          ok {0}", ok)
             WriteLine()
         Else If (result.IsError)
-            Throw New Exception(result.ErrorValue)
+            Throw New Exception(translate(result.ErrorValue))
         End If
     End Sub
 
@@ -825,7 +825,7 @@ Module Commands
             WriteLine("          ok {0}", ok)
             WriteLine()
         Else If (result.IsError)
-            Throw New Exception(result.ErrorValue)
+            Throw New Exception(translate(result.ErrorValue))
         End If
     End Sub
 
@@ -846,7 +846,7 @@ Module Commands
             WriteLine("          ok {0}", ok)
             WriteLine()
         Else If (result.IsError)
-            Throw New Exception(result.ErrorValue)
+            Throw New Exception(translate(result.ErrorValue))
         End If
     End Sub
 
@@ -875,7 +875,7 @@ Module Commands
             WriteLine("          ok {0}", ok)
             WriteLine()
         Else If (result.IsError)
-            Throw New Exception(result.ErrorValue)
+            Throw New Exception(translate(result.ErrorValue))
         End If
     End Sub
 
@@ -894,7 +894,7 @@ Module Commands
             WriteLine("          ok {0}", ok)
             WriteLine()
         Else If (result.IsError)
-            Throw New Exception(result.ErrorValue)
+            Throw New Exception(translate(result.ErrorValue))
         End If
     End Sub
 
@@ -954,7 +954,7 @@ Module Commands
     End Sub
 
     Private Sub errorHandler(err)
-        WriteLine("** ERROR {0}", err)
+        WriteLine("** ERROR {0}", translate(err))
     End Sub
 
     Private Function YYYYMMDD(v As Nullable(Of DateOnly)) As String

@@ -17,7 +17,7 @@ type TestResolve() =
 
         match Uhppoted.resolve (405419896u) with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
-        | Error err -> Assert.Fail(err)
+        | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestResolveC() =
@@ -33,7 +33,7 @@ type TestResolve() =
 
         match Uhppoted.resolve (controller) with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
-        | Error err -> Assert.Fail(err)
+        | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestResolveCWithEndPoint() =
@@ -49,7 +49,7 @@ type TestResolve() =
 
         match Uhppoted.resolve (controller) with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
-        | Error err -> Assert.Fail(err)
+        | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestResolveCWithEndPointAndProtocol() =
@@ -65,7 +65,7 @@ type TestResolve() =
 
         match Uhppoted.resolve (controller) with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
-        | Error err -> Assert.Fail(err)
+        | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
     member this.TestResolveInt32() =
@@ -76,13 +76,12 @@ type TestResolve() =
 
         match Uhppoted.resolve (405419896) with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
-        | Error err -> Assert.Fail(err)
+        | Error err -> Assert.Fail($"{err}")
 
 
     [<Test>]
     member this.TestResolveNegativeInt32() =
-        let expected =
-            "unsupported controller type (System.Int32) - expected uint32 or struct"
+        let expected = ErrX.InvalidControllerType // "unsupported controller type (System.Int32) - expected uint32 or struct"
 
         match Uhppoted.resolve (-405419896) with
         | Ok response -> Assert.Fail()

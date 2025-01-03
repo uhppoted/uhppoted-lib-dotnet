@@ -36,10 +36,10 @@ module internal UDP =
 
             with
             | :? ObjectDisposedException -> return Ok(List.rev packets)
-            | err -> return Error err.Message
+            | err -> return Error ReceiveError // err.Message
         }
 
-    let rec receive (socket: UdpClient) : Async<Result<byte array * IPEndPoint, string>> =
+    let rec receive (socket: UdpClient) : Async<Result<byte array * IPEndPoint, ErrX>> =
         async {
             try
                 let! (packet, remote) =
@@ -57,14 +57,14 @@ module internal UDP =
                     return! receive socket
 
             with err ->
-                return Error err.Message
+                return Error ReceiveError // err.Message
         }
 
     let rec receiveEvent
         (socket: UdpClient)
         (handler: byte array * IPEndPoint -> unit)
         (closing: CancellationToken)
-        : Async<Result<unit, string>> =
+        : Async<Result<unit, ErrX>> =
         async {
             try
                 if closing.IsCancellationRequested || socket.Client.SafeHandle.IsInvalid then
@@ -86,7 +86,7 @@ module internal UDP =
 
             with
             | :? ObjectDisposedException -> return Ok()
-            | err -> return Error err.Message
+            | err -> return Error ReceiveError // Error err.Message
         }
 
     let broadcast (request: byte array, bind: IPEndPoint, broadcast: IPEndPoint, timeout: int, debug: bool) =
@@ -119,18 +119,19 @@ module internal UDP =
                         dump packet)
 
                 replies |> List.map fst |> Ok
-            | Error err -> Error err
+            | Error err -> Error ReceiveError // Error err
 
         with error ->
-            Error error.Message
+            Error ReceiveError // error.Message
 
     let broadcastTo (request: byte array, bind: IPEndPoint, broadcast: IPEndPoint, timeout: int, debug: bool) =
+        let x: ErrX = ErrX.Timeout
         let socket = new UdpClient(bind)
 
-        let timer (timeout: int) : Async<Result<byte array * IPEndPoint, string>> =
+        let timer (timeout: int) : Async<Result<byte array * IPEndPoint, ErrX>> =
             async {
                 do! Async.Sleep timeout
-                return Error "timeout"
+                return Error ErrX.Timeout // "timeout"
             }
 
         try
@@ -161,23 +162,23 @@ module internal UDP =
                                 dump packet
 
                             Ok packet
-                        | Ok(_, _) -> Error "invalid packet"
+                        | Ok(_, _) -> Error ErrX.InvalidPacket // "invalid packet"
                         | Error err -> Error err
                     else
-                        Error "timeout waiting for reply from controller"
+                        Error ErrX.Timeout // "timeout waiting for reply from controller"
 
             with error ->
-                Error error.Message
+                Error ReceiveError // error.Message
         finally
             socket.Close()
 
     let sendTo (request: byte array, src: IPEndPoint, dest: IPEndPoint, timeout: int, debug: bool) =
         let socket = new UdpClient(src)
 
-        let timer (timeout: int) : Async<Result<byte array * IPEndPoint, string>> =
+        let timer (timeout: int) : Async<Result<byte array * IPEndPoint, ErrX>> =
             async {
                 do! Async.Sleep timeout
-                return Error "timeout"
+                return Error ErrX.Timeout // "timeout"
             }
 
         try
@@ -209,13 +210,13 @@ module internal UDP =
                                 dump packet
 
                             Ok packet
-                        | Ok(_, _) -> Error "invalid packet"
-                        | Error err -> Error err
+                        | Ok(_, _) -> Error InvalidPacket // Error "invalid packet"
+                        | Error err -> Error ReceiveError // Error err
                     else
-                        Error "timeout waiting for reply from controller"
+                        Error ErrX.Timeout // "timeout waiting for reply from controller"
 
             with error ->
-                Error error.Message
+                Error ReceiveError // error.Message
         finally
             socket.Close()
 
@@ -241,4 +242,4 @@ module internal UDP =
             Ok()
 
         with error ->
-            Error error.Message
+            Error ErrX.ListenError // error.Message

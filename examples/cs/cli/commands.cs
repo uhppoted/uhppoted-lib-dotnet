@@ -118,7 +118,7 @@ class Commands
         }
         else if (result.IsError)
         {
-            throw new Exception(result.ErrorValue);
+            throw new Exception(translate(result.ErrorValue));
         }
     }
 
@@ -146,7 +146,7 @@ class Commands
         }
         else if (result.IsError)
         {
-            throw new Exception(result.ErrorValue);
+            throw new Exception(translate(result.ErrorValue));
         }
     }
 
@@ -168,7 +168,7 @@ class Commands
         }
         else if (result.IsError)
         {
-            throw new Exception(result.ErrorValue);
+            throw new Exception(translate(result.ErrorValue));
         }
     }
 
@@ -192,7 +192,7 @@ class Commands
         }
         else if (result.IsError)
         {
-            throw new Exception(result.ErrorValue);
+            throw new Exception(translate(result.ErrorValue));
         }
     }
 
@@ -217,7 +217,7 @@ class Commands
         }
         else if (result.IsError)
         {
-            throw new Exception(result.ErrorValue);
+            throw new Exception(translate(result.ErrorValue));
         }
     }
 
@@ -240,7 +240,7 @@ class Commands
         }
         else if (result.IsError)
         {
-            throw new Exception(result.ErrorValue);
+            throw new Exception(translate(result.ErrorValue));
         }
     }
 
@@ -264,7 +264,7 @@ class Commands
         }
         else if (result.IsError)
         {
-            throw new Exception(result.ErrorValue);
+            throw new Exception(translate(result.ErrorValue));
         }
     }
 
@@ -294,7 +294,7 @@ class Commands
         }
         else if (result.IsError)
         {
-            throw new Exception(result.ErrorValue);
+            throw new Exception(translate(result.ErrorValue));
         }
     }
 
@@ -322,11 +322,11 @@ class Commands
         }
         else if (result.IsOk)
         {
-            throw new Exception("door does not updated");
+            throw new Exception("door not updated");
         }
         else if (result.IsError)
         {
-            throw new Exception(result.ErrorValue);
+            throw new Exception(translate(result.ErrorValue));
         }
     }
 
@@ -353,7 +353,7 @@ class Commands
         }
         else if (result.IsError)
         {
-            throw new Exception(result.ErrorValue);
+            throw new Exception(translate(result.ErrorValue));
         }
     }
 
@@ -378,7 +378,7 @@ class Commands
         }
         else if (result.IsError)
         {
-            throw new Exception(result.ErrorValue);
+            throw new Exception(translate(result.ErrorValue));
         }
     }
 
@@ -432,7 +432,7 @@ class Commands
         }
         else if (result.IsError)
         {
-            throw new Exception(result.ErrorValue);
+            throw new Exception(translate(result.ErrorValue));
         }
     }
 
@@ -456,7 +456,7 @@ class Commands
         }
         else if (result.IsError)
         {
-            throw new Exception(result.ErrorValue);
+            throw new Exception(translate(result.ErrorValue));
         }
     }
 
@@ -491,7 +491,7 @@ class Commands
         }
         else if (result.IsError)
         {
-            throw new Exception(result.ErrorValue);
+            throw new Exception(translate(result.ErrorValue));
         }
     }
 
@@ -526,7 +526,7 @@ class Commands
         }
         else if (result.IsError)
         {
-            throw new Exception(result.ErrorValue);
+            throw new Exception(translate(result.ErrorValue));
         }
     }
 
@@ -571,7 +571,7 @@ class Commands
         }
         else if (result.IsError)
         {
-            throw new Exception(result.ErrorValue);
+            throw new Exception(translate(result.ErrorValue));
         }
     }
 
@@ -596,7 +596,7 @@ class Commands
         }
         else if (result.IsError)
         {
-            throw new Exception(result.ErrorValue);
+            throw new Exception(translate(result.ErrorValue));
         }
     }
 
@@ -619,7 +619,7 @@ class Commands
         }
         else if (result.IsError)
         {
-            throw new Exception(result.ErrorValue);
+            throw new Exception(translate(result.ErrorValue));
         }
     }
 
@@ -654,7 +654,7 @@ class Commands
         }
         else if (result.IsError)
         {
-            throw new Exception(result.ErrorValue);
+            throw new Exception(translate(result.ErrorValue));
         }
     }
 
@@ -677,7 +677,7 @@ class Commands
         }
         else if (result.IsError)
         {
-            throw new Exception(result.ErrorValue);
+            throw new Exception(translate(result.ErrorValue));
         }
     }
 
@@ -701,7 +701,7 @@ class Commands
         }
         else if (result.IsError)
         {
-            throw new Exception(result.ErrorValue);
+            throw new Exception(translate(result.ErrorValue));
         }
     }
 
@@ -725,7 +725,7 @@ class Commands
         }
         else if (result.IsError)
         {
-            throw new Exception(result.ErrorValue);
+            throw new Exception(translate(result.ErrorValue));
         }
     }
 
@@ -769,7 +769,7 @@ class Commands
         }
         else if (result.IsError)
         {
-            throw new Exception(result.ErrorValue);
+            throw new Exception(translate(result.ErrorValue));
         }
     }
 
@@ -817,7 +817,7 @@ class Commands
         }
         else if (result.IsError)
         {
-            throw new Exception(result.ErrorValue);
+            throw new Exception(translate(result.ErrorValue));
         }
     }
 
@@ -840,7 +840,7 @@ class Commands
         }
         else if (result.IsError)
         {
-            throw new Exception(result.ErrorValue);
+            throw new Exception(translate(result.ErrorValue));
         }
     }
 
@@ -889,7 +889,7 @@ class Commands
         }
         else if (result.IsError)
         {
-            throw new Exception(result.ErrorValue);
+            throw new Exception(translate(result.ErrorValue));
         }
     }
 
@@ -912,7 +912,7 @@ class Commands
         }
         else if (result.IsError)
         {
-            throw new Exception(result.ErrorValue);
+            throw new Exception(translate(result.ErrorValue));
         }
     }
 
@@ -935,7 +935,7 @@ class Commands
         }
         else if (result.IsError)
         {
-            throw new Exception(result.ErrorValue);
+            throw new Exception(translate(result.ErrorValue));
         }
     }
 
@@ -960,7 +960,7 @@ class Commands
         }
         else if (result.IsError)
         {
-            throw new Exception(result.ErrorValue);
+            throw new Exception(translate(result.ErrorValue));
         }
     }
 
@@ -985,7 +985,7 @@ class Commands
         }
         else if (result.IsError)
         {
-            throw new Exception(result.ErrorValue);
+            throw new Exception(translate(result.ErrorValue));
         }
     }
 
@@ -1018,7 +1018,7 @@ class Commands
         }
         else if (result.IsError)
         {
-            throw new Exception(result.ErrorValue);
+            throw new Exception(translate(result.ErrorValue));
         }
     }
 
@@ -1041,7 +1041,7 @@ class Commands
         }
         else if (result.IsError)
         {
-            throw new Exception(result.ErrorValue);
+            throw new Exception(translate(result.ErrorValue));
         }
     }
 
@@ -1102,9 +1102,9 @@ class Commands
             }
         }
 
-        void onError(string err)
+        void onError(object err)
         {
-            WriteLine("** ERROR {0}", err);
+            WriteLine("** ERROR {0}", translate(err));
         }
 
         var onevent = new uhppoted.OnEvent(onEvent);
