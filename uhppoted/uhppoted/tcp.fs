@@ -45,7 +45,7 @@ module internal TCP =
         let timer (timeout: int) : Async<Result<byte array * IPEndPoint, ErrX>> =
             async {
                 do! Async.Sleep timeout
-                return Error ErrX.Timeout // "timeout"
+                return Error ErrX.Timeout
             }
 
         try
@@ -78,13 +78,13 @@ module internal TCP =
                                 dump packet
 
                             Ok packet
-                        | Ok(_) -> Error InvalidPacket // "invalid packet"
-                        | Error err -> Error ReceiveError // err
+                        | Ok(_) -> Error InvalidPacket
+                        | Error err -> Error ReceiveError
                     else
-                        Error ErrX.Timeout // "timeout waiting for reply from controller"
+                        Error ErrX.Timeout
 
             with error ->
-                Error ReceiveError // error.Message
+                Error ReceiveError
 
         finally
             socket.Close()

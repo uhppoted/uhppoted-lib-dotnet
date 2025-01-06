@@ -9,19 +9,23 @@ open NUnit.Framework
 open uhppoted
 
 [<TestFixture>]
-type TestInternationalisation() =
+type TestInternationalisation_en_US() =
     [<Test>]
     member this.TestTranslateEventType() =
-        Thread.CurrentThread.CurrentCulture <- CultureInfo("klingon")
-        Thread.CurrentThread.CurrentUICulture <- CultureInfo("klingon")
+        Thread.CurrentThread.CurrentCulture <- CultureInfo("en-US")
+        Thread.CurrentThread.CurrentUICulture <- CultureInfo("en-US")
 
         let events =
-            [ {| event = 0uy; expected = "not found" |}
-              {| event = 1uy; expected = "card swipe" |}
+            [ {| event = 0uy
+                 expected = "not found" |}
+              {| event = 1uy
+                 expected = "card swipe" |}
               {| event = 2uy; expected = "door" |}
               {| event = 3uy; expected = "alarm" |}
-              {| event = 254uy; expected = "unknown" |}
-              {| event = 255uy; expected = "overwritten" |} ]
+              {| event = 254uy
+                 expected = "unknown" |}
+              {| event = 255uy
+                 expected = "overwritten" |} ]
 
         events
         |> List.iter (fun t ->
@@ -31,8 +35,8 @@ type TestInternationalisation() =
 
     [<Test>]
     member this.TestTranslateEventReason() =
-        Thread.CurrentThread.CurrentCulture <- CultureInfo("klingon")
-        Thread.CurrentThread.CurrentUICulture <- CultureInfo("klingon")
+        Thread.CurrentThread.CurrentCulture <- CultureInfo("en-US")
+        Thread.CurrentThread.CurrentUICulture <- CultureInfo("en-US")
 
         let reasons =
             [ {| reason = 1uy; expected = "swipe" |}
@@ -110,8 +114,8 @@ type TestInternationalisation() =
 
     [<Test>]
     member this.TestTranslateDoorDirection() =
-        Thread.CurrentThread.CurrentCulture <- CultureInfo("klingon")
-        Thread.CurrentThread.CurrentUICulture <- CultureInfo("klingon")
+        Thread.CurrentThread.CurrentCulture <- CultureInfo("en-US")
+        Thread.CurrentThread.CurrentUICulture <- CultureInfo("en-US")
 
         let directions =
             [ {| direction = 0uy
@@ -129,8 +133,8 @@ type TestInternationalisation() =
 
     [<Test>]
     member this.TestTranslateDoorMode() =
-        Thread.CurrentThread.CurrentCulture <- CultureInfo("klingon")
-        Thread.CurrentThread.CurrentUICulture <- CultureInfo("klingon")
+        Thread.CurrentThread.CurrentCulture <- CultureInfo("en-US")
+        Thread.CurrentThread.CurrentUICulture <- CultureInfo("en-US")
 
         let modes =
             [ {| mode = 0uy
@@ -152,8 +156,8 @@ type TestInternationalisation() =
 
     [<Test>]
     member this.TestTranslateDoorInterlock() =
-        Thread.CurrentThread.CurrentCulture <- CultureInfo("klingon")
-        Thread.CurrentThread.CurrentUICulture <- CultureInfo("klingon")
+        Thread.CurrentThread.CurrentCulture <- CultureInfo("en-US")
+        Thread.CurrentThread.CurrentUICulture <- CultureInfo("en-US")
 
         let interlocks =
             [ {| interlock = 0uy
@@ -179,8 +183,8 @@ type TestInternationalisation() =
 
     [<Test>]
     member this.TestTranslateTaskCodes() =
-        Thread.CurrentThread.CurrentCulture <- CultureInfo("klingon")
-        Thread.CurrentThread.CurrentUICulture <- CultureInfo("klingon")
+        Thread.CurrentThread.CurrentCulture <- CultureInfo("en-US")
+        Thread.CurrentThread.CurrentUICulture <- CultureInfo("en-US")
 
         let tasks =
             [ {| task = 0uy
@@ -221,8 +225,8 @@ type TestInternationalisation() =
 
     [<Test>]
     member this.TestTranslateRelayState() =
-        Thread.CurrentThread.CurrentCulture <- CultureInfo("klingon")
-        Thread.CurrentThread.CurrentUICulture <- CultureInfo("klingon")
+        Thread.CurrentThread.CurrentCulture <- CultureInfo("en-US")
+        Thread.CurrentThread.CurrentUICulture <- CultureInfo("en-US")
 
         let relays =
             [ {| relay = 0uy
@@ -240,8 +244,8 @@ type TestInternationalisation() =
 
     [<Test>]
     member this.TestTranslateInputState() =
-        Thread.CurrentThread.CurrentCulture <- CultureInfo("klingon")
-        Thread.CurrentThread.CurrentUICulture <- CultureInfo("klingon")
+        Thread.CurrentThread.CurrentCulture <- CultureInfo("en-US")
+        Thread.CurrentThread.CurrentUICulture <- CultureInfo("en-US")
 
         let inputs =
             [ {| input = 0uy
@@ -260,8 +264,8 @@ type TestInternationalisation() =
 
     [<Test>]
     member this.TestTranslateError() =
-        Thread.CurrentThread.CurrentCulture <- CultureInfo("klingon")
-        Thread.CurrentThread.CurrentUICulture <- CultureInfo("klingon")
+        Thread.CurrentThread.CurrentCulture <- CultureInfo("en-US")
+        Thread.CurrentThread.CurrentUICulture <- CultureInfo("en-US")
 
         let errors =
             [ {| err = Timeout; expected = "timeout waiting for reply from controller" |}

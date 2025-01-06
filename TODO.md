@@ -1,9 +1,11 @@
 # TODO
 
 - [ ] API
+    - [x] Translate unit test for default language
+    - [x] `TranslateError` + unit test
+    - [x] Add `Translate` to API.md
     - [ ] Represent error cases and illegal state in types intrinsic to your domain
           - https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/conventions#represent-error-cases-and-illegal-state-in-types-intrinsic-to-your-domain
-        - [ ] `TranslateError` + unit test
         - [ ] CardNotFound
         - [ ] EventOverwritten
         - [ ] InvalidDoor
@@ -11,7 +13,6 @@
         - [ ] TimeProfileDoesNotExist
 
     - [ ] _Cannot access a disposed object._
-    - [ ] Add `Translate` to API.md
 
 - [ ] examples
     - [ ] GUI

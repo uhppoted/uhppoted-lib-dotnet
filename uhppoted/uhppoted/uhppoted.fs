@@ -50,7 +50,7 @@ module Uhppoted =
             match decode packet with
             | Ok response when response.controller = controller.controller -> Ok response
             | Ok _ -> Error InvalidResponse // "invalid response"
-            | Error err -> Error PacketError // err
+            | Error err -> Error PacketError
         | Error err -> Error err
 
     /// <summary>
@@ -911,7 +911,7 @@ module Uhppoted =
 
                 onevent.Invoke(event)
 
-            | Error err -> onerror.Invoke(PacketError) // (err)
+            | Error err -> onerror.Invoke(PacketError)
 
 
         UDP.listen bind handler stop debug

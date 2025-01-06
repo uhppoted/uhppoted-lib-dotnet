@@ -5,6 +5,7 @@
 2. [Functions](#functions)
 3. [Options](#options)
 4. [C](#c)
+5. [Internationalisation](#internationalisation)
 
 ## Types
 
@@ -180,3 +181,43 @@ Defines the relay contact states for the door unlock relays:
 
 - `Open`: the relay is deactivated i.e. the _normally open_ contact is open and the _normally closed_ contact is closed
 - `Closed`: the relay is activated i.e. the _normally open_ contact is closed  and the _normally closed_ contact is open
+
+## Internationalisation
+
+The API includes a `translate` function to translate error codes, event reasons, etc into the local language set by
+the .NET `CurrentCulture` and `CurrentUICulture` values, e.g.:
+
+``` fsharp
+    Thread.CurrentThread.CurrentCulture <- CultureInfo("en-US")
+    Thread.CurrentThread.CurrentUICulture <- CultureInfo("en-US")
+
+    WriteLine ($"ERROR {Uhppoted.Translate err}")
+
+```
+
+```csharp
+    Thread.CurrentThread.CurrentCulture <- CultureInfo("en-US")
+    Thread.CurrentThread.CurrentUICulture <- CultureInfo("en-US")
+
+    WriteLine ($"ERROR {Uhppoted.Translate(result.ErrorValue}")
+```
+
+```vb.net
+    Thread.CurrentThread.CurrentCulture <- CultureInfo("en-US")
+    Thread.CurrentThread.CurrentUICulture <- CultureInfo("en-US")
+
+    WriteLine ($"ERROR {UHPPOTE.Translate(result.ErrorValue}")
+
+```
+
+Translations are defined for the following values:
+- errors
+- event types
+- event reasons
+- door directions
+- door control modes
+- door interlocks
+- door relay states
+- external inputs
+- task codes
+

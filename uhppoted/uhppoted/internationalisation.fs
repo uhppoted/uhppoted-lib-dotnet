@@ -17,25 +17,6 @@ module internal internationalisation =
         rm.GetString(e)
 
     /// <summary>
-    /// Translates an error into a human readable string using the active 'CurrentCulture' setting.
-    /// (e.g. Thread.CurrentThread.CurrentCulture <- CultureInfo("en-US"))
-    /// </summary>
-    /// <param name="err">Error value.</param>
-    /// <returns>
-    /// Human readable error string or the type".
-    /// </returns>
-    let TranslateError (err: ErrX) =
-        let message = translate ($"error.{err}")
-        let unknown = translate ("error.unknown")
-
-        if not <| String.IsNullOrEmpty(message) then
-            message
-        else if not <| String.IsNullOrEmpty(unknown) then
-            $"{unknown}"
-        else
-            $"{err}"
-
-    /// <summary>
     /// Translates an event type into a human readable string using the active 'CurrentCulture' setting.
     /// (e.g. Thread.CurrentThread.CurrentCulture <- CultureInfo("en-US"))
     /// </summary>
@@ -186,3 +167,31 @@ module internal internationalisation =
             $"{unknown} ({input})"
         else
             $"#{input}"
+
+    /// <summary>
+    /// Translates an error into a human readable string using the active 'CurrentCulture' setting.
+    /// (e.g. Thread.CurrentThread.CurrentCulture <- CultureInfo("en-US"))
+    /// </summary>
+    /// <param name="err">Error value.</param>
+    /// <returns>
+    /// Human readable error string or the type".
+    /// </returns>
+    let TranslateError (err: ErrX) =
+        let unknown = translate ("error.unknown")
+
+        let message = match err with
+                      | Timeout -> translate($"error.timeout")
+                      | ReceiveError -> translate($"error.receive")
+                      | ListenError -> translate($"error.listen")
+                      | PacketError -> translate($"error.packet")
+                      | InvalidPacket -> translate($"error.invalid-packet")
+                      | InvalidResponse -> translate($"error.invalid-response")
+                      | InvalidControllerType -> translate($"error.invalid-controller-type")
+
+        if not <| String.IsNullOrEmpty(message) then
+            message
+        else if not <| String.IsNullOrEmpty(unknown) then
+            $"{unknown}"
+        else
+            $"{err}"
+

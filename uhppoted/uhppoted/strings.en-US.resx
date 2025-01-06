@@ -264,4 +264,27 @@
     <data name="input.unknown">
         <value>unknown</value>
     </data>
+
+    <!-- errors -->
+    <data name="error.timeout">
+        <value>timeout waiting for reply from controller</value>
+    </data>
+    <data name="error.receive">
+        <value>socket error</value>
+    </data>
+    <data name="error.listen">
+        <value>socket listen error</value>
+    </data>
+    <data name="error.packet">
+        <value>error decoding packet</value>
+    </data>
+    <data name="error.invalid-packet">
+        <value>invalid packet</value>
+    </data>
+    <data name="error.invalid-response">
+        <value>invalid response</value>
+    </data>
+    <data name="error.invalid-controller-type">
+        <value>invalid controller type</value>
+    </data>
 </root>

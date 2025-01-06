@@ -12,7 +12,6 @@ type ErrX =
     | InvalidPacket
     | InvalidResponse
     | InvalidControllerType
-    | Ooops
 
 /// Container configuration struct for controllers that require 'connected UDP' or TCP/IP.
 [<Struct>]
