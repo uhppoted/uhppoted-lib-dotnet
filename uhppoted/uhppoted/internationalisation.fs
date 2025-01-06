@@ -176,7 +176,7 @@ module internal internationalisation =
     /// <returns>
     /// Human readable error string or the type".
     /// </returns>
-    let TranslateError (err: ErrX) =
+    let TranslateError (err: Err) =
         let unknown = translate ("error.unknown")
 
         let message =

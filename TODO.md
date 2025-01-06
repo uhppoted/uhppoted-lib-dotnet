@@ -20,6 +20,3 @@
 - [ ] Prefer namespaces at the top level
       - https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/conventions
 - [ ] Add .NET 9 as a target framework
-- (?) Cross-platform builds
-      - https://stackoverflow.com/questions/69393627/create-nuget-package-for-different-platforms-architectures-and-net-versions
-

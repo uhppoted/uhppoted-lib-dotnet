@@ -17,7 +17,7 @@ module internal TCP =
             let right = String.Join(" ", hex.[p + 8 .. q + 8])
             printfn "    %s  %s" left right
 
-    let rec receive (stream: NetworkStream) : Async<Result<byte array, ErrX>> =
+    let rec receive (stream: NetworkStream) : Async<Result<byte array, Err>> =
         async {
             try
                 let! packet =
@@ -42,10 +42,10 @@ module internal TCP =
     let sendTo (request: byte array, src: IPEndPoint, dest: IPEndPoint, timeout: int, debug: bool) =
         let socket = new TcpClient(src)
 
-        let timer (timeout: int) : Async<Result<byte array * IPEndPoint, ErrX>> =
+        let timer (timeout: int) : Async<Result<byte array * IPEndPoint, Err>> =
             async {
                 do! Async.Sleep timeout
-                return Error ErrX.Timeout
+                return Error Err.Timeout
             }
 
         try
@@ -81,7 +81,7 @@ module internal TCP =
                         | Ok(_) -> Error InvalidPacket
                         | Error err -> Error err
                     else
-                        Error ErrX.Timeout
+                        Error Err.Timeout
 
             with err ->
                 Error(ReceiveError err.Message)

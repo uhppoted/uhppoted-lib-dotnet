@@ -1040,5 +1040,4 @@ type TestAPI(tt: string) =
                 Event = Nullable() } ]
 
         Assert.That(events, Is.EqualTo(expected))
-        Assert.That(errors, Is.EqualTo([ PacketError ]))
-//      Assert.That(errors, Is.EqualTo([ "invalid listen-event packet" ]))
+        Assert.That(errors, Is.EqualTo([ PacketError "invalid listen-event packet" ]))

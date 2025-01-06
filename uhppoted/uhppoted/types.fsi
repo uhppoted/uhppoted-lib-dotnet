@@ -4,7 +4,7 @@ open System
 open System.Net
 open System.Net.NetworkInformation
 
-type ErrX =
+type Err =
     | Timeout
     | ReceiveError of error: string
     | ListenError of error: string
@@ -215,4 +215,4 @@ type ListenerEvent =
 type OnEvent = delegate of (ListenerEvent) -> unit
 
 /// Handler for 'listen' errors.
-type OnError = delegate of (ErrX) -> unit
+type OnError = delegate of (Err) -> unit

@@ -13,6 +13,7 @@
 11. https://poeditor.com/kb/resx-editor
 12. https://localizely.com/getting-started
 13. https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/conventions#represent-error-cases-and-illegal-state-in-types-intrinsic-to-your-domain
+14. https://stackoverflow.com/questions/69393627/create-nuget-package-for-different-platforms-architectures-and-net-versions
 
 
 ## F#

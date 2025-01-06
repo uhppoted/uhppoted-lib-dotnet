@@ -9,7 +9,7 @@ open System.Runtime.CompilerServices
 do ()
 
 module Uhppoted =
-    let internal resolve (controller: 'T) : Result<C, ErrX> =
+    let internal resolve (controller: 'T) : Result<C, Err> =
         match box controller with
         | :? int32 as i32 when i32 >= 0 ->
             Ok
@@ -23,14 +23,14 @@ module Uhppoted =
                   endpoint = None
                   protocol = None }
         | :? C as c -> Ok c
-        | _ -> Error (InvalidControllerType $"{typeof<'T>.FullName} - expected uint32 or struct")
+        | _ -> Error(InvalidControllerType $"{typeof<'T>.FullName} - expected uint32 or struct")
 
     let private exec
         (controller: C)
         request
         (decode: byte[] -> Result<'b, string>)
         options
-        : Result<'b, ErrX> when 'b :> IResponse =
+        : Result<'b, Err> when 'b :> IResponse =
         let bind = options.bind
         let broadcast = options.broadcast
         let timeout = options.timeout
@@ -50,7 +50,7 @@ module Uhppoted =
             match decode packet with
             | Ok response when response.controller = controller.controller -> Ok response
             | Ok _ -> Error InvalidResponse
-            | Error err -> Error (PacketError err)
+            | Error err -> Error(PacketError err)
         | Error err -> Error err
 
     /// <summary>
@@ -944,5 +944,5 @@ module Uhppoted =
         | :? TaskCode as task -> internationalisation.TranslateTaskCode(uint8 task)
         | :? EventType as event -> internationalisation.TranslateEventType(event.Code)
         | :? EventReason as reason -> internationalisation.TranslateEventReason(reason.Code)
-        | :? ErrX as err -> internationalisation.TranslateError(err)
+        | :? Err as err -> internationalisation.TranslateError(err)
         | _ -> $"#{v}"
