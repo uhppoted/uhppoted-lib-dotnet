@@ -2,6 +2,8 @@ namespace Uhppoted.Tests
 
 open System
 open System.Net
+open System.Threading
+open System.Globalization
 
 open NUnit.Framework
 open uhppoted
@@ -81,7 +83,10 @@ type TestResolve() =
 
     [<Test>]
     member this.TestResolveNegativeInt32() =
-        let expected = ErrX.InvalidControllerType // "unsupported controller type (System.Int32) - expected uint32 or struct"
+        let expected = InvalidControllerType "System.Int32 - expected uint32 or struct"
+
+        Thread.CurrentThread.CurrentCulture <- CultureInfo("klingon")
+        Thread.CurrentThread.CurrentUICulture <- CultureInfo("klingon")
 
         match Uhppoted.resolve (-405419896) with
         | Ok response -> Assert.Fail()

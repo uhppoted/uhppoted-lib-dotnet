@@ -5,7 +5,6 @@
     - [x] `TranslateError` + unit test
     - [x] Add `Translate` to API.md
     - [ ] Represent error cases and illegal state in types intrinsic to your domain
-          - https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/conventions#represent-error-cases-and-illegal-state-in-types-intrinsic-to-your-domain
         - [ ] CardNotFound
         - [ ] EventOverwritten
         - [ ] InvalidDoor

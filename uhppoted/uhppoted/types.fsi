@@ -6,12 +6,12 @@ open System.Net.NetworkInformation
 
 type ErrX =
     | Timeout
-    | ReceiveError
-    | ListenError
-    | PacketError
+    | ReceiveError of error: string
+    | ListenError of error: string
+    | PacketError of error: string
     | InvalidPacket
     | InvalidResponse
-    | InvalidControllerType
+    | InvalidControllerType of error: string
 
 /// Container configuration struct for controllers that require 'connected UDP' or TCP/IP.
 [<Struct>]

@@ -268,14 +268,20 @@ type TestInternationalisation_en_US() =
         Thread.CurrentThread.CurrentUICulture <- CultureInfo("en-US")
 
         let errors =
-            [ {| err = Timeout; expected = "timeout waiting for reply from controller" |}
-              {| err = ReceiveError; expected = "socket error" |}
-              {| err = ListenError; expected = "socket listen error" |}
-              {| err = PacketError; expected = "error decoding packet" |} 
-              {| err = InvalidPacket; expected = "invalid packet" |}
-              {| err = InvalidResponse; expected = "invalid response" |}
-              {| err = InvalidControllerType; expected = "invalid controller type" |}
-            ]
+            [ {| err = Timeout
+                 expected = "timeout waiting for reply from controller" |}
+              {| err = ReceiveError "oops"
+                 expected = "socket error (oops)" |}
+              {| err = ListenError "oops"
+                 expected = "socket listen error (oops)" |}
+              {| err = PacketError "oops"
+                 expected = "error decoding packet (oops)" |}
+              {| err = InvalidPacket
+                 expected = "invalid packet" |}
+              {| err = InvalidResponse
+                 expected = "invalid response" |}
+              {| err = InvalidControllerType "oops"
+                 expected = "invalid controller type (oops)" |} ]
 
         errors
         |> List.iter (fun t ->

@@ -16,12 +16,16 @@ type TestInternationalisation() =
         Thread.CurrentThread.CurrentUICulture <- CultureInfo("klingon")
 
         let events =
-            [ {| event = 0uy; expected = "not found" |}
-              {| event = 1uy; expected = "card swipe" |}
+            [ {| event = 0uy
+                 expected = "not found" |}
+              {| event = 1uy
+                 expected = "card swipe" |}
               {| event = 2uy; expected = "door" |}
               {| event = 3uy; expected = "alarm" |}
-              {| event = 254uy; expected = "unknown" |}
-              {| event = 255uy; expected = "overwritten" |} ]
+              {| event = 254uy
+                 expected = "unknown" |}
+              {| event = 255uy
+                 expected = "overwritten" |} ]
 
         events
         |> List.iter (fun t ->
@@ -264,14 +268,20 @@ type TestInternationalisation() =
         Thread.CurrentThread.CurrentUICulture <- CultureInfo("klingon")
 
         let errors =
-            [ {| err = Timeout; expected = "timeout waiting for reply from controller" |}
-              {| err = ReceiveError; expected = "socket error" |}
-              {| err = ListenError; expected = "socket listen error" |}
-              {| err = PacketError; expected = "error decoding packet" |} 
-              {| err = InvalidPacket; expected = "invalid packet" |}
-              {| err = InvalidResponse; expected = "invalid response" |}
-              {| err = InvalidControllerType; expected = "invalid controller type" |}
-            ]
+            [ {| err = Timeout
+                 expected = "timeout waiting for reply from controller" |}
+              {| err = ReceiveError "oops"
+                 expected = "socket error (oops)" |}
+              {| err = ListenError "oops"
+                 expected = "socket listen error (oops)" |}
+              {| err = PacketError "oops"
+                 expected = "error decoding packet (oops)" |}
+              {| err = InvalidPacket
+                 expected = "invalid packet" |}
+              {| err = InvalidResponse
+                 expected = "invalid response" |}
+              {| err = InvalidControllerType "oops"
+                 expected = "invalid controller type (oops)" |} ]
 
         errors
         |> List.iter (fun t ->

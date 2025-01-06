@@ -23,7 +23,7 @@ module Uhppoted =
                   endpoint = None
                   protocol = None }
         | :? C as c -> Ok c
-        | _ -> Error InvalidControllerType // $"unsupported controller type ({typeof<'T>.FullName}) - expected uint32 or struct"
+        | _ -> Error (InvalidControllerType $"{typeof<'T>.FullName} - expected uint32 or struct")
 
     let private exec
         (controller: C)
@@ -49,8 +49,8 @@ module Uhppoted =
         | Ok packet ->
             match decode packet with
             | Ok response when response.controller = controller.controller -> Ok response
-            | Ok _ -> Error InvalidResponse // "invalid response"
-            | Error err -> Error PacketError
+            | Ok _ -> Error InvalidResponse
+            | Error err -> Error (PacketError err)
         | Error err -> Error err
 
     /// <summary>
@@ -911,7 +911,7 @@ module Uhppoted =
 
                 onevent.Invoke(event)
 
-            | Error err -> onerror.Invoke(PacketError)
+            | Error err -> onerror.Invoke(PacketError err)
 
 
         UDP.listen bind handler stop debug

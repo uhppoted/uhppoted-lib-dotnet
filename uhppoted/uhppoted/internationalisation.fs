@@ -179,14 +179,15 @@ module internal internationalisation =
     let TranslateError (err: ErrX) =
         let unknown = translate ("error.unknown")
 
-        let message = match err with
-                      | Timeout -> translate($"error.timeout")
-                      | ReceiveError -> translate($"error.receive")
-                      | ListenError -> translate($"error.listen")
-                      | PacketError -> translate($"error.packet")
-                      | InvalidPacket -> translate($"error.invalid-packet")
-                      | InvalidResponse -> translate($"error.invalid-response")
-                      | InvalidControllerType -> translate($"error.invalid-controller-type")
+        let message =
+            match err with
+            | Timeout -> translate ("error.timeout")
+            | ReceiveError err -> String.Format(translate ("error.receive"), err)
+            | ListenError err -> String.Format(translate ("error.listen"), err)
+            | PacketError err -> String.Format(translate ("error.packet"), err)
+            | InvalidPacket -> translate ("error.invalid-packet")
+            | InvalidResponse -> translate ("error.invalid-response")
+            | InvalidControllerType err -> String.Format(translate ("error.invalid-controller-type"), err)
 
         if not <| String.IsNullOrEmpty(message) then
             message
@@ -194,4 +195,3 @@ module internal internationalisation =
             $"{unknown}"
         else
             $"{err}"
-

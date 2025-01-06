@@ -270,13 +270,13 @@
         <value>timeout waiting for reply from controller</value>
     </data>
     <data name="error.receive">
-        <value>socket error</value>
+        <value>socket error ({0})</value>
     </data>
     <data name="error.listen">
-        <value>socket listen error</value>
+        <value>socket listen error ({0})</value>
     </data>
     <data name="error.packet">
-        <value>error decoding packet</value>
+        <value>error decoding packet ({0})</value>
     </data>
     <data name="error.invalid-packet">
         <value>invalid packet</value>
@@ -285,6 +285,6 @@
         <value>invalid response</value>
     </data>
     <data name="error.invalid-controller-type">
-        <value>invalid controller type</value>
+        <value>invalid controller type ({0})</value>
     </data>
 </root>

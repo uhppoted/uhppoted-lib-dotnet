@@ -12,6 +12,8 @@
 10. https://fsprojects.github.io/FSharp.Configuration/ResXProvider.html
 11. https://poeditor.com/kb/resx-editor
 12. https://localizely.com/getting-started
+13. https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/conventions#represent-error-cases-and-illegal-state-in-types-intrinsic-to-your-domain
+
 
 ## F#
 1. https://stackoverflow.com/questions/58781292/how-to-generate-f-signature-file-without-visual-studio

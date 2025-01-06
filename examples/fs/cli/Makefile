@@ -35,7 +35,7 @@ run: build
 	$(CLI)
 
 debug:
-	$(CLI) set-IPv4  --controller 303986753 --address 192.168.1.222 --netmask 255.254.253.251 --gateway 192.168.0.0
+	$(CLI) get-controller --controller $(CONTROLLER)
 
 usage: build
 	$(CLI) 
