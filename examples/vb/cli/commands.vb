@@ -246,8 +246,8 @@ Module Commands
                         UHPPOTE.GetDoor(CONTROLLERS(controller), door, OPTIONS),
                         UHPPOTE.GetDoor(controller, door, OPTIONS))
 
-        If (result.IsOk And result.ResultValue.HasValue)
-            Dim record = result.ResultValue.Value
+        If (result.IsOk)
+            Dim record = result.ResultValue
 
             WriteLine("get-door")
             WriteLine("  controller {0}", controller)
@@ -255,8 +255,6 @@ Module Commands
             WriteLine("        mode {0}", translate(record.Mode))
             WriteLine("       delay {0}s", record.Delay)
             WriteLine()
-        Else If (result.IsOk)
-            Throw New Exception("door does not exist")
         Else If (result.IsError)
             Throw New Exception(translate(result.ErrorValue))
         End If
@@ -272,8 +270,8 @@ Module Commands
                         UHPPOTE.SetDoor(CONTROLLERS(controller), door, mode, delay, OPTIONS),
                         UHPPOTE.SetDoor(controller, door, mode, delay, OPTIONS))
 
-        If (result.IsOk And result.ResultValue.HasValue)
-            Dim record = result.ResultValue.Value
+        If (result.IsOk)
+            Dim record = result.ResultValue
 
             WriteLine("set-door")
             WriteLine("  controller {0}", controller)
@@ -281,8 +279,6 @@ Module Commands
             WriteLine("        mode {0}", translate(record.Mode))
             WriteLine("       delay {0}s", record.Delay)
             WriteLine()
-        Else If (result.IsOk)
-            Throw New Exception("door not updated")
         Else If (result.IsError)
             Throw New Exception(translate(result.ErrorValue))
         End If

@@ -8,13 +8,9 @@ Retrieves a door control mode and unlock delay from a controller.
 - **`options` (`Options`)**: Bind, broadcast, and listen addresses.
 
 ### Returns
-Returns `Ok` with a Nullable `Door` record if the request was processed or an `Error` 
+Returns `Ok` with a `Door` record if the request was processed or an `Error`:
 
-The `Ok` value is:
-- An `Door` record if the controller returned a matching response.
-- `null` if there was no door matching the request door ID.
-
-The `Door` record has the following fields:
+- a `Door` record has the following fields:
   - `mode` (`DoorMode`): Door control mode (NormallyOpen, NormallyClosed, Controlled).
   - `delay` (`uint8`): Duration (seconds) for which the door remains unlocked after access is granted.
   - `event_type` (`uint8`): Event type.
@@ -33,13 +29,11 @@ let controller = {
     protocol:Some("tcp") }
 
 match GetDoor 405419896u door options with
-| Ok response when response.HasValue -> printfn "get-door: ok %A" response.Value
-| Ok _ -> printfn "get-door: not found"
+| Ok response -> printfn "get-door: ok %A" response
 | Error err -> printfn "get-door: error %A" err
 
 match GetDoor controller door options with
-| Ok response when response.HasValue -> printfn "get-door: ok %A" response.Value
-| Ok _ -> printfn "get-door: not found"
+| Ok response -> printfn "get-door: ok %A" response
 | Error err -> printfn "get-door: error %A" err
 ```
 
@@ -54,13 +48,9 @@ var controller = new uhppoted.CBuilder(405419896u)
                               .Build()
 
 var result = GetDoor(405419896u, door, options);
-if (result.IsOk && result.ResultValue.HasValue)
+if (result.IsOk)
 {
-    Console.WriteLine($"get-door: ok {result.ResultValue.Value}");
-}
-else if (result.IsOk)
-{
-    Console.WriteLine($"get-door: error 'not found'");
+    Console.WriteLine($"get-door: ok {result.ResultValue}");
 }
 else
 {
@@ -68,13 +58,10 @@ else
 }
 
 var result = GetDoor(controller, door, options);
-if (result.IsOk && result.ResultValue.HasValue)
+var result = GetDoor(405419896u, door, options);
+if (result.IsOk)
 {
-    Console.WriteLine($"get-door: ok {result.ResultValue.Value}");
-}
-else if (result.IsOk)
-{
-    Console.WriteLine($"get-door: error 'not found'");
+    Console.WriteLine($"get-door: ok {result.ResultValue}");
 }
 else
 {
@@ -93,19 +80,15 @@ Dim door = 3
 Dim options As New OptionsBuilder().WithTimeout(1250).build()
 
 Dim result = GetDoor(405419896UI, door, options)
-If (result.IsOk And result.Value.HasValue) Then
-    Console.WriteLine($"get-door: ok {result.ResultValue.Value}")
-Els If (result.IsOk) Then
-    Console.WriteLine($"get-door: error 'not found'")
+If (result.IsOk) Then
+    Console.WriteLine($"get-door: ok {result.ResultValue}")
 Else
     Console.WriteLine($"get-door: error '{result.ErrorValue}'")
 End If
 
 Dim result = GetDoor(controller, door, options)
-If (result.IsOk And result.Value.HasValue) Then
-    Console.WriteLine($"get-door: ok {result.ResultValue.Value}")
-Els If (result.IsOk) Then
-    Console.WriteLine($"get-door: error 'not found'")
+If (result.IsOk) Then
+    Console.WriteLine($"get-door: ok {result.ResultValue}")
 Else
     Console.WriteLine($"get-door: error '{result.ErrorValue}'")
 End If

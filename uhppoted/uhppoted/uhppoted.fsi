@@ -33,12 +33,10 @@ module Uhppoted =
         controller: 'T * datetime: System.DateTime * options: Options -> Result<System.Nullable<System.DateTime>, Err>
 
     /// Retrieves the control mode and unlocked delay for a door.
-    val GetDoor: controller: 'T * door: uint8 * options: Options -> Result<System.Nullable<Door>, Err>
+    val GetDoor: controller: 'T * door: uint8 * options: Options -> Result<Door, Err>
 
     /// Sets the control mode and unlocked delay for a door.
-    val SetDoor:
-        controller: 'T * door: uint8 * mode: DoorMode * delay: uint8 * options: Options ->
-            Result<System.Nullable<Door>, Err>
+    val SetDoor: controller: 'T * door: uint8 * mode: DoorMode * delay: uint8 * options: Options -> Result<Door, Err>
 
     /// Sets up to 4 passcodes for a controller door.
     val SetDoorPasscodes: controller: 'T * door: uint8 * passcodes: uint32 array * options: Options -> Result<bool, Err>

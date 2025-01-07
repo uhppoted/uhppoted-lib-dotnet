@@ -296,14 +296,14 @@ type TestAPI(tt: string) =
         match controllers[tt] with
         | Id controller ->
             match Uhppoted.GetDoor(controller, DOOR_NOT_FOUND, OPTIONS) with
-            | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
-            | Ok _ -> Assert.Pass()
+            | Ok _ -> Assert.Fail("expected 'invalid response'")
+            | Error InvalidResponse -> Assert.Pass()
             | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.GetDoor(controller, DOOR_NOT_FOUND, OPTIONS) with
-            | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
-            | Ok _ -> Assert.Pass()
+            | Ok _ -> Assert.Fail("expected 'invalid response'")
+            | Error InvalidResponse -> Assert.Pass()
             | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
@@ -328,14 +328,14 @@ type TestAPI(tt: string) =
         match controllers[tt] with
         | Id controller ->
             match Uhppoted.SetDoor(controller, DOOR_NOT_FOUND, MODE, DELAY, OPTIONS) with
-            | Ok result when result.HasValue -> Assert.Fail("expected 'null'")
-            | Ok _ -> Assert.Pass()
+            | Ok _ -> Assert.Fail("expected 'invalid response'")
+            | Error InvalidResponse -> Assert.Pass()
             | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.SetDoor(controller, DOOR_NOT_FOUND, MODE, DELAY, OPTIONS) with
-            | Ok result when result.HasValue -> Assert.Fail("expected 'null'")
-            | Ok _ -> Assert.Pass()
+            | Ok _ -> Assert.Fail("expected 'invalid response'")
+            | Error InvalidResponse -> Assert.Pass()
             | Error err -> Assert.Fail($"{err}")
 
     [<Test>]

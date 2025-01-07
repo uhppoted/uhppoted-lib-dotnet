@@ -213,9 +213,7 @@ let getDoor args =
         | None -> Uhppoted.GetDoor(controller, door, OPTIONS)
 
     match result with
-    | Ok v when v.HasValue ->
-        let record = v.Value
-
+    | Ok record ->
         printfn "get-door"
         printfn "  controller %u" controller
         printfn "        door %d" door
@@ -224,7 +222,6 @@ let getDoor args =
         printfn ""
         printfn ""
         Ok()
-    | Ok _ -> Error "door does not exist"
     | Error err -> Error(translate err)
 
 let setDoor args =
@@ -239,9 +236,7 @@ let setDoor args =
         | None -> Uhppoted.SetDoor(controller, door, mode, delay, OPTIONS)
 
     match result with
-    | Ok v when v.HasValue ->
-        let record = v.Value
-
+    | Ok record ->
         printfn "set-door"
         printfn "  controller %u" controller
         printfn "        door %d" door
@@ -249,7 +244,6 @@ let setDoor args =
         printfn "       delay %ds" record.Delay
         printfn ""
         Ok()
-    | Ok _ -> Error "door not updated"
     | Error err -> Error(translate err)
 
 let setDoorPasscodes args =

@@ -4,12 +4,12 @@
     - [x] Translate unit test for default language
     - [x] `TranslateError` + unit test
     - [x] Add `Translate` to API.md
-    - [ ] Represent error cases and illegal state in types intrinsic to your domain
+    - [x] Represent error cases and illegal state in types intrinsic to your domain
         - [x] CardNotFound
         - [x] EventNotFound
         - [x] EventOverwritten
         - [x] TimeProfileNotFound
-        - [ ] InvalidDoor
+        - [x] InvalidDoor
 
     - [ ] _Cannot access a disposed object._
 

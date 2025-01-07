@@ -279,9 +279,9 @@ class Commands
                      ? Uhppoted.GetDoor(c, door, OPTIONS)
                      : Uhppoted.GetDoor(controller, door, OPTIONS);
 
-        if (result.IsOk && result.ResultValue.HasValue)
+        if (result.IsOk)
         {
-            var record = result.ResultValue.Value;
+            var record = result.ResultValue;
 
             WriteLine("get-door");
             WriteLine("  controller {0}", controller);
@@ -289,10 +289,6 @@ class Commands
             WriteLine("        mode {0}", translate(record.Mode));
             WriteLine("       delay {0}s", record.Delay);
             WriteLine();
-        }
-        else if (result.IsOk)
-        {
-            throw new Exception("door does not exist");
         }
         else if (result.IsError)
         {
@@ -311,9 +307,9 @@ class Commands
                      ? Uhppoted.SetDoor(c, door, mode, delay, OPTIONS)
                      : Uhppoted.SetDoor(controller, door, mode, delay, OPTIONS);
 
-        if (result.IsOk && result.ResultValue.HasValue)
+        if (result.IsOk)
         {
-            var record = result.ResultValue.Value;
+            var record = result.ResultValue;
 
             WriteLine("set-door");
             WriteLine("  controller {0}", controller);
@@ -321,10 +317,6 @@ class Commands
             WriteLine("        mode {0}", translate(record.Mode));
             WriteLine("       delay {0}s", record.Delay);
             WriteLine();
-        }
-        else if (result.IsOk)
-        {
-            throw new Exception("door not updated");
         }
         else if (result.IsError)
         {

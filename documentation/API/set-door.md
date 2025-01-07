@@ -10,13 +10,9 @@ Retrieves a door control mode and unlock delay from a controller.
 - **`options` (`Options`)**: Bind, broadcast, and listen addresses.
 
 ### Returns
-Returns `Ok` with a Nullable `Door` record if the door was updated or an `Error` 
+Returns `Ok` with a `Door` record if the door was updated or an `Error`:
 
-The `Ok` value is:
-- An `Door` record if the controller returned a matching response.
-- `null` if there was no door matching the request door ID.
-
-The `Door` record has the following fields:
+- a `Door` record has the following fields:
   - `mode` (`DoorMode`): Door control mode (NormallyOpen, NormallyClosed, Controlled).
   - `delay` (`uint8`): Duration (seconds, [0.255]) for which the door remains unlocked after access is granted.
   - `event_type` (`uint8`): Event type.
@@ -37,12 +33,11 @@ let controller = {
     protocol:Some("tcp") }
 
 match SetDoor 405419896u door mode delay options with
-| Ok response when response.HasValue -> printfn "set-door: ok %A" response.Value
-| Ok _ -> printfn "set-door: not found"
+| Ok response -> printfn "set-door: ok %A" response
+| Error err -> printfn "set-door: error %A" err
 
 match SetDoor controller door mode delay options with
-| Ok response when response.HasValue -> printfn "set-door: ok %A" response.Value
-| Ok _ -> printfn "set-door: not found"
+| Ok response -> printfn "set-door: ok %A" response
 | Error err -> printfn "set-door: error %A" err
 ```
 
@@ -59,13 +54,9 @@ var controller = new uhppoted.CBuilder(405419896u)
                               .Build()
 
 var result = SetDoor(405419896u, door, mode, delay, options);
-if (result.IsOk && result.ResultValue.HasValue)
+if (result.IsOk)
 {
-    Console.WriteLine($"set-door: ok {result.ResultValue.Value}");
-}
-else if (result.IsOk)
-{
-    Console.WriteLine($"set-door: error 'not found'");
+    Console.WriteLine($"set-door: ok {result.ResultValue}");
 }
 else
 {
@@ -73,13 +64,9 @@ else
 }
 
 var result = SetDoor(controller, door, mode, delay, options);
-if (result.IsOk && result.ResultValue.HasValue)
+if (result.IsOk)
 {
-    Console.WriteLine($"set-door: ok {result.ResultValue.Value}");
-}
-else if (result.IsOk)
-{
-    Console.WriteLine($"set-door: error 'not found'");
+    Console.WriteLine($"set-door: ok {result.ResultValue}");
 }
 else
 {
@@ -100,19 +87,15 @@ Dim delay = 5
 Dim options As New OptionsBuilder().WithTimeout(1250).build()
 
 Dim result = SetDoor(405419896UI, door, mode, delay, options)
-If (result.IsOk And result.Value.HasValue) Then
-    Console.WriteLine($"set-door: ok {result.ResultValue.Value}")
-Els If (result.IsOk) Then
-    Console.WriteLine($"set-door: error 'not found'")
+If (result.IsOk) Then
+    Console.WriteLine($"set-door: ok {result.ResultValue}")
 Else
     Console.WriteLine($"set-door: error '{result.ErrorValue}'")
 End If
 
 Dim result = SetDoor(controller, door, mode, delay, options)
-If (result.IsOk And result.Value.HasValue) Then
-    Console.WriteLine($"set-door: ok {result.ResultValue.Value}")
-Els If (result.IsOk) Then
-    Console.WriteLine($"set-door: error 'not found'")
+If (result.IsOk) Then
+    Console.WriteLine($"set-door: ok {result.ResultValue}")
 Else
     Console.WriteLine($"set-door: error '{result.ErrorValue}'")
 End If

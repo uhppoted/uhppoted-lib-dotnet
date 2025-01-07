@@ -243,13 +243,11 @@ module Uhppoted =
 
             match exec c request Decode.getDoorResponse options with
             | Ok response when response.door <> door -> // incorrect door
-                Ok(Nullable())
+                Error InvalidResponse
             | Ok response ->
-                Ok(
-                    Nullable
-                        { Mode = Enums.doorMode response.mode
-                          Delay = response.delay }
-                )
+                Ok
+                    { Mode = Enums.doorMode response.mode
+                      Delay = response.delay }
             | Error err -> Error err
 
     /// <summary>
@@ -267,13 +265,11 @@ module Uhppoted =
 
             match exec c request Decode.setDoorResponse options with
             | Ok response when response.door <> door -> // incorrect door
-                Ok(Nullable())
+                Error InvalidResponse
             | Ok response ->
-                Ok(
-                    Nullable
-                        { Mode = Enums.doorMode response.mode
-                          Delay = response.delay }
-                )
+                Ok
+                    { Mode = Enums.doorMode response.mode
+                      Delay = response.delay }
             | Error err -> Error err
 
     /// <summary>
