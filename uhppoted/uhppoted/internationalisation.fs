@@ -189,6 +189,8 @@ module internal internationalisation =
             | InvalidResponse -> translate ("error.invalid-response")
             | InvalidControllerType err -> String.Format(translate ("error.invalid-controller-type"), err)
             | CardNotFound -> translate ("error.card-not-found")
+            | EventNotFound -> translate ("error.event-not-found")
+            | EventOverwritten -> translate ("error.event-overwritten")
 
         if not <| String.IsNullOrEmpty(message) then
             message

@@ -632,9 +632,9 @@ class Commands
                      ? Uhppoted.GetEvent(c, index, OPTIONS)
                      : Uhppoted.GetEvent(controller, index, OPTIONS);
 
-        if (result.IsOk && result.ResultValue.HasValue)
+        if (result.IsOk)
         {
-            var record = result.ResultValue.Value;
+            var record = result.ResultValue;
 
             WriteLine("get-event");
             WriteLine("  controller {0}", controller);
@@ -648,9 +648,13 @@ class Commands
             WriteLine("      reason {0} ({1})", record.Reason.Text, record.Reason.Code);
             WriteLine();
         }
-        else if (result.IsOk)
+        else if (result.IsError && result.ErrorValue == uhppoted.Err.EventNotFound)
         {
             throw new Exception("event not found");
+        }
+        else if (result.IsError && result.ErrorValue == uhppoted.Err.EventOverwritten)
+        {
+            throw new Exception("event overwritten");
         }
         else if (result.IsError)
         {

@@ -13,6 +13,8 @@ type Err =
     | InvalidResponse
     | InvalidControllerType of error: string
     | CardNotFound
+    | EventNotFound
+    | EventOverwritten
 
 /// Container configuration struct for controllers that require 'connected UDP' or TCP/IP.
 [<Struct>]

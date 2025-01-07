@@ -533,8 +533,8 @@ module Uhppoted =
     /// <param name="index">Index of event to retrieve.</param>
     /// <param name="options">Bind, broadcast and listen addresses.</param>
     /// <returns>
-    /// Event record at the index (or null if not found or deleted) or an error if the request failed. Returns an Ok(null) if the event
-    // record does not exist or if the event has been overwritten.
+    /// Event record at the index, EventNotFound if the index is greater than the last stored event,
+    /// EventOverwritten if the index is before the first stored event or an error if the request failed.
     /// </returns>
     let GetEvent (controller: 'T, index: uint32, options: Options) =
         match resolve controller with
@@ -543,26 +543,22 @@ module Uhppoted =
             let request = Encode.getEventRequest c.controller index
 
             match exec c request Decode.getEventResponse options with
-            | Ok response when response.event = 0x00uy -> // not found
-                Ok(Nullable())
-            | Ok response when response.event = 0xffuy -> // overwritten
-                Ok(Nullable())
+            | Ok response when response.event = 0x00uy -> Error EventNotFound
+            | Ok response when response.event = 0xffuy -> Error EventOverwritten
             | Ok response ->
-                Ok(
-                    Nullable
-                        { Timestamp = response.timestamp
-                          Index = response.index
-                          Event =
-                            { Code = response.event
-                              Text = internationalisation.TranslateEventType(response.event) }
-                          AccessGranted = response.granted
-                          Door = response.door
-                          Direction = Enums.direction response.direction
-                          Card = response.card
-                          Reason =
-                            { Code = response.reason
-                              Text = internationalisation.TranslateEventReason(response.reason) } }
-                )
+                Ok
+                    { Timestamp = response.timestamp
+                      Index = response.index
+                      Event =
+                        { Code = response.event
+                          Text = internationalisation.TranslateEventType(response.event) }
+                      AccessGranted = response.granted
+                      Door = response.door
+                      Direction = Enums.direction response.direction
+                      Card = response.card
+                      Reason =
+                        { Code = response.reason
+                          Text = internationalisation.TranslateEventReason(response.reason) } }
             | Error err -> Error err
 
     /// <summary>

@@ -23,7 +23,7 @@ let main args =
             match c.f (opts) with
             | Ok _ -> 0
             | Error err ->
-                printfn "  ** ERROR %A" err
+                printfn "  ** ERROR %s" err
                 1
 
         | None ->

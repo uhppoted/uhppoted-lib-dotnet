@@ -106,8 +106,17 @@ module Uhppoted =
     /// </returns>
     val DeleteAllCards: controller: 'T * options: Options -> Result<bool, Err>
 
+    /// <summary>
+    /// Retrieves the event record at the supplied index.
+    /// </summary>
+    /// <param name="controller">Controller ID or struct with controller ID, endpoint and protocol.</param>
+    /// <param name="index">Index of event to retrieve.</param>
+    /// <param name="options">Bind, broadcast and listen addresses.</param>
+    /// <returns>
+    /// Event record at the index, EventNotFound if the index is greater than the last stored event,
+    /// EventOverwritten if the index is before the first stored event or an error if the request failed.
     /// </returns>
-    val GetEvent: controller: 'T * index: uint32 * options: Options -> Result<System.Nullable<Event>, Err>
+    val GetEvent: controller: 'T * index: uint32 * options: Options -> Result<Event, Err>
 
     /// <summary>
     /// Retrieves the current event index from the controller.

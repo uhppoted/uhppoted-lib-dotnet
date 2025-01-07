@@ -290,4 +290,10 @@
     <data name="error.card-not-found">
         <value>card not found</value>
     </data>
+    <data name="error.event-not-found">
+        <value>event not found</value>
+    </data>
+    <data name="error.event-overwritten">
+        <value>event overwritten</value>
+    </data>
 </root>

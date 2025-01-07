@@ -8,10 +8,9 @@ Retrieves the card record (if any) at the index in the cards list stored on the 
 - **`options` (`Options`)**: Bind, broadcast, and listen addresses.
 
 ### Returns
-Returns `Ok` with a`Card` record  or `Error`. 
+Returns `Ok` with a`Card` record  or `Error`:
 
-The `Ok` value is:
-- A `Card` record with the following fields (if a card record was found for the card number):
+- A `Card` record has the following fields:
   - `Card` (`uint32`): Card number.
   - `StartDate` (`DateOnly`): Date from which card is valid.
   - `EndDate` (`DateOnly`): Date after which card is no longer valid.

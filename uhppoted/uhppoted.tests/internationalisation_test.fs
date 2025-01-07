@@ -283,7 +283,11 @@ type TestInternationalisation() =
               {| err = InvalidControllerType "oops"
                  expected = "invalid controller type (oops)" |}
               {| err = CardNotFound
-                 expected = "card not found" |} ]
+                 expected = "card not found" |}
+              {| err = EventNotFound
+                 expected = "event not found" |}
+              {| err = EventOverwritten
+                 expected = "event overwritten" |} ]
 
         errors
         |> List.iter (fun t ->

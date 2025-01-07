@@ -6,9 +6,9 @@
     - [x] Add `Translate` to API.md
     - [ ] Represent error cases and illegal state in types intrinsic to your domain
         - [x] CardNotFound
-        - [ ] EventOverwritten
+        - [x] EventNotFound
+        - [x] EventOverwritten
         - [ ] InvalidDoor
-        - [ ] EventNotFound
         - [ ] TimeProfileDoesNotExist
 
     - [ ] _Cannot access a disposed object._

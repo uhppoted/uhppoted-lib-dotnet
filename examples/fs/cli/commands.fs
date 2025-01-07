@@ -488,9 +488,7 @@ let getEvent args =
         | None -> Uhppoted.GetEvent(controller, index, OPTIONS)
 
     match result with
-    | Ok v when v.HasValue ->
-        let record = v.Value
-
+    | Ok record ->
         printfn "get-event"
         printfn "  controller %u" controller
         printfn "   timestamp %s" (YYYYMMDDHHmmss(record.Timestamp))
@@ -503,7 +501,8 @@ let getEvent args =
         printfn "      reason %s (%u)" record.Reason.Text record.Reason.Code
         printfn ""
         Ok()
-    | Ok _ -> Error "event not found"
+    | Error EventNotFound -> Error "event not found"
+    | Error EventOverwritten -> Error "event overwritten"
     | Error err -> Error(translate err)
 
 let getEventIndex args =

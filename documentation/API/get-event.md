@@ -8,14 +8,9 @@ Retrieves the event record (if any) at the index from the controller.
 - **`options` (`Options`)**: Bind, broadcast, and listen addresses.
 
 ### Returns
-Returns `Ok` with a Nullable `Event` record if the request was processed or an `Error` 
+Returns `Ok` with an `Event` record if the event exists or an `Error`:
 
-The `Ok` value is:
-- An `Event` record if an event was found at the index.
-- `null` if there was no record at the index.
-- `null` if the record at the index was deleted.
-
-The `Event` record has the following fields:
+- an `Event` record has nthe following fields:
   - `Timestamp` (`DateTime`): Timestamp of event.
   - `Index` (`uint32`): Event index.
   - `Event` (`uint8`): Event type.
@@ -25,6 +20,9 @@ The `Event` record has the following fields:
   - `Card` (`uint32`): Card number.
   - `Reason` (`uint8`): Reason code for access granted/denied.
 
+- `Error EventNotFound` if the event at the index does not exist
+- `Error EventOverwritten` if the event at the index has been overwritten
+- `Error <error>` if the request failed.
 
 ### Examples
 
@@ -39,13 +37,15 @@ let controller = {
     protocol:Some("tcp") }
 
 match GetEvent 405419896u index options with
-| Ok response when response.HasValue -> printfn "get-event: ok %A" response.Value
-| Ok _ -> printfn "get-event: not found"
+| Ok response -> printfn "get-event: ok %A" response
+| Error EventNotFound -> printfn "get-event: not found"
+| Error EventOverwritten -> printfn "get-event: overwritten"
 | Error err -> printfn "get-event: error %A" err
 
 match GetEvent controller index options with
-| Ok response when response.HasValue -> printfn "get-event: ok %A" response.Value
-| Ok _ -> printfn "get-event: not found"
+| Ok response -> printfn "get-event: ok %A" response
+| Error EventNotFound -> printfn "get-event: not found"
+| Error EventOverwritten -> printfn "get-event: overwritten"
 | Error err -> printfn "get-event: error %A" err
 ```
 
@@ -60,13 +60,17 @@ var controller = new uhppoted.CBuilder(405419896u)
                               .Build()
 
 var result = GetEvent(405419896u, index, options);
-if (result.IsOk && result.ResultValue.HasValue)
+if (result.IsOk)
 {
-    Console.WriteLine($"get-event: ok {result.ResultValue.Value}");
+    Console.WriteLine($"get-event: ok {result.ResultValue}");
 }
-else if (result.IsOk)
+else if (result.IsError && result.ErrorValue == uhppoted.Err.EventNotFound)
 {
     Console.WriteLine($"get-event: error 'not found'");
+}
+else if (result.IsError && result.ErrorValue == uhppoted.Err.EventOverwritten)
+{
+    Console.WriteLine($"get-event: error 'overwritten'");
 }
 else
 {
@@ -74,13 +78,17 @@ else
 }
 
 var result = GetEvent(controller, index, options);
-if (result.IsOk && result.ResultValue.HasValue)
+if (result.IsOk)
 {
-    Console.WriteLine($"get-event: ok {result.ResultValue.Value}");
+    Console.WriteLine($"get-event: ok {result.ResultValue}");
 }
-else if (result.IsOk)
+else if (result.IsError && result.ErrorValue == uhppoted.Err.EventNotFound)
 {
     Console.WriteLine($"get-event: error 'not found'");
+}
+else if (result.IsError && result.ErrorValue == uhppoted.Err.EventOverwritten)
+{
+    Console.WriteLine($"get-event: error 'overwritten'");
 }
 else
 {
@@ -99,19 +107,23 @@ Dim index = 13579
 Dim options As New OptionsBuilder().WithTimeout(1250).build()
 
 Dim result = GetEvent(405419896UI, index, options)
-If (result.IsOk And result.Value.HasValue) Then
-    Console.WriteLine($"get-event: ok {result.ResultValue.Value}")
-Els If (result.IsOk) Then
+If (result.IsOk) Then
+    Console.WriteLine($"get-event: ok {result.ResultValue}")
+Else If (result.IsError And result.ErrorValue is uhppoted.Err.EventNotFound) Then
     Console.WriteLine($"get-event: error 'not found'")
+Else If (result.IsError And result.ErrorValue is uhppoted.Err.EventOverwritten) Then
+    Console.WriteLine($"get-event: error 'overwritten'")
 Else
     Console.WriteLine($"get-event: error '{result.ErrorValue}'")
 End If
 
 Dim result = GetEvent(controller, index, options)
-If (result.IsOk And result.Value.HasValue) Then
-    Console.WriteLine($"get-event: ok {result.ResultValue.Value}")
-Els If (result.IsOk) Then
+If (result.IsOk) Then
+    Console.WriteLine($"get-event: ok {result.ResultValue}")
+Else If (result.IsError And result.ErrorValue is uhppoted.Err.EventNotFound) Then
     Console.WriteLine($"get-event: error 'not found'")
+Else If (result.IsError And result.ErrorValue is uhppoted.Err.EventOverwritten) Then
+    Console.WriteLine($"get-event: error 'overwritten'")
 Else
     Console.WriteLine($"get-event: error '{result.ErrorValue}'")
 End If

@@ -648,12 +648,12 @@ type TestAPI(tt: string) =
         match controllers[tt] with
         | Id controller ->
             match Uhppoted.GetEvent(controller, EVENT_INDEX, OPTIONS) with
-            | Ok response -> Assert.That(response.Value, Is.EqualTo(expected))
+            | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.GetEvent(controller, EVENT_INDEX, OPTIONS) with
-            | Ok response -> Assert.That(response.Value, Is.EqualTo(expected))
+            | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
@@ -661,14 +661,14 @@ type TestAPI(tt: string) =
         match controllers[tt] with
         | Id controller ->
             match Uhppoted.GetEvent(controller, EVENT_INDEX_NOT_FOUND, OPTIONS) with
-            | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
-            | Ok _ -> Assert.Pass()
+            | Ok _ -> Assert.Fail("expected 'event not found'")
+            | Error EventNotFound -> Assert.Pass()
             | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.GetEvent(controller, EVENT_INDEX_NOT_FOUND, OPTIONS) with
-            | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
-            | Ok _ -> Assert.Pass()
+            | Ok _ -> Assert.Fail("expected 'event not found'")
+            | Error EventNotFound -> Assert.Pass()
             | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
@@ -676,14 +676,14 @@ type TestAPI(tt: string) =
         match controllers[tt] with
         | Id controller ->
             match Uhppoted.GetEvent(controller, EVENT_INDEX_OVERWRITTEN, OPTIONS) with
-            | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
-            | Ok _ -> Assert.Pass()
+            | Ok _ -> Assert.Fail("expected 'event overwritten'")
+            | Error EventOverwritten -> Assert.Pass()
             | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.GetEvent(controller, EVENT_INDEX_OVERWRITTEN, OPTIONS) with
-            | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
-            | Ok _ -> Assert.Pass()
+            | Ok _ -> Assert.Fail("expected 'event overwritten'")
+            | Error EventOverwritten -> Assert.Pass()
             | Error err -> Assert.Fail($"{err}")
 
     [<Test>]

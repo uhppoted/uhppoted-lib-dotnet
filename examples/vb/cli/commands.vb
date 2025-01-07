@@ -545,8 +545,8 @@ Module Commands
                         UHPPOTE.GetEvent(CONTROLLERS(controller), index, OPTIONS),
                         UHPPOTE.GetEvent(controller, index, OPTIONS))
 
-        If (result.IsOk And result.ResultValue.HasValue)
-            Dim record = result.ResultValue.Value
+        If (result.IsOk)
+            Dim record = result.ResultValue
 
             WriteLine("get-event")
             WriteLine("  controller {0}", controller)
@@ -559,8 +559,10 @@ Module Commands
             WriteLine("        card {0}", record.Card)
             WriteLine("      reason {0}", translate(record.Reason))
             WriteLine()
-        Else If (result.IsOk)
+        Else If (result.IsError And result.ErrorValue is uhppoted.Err.EventNotFound)
             Throw New Exception("event not found")
+        Else If (result.IsError And result.ErrorValue is uhppoted.Err.EventOverwritten)
+            Throw New Exception("event overwritten")
         Else If (result.IsError)
             Throw New Exception(translate(result.ErrorValue))
         End If
