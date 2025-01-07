@@ -368,9 +368,7 @@ let getCard args =
         | None -> Uhppoted.GetCard(controller, card, OPTIONS)
 
     match result with
-    | Ok v when v.HasValue ->
-        let record = v.Value
-
+    | Ok record ->
         printfn "get-card"
         printfn "  controller %u" controller
         printfn "        card %u" record.Card
@@ -383,7 +381,7 @@ let getCard args =
         printfn "         PIN %u" record.PIN
         printfn ""
         Ok()
-    | Ok _ -> Error "card not found"
+    | Error CardNotFound -> Error "card not found"
     | Error err -> Error(translate err)
 
 let getCardAtIndex args =

@@ -414,7 +414,7 @@ module Uhppoted =
     /// <param name="card">Card number to retrieve.</param>
     /// <param name="options">Bind, broadcast and listen addresses.</param>
     /// <returns>
-    /// Card record matching the card number (or null if not found) or an error if the request failed.
+    /// Card record matching the card number, CardNotFound or an error if the request failed.
     /// </returns>
     let GetCard (controller: 'T, card: uint32, options: Options) =
         match resolve controller with
@@ -423,20 +423,17 @@ module Uhppoted =
             let request = Encode.getCardRequest c.controller card
 
             match exec c request Decode.getCardResponse options with
-            | Ok response when response.card = 0u -> // not found
-                Ok(Nullable())
+            | Ok response when response.card = 0u -> Error CardNotFound
             | Ok response ->
-                Ok(
-                    Nullable
-                        { Card = response.card
-                          StartDate = response.startDate
-                          EndDate = response.endDate
-                          Door1 = response.door1
-                          Door2 = response.door2
-                          Door3 = response.door3
-                          Door4 = response.door4
-                          PIN = response.PIN }
-                )
+                Ok
+                    { Card = response.card
+                      StartDate = response.startDate
+                      EndDate = response.endDate
+                      Door1 = response.door1
+                      Door2 = response.door2
+                      Door3 = response.door3
+                      Door4 = response.door4
+                      PIN = response.PIN }
             | Error err -> Error err
 
     /// <summary>

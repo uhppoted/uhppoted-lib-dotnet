@@ -8,13 +8,10 @@ Retrieves the card record (if any) at the index in the cards list stored on the 
 - **`options` (`Options`)**: Bind, broadcast, and listen addresses.
 
 ### Returns
-Returns `Ok` with a Nullable `Card` record  or `Error`. 
+Returns `Ok` with a`Card` record  or `Error`. 
 
 The `Ok` value is:
-- A `Card` record if a card record was found for the card number.
-- `null` if there was no record for the card number.
-
-A `Card` record has the following fields:
+- A `Card` record with the following fields (if a card record was found for the card number):
   - `Card` (`uint32`): Card number.
   - `StartDate` (`DateOnly`): Date from which card is valid.
   - `EndDate` (`DateOnly`): Date after which card is no longer valid.
@@ -23,6 +20,9 @@ A `Card` record has the following fields:
   - `Door3` (`uint8`): Door 3 access permission (0: NONE, 1: ALWAYS, [2.254]: time profile).
   - `Door4` (`uint8`): Door 4 access permission (0: NONE, 1: ALWAYS, [2.254]: time profile).
   - `PIN` (`uint32`): Optional card PIN (0 for _none_).
+
+- `Error CardNotFound` if the card does not exist
+- `Error <error>` if the request failed.
 
 ### Examples
 
@@ -38,11 +38,12 @@ let controller = {
 
 match GetCard 405419896u card options with
 | Ok response when response.HasValue -> printfn "get-card: ok %A" response.Value
-| Ok _ -> printfn "get-card: not found"
+| Error CardNotFound -> printfn "get-card: not found"
+| Error err -> printfn "get-card: error %A" err
 
 match GetCard controller card options with
 | Ok response when response.HasValue -> printfn "get-card: ok %A" response.Value
-| Ok _ -> printfn "get-card: not found"
+| Error CardNotFound -> printfn "get-card: not found"
 | Error err -> printfn "get-card: error %A" err
 ```
 
@@ -57,13 +58,13 @@ var controller = new uhppoted.CBuilder(405419896u)
                               .Build()
 
 var result = GetCard(405419896u, card, options);
-if (result.IsOk && result.ResultValue.HasValue)
+if (result.IsOk)
 {
-    Console.WriteLine($"get-card: ok {result.ResultValue.Value}");
+    Console.WriteLine($"get-card: ok {result.ResultValue}");
 }
-else if (result.IsOk)
+else if (result.IsError && result.ErrorValue == uhppoted.Err.CardNotFound)
 {
-    Console.WriteLine($"get-card: error 'not found'");
+    Console.WriteLine($"get-card: card not found");
 }
 else
 {
@@ -71,13 +72,13 @@ else
 }
 
 var result = GetCard(controller, card, options);
-if (result.IsOk && result.ResultValue.HasValue)
+if (result.IsOk)
 {
-    Console.WriteLine($"get-card: ok {result.ResultValue.Value}");
+    Console.WriteLine($"get-card: ok {result.ResultValue}");
 }
-else if (result.IsOk)
+else if (result.IsError && result.ErrorValue == uhppoted.Err.CardNotFound)
 {
-    Console.WriteLine($"get-card: error 'not found'");
+    Console.WriteLine($"get-card: card not found");
 }
 else
 {
@@ -96,19 +97,19 @@ Dim card = 10058400
 Dim options As New OptionsBuilder().WithTimeout(1250).build()
 
 Dim result = GetCard(405419896UI, card, options)
-If (result.IsOk And result.Value.HasValue) Then
-    Console.WriteLine($"get-card: ok {result.ResultValue.Value}")
-Else If (result.IsOk) Then
-    Console.WriteLine($"get-card: error 'not found'")
+If (result.IsOk) Then
+    Console.WriteLine($"get-card: ok {result.ResultValue}")
+Else If (result.IsError And result.ErrorValue is uhppoted.Err.CardNotFound) Then
+    Console.WriteLine($"get-card: card not found")
 Else
     Console.WriteLine($"get-card: error '{result.ErrorValue}'")
 End If
 
 Dim result = GetCard(controller, card, options)
 If (result.IsOk And result.Value.HasValue) Then
-    Console.WriteLine($"get-card: ok {result.ResultValue.Value}")
-Else If (result.IsOk) Then
-    Console.WriteLine($"get-card: error 'not found'")
+    Console.WriteLine($"get-card: ok {result.ResultValue}")
+Else If (result.IsError And result.ErrorValue is uhppoted.Err.CardNotFound) Then
+    Console.WriteLine($"get-card: card not found")
 Else
     Console.WriteLine($"get-card: error '{result.ErrorValue}'")
 End If

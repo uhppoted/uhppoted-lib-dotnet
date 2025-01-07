@@ -5,7 +5,7 @@
     - [x] `TranslateError` + unit test
     - [x] Add `Translate` to API.md
     - [ ] Represent error cases and illegal state in types intrinsic to your domain
-        - [ ] CardNotFound
+        - [x] CardNotFound
         - [ ] EventOverwritten
         - [ ] InvalidDoor
         - [ ] EventNotFound

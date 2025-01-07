@@ -61,7 +61,7 @@ module Uhppoted =
     /// <returns>
     /// Card record matching the card number (or null if not found) or an error if the request failed.
     /// </returns>
-    val GetCard: controller: 'T * card: uint32 * options: Options -> Result<System.Nullable<Card>, Err>
+    val GetCard: controller: 'T * card: uint32 * options: Options -> Result<Card, Err>
 
     /// <summary>
     /// Retrieves the card record at the supplied index.

@@ -405,8 +405,8 @@ Module Commands
                         UHPPOTE.GetCard(CONTROLLERS(controller), card, OPTIONS),
                         UHPPOTE.GetCard(controller, card, OPTIONS))
 
-        If (result.IsOk And result.ResultValue.HasValue)
-            Dim record = result.ResultValue.Value
+        If (result.IsOk)
+            Dim record = result.ResultValue
 
             WriteLine("get-card")
             WriteLine("  controller {0}", controller)
@@ -419,7 +419,7 @@ Module Commands
             WriteLine("      door 4 {0}", record.Door4)
             WriteLine("         PIN {0}", record.PIN)
             WriteLine()
-        Else If (result.IsOk)
+        Else If (result.IsError And result.ErrorValue is uhppoted.Err.CardNotFound)
             Throw New Exception("card not found")
         Else If (result.IsError)
             Throw New Exception(translate(result.ErrorValue))

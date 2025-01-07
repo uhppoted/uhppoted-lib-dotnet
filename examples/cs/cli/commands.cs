@@ -469,9 +469,9 @@ class Commands
                      ? Uhppoted.GetCard(c, card, OPTIONS)
                      : Uhppoted.GetCard(controller, card, OPTIONS);
 
-        if (result.IsOk && result.ResultValue.HasValue)
+        if (result.IsOk)
         {
-            var record = result.ResultValue.Value;
+            var record = result.ResultValue;
 
             WriteLine("get-card");
             WriteLine("  controller {0}", controller);
@@ -485,7 +485,7 @@ class Commands
             WriteLine("         PIN {0}", record.PIN);
             WriteLine();
         }
-        else if (result.IsOk)
+        else if (result.IsError && result.ErrorValue == Err.CardNotFound)
         {
             throw new Exception("card not found");
         }

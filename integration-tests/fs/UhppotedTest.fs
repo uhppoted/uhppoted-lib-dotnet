@@ -502,12 +502,12 @@ type TestAPI(tt: string) =
         match controllers[tt] with
         | Id controller ->
             match Uhppoted.GetCard(controller, CARD, OPTIONS) with
-            | Ok response -> Assert.That(response.Value, Is.EqualTo(expected))
+            | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.GetCard(controller, CARD, OPTIONS) with
-            | Ok response -> Assert.That(response.Value, Is.EqualTo(expected))
+            | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
@@ -515,14 +515,14 @@ type TestAPI(tt: string) =
         match controllers[tt] with
         | Id controller ->
             match Uhppoted.GetCard(controller, MISSING_CARD, OPTIONS) with
-            | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
-            | Ok _ -> Assert.Pass()
+            | Ok _ -> Assert.Fail("expected 'card not found'")
+            | Error CardNotFound -> Assert.Pass()
             | Error err -> Assert.Fail($"{err}")
 
         | Controller controller ->
             match Uhppoted.GetCard(controller, MISSING_CARD, OPTIONS) with
-            | Ok response when response.HasValue -> Assert.Fail("expected 'null'")
-            | Ok _ -> Assert.Pass()
+            | Ok _ -> Assert.Fail("expected 'card not found'")
+            | Error CardNotFound -> Assert.Pass()
             | Error err -> Assert.Fail($"{err}")
 
     [<Test>]

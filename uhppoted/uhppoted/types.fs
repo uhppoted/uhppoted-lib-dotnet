@@ -12,6 +12,7 @@ type Err =
     | InvalidPacket
     | InvalidResponse
     | InvalidControllerType of error: string
+    | CardNotFound
 
 /// Container configuration struct for controllers that require 'connected UDP' or TCP/IP.
 [<Struct>]
