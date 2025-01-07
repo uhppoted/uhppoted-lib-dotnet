@@ -157,9 +157,10 @@ module Uhppoted =
     /// <param name="profile">Time profile ID [2..254].</param>
     /// <param name="options">Bind, broadcast and listen addresses.</param>
     /// <returns>
-    /// Ok with time profile, Ok(null) if the requested profile does not exist or Error if the request failed.
+    /// Ok with time profile, Error TimeProfileNotFoundif the requested profile does not exist or
+    /// Error if the request failed.
     /// </returns>
-    val GetTimeProfile: controller: 'T * profile: uint8 * options: Options -> Result<System.Nullable<TimeProfile>, Err>
+    val GetTimeProfile: controller: 'T * profile: uint8 * options: Options -> Result<TimeProfile, Err>
 
     /// <summary>
     /// Adds or updates an access time profile on a controller.

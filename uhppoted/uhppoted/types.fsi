@@ -15,6 +15,7 @@ type Err =
     | CardNotFound
     | EventNotFound
     | EventOverwritten
+    | TimeProfileNotFound
 
 /// Container configuration struct for controllers that require 'connected UDP' or TCP/IP.
 [<Struct>]

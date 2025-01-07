@@ -1,7 +1,9 @@
 using System.Net;
 
 using static System.Console;
+
 using uhppoted;
+using static uhppoted.Err;
 
 public readonly struct Command
 {
@@ -485,7 +487,7 @@ class Commands
             WriteLine("         PIN {0}", record.PIN);
             WriteLine();
         }
-        else if (result.IsError && result.ErrorValue == Err.CardNotFound)
+        else if (result.IsError && result.ErrorValue == CardNotFound)
         {
             throw new Exception("card not found");
         }
@@ -648,11 +650,11 @@ class Commands
             WriteLine("      reason {0} ({1})", record.Reason.Text, record.Reason.Code);
             WriteLine();
         }
-        else if (result.IsError && result.ErrorValue == uhppoted.Err.EventNotFound)
+        else if (result.IsError && result.ErrorValue == EventNotFound)
         {
             throw new Exception("event not found");
         }
-        else if (result.IsError && result.ErrorValue == uhppoted.Err.EventOverwritten)
+        else if (result.IsError && result.ErrorValue == EventOverwritten)
         {
             throw new Exception("event overwritten");
         }
@@ -742,9 +744,9 @@ class Commands
                      ? Uhppoted.GetTimeProfile(c, profile, OPTIONS)
                      : Uhppoted.GetTimeProfile(controller, profile, OPTIONS);
 
-        if (result.IsOk && result.ResultValue.HasValue)
+        if (result.IsOk)
         {
-            var record = result.ResultValue.Value;
+            var record = result.ResultValue;
 
             WriteLine("get-time-profile");
             WriteLine("          controller {0}", controller);
@@ -767,7 +769,7 @@ class Commands
             WriteLine("      linked profile {0}", record.LinkedProfile);
             WriteLine();
         }
-        else if (result.IsOk)
+        else if (result.IsError && result.ErrorValue == TimeProfileNotFound)
         {
             throw new Exception("time profile does not exist");
         }

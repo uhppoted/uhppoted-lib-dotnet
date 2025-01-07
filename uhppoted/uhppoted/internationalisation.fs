@@ -188,9 +188,10 @@ module internal internationalisation =
             | InvalidPacket -> translate ("error.invalid-packet")
             | InvalidResponse -> translate ("error.invalid-response")
             | InvalidControllerType err -> String.Format(translate ("error.invalid-controller-type"), err)
-            | CardNotFound -> translate ("error.card-not-found")
-            | EventNotFound -> translate ("error.event-not-found")
-            | EventOverwritten -> translate ("error.event-overwritten")
+            | CardNotFound -> translate ("error.card.not-found")
+            | EventNotFound -> translate ("error.event.not-found")
+            | EventOverwritten -> translate ("error.event.overwritten")
+            | TimeProfileNotFound -> translate ("error.time-profile.not-found")
 
         if not <| String.IsNullOrEmpty(message) then
             message

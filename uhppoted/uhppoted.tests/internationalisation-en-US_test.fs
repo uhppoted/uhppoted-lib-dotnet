@@ -287,7 +287,9 @@ type TestInternationalisation_en_US() =
               {| err = EventNotFound
                  expected = "event not found" |}
               {| err = EventOverwritten
-                 expected = "event overwritten" |} ]
+                 expected = "event overwritten" |}
+              {| err = TimeProfileNotFound
+                 expected = "time profile not found" |} ]
 
         errors
         |> List.iter (fun t ->

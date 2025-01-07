@@ -624,7 +624,8 @@ module Uhppoted =
     /// <param name="profile">Time profile ID [2..254].</param>
     /// <param name="options">Bind, broadcast and listen addresses.</param>
     /// <returns>
-    /// Ok with time profile, Ok(null) if the requested profile does not exist or Error if the request failed.
+    /// Ok with time profile, Error TimeProfileNotFound if the requested profile does not exist
+    /// or Error if the request failed.
     /// </returns>
     let GetTimeProfile (controller: 'T, profile: uint8, options: Options) =
         match resolve controller with
@@ -633,31 +634,27 @@ module Uhppoted =
             let request = Encode.getTimeProfileRequest c.controller profile
 
             match exec c request Decode.getTimeProfileResponse options with
-            | Ok response when response.profile = 0x00uy -> // not found
-                Ok(Nullable())
-            | Ok response when response.profile <> profile -> // incorrect profile
-                Ok(Nullable())
+            | Ok response when response.profile = 0x00uy -> Error TimeProfileNotFound
+            | Ok response when response.profile <> profile -> Error InvalidResponse
             | Ok response ->
-                Ok(
-                    Nullable
-                        { Profile = response.profile
-                          StartDate = response.startDate
-                          EndDate = response.endDate
-                          Monday = response.monday
-                          Tuesday = response.tuesday
-                          Wednesday = response.wednesday
-                          Thursday = response.thursday
-                          Friday = response.friday
-                          Saturday = response.saturday
-                          Sunday = response.sunday
-                          Segment1Start = response.segment1Start
-                          Segment1End = response.segment1End
-                          Segment2Start = response.segment2Start
-                          Segment2End = response.segment2End
-                          Segment3Start = response.segment3Start
-                          Segment3End = response.segment3End
-                          LinkedProfile = response.linkedProfile }
-                )
+                Ok
+                    { Profile = response.profile
+                      StartDate = response.startDate
+                      EndDate = response.endDate
+                      Monday = response.monday
+                      Tuesday = response.tuesday
+                      Wednesday = response.wednesday
+                      Thursday = response.thursday
+                      Friday = response.friday
+                      Saturday = response.saturday
+                      Sunday = response.sunday
+                      Segment1Start = response.segment1Start
+                      Segment1End = response.segment1End
+                      Segment2Start = response.segment2Start
+                      Segment2End = response.segment2End
+                      Segment3Start = response.segment3Start
+                      Segment3End = response.segment3End
+                      LinkedProfile = response.linkedProfile }
             | Error err -> Error err
 
     /// <summary>

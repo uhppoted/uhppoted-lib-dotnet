@@ -8,13 +8,12 @@ Retrieves an access time profile from the controller.
 - **`options` (`Options`)**: Bind, broadcast, and listen addresses.
 
 ### Returns
-Returns `Ok` with a Nullable `TimeProfile` record if the request was processed or an `Error` 
+Returns `Ok` with a `TimeProfile` record if the time profile exists or an `Error`:
 
 The `Ok` value is:
 - A `TimeProfile` record if an access time profile exists for the requested profile ID.
-- `null` if there was no record at the index.
 
-The `TimeProfile` record has the following fields:
+- a `TimeProfile` record has the following fields:
   - `profile` (`uint8`): profile ID ([2.254])
   - `start_date` (`DateOnly`): date from which the access time profile is activated
   - `end_date` (`DateOnly`): date after which the access time profile is no longer activated
@@ -33,6 +32,8 @@ The `TimeProfile` record has the following fields:
   - `segment3_end` (`TimeOnly Nullable`): end time of third time segment
   - `linked_profile` (`uint8`): linked time profile ID (0 if none)
 
+- `Error TimeProfileNotFound` if the time profile does not exist
+- `Error <error>` if the request failed.
 
 ### Examples
 
@@ -47,13 +48,13 @@ let controller = {
     protocol:Some("tcp") }
 
 match GetTimeProfile 405419896u profile options with
-| Ok response when response.HasValue -> printfn "get-time-profile: ok %A" response.Value
-| Ok _ -> printfn "get-time-profile: not found"
+| Ok response -> printfn "get-time-profile: ok %A" response
+| Error TimeProfileNotFound -> printfn "get-time-profile: not found"
 | Error err -> printfn "get-time-profile: error %A" err
 
 match GetTimeProfile controller profile options with
-| Ok response when response.HasValue -> printfn "get-time-profile: ok %A" response.Value
-| Ok _ -> printfn "get-time-profile: not found"
+| Ok response -> printfn "get-time-profile: ok %A" response
+| Error TimeProfileNotFound -> printfn "get-time-profile: not found"
 | Error err -> printfn "get-time-profile: error %A" err
 ```
 
@@ -68,11 +69,11 @@ var controller = new uhppoted.CBuilder(405419896u)
                               .Build()
 
 var result = GetTimeProfile(405419896u, profile, options);
-if (result.IsOk && result.ResultValue.HasValue)
+if (result.IsOk)
 {
-    Console.WriteLine($"get-time-profile: ok {result.ResultValue.Value}");
+    Console.WriteLine($"get-time-profile: ok {result.ResultValue}");
 }
-else if (result.IsOk)
+else if (result.IsError && result.ErrorValue == Err.TimeProfileNotFound)
 {
     Console.WriteLine($"get-time-profile: error 'not found'");
 }
@@ -82,11 +83,11 @@ else
 }
 
 var result = GetTimeProfile(controller, profile, options);
-if (result.IsOk && result.ResultValue.HasValue)
+if (result.IsOk)
 {
-    Console.WriteLine($"get-time-profile: ok {result.ResultValue.Value}");
+    Console.WriteLine($"get-time-profile: ok {result.ResultValue}");
 }
-else if (result.IsOk)
+else if (result.IsError && result.ErrorValue == Err.TimeProfileNotFound)
 {
     Console.WriteLine($"get-time-profile: error 'not found'");
 }
@@ -107,18 +108,18 @@ Dim profile = 29
 Dim options As New OptionsBuilder().WithTimeout(1250).build()
 
 Dim result = GetTimeProfile(405419896UI, profile, options)
-If (result.IsOk And result.Value.HasValue) Then
-    Console.WriteLine($"get-time-profile: ok {result.ResultValue.Value}")
-Els If (result.IsOk) Then
+If (result.IsOk) Then
+    Console.WriteLine($"get-time-profile: ok {result.ResultValue}")
+Else If (result.IsError And result.ErrorValue is Err.TimeProfileNotFound) Then
     Console.WriteLine($"get-time-profile: error 'not found'")
 Else
     Console.WriteLine($"get-time-profile: error '{result.ErrorValue}'")
 End If
 
 Dim result = GetTimeProfile(controller, profile, options)
-If (result.IsOk And result.Value.HasValue) Then
-    Console.WriteLine($"get-time-profile: ok {result.ResultValue.Value}")
-Els If (result.IsOk) Then
+If (result.IsOk) Then
+    Console.WriteLine($"get-time-profile: ok {result.ResultValue}")
+Else If (result.IsError And result.ErrorValue is Err.TimeProfileNotFound) Then
     Console.WriteLine($"get-time-profile: error 'not found'")
 Else
     Console.WriteLine($"get-time-profile: error '{result.ErrorValue}'")

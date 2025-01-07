@@ -8,8 +8,8 @@
         - [x] CardNotFound
         - [x] EventNotFound
         - [x] EventOverwritten
+        - [x] TimeProfileNotFound
         - [ ] InvalidDoor
-        - [ ] TimeProfileDoesNotExist
 
     - [ ] _Cannot access a disposed object._
 

@@ -61,7 +61,7 @@ if (result.IsOk)
 {
     Console.WriteLine($"get-card: ok {result.ResultValue}");
 }
-else if (result.IsError && result.ErrorValue == uhppoted.Err.CardNotFound)
+else if (result.IsError && result.ErrorValue == Err.CardNotFound)
 {
     Console.WriteLine($"get-card: card not found");
 }
@@ -75,7 +75,7 @@ if (result.IsOk)
 {
     Console.WriteLine($"get-card: ok {result.ResultValue}");
 }
-else if (result.IsError && result.ErrorValue == uhppoted.Err.CardNotFound)
+else if (result.IsError && result.ErrorValue == Err.CardNotFound)
 {
     Console.WriteLine($"get-card: card not found");
 }
@@ -98,7 +98,7 @@ Dim options As New OptionsBuilder().WithTimeout(1250).build()
 Dim result = GetCard(405419896UI, card, options)
 If (result.IsOk) Then
     Console.WriteLine($"get-card: ok {result.ResultValue}")
-Else If (result.IsError And result.ErrorValue is uhppoted.Err.CardNotFound) Then
+Else If (result.IsError And result.ErrorValue is Err.CardNotFound) Then
     Console.WriteLine($"get-card: card not found")
 Else
     Console.WriteLine($"get-card: error '{result.ErrorValue}'")
@@ -107,7 +107,7 @@ End If
 Dim result = GetCard(controller, card, options)
 If (result.IsOk And result.Value.HasValue) Then
     Console.WriteLine($"get-card: ok {result.ResultValue}")
-Else If (result.IsError And result.ErrorValue is uhppoted.Err.CardNotFound) Then
+Else If (result.IsError And result.ErrorValue is Err.CardNotFound) Then
     Console.WriteLine($"get-card: card not found")
 Else
     Console.WriteLine($"get-card: error '{result.ErrorValue}'")

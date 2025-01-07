@@ -568,9 +568,7 @@ let getTimeProfile args =
         | None -> Uhppoted.GetTimeProfile(controller, profile, OPTIONS)
 
     match result with
-    | Ok v when v.HasValue ->
-        let record = v.Value
-
+    | Ok record ->
         printfn "get-time-profile"
         printfn "          controller %u" controller
         printfn "             profile %u" record.Profile
@@ -592,7 +590,7 @@ let getTimeProfile args =
         printfn "      linked profile %u" record.LinkedProfile
         printfn ""
         Ok()
-    | Ok _ -> Error "time profile does not exist"
+    | Error TimeProfileNotFound -> Error "time profile does not exist"
     | Error err -> Error(translate err)
 
 let setTimeProfile args =

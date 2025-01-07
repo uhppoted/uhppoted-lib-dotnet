@@ -286,13 +286,16 @@
     <data name="error.invalid-controller-type">
         <value>invalid controller type ({0})</value>
     </data>
-    <data name="error.card-not-found">
+    <data name="error.card.not-found">
         <value>card not found</value>
     </data>
-    <data name="error.event-not-found">
+    <data name="error.event.not-found">
         <value>event not found</value>
     </data>
-    <data name="error.event-overwritten">
+    <data name="error.event.overwritten">
         <value>event overwritten</value>
+    </data>
+    <data name="error.time-profile.not-found">
+        <value>time profile not found</value>
     </data>
 </root>

@@ -7,6 +7,7 @@ Imports OptionsBuilder = uhppoted.OptionsBuilder
 Imports CBuilder = uhppoted.CBuilder
 Imports DoorMode = uhppoted.DoorMode
 Imports Interlock = uhppoted.Interlock
+Imports Err = uhppoted.Err
 
 Public Structure Command
     Public ReadOnly command As String
@@ -419,7 +420,7 @@ Module Commands
             WriteLine("      door 4 {0}", record.Door4)
             WriteLine("         PIN {0}", record.PIN)
             WriteLine()
-        Else If (result.IsError And result.ErrorValue is uhppoted.Err.CardNotFound)
+        Else If (result.IsError AndAlso result.ErrorValue is Err.CardNotFound)
             Throw New Exception("card not found")
         Else If (result.IsError)
             Throw New Exception(translate(result.ErrorValue))
@@ -559,9 +560,9 @@ Module Commands
             WriteLine("        card {0}", record.Card)
             WriteLine("      reason {0}", translate(record.Reason))
             WriteLine()
-        Else If (result.IsError And result.ErrorValue is uhppoted.Err.EventNotFound)
+        Else If (result.IsError And result.ErrorValue is Err.EventNotFound)
             Throw New Exception("event not found")
-        Else If (result.IsError And result.ErrorValue is uhppoted.Err.EventOverwritten)
+        Else If (result.IsError And result.ErrorValue is Err.EventOverwritten)
             Throw New Exception("event overwritten")
         Else If (result.IsError)
             Throw New Exception(translate(result.ErrorValue))
@@ -635,8 +636,8 @@ Module Commands
                         UHPPOTE.GetTimeProfile(CONTROLLERS(controller), profile, OPTIONS),
                         UHPPOTE.GetTimeProfile(controller, profile, OPTIONS))
 
-        If (result.IsOk And result.ResultValue.HasValue)
-            Dim record = result.ResultValue.Value
+        If (result.IsOk)
+            Dim record = result.ResultValue
 
             WriteLine("get-time-profile")
             WriteLine("          controller {0}", controller)
@@ -658,7 +659,7 @@ Module Commands
             WriteLine("                 end {0}", HHmm(record.Segment3End))
             WriteLine("      linked profile {0}", record.LinkedProfile)
             WriteLine()
-        Else If (result.IsOk)
+        Else If (result.IsError And result.ErrorValue is Err.TimeProfileNotFound)
             Throw New Exception("time profile does not exist")
         Else If (result.IsError)
             Throw New Exception(translate(result.ErrorValue))

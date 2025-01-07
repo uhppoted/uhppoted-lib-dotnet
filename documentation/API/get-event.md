@@ -64,11 +64,11 @@ if (result.IsOk)
 {
     Console.WriteLine($"get-event: ok {result.ResultValue}");
 }
-else if (result.IsError && result.ErrorValue == uhppoted.Err.EventNotFound)
+else if (result.IsError && result.ErrorValue == Err.EventNotFound)
 {
     Console.WriteLine($"get-event: error 'not found'");
 }
-else if (result.IsError && result.ErrorValue == uhppoted.Err.EventOverwritten)
+else if (result.IsError && result.ErrorValue == Err.EventOverwritten)
 {
     Console.WriteLine($"get-event: error 'overwritten'");
 }
@@ -82,11 +82,11 @@ if (result.IsOk)
 {
     Console.WriteLine($"get-event: ok {result.ResultValue}");
 }
-else if (result.IsError && result.ErrorValue == uhppoted.Err.EventNotFound)
+else if (result.IsError && result.ErrorValue == Err.EventNotFound)
 {
     Console.WriteLine($"get-event: error 'not found'");
 }
-else if (result.IsError && result.ErrorValue == uhppoted.Err.EventOverwritten)
+else if (result.IsError && result.ErrorValue == Err.EventOverwritten)
 {
     Console.WriteLine($"get-event: error 'overwritten'");
 }
@@ -109,9 +109,9 @@ Dim options As New OptionsBuilder().WithTimeout(1250).build()
 Dim result = GetEvent(405419896UI, index, options)
 If (result.IsOk) Then
     Console.WriteLine($"get-event: ok {result.ResultValue}")
-Else If (result.IsError And result.ErrorValue is uhppoted.Err.EventNotFound) Then
+Else If (result.IsError And result.ErrorValue is Err.EventNotFound) Then
     Console.WriteLine($"get-event: error 'not found'")
-Else If (result.IsError And result.ErrorValue is uhppoted.Err.EventOverwritten) Then
+Else If (result.IsError And result.ErrorValue is Err.EventOverwritten) Then
     Console.WriteLine($"get-event: error 'overwritten'")
 Else
     Console.WriteLine($"get-event: error '{result.ErrorValue}'")
@@ -120,9 +120,9 @@ End If
 Dim result = GetEvent(controller, index, options)
 If (result.IsOk) Then
     Console.WriteLine($"get-event: ok {result.ResultValue}")
-Else If (result.IsError And result.ErrorValue is uhppoted.Err.EventNotFound) Then
+Else If (result.IsError And result.ErrorValue is Err.EventNotFound) Then
     Console.WriteLine($"get-event: error 'not found'")
-Else If (result.IsError And result.ErrorValue is uhppoted.Err.EventOverwritten) Then
+Else If (result.IsError And result.ErrorValue is Err.EventOverwritten) Then
     Console.WriteLine($"get-event: error 'overwritten'")
 Else
     Console.WriteLine($"get-event: error '{result.ErrorValue}'")
