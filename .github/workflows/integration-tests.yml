@@ -30,4 +30,4 @@ jobs:
 
     - name: Build
       run: |
-        make integration-tests
+        make integration-tests DELAY=true

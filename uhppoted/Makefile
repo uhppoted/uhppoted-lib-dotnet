@@ -21,6 +21,8 @@ PIN ?= 7531
 INTERLOCK ?= "1&2,3&4"
 KEYPADS ?= "1,2,4"
 
+DELAY ?= "false"
+
 clean:
 	dotnet clean
 
@@ -35,7 +37,7 @@ test:
 	dotnet test
 
 integration-tests:
-	cd ../integration-tests && export NODELAY="true" && make test
+	cd ../integration-tests && export DELAY="$(DELAY)" && make test
 
 release: build test integration-tests
 	cd uhppoted && make release

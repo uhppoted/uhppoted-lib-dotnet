@@ -144,21 +144,23 @@ type TestAPI(tt: string) =
         | "controller+endpoint+tcp" -> this.emulator <- Stub.initialise "tcp" TestContext.Error
         | _ -> failwith "unknown test case"
 
-        let nodelay = Environment.GetEnvironmentVariable("NODELAY")
-
-        match Boolean.TryParse nodelay with
-        | true, v -> ()
-        | _ -> Thread.Sleep 500
+        Thread.Sleep 1250
+        // let delay = Environment.GetEnvironmentVariable("DELAY")
+        //
+        // match Boolean.TryParse delay with
+        // | true, v -> Thread.Sleep 1250
+        // | _ -> ()
 
     [<OneTimeTearDown>]
     member this.Terminate() =
         Stub.terminate this.emulator TestContext.Error
 
-        let nodelay = Environment.GetEnvironmentVariable("NODELAY")
-
-        match Boolean.TryParse nodelay with
-        | true, v -> ()
-        | _ -> Thread.Sleep 500
+        Thread.Sleep 1250
+        // let delay = Environment.GetEnvironmentVariable("DELAY")
+        // 
+        // match Boolean.TryParse delay with
+        // | true, v -> Thread.Sleep 1250
+        // | _ -> ()
 
     [<SetUp>]
     member this.Setup() = ()
