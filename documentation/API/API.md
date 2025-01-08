@@ -1,23 +1,10 @@
 # API
 
-**Contents**:
-1. [Types](#types)
-2. [Functions](#functions)
-3. [Options](#options)
-4. [C](#c)
-5. [Internationalisation](#internationalisation)
-
-## Types
-
-- [`Controller`](types.md#controller)
-- [`Door`](types.md#door)
-- [`Status`](types.md#status)
-- [`Event`](types.md#event)
-- [`Card`](types.md#card)
-- [`TimeProfile`](types.md#timeprofile)
-- [`Task`](types.md#task)
-- [`Listener`](types.md#listener)
-- [`ListenerEvent`](types.md#listenerevent)
+- [fsunctions](#functions)
+- [options](#options)
+- [_controller_ struct](#c)
+- [types](#types)
+- [internationalisation](#internationalisation)
 
 ## Functions
 - [`FindControllers`](find-controllers.md)
@@ -133,7 +120,7 @@ match GetController 405419896u options with
 let controller = { 
     controller=405419896u; 
     endpoint=Some(IPEndPoint.Parse("192.168.1.100:60000")); 
-    protocol:Some("tcp") }
+    protocol=Some("tcp") }
 
 match GetController controller options with
 | Ok record -> printfn "get-controller: ok %A" record
@@ -162,9 +149,37 @@ Private ReadOnly Dim controller = New ControllerBuilder(405419896u).
                                       Build()
 ```
 
-## enums
+## Types
 
-### Interlock
+- [`Controller`](types.md#controller)
+- [`Door`](types.md#door)
+- [`Status`](types.md#status)
+- [`Event`](types.md#event)
+- [`Card`](types.md#card)
+- [`TimeProfile`](types.md#timeprofile)
+- [`Task`](types.md#task)
+- [`Listener`](types.md#listener)
+- [`ListenerEvent`](types.md#listenerevent)
+
+
+### enums
+
+#### _DoorMode_
+
+Defines the door control modes:
+- `Unknown`: unknown door control mode
+- `NormallyOpen`: Door is always unlocked
+- `NormallyClosed`: Door is always locked
+- `Controlled`: Door lock is managed by access controller
+
+#### _Direction_
+
+Defines whether a door was unlocked for entrance or exit:
+- `Unknown`: unknown direction
+- `In`: access granted for entrance
+- `Out`: access granted for exit
+
+#### Interlock
 
 Defines the door interlocks for an access controller:
 
@@ -175,12 +190,38 @@ Defines the door interlocks for an access controller:
 - `Doors123`: interlock between doors 1, 2 & 3
 - `Doors1234`: interlocks all doors
 
-### Relay
+#### Relay
 
 Defines the relay contact states for the door unlock relays:
 
-- `Open`: the relay is deactivated i.e. the _normally open_ contact is open and the _normally closed_ contact is closed
-- `Closed`: the relay is activated i.e. the _normally open_ contact is closed  and the _normally closed_ contact is open
+- `Unknown`: the relay state is undefined
+- `Inactive`: the relay is deactivated i.e. the _normally open_ contact is open and the _normally closed_ contact is closed
+- `Active`: the relay is activated i.e. the _normally open_ contact is closed  and the _normally closed_ contact is open
+
+#### Input
+
+Defines the states for external inputs:
+
+- `Unknown`: unknown input contact state
+- `Clear`: input contact is not 'made'
+- `Set`: input contact is 'made'
+
+#### TaskCode
+
+Defines the known task codes for the scheduled tasks:
+- `ControlDoor`: sets a door mode to 'controlled
+- `UnlockDoor`: sets a door mode to 'normally open'
+- `LockDoor`: sets a door mode to 'normally closed'
+- `DisableTimeProfiles`: disables time profiles
+- `EnableTimeProfiles`: enables time profiles
+- `EnableCardNoPIN`: allows card entry without a PIN
+- `EnableCardInPIN`: requires a card+PIN for IN access
+- `EnableCardInOutPIN`: requires a card+PIN for both IN and OUT access
+- `EnableMoreCards`: enables 'more cards' access
+- `DisableMoreCards`: disables 'more cards' access
+- `TriggerOnce`: trigger 'once'
+- `DisablePushbutton`: disables pushbutton access
+- `EnablePushbutton`: enables pushbutton access
 
 ## Internationalisation
 

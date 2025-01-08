@@ -99,5 +99,3 @@ Returns:
     End Sub
 
 ```
-
-### Notes

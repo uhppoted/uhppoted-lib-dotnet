@@ -33,7 +33,7 @@ let options = { broadcast = IPAddress.Broadcast; timeout = 1250; debug = true }
 let controller = { 
     controller=405419896u; 
     endpoint=Some(IPEndPoint.Parse("192.168.1.100:60000")); 
-    protocol:Some("tcp") }
+    protocol=Some("tcp") }
 
 match SetInterlock 405419896u interlock options with
 | Ok ok -> printfn "set-interlock: ok %A" ok
@@ -99,5 +99,3 @@ Else
     Console.WriteLine($"set-interlock: error {result.ErrorValue}")
 End If
 ```
-
-### Notes

@@ -28,7 +28,7 @@ let options = { broadcast = IPAddress.Broadcast; timeout = 1250; debug = true }
 let controller = { 
     controller=405419896u; 
     endpoint=Some(IPEndPoint.Parse("192.168.1.100:60000")); 
-    protocol:Some("tcp") }
+    protocol=Some("tcp") }
 
 match SetListener 405419896u listener interval options with
 | Ok ok -> printfn "set-listener: ok %A" ok
@@ -96,6 +96,3 @@ Else
     Console.WriteLine($"set-listener: error {result.ErrorValue}")
 End If
 ```
-
-### Notes
-

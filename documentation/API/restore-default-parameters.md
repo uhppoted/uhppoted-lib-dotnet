@@ -22,7 +22,7 @@ let options = { broadcast = IPAddress.Broadcast; timeout = 1250; debug = true }
 let controller = { 
     controller=405419896u; 
     endpoint=Some(IPEndPoint.Parse("192.168.1.100:60000")); 
-    protocol:Some("tcp") }
+    protocol=Some("tcp") }
 
 match RestoreDefaultSettings 405419896u options with
 | Ok ok -> printfn "restore-default-settings: ok %A" ok
@@ -86,5 +86,3 @@ Else
     Console.WriteLine($"restore-default-settings: error {result.ErrorValue}")
 End If
 ```
-
-### Notes

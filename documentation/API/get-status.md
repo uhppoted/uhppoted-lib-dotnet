@@ -51,7 +51,7 @@ let options = { broadcast = IPAddress.Broadcast; timeout = 1250; debug = true }
 let controller = { 
     controller=405419896u; 
     endpoint=Some(IPEndPoint.Parse("192.168.1.100:60000")); 
-    protocol:Some("tcp") }
+    protocol=Some("tcp") }
 
 match GetStatus 405419896u options with
 | Ok response -> printfn "get-status: ok %A" response
@@ -115,5 +115,3 @@ Else
     Console.WriteLine("get-status: error {0}", result.Error)
 End If
 ```
-
-### Notes

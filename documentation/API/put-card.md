@@ -90,7 +90,7 @@ let options = { broadcast = IPAddress.Broadcast; timeout = 1250; debug = true }
 
     controller=405419896u; 
     endpoint=Some(IPEndPoint.Parse("192.168.1.100:60000")); 
-    protocol:Some("tcp") }
+    protocol=Some("tcp") }
 
 match PutCard 405419896u card options with
 | Ok ok -> printfn "put-card: ok %A" ok
@@ -168,5 +168,3 @@ Else
     Console.WriteLine($"put-card: error {result.ErrorValue}")
 End If
 ```
-
-### Notes

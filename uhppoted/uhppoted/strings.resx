@@ -176,43 +176,43 @@
     </data>
 
     <!-- tasks -->
-    <data name="task.1">
+    <data name="task.0">
         <value>control door</value>
     </data>
-    <data name="task.2">
+    <data name="task.1">
         <value>unlock door</value>
     </data>
-    <data name="task.3">
+    <data name="task.2">
         <value>lock door</value>
     </data>
-    <data name="task.4">
+    <data name="task.3">
         <value>disable time profiles</value>
     </data>
-    <data name="task.5">
+    <data name="task.4">
         <value>enable time profiles</value>
     </data>
-    <data name="task.6">
+    <data name="task.5">
         <value>enable card, no password</value>
     </data>
-    <data name="task.7">
+    <data name="task.6">
         <value>enable card+IN password</value>
     </data>
-    <data name="task.8">
+    <data name="task.7">
         <value>enable card+password</value>
     </data>
-    <data name="task.9">
+    <data name="task.8">
         <value>enable more cards</value>
     </data>
-    <data name="task.10">
+    <data name="task.9">
         <value>disable more cards</value>
     </data>
-    <data name="task.11">
+    <data name="task.10">
         <value>trigger once</value>
     </data>
-    <data name="task.12">
+    <data name="task.11">
         <value>disable pushbutton</value>
     </data>
-    <data name="task.13">
+    <data name="task.12">
         <value>enable pushbutton</value>
     </data>
     <data name="task.unknown">

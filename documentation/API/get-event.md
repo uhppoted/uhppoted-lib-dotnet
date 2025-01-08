@@ -34,7 +34,7 @@ let options = { broadcast = IPAddress.Broadcast; timeout = 1250; debug = true }
 let controller = { 
     controller=405419896u; 
     endpoint=Some(IPEndPoint.Parse("192.168.1.100:60000")); 
-    protocol:Some("tcp") }
+    protocol=Some("tcp") }
 
 match GetEvent 405419896u index options with
 | Ok response -> printfn "get-event: ok %A" response
@@ -128,5 +128,3 @@ Else
     Console.WriteLine($"get-event: error '{result.ErrorValue}'")
 End If
 ```
-
-### Notes

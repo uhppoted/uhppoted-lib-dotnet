@@ -11,6 +11,15 @@ controllers includes all controllers that responded within the `timeout` value s
 Array of `Controller` structs that represent the valid decoded responses. Each item includes data about an access controller, 
 including its address, MAC, version, and other relevant details.
 
+- The `Controller` struct defines the following fields:
+  - `Controller` (`uint32`): The controller identifier.
+  - `Address` (`IPAddress option`): The IP address of the controller, or `None` if not available.
+  - `Netmask` (`IPAddress`): The netmask associated with the controller.
+  - `Gateway` (`IPAddress`): The gateway associated with the controller.
+  - `MAC` (`PhysicalAddress`): The MAC address of the controller.
+  - `Version` (`string`): The version of the controller firmware.
+  - `Date` (`Nullable<DateOnly>`): The firmware release date.
+
 ### Examples
 #### F#
 ```fsharp
@@ -65,13 +74,3 @@ End If
 ### Errors
 - If the UDP request fails or times out, the response will be excluded from the results.
 - Invalid responses that cannot be decoded into `GetControllerResponse` records are discarded.
-
-### Notes
-- The `Controller` struct defines the following fields:
-  - `controller` (`uint32`): The controller identifier.
-  - `address` (`IPAddress option`): The IP address of the controller, or `None` if not available.
-  - `netmask` (`IPAddress`): The netmask associated with the controller.
-  - `gateway` (`IPAddress`): The gateway associated with the controller.
-  - `MAC` (`PhysicalAddress`): The MAC address of the controller.
-  - `version` (`string`): The version of the controller firmware.
-  - `date` (`Nullable<DateOnly>`): The date associated with the controller, if available.

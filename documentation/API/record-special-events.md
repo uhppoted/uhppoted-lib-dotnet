@@ -22,7 +22,7 @@ let options = { broadcast = IPAddress.Broadcast; timeout = 1250; debug = true }
 let controller = { 
     controller=405419896u; 
     endpoint=Some(IPEndPoint.Parse("192.168.1.100:60000")); 
-    protocol:Some("tcp") }
+    protocol=Some("tcp") }
 
 match RecordSpecialEvents 405419896u enable options with
 | Ok ok  -> printfn "record-special-events: ok %A" ok
@@ -88,5 +88,3 @@ Else
     Console.WriteLine($"record-special-events: error '{result.ErrorValue}'")
 End If
 ```
-
-### Notes

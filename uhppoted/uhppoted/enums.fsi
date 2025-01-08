@@ -37,20 +37,20 @@ type Input =
 
 /// <summary>Defines the known task codes for scheduled tasks.
 type TaskCode =
-    | Unknown = 0
-    | ControlDoor = 1
-    | UnlockDoor = 2
-    | LockDoor = 3
-    | DisableTimeProfiles = 4
-    | EnableTimeProfiles = 5
-    | EnableCardNoPIN = 6
-    | EnableCardInPIN = 7
-    | EnableCardInOutPIN = 8
-    | EnableMoreCards = 9
-    | DisableMoreCards = 10
-    | TriggerOnce = 11
-    | DisablePushbutton = 12
-    | EnablePushbutton = 13
+    | ControlDoor = 0
+    | UnlockDoor = 1
+    | LockDoor = 2
+    | DisableTimeProfiles = 3
+    | EnableTimeProfiles = 4
+    | EnableCardNoPIN = 5
+    | EnableCardInPIN = 6
+    | EnableCardInOutPIN = 7
+    | EnableMoreCards = 8
+    | DisableMoreCards = 9
+    | TriggerOnce = 10
+    | DisablePushbutton = 11
+    | EnablePushbutton = 12
+    | Unknown = 255
 
 module internal Enums =
     val internal doorMode: v: uint8 -> DoorMode

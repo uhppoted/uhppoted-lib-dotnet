@@ -28,7 +28,7 @@ let options = { broadcast = IPAddress.Broadcast; timeout = 1250; debug = true }
 let controller = { 
     controller=405419896u; 
     endpoint=Some(IPEndPoint.Parse("192.168.1.100:60000")); 
-    protocol:Some("tcp") }
+    protocol=Some("tcp") }
 
 match ActivateKeypads 405419896u reader1 reader2 reader3 reader4 options with
 | Ok ok -> printfn "activate-keypads: ok %A" ok
@@ -101,4 +101,3 @@ Else
 End If
 ```
 
-### Notes

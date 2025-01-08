@@ -77,48 +77,47 @@ type Input =
 
 /// <summary>Defines the known task codes for the scheduled tasks.
 type TaskCode =
-    /// <summary>Unknown state.</summary>
-    | Unknown = 0
-
     /// <summary>Sets a door mode to 'controlled.</summary>
-    | ControlDoor = 1
+    | ControlDoor = 0
 
     /// <summary>Sets a door mode to 'normally open'.</summary>
-    | UnlockDoor = 2
+    | UnlockDoor = 1
 
     /// <summary>Sets a door mode to 'normally closed'.</summary>
-    | LockDoor = 3
+    | LockDoor = 2
 
     /// <summary>Disables time profiles.</summary>
-    | DisableTimeProfiles = 4
+    | DisableTimeProfiles = 3
 
     /// <summary>Enables time profiles.</summary>
-    | EnableTimeProfiles = 5
+    | EnableTimeProfiles = 4
 
     /// <summary>Allows card entry without a PIN.</summary>
-    | EnableCardNoPIN = 6
+    | EnableCardNoPIN = 5
 
     /// <summary>Requires a card+PIN for IN access.</summary>
-    | EnableCardInPIN = 7
+    | EnableCardInPIN = 6
 
     /// <summary>Requires a card+PIN for both IN and OUT access.</summary>
-    | EnableCardInOutPIN = 8
+    | EnableCardInOutPIN = 7
 
     /// <summary>Enables 'more cards' access.</summary>
-    | EnableMoreCards = 9
+    | EnableMoreCards = 8
 
     /// <summary>Disables 'more cards' access.</summary>
-    | DisableMoreCards = 10
+    | DisableMoreCards = 9
 
     /// <summary>Trigger 'once'.</summary>
-    | TriggerOnce = 11
+    | TriggerOnce = 10
 
     /// <summary>Disables pushbutton access.</summary>
-    | DisablePushbutton = 12
+    | DisablePushbutton = 11
 
     /// <summary>Enables pushbutton access.</summary>
-    | EnablePushbutton = 13
+    | EnablePushbutton = 12
 
+    /// <summary>Unknown task code.</summary>
+    | Unknown = 255
 
 module internal Enums =
     let internal doorMode (v: uint8) : DoorMode =
