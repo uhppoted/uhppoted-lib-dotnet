@@ -9,7 +9,7 @@ jobs:
     name: Build
     strategy:
       matrix:
-        version: ['9.0.x']
+        version: ['8.x', '9.x']
     runs-on: ubuntu-latest
     steps:
 
