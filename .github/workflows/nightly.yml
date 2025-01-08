@@ -13,7 +13,7 @@ jobs:
     name: Build
     strategy:
       matrix:
-        version: ['8.0.x']
+        version: ['8.x', '9.x']
     runs-on: ubuntu-latest
     steps:
 
@@ -48,4 +48,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         path: uhppoted/uhppoted/dist
-        name: uhppoted.0.8.9-nightly
+        name: uhppoted.0.8.9-net${{ matrix.version }}-nightly
