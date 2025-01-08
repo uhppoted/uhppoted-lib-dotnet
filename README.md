@@ -4,31 +4,48 @@
 
 # uhppoted-lib-dotnet
 
-** IN DEVELOPMENT **
-
 .NET package for the UHPPOTE access controller API.
 
 The API is described in [API.md](documentation/API/API.md) and example CLI implementations in F#, C# and VB.NET that 
 illustrate the use of the API can be found in the [examples](examples) folder.
 
+## Release Notes
+
+_NOT RELEASED_
+
+#### Current Release
+
+
 ## Installation
+
+### Installing from NuGet
 
 ### Building from source
 
-NTS:
-1. To build with .NET 7 SDK
+Requirements:
+- .NET SDK 7.0+
+- (optional) make
+
+```
+git clone https://github.com/uhppoted/uhppoted-lib-dotnet.git
+cd uhppoted-lib-dotnet/uhppoted
+make build
+```
+
+If you prefer to build manually:
+```
+   git clone https://github.com/uhppoted/uhppoted-lib-dotnet.git
+   cd uhppoted-lib-dotnet/uhppoted
+   dotnet build
+```
+
+### Notes
+1. To build with .NET 7 SDK set the DOTNET7 environment variable:
 ```
 export DOTNET7=true
 ```
 
-## Release Notes
-
-#### Current Release
-
 ## API summary
-
-### Usage
-
 
 ### [`FindControllers`](documentation/API/find-controllers.md)
 'Discovers' all controllers accessible via a UDP broadcast on the local LAN.
@@ -129,6 +146,19 @@ Restores the manufacturer default settings.
 ### [`Listen`](documentation/API/listen.md)
 Listens for access controller events.
 
+## Examples
+
+### F#
+
+- [CLI](https://github.com/uhppoted/uhppoted-lib-dotnet/tree/main/examples/fsharp/cli)
+
+### C#
+
+- [CLI](https://github.com/uhppoted/uhppoted-lib-dotnet/tree/main/examples/csharp/cli)
+
+### VB.NET
+
+- [CLI](https://github.com/uhppoted/uhppoted-lib-dotnet/tree/main/examples/vb/cli)
 
 ## Notes
 
@@ -146,4 +176,3 @@ dotnet add package FSharp.Core
 dotnet add package FSharp.Core
 ```
 
-[examples]:  https://github.com/uhppoted/uhppoted-lib-dotnet/tree/main/examples

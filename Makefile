@@ -1,4 +1,4 @@
-CLI = dotnet run --project ./examples/fs/cli --framework net7.0
+CLI = dotnet run --project ./examples/fsharp/cli --framework net7.0
 
 CONTROLLER ?= 405419896
 DOOR ?= 3
@@ -24,17 +24,17 @@ KEYPADS ?= "1,2,4"
 .PHONY: integration-tests
 
 clean:
-	cd uhppoted && make clean
-	cd integration-tests && make clean
-	cd examples/fs/cli && make clean
-	cd examples/cs/cli && make clean
-	cd examples/vb/cli && make clean
+	cd uhppoted            && make clean
+	cd integration-tests   && make clean
+	cd examples/fsharp/cli && make clean
+	cd examples/csharp/cli && make clean
+	cd examples/vb/cli     && make clean
 
 build-all:
-	cd uhppoted        && make build && make test
-	cd examples/fs/cli && make build
-	cd examples/cs/cli && make build
-	cd examples/vb/cli && make build
+	cd uhppoted            && make build && make test
+	cd examples/fsharp/cli && make build
+	cd examples/csharp/cli && make build
+	cd examples/vb/cli     && make build
 
 integration-tests: 
 	cd integration-tests && make test
