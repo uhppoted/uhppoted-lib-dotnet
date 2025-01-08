@@ -1,11 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net8.0</TargetFrameworks>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <TargetFrameworks>net8.0; net9.0</TargetFrameworks>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(DOTNET7)' == 'true'">
+  <PropertyGroup Condition="'$(NETCoreSdkVersion)' &lt; '9.0'">
+    <TargetFrameworks>net8.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(NETCoreSdkVersion)' &lt; '8.0'">
     <TargetFrameworks>net7.0</TargetFrameworks>
   </PropertyGroup>
 
