@@ -29,7 +29,7 @@
   </Choose>
 
   <ItemGroup>
-    <PackageReference Include="FSharp.Core" Version="8.0.401" />
+    <PackageReference Include="FSharp.Core" Version="*" />
   </ItemGroup>
 
 </Project>
