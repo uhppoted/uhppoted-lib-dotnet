@@ -28,7 +28,6 @@ format:
 	dotnet fantomas .
 
 build:
-#	export DOTNET7=true && dotnet build && dotnet fantomas .
 	dotnet build
 	dotnet fantomas .
 

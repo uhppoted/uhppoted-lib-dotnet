@@ -1,7 +1,7 @@
 # TODO
 
 - [x] README
-- [ ] Add .NET 9 as a target framework
+- [x] Add .NET 9 as a target framework
 - [ ] Package for NuGet
 - [ ] API
     - [x] Prefer namespaces at the top level

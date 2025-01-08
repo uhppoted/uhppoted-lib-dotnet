@@ -40,10 +40,6 @@ If you prefer to build manually:
 ```
 
 ### Notes
-1. To build with .NET 7 SDK set the DOTNET7 environment variable:
-```
-export DOTNET7=true
-```
 
 #### C#
 
