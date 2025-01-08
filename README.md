@@ -4,10 +4,10 @@
 
 # uhppoted-lib-dotnet
 
-.NET package for the UHPPOTE access controller API.
+.NET package for the UHPPOTE access controller API:
 
-The API is described in [API.md](documentation/API/API.md) and example CLI implementations in F#, C# and VB.NET that 
-illustrate the use of the API can be found in the [examples](examples) folder.
+- the API is described in [API.md](documentation/API/API.md)
+- example CLI implementations in F#, C# and VB.NET that illustrate the use of the API can be found in the [examples](examples) folder.
 
 ## Release Notes
 
@@ -44,6 +44,21 @@ If you prefer to build manually:
 ```
 export DOTNET7=true
 ```
+
+#### C#
+
+C# applications may require installing the FSharp.Core package:
+```
+dotnet add package FSharp.Core
+```
+
+#### VB.NET
+
+VB.NET applications may require installing the FSharp.Core package:
+```
+dotnet add package FSharp.Core
+```
+
 
 ## API summary
 
@@ -161,18 +176,4 @@ Listens for access controller events.
 - [CLI](https://github.com/uhppoted/uhppoted-lib-dotnet/tree/main/examples/vb/cli)
 
 ## Notes
-
-### C# Interop
-
-1. May require the FSharp.Core package
-```
-dotnet add package FSharp.Core
-```
-
-### VB.NET Interop
-
-1. May require the FSharp.Core package
-```
-dotnet add package FSharp.Core
-```
 
