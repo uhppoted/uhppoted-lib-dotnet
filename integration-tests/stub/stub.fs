@@ -141,7 +141,9 @@ module Stub =
         if count > 0 then
             try
                 match (init mode logger) with
-                | Ok emulator -> Ok emulator
+                | Ok emulator -> 
+                    Thread.Sleep 1000  // let TCP connection stabilise
+                    Ok emulator
                 | _ -> Error "could not initialise stub"
             with err ->
                 logger.WriteLine("  ** WARN {0} ... retrying...", err.Message)
@@ -150,7 +152,7 @@ module Stub =
         else
             Error "could not initialise emulator"
 
-    let terminate (emulator: Emulator) (logger: TextWriter) : unit =
+    let terminate (emulator: Emulator) (logger: TextWriter) =
         match emulator.udp with
         | Some udp -> (fst udp).Close()
         | None -> ()
