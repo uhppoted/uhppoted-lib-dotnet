@@ -142,7 +142,7 @@ module Stub =
             try
                 match (init mode logger) with
                 | Ok emulator -> 
-                    Thread.Sleep 1000  // let TCP connection stabilise
+                    Thread.Sleep 1000  // delay to let async listener start properly (TCP)
                     Ok emulator
                 | _ -> Error "could not initialise stub"
             with err ->
