@@ -1,8 +1,8 @@
 # TODO
 
 - [x] Add .NET 9 as a target framework
-      - [ ] build.yml "System.Net.Sockets.SocketException : Address already in use"
-      - [ ] integration.yml "System.Net.Sockets.SocketException : Address already in use"
+      - [x] build.yml "System.Net.Sockets.SocketException : Address already in use"
+      - [x] integration.yml "System.Net.Sockets.SocketException : Address already in use"
 
 - [ ] Package for NuGet
 - [ ] API
