@@ -1,0 +1,31 @@
+name: integration-tests
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  build:
+    name: Build
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        version: ['9.x']
+    runs-on: ${{ matrix.os }}
+    steps:
+
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: ${{ matrix.version }}
+
+    - name: Check out code
+      uses: actions/checkout@v4
+
+    - name: Install fantomas
+      run: |
+        dotnet tool install fantomas
+
+    - name: Build
+      run: |
+        make integration-tests DELAY=true

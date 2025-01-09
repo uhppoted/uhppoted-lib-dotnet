@@ -17,7 +17,7 @@ type TestCase =
 [<TestFixture>]
 type TestFindAPI() =
     [<DefaultValue>]
-    val mutable emulator: Emulator
+    val mutable emulator: Option<Emulator>
 
     let OPTIONS: Options =
         { bind = IPEndPoint(IPAddress.Any, 0)
@@ -28,11 +28,15 @@ type TestFindAPI() =
 
     [<OneTimeSetUp>]
     member this.Initialise() =
-        this.emulator <- Stub.initialise "broadcast" TestContext.Error
+        match Stub.initialise "broadcast" TestContext.Error 5 with
+        | Ok emulator -> this.emulator <- Some emulator
+        | Error err -> raise (System.Exception(err))
 
     [<OneTimeTearDown>]
     member this.Terminate() =
-        Stub.terminate this.emulator TestContext.Error
+        match this.emulator with
+        | Some emulator -> (Stub.terminate emulator TestContext.Error)
+        | _ -> ()
 
     [<SetUp>]
     member this.Setup() = ()
@@ -79,7 +83,7 @@ type TestFindAPI() =
 [<TestFixture("controller+endpoint+tcp")>]
 type TestAPI(tt: string) =
     [<DefaultValue>]
-    val mutable emulator: Emulator
+    val mutable emulator: Option<Emulator>
 
     let controllers =
         Map.ofList
@@ -136,29 +140,24 @@ type TestAPI(tt: string) =
 
     [<OneTimeSetUp>]
     member this.Initialise() =
+        let init mode =
+            match Stub.initialise mode TestContext.Error 5 with
+            | Ok emulator -> this.emulator <- Some emulator
+            | Error err -> raise (System.Exception(err))
+
         match tt with
-        | "uint32" -> this.emulator <- Stub.initialise "broadcast" TestContext.Error
-        | "controller" -> this.emulator <- Stub.initialise "broadcast" TestContext.Error
-        | "controller+endpoint" -> this.emulator <- Stub.initialise "connected udp" TestContext.Error
-        | "controller+endpoint+udp" -> this.emulator <- Stub.initialise "connected udp" TestContext.Error
-        | "controller+endpoint+tcp" -> this.emulator <- Stub.initialise "tcp" TestContext.Error
+        | "uint32" -> init "broadcast"
+        | "controller" -> init "broadcast"
+        | "controller+endpoint" -> init "connected udp"
+        | "controller+endpoint+udp" -> init "connected udp"
+        | "controller+endpoint+tcp" -> init "tcp"
         | _ -> failwith "unknown test case"
-
-        let nodelay = Environment.GetEnvironmentVariable("NODELAY")
-
-        match Boolean.TryParse nodelay with
-        | true, v -> ()
-        | _ -> Thread.Sleep 500
 
     [<OneTimeTearDown>]
     member this.Terminate() =
-        Stub.terminate this.emulator TestContext.Error
-
-        let nodelay = Environment.GetEnvironmentVariable("NODELAY")
-
-        match Boolean.TryParse nodelay with
-        | true, v -> ()
-        | _ -> Thread.Sleep 500
+        match this.emulator with
+        | Some emulator -> (Stub.terminate emulator TestContext.Error)
+        | _ -> ()
 
     [<SetUp>]
     member this.Setup() = ()
@@ -947,8 +946,8 @@ type TestAPI(tt: string) =
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail($"{err}")
 
-    [<Test>]
-    member this.TestListen() =
+
+    member this.listen(emulator) =
         let cancel = new CancellationTokenSource()
 
         Console.CancelKeyPress.Add(fun args ->
@@ -975,13 +974,13 @@ type TestAPI(tt: string) =
 
         async {
             do! Async.Sleep(100)
-            Stub.event this.emulator Events.normalEvent TestContext.Error
+            Stub.event emulator Events.normalEvent TestContext.Error
             do! Async.Sleep(100)
-            Stub.event this.emulator Events.v6_62_Event TestContext.Error
+            Stub.event emulator Events.v6_62_Event TestContext.Error
             do! Async.Sleep(100)
-            Stub.event this.emulator Events.eventWithoutEvent TestContext.Error
+            Stub.event emulator Events.eventWithoutEvent TestContext.Error
             do! Async.Sleep(100)
-            Stub.event this.emulator Events.errorEvent TestContext.Error
+            Stub.event emulator Events.errorEvent TestContext.Error
         }
         |> Async.Start
 
@@ -1041,3 +1040,8 @@ type TestAPI(tt: string) =
 
         Assert.That(events, Is.EqualTo(expected))
         Assert.That(errors, Is.EqualTo([ PacketError "invalid listen-event packet" ]))
+
+    member this.TestListen() =
+        match this.emulator with
+        | Some emulator -> this.listen emulator
+        | None -> failwith "no emulator"

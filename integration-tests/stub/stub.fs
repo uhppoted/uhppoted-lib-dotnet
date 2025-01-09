@@ -4,6 +4,7 @@ open System
 open System.IO
 open System.Net
 open System.Net.Sockets
+open System.Threading
 open System.Threading.Tasks
 
 type Emulator =
@@ -103,7 +104,7 @@ module Stub =
             | err -> logger.WriteLine("** ERROR {0}", err.Message)
         }
 
-    let initialise (mode: string) (logger: TextWriter) : Emulator =
+    let init (mode: string) (logger: TextWriter) : Result<Emulator, string> =
         match mode with
         | "broadcast" ->
             let udp = new UdpClient(59999)
@@ -112,7 +113,7 @@ module Stub =
 
             let udprx = recv udp logger |> Async.StartAsTask
 
-            { udp = Some(udp, udprx); tcp = None }
+            Ok { udp = Some(udp, udprx); tcp = None }
 
         | "connected udp" ->
             let udp = new UdpClient(59998)
@@ -121,7 +122,7 @@ module Stub =
 
             let udprx = recv udp logger |> Async.StartAsTask
 
-            { udp = Some(udp, udprx); tcp = None }
+            Ok { udp = Some(udp, udprx); tcp = None }
 
         | "tcp" ->
             let tcp = new TcpListener(IPAddress.Any, 59997)
@@ -130,13 +131,26 @@ module Stub =
 
             let tcprx = listen tcp logger |> Async.StartAsTask
 
-            { udp = None; tcp = Some(tcp, tcprx) }
+            Ok { udp = None; tcp = Some(tcp, tcprx) }
 
         | _ ->
             logger.WriteLine("unknown emulator mode ({0})", mode)
-            { udp = None; tcp = None }
+            Ok { udp = None; tcp = None }
 
-    let terminate (emulator: Emulator) (logger: TextWriter) =
+    let rec initialise (mode: string) (logger: TextWriter) (count: int) : Result<Emulator, string> =
+        if count > 0 then
+            try
+                match (init mode logger) with
+                | Ok emulator -> Ok emulator
+                | _ -> Error "could not initialise stub"
+            with err ->
+                logger.WriteLine("  ** WARN {0} ... retrying...", err.Message)
+                Thread.Sleep(30000)
+                (initialise mode logger (count - 1))
+        else
+            Error "could not initialise emulator"
+
+    let terminate (emulator: Emulator) (logger: TextWriter) : unit =
         match emulator.udp with
         | Some udp -> (fst udp).Close()
         | None -> ()
