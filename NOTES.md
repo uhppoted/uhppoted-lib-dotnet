@@ -14,6 +14,11 @@
 12. https://localizely.com/getting-started
 13. https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/conventions#represent-error-cases-and-illegal-state-in-types-intrinsic-to-your-domain
 14. https://stackoverflow.com/questions/69393627/create-nuget-package-for-different-platforms-architectures-and-net-versions
+15. https://learn.microsoft.com/en-us/troubleshoot/windows-server/networking/default-dynamic-port-range-tcpip-chang
+16. https://learn.microsoft.com/en-us/windows/uwp/networking/sockets
+    ```
+    <Capability Name="privateNetworkClientServer" />
+    ```
 
 
 ## F#

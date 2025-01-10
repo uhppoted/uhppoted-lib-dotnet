@@ -3,6 +3,7 @@
 - [x] Add .NET 9 as a target framework
       - [x] build.yml "System.Net.Sockets.SocketException : Address already in use"
       - [x] integration.yml "System.Net.Sockets.SocketException : Address already in use"
+      - [ ] https://learn.microsoft.com/en-us/troubleshoot/windows-server/networking/default-dynamic-port-range-tcpip-chang
 
 - [ ] Package for NuGet
 - [ ] API

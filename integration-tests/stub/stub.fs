@@ -107,7 +107,7 @@ module Stub =
     let init (mode: string) (logger: TextWriter) : Result<Emulator, string> =
         match mode with
         | "broadcast" ->
-            let udp = new UdpClient(59999)
+            let udp = new UdpClient(39999)
 
             udp.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true)
 
@@ -116,7 +116,7 @@ module Stub =
             Ok { udp = Some(udp, udprx); tcp = None }
 
         | "connected udp" ->
-            let udp = new UdpClient(59998)
+            let udp = new UdpClient(39998)
 
             udp.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true)
 
@@ -125,7 +125,7 @@ module Stub =
             Ok { udp = Some(udp, udprx); tcp = None }
 
         | "tcp" ->
-            let tcp = new TcpListener(IPAddress.Any, 59997)
+            let tcp = new TcpListener(IPAddress.Any, 39997)
 
             tcp.Server.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true)
 
@@ -141,8 +141,8 @@ module Stub =
         if count > 0 then
             try
                 match (init mode logger) with
-                | Ok emulator -> 
-                    Thread.Sleep 1000  // delay to let async listener start properly (TCP)
+                | Ok emulator ->
+                    Thread.Sleep 1000 // delay to let async listener start properly (TCP)
                     Ok emulator
                 | _ -> Error "could not initialise stub"
             with err ->

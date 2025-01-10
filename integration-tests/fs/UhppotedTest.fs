@@ -21,7 +21,7 @@ type TestFindAPI() =
 
     let OPTIONS: Options =
         { bind = IPEndPoint(IPAddress.Any, 0)
-          broadcast = IPEndPoint(IPAddress.Broadcast, 59999)
+          broadcast = IPEndPoint(IPAddress.Broadcast, 39999)
           listen = IPEndPoint(IPAddress.Any, 60001)
           timeout = 500
           debug = false }
@@ -98,19 +98,19 @@ type TestAPI(tt: string) =
               ("controller+endpoint",
                Controller
                    { controller = 405419896u
-                     endpoint = Some(IPEndPoint.Parse("127.0.0.1:59998"))
+                     endpoint = Some(IPEndPoint.Parse("127.0.0.1:39998"))
                      protocol = None })
 
               ("controller+endpoint+udp",
                Controller
                    { controller = 405419896u
-                     endpoint = Some(IPEndPoint.Parse("127.0.0.1:59998"))
+                     endpoint = Some(IPEndPoint.Parse("127.0.0.1:39998"))
                      protocol = Some("udp") })
 
               ("controller+endpoint+tcp",
                Controller
                    { controller = 405419896u
-                     endpoint = Some(IPEndPoint.Parse("127.0.0.1:59997"))
+                     endpoint = Some(IPEndPoint.Parse("127.0.0.1:39997"))
                      protocol = Some("tcp") }) ]
 
     let controller = controllers[tt]
@@ -133,7 +133,7 @@ type TestAPI(tt: string) =
 
     let OPTIONS: Options =
         { bind = IPEndPoint(IPAddress.Any, 0)
-          broadcast = IPEndPoint(IPAddress.Broadcast, 59999)
+          broadcast = IPEndPoint(IPAddress.Broadcast, 39999)
           listen = IPEndPoint(IPAddress.Any, 60001)
           timeout = 500
           debug = false }
