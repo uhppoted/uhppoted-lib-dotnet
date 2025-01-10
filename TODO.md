@@ -7,6 +7,9 @@
 
 - [ ] Package for NuGet
       - [ ] Fix documentation links in README.
+      - [ ] Publish from github workflow
+      - [ ] Test install from Github packages
+      - [ ] Test install from NuGet
 
 - [ ] API
     - [ ] _Cannot access a disposed object._
