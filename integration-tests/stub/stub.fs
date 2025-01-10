@@ -158,7 +158,10 @@ module Stub =
         | None -> ()
 
         match emulator.tcp with
-        | Some tcp -> (fst tcp).Stop()
+        | Some tcp ->
+            (fst tcp).Server.Close()
+            // (fst tcp).Stop()
+            Thread.Sleep(5000)
         | None -> ()
 
     let event (emulator: Emulator) (event: byte array) (logger: TextWriter) =

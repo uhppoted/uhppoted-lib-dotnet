@@ -1,9 +1,24 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Version>0.8.9</Version>
+    <PackageId>uhppoted-dotnet</PackageId>
+    <Title>uhppoted</Title>
+    <PackageVersion>0.8.9.2-alpha</PackageVersion>
+    <Description>.NET library for the UHPPOTE access controller API.</Description>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/uhppoted/uhppoted-lib-dotnet</PackageProjectUrl>
+    <PackageTags>uhppote;wiegand;access-control;building-security</PackageTags>
+    <Authors>uhppoted</Authors>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
+  <!--
+  <PropertyGroup>
+    <Version>0.8.9</Version>
+  </PropertyGroup>
+  -->
+  
   <PropertyGroup>
     <TargetFrameworks>net8.0; net9.0</TargetFrameworks>
   </PropertyGroup>
@@ -17,10 +32,10 @@
   </PropertyGroup>
 
   <PropertyGroup>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
-  
+
   <ItemGroup>
     <Compile Include="enums.fsi" />
     <Compile Include="types.fsi" />

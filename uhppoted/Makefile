@@ -40,6 +40,9 @@ integration-tests:
 release: build test integration-tests
 	cd uhppoted && make release
 
+publish: build test integration-tests
+	cd uhppoted && make publish
+
 debug: build
 	dotnet run --project ../examples/fsharp/cli --framework net7.0 get-door --controller $(CONTROLLER) --door $(DOOR)
 	dotnet run --project ../examples/csharp/cli --framework net7.0 get-door --controller $(CONTROLLER) --door $(DOOR)

@@ -15,10 +15,12 @@
 13. https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/conventions#represent-error-cases-and-illegal-state-in-types-intrinsic-to-your-domain
 14. https://stackoverflow.com/questions/69393627/create-nuget-package-for-different-platforms-architectures-and-net-versions
 15. https://learn.microsoft.com/en-us/troubleshoot/windows-server/networking/default-dynamic-port-range-tcpip-chang
-16. https://learn.microsoft.com/en-us/windows/uwp/networking/sockets
+16. https://stackoverflow.com/questions/35280597/net-tcplistener-stop-method-does-not-stop-the-listener-when-there-is-a-child-pr
+17. https://learn.microsoft.com/en-us/windows/uwp/networking/sockets
     ```
     <Capability Name="privateNetworkClientServer" />
     ```
+18. https://stackoverflow.com/questions/66004814/how-do-you-test-a-nuget-package
 
 
 ## F#

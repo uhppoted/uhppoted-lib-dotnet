@@ -2,7 +2,7 @@
 ![integration-tests](https://github.com/uhppoted/uhppoted-lib-dotnet/workflows/integration-tests/badge.svg)
 ![nightly](https://github.com/uhppoted/uhppoted-lib-dotnet/workflows/nightly/badge.svg)
 
-# uhppoted-lib-dotnet
+# uhppoted-dotnet
 
 .NET package for the UHPPOTE access controller API:
 
@@ -11,14 +11,54 @@
 
 ## Release Notes
 
-_NOT RELEASED_
-
 #### Current Release
 
+_ALPHA_
 
 ## Installation
 
+The package can be installed from both [_Nuget_](https://www.nuget.org/packages/uhppoted-dotnet) and 
+_Github Packages_:
+
 ### Installing from NuGet
+
+CLI:
+```
+dotnet add package uhppoted-dotnet --version 0.8.9.2-alpha
+```
+
+Package Manager:
+```
+NuGet\Install-Package uhppoted-dotnet -Version 0.8.9.2-alpha
+```
+
+After installing the package add it the _project_ file:
+```
+  ...
+  <ItemGroup>
+    <PackageReference Include="uhppoted-dotnet" Version="0.8.9.*" />
+  </ItemGroup>
+  ...
+```
+
+### Installing from Github Packages
+
+CLI:
+```
+```
+
+Package Manager:
+```
+```
+
+After installing the package add it the _project_ file:
+```
+  ...
+  <ItemGroup>
+    <PackageReference Include="uhppoted-dotnet" Version="0.8.9.*" />
+  </ItemGroup>
+  ...
+```
 
 ### Building from source
 
