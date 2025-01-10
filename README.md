@@ -103,6 +103,15 @@ VB.NET applications may require installing the FSharp.Core package:
 dotnet add package FSharp.Core
 ```
 
+#### Windows
+
+The dynamic port range in _Windows_ has been extended to include the default _listen_ port (60001):
+
+- [The default dynamic port range for TCP/IP has changed...](https://learn.microsoft.com/en-us/troubleshoot/windows-server/networking/default-dynamic-port-range-tcpip-chang)
+
+Applications running on Windows _may_ need to either provision a different UDP port when listening for 
+events or add port 60001 to the _allowed_ list.
+
 
 ## API summary
 

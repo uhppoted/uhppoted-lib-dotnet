@@ -1,15 +1,13 @@
 # TODO
 
 - [x] Add .NET 9 as a target framework
-      - [x] build.yml "System.Net.Sockets.SocketException : Address already in use"
-      - [x] integration.yml "System.Net.Sockets.SocketException : Address already in use"
-      - [x] https://learn.microsoft.com/en-us/troubleshoot/windows-server/networking/default-dynamic-port-range-tcpip-chang
-
 - [ ] Package for NuGet
+      - [ ] Copy README on build/release (generate ?)
       - [ ] Fix documentation links in README.
       - [ ] Publish from github workflow
       - [ ] Test install from Github packages
       - [ ] Test install from NuGet
+      - [ ] sigh .. "klingon is an invalid culture identifier."
 
 - [ ] API
     - [ ] _Cannot access a disposed object._

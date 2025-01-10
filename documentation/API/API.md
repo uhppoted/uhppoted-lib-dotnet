@@ -1,10 +1,10 @@
 # API
 
-- [fsunctions](#functions)
-- [options](#options)
+- [Functions](#functions)
+- [Options](#options)
 - [_controller_ struct](#c)
-- [types](#types)
-- [internationalisation](#internationalisation)
+- [Types](#types)
+- [Internationalisation](#internationalisation)
 
 ## Functions
 - [`FindControllers`](find-controllers.md)
