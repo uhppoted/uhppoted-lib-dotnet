@@ -4,10 +4,11 @@
 
 # uhppoted-dotnet
 
-.NET package for the UHPPOTE access controller API:
+.NET package for the UHPPOTE access controller API.
 
-- the API is described in [API.md](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/API.md)
-- example CLI implementations in F#, C# and VB.NET that illustrate the use of the API can be found in the [examples](https://github.com/uhppoted/uhppoted-lib-dotnet/tree/main/examples) folder.
+The API is described in [API.md](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/API.md) and 
+example CLI implementations in F#, C# and VB.NET that illustrate the use of the API can be found in the 
+[examples](https://github.com/uhppoted/uhppoted-lib-dotnet/tree/main/examples) folder.
 
 - [Release Notes](#release-notes)
 - [Installation](#installation)
