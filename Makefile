@@ -42,6 +42,9 @@ integration-tests:
 release:
 	cd uhppoted && make release
 
+publish:
+	cd uhppoted && make publish
+
 find-controllers:
 	$(CLI) find-controllers
 

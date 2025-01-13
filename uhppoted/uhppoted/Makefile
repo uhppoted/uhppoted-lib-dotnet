@@ -23,4 +23,4 @@ publish-nuget:
 	dotnet nuget push dist/uhppoted-test.0.8.9.2-alpha.nupkg  --source https://api.nuget.org/v3/index.json --api-key ${NUGET_API_KEY} --skip-duplicate
 	# dotnet nuget push dist/uhppoted-test.0.8.9.2-alpha.snupkg --source https://api.nuget.org/v3/index.json --api-key ${NUGET_API_KEY}
 
-publish: release
+publish: publish-github

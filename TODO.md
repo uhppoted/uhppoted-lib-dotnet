@@ -7,6 +7,10 @@
       - [ ] Publish from github workflow
       - [ ] Test install from Github packages
       - [ ] Test install from NuGet
+      - [ ] Clean up integration test warning on terminate
+      ```
+      ** ERROR The I/O operation has been aborted because of either a thread exit or an application request.
+      ```
 
 - [ ] API
     - [ ] _Cannot access a disposed object._

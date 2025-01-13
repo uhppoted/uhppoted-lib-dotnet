@@ -50,7 +50,7 @@ module Stub =
                 return! recv socket logger
             with
             | :? ObjectDisposedException -> ()
-            | err -> logger.WriteLine("** ERROR {0}", err.Message)
+            | err -> logger.WriteLine("** ERROR/1 {0}", err)
         }
 
     let rec read (stream: NetworkStream) (logger: TextWriter) =
@@ -79,7 +79,7 @@ module Stub =
 
                     return! read stream logger
             with err ->
-                logger.WriteLine("*** ERROR {0}", Error err.Message)
+                logger.WriteLine("*** ERROR/2 {0}", Error err)
 
             return ()
         }
@@ -100,8 +100,8 @@ module Stub =
             | :? AggregateException as x ->
                 match x.InnerException with
                 | :? SocketException as xx when xx.SocketErrorCode = SocketError.OperationAborted -> ()
-                | _ -> logger.WriteLine("** ERROR {0}", x.Message)
-            | err -> logger.WriteLine("** ERROR {0}", err.Message)
+                | _ -> logger.WriteLine("** ERROR/3 {0}", x.Message)
+            | err -> logger.WriteLine("** ERROR/4 {0}", err.Message)
         }
 
     let init (mode: string) (logger: TextWriter) : Result<Emulator, string> =
