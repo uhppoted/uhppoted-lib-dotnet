@@ -12,12 +12,13 @@ release: build
 publish-github: 
 	# dotnet nuget push dist/uhppoted-test.0.8.9.2-alpha.nupkg  --source "github" --api-key "${GITHUB_API_KEY}" --skip-duplicate
 	# dotnet nuget push dist/uhppoted-test.0.8.9.2-alpha.snupkg --source "github" --api-key "${GITHUB_API_KEY}" --skip-duplicate
-	@echo ">>>> 'k, here we go"
-    dotnet nuget add source --username uhppoted \
-                            --password ${{ secrets.GITHUB_TOKEN }} \
-                            --store-password-in-clear-text \
-                            --name github "https://nuget.pkg.github.com/uhppoted/index.json"
+	@echo ">>>> list sources (before)"
+	dotnet nuget list source
+	@echo ">>>> try to authenticate"
+	dotnet nuget add source --username uhppoted --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/uhppoted/index.json"
 	@echo ">>>> authenticated presumably"
+	dotnet nuget list source
+	@echo ">>>> 'k, time to push'"
 	dotnet nuget push dist/uhppoted-test.0.8.9.2-alpha.nupkg  --source "github" --skip-duplicate
 	@echo ">>>> pushed apparently but who actually knows"
 	dotnet list package
