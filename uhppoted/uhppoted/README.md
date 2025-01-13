@@ -28,19 +28,19 @@ _Github Packages_:
 
 CLI:
 ```
-dotnet add package uhppoted-dotnet --version 0.8.9.2-alpha
+dotnet add package uhppoted --version latest
 ```
 
 Package Manager:
 ```
-NuGet\Install-Package uhppoted-dotnet -Version 0.8.9.2-alpha
+NuGet\Install-Package uhppoted -Version latest
 ```
 
 After installing the package add it the _project_ file:
 ```
   ...
   <ItemGroup>
-    <PackageReference Include="uhppoted-dotnet" Version="0.8.9.*" />
+    <PackageReference Include="uhppoted" Version="*" />
   </ItemGroup>
   ...
 ```
@@ -59,7 +59,7 @@ After installing the package add it the _project_ file:
 ```
   ...
   <ItemGroup>
-    <PackageReference Include="uhppoted-dotnet" Version="0.8.9.*" />
+    <PackageReference Include="uhppoted-dotnet" Version="*" />
   </ItemGroup>
   ...
 ```

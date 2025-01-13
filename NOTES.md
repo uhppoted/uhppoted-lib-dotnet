@@ -22,6 +22,8 @@
     ```
 18. https://stackoverflow.com/questions/66004814/how-do-you-test-a-nuget-package
 19. https://stackoverflow.com/questions/57889719/how-to-push-nuget-package-in-github-actions
+20. https://github.com/orgs/community/discussions/69522
+21. https://github.com/actions/setup-dotnet/issues/521
 
 ## F#
 1. https://stackoverflow.com/questions/58781292/how-to-generate-f-signature-file-without-visual-studio
