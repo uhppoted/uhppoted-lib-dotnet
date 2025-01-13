@@ -10,6 +10,9 @@ jobs:
   build:
     name: Build
     runs-on: windows-latest
+    permissions:
+      packages: write
+
     steps:
 
     - name: Set up .NET
@@ -42,6 +45,6 @@ jobs:
         echo ">>>> authenticated presumably"
         dotnet nuget list source
         echo ">>>> 'k, time to push'"
-        dotnet nuget push ./uhppoted/uhppoted/dist/uhppoted-test.0.8.9.2-alpha.nupkg  --source "github" --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
+        dotnet nuget push ./uhppoted/uhppoted/dist/uhppoted-test.0.8.9.2-alpha.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source "github" --skip-duplicate
         echo ">>>> pushed apparently but who actually knows"
         dotnet list package

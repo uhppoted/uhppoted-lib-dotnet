@@ -5,6 +5,7 @@
       - [x] Copy README on build/release (generate ?)
       - [ ] Fix documentation links in README.
       - [ ] Publish from github workflow
+            - https://github.com/actions/setup-dotnet/issues/521
       - [ ] Test install from Github packages
       - [ ] Test install from NuGet
       - [ ] Clean up integration test warning on terminate
