@@ -42,6 +42,6 @@ jobs:
         echo ">>>> authenticated presumably"
         dotnet nuget list source
         echo ">>>> 'k, time to push'"
-        dotnet nuget push dist/uhppoted-test.0.8.9.2-alpha.nupkg  --source "github" --skip-duplicate
+        dotnet nuget push ./uhppoted/uhppoted/dist/uhppoted-test.0.8.9.2-alpha.nupkg  --source "github" --skip-duplicate
         echo ">>>> pushed apparently but who actually knows"
         dotnet list package
