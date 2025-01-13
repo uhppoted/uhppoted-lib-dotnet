@@ -10,10 +10,11 @@ open uhppoted
 
 [<TestFixture>]
 type TestInternationalisation() =
+
     [<Test>]
     member this.TestTranslateEventType() =
-        Thread.CurrentThread.CurrentCulture <- CultureInfo("klingon")
-        Thread.CurrentThread.CurrentUICulture <- CultureInfo("klingon")
+        Thread.CurrentThread.CurrentCulture <- CultureInfo("mn-MN")
+        Thread.CurrentThread.CurrentUICulture <- CultureInfo("mn-MN")
 
         let events =
             [ {| event = 0uy
@@ -35,8 +36,8 @@ type TestInternationalisation() =
 
     [<Test>]
     member this.TestTranslateEventReason() =
-        Thread.CurrentThread.CurrentCulture <- CultureInfo("klingon")
-        Thread.CurrentThread.CurrentUICulture <- CultureInfo("klingon")
+        Thread.CurrentThread.CurrentCulture <- CultureInfo("mn-MN")
+        Thread.CurrentThread.CurrentUICulture <- CultureInfo("mn-MN")
 
         let reasons =
             [ {| reason = 1uy; expected = "swipe" |}
@@ -114,8 +115,8 @@ type TestInternationalisation() =
 
     [<Test>]
     member this.TestTranslateDoorDirection() =
-        Thread.CurrentThread.CurrentCulture <- CultureInfo("klingon")
-        Thread.CurrentThread.CurrentUICulture <- CultureInfo("klingon")
+        Thread.CurrentThread.CurrentCulture <- CultureInfo("mn-MN")
+        Thread.CurrentThread.CurrentUICulture <- CultureInfo("mn-MN")
 
         let directions =
             [ {| direction = 0uy
@@ -133,8 +134,8 @@ type TestInternationalisation() =
 
     [<Test>]
     member this.TestTranslateDoorMode() =
-        Thread.CurrentThread.CurrentCulture <- CultureInfo("klingon")
-        Thread.CurrentThread.CurrentUICulture <- CultureInfo("klingon")
+        Thread.CurrentThread.CurrentCulture <- CultureInfo("mn-MN")
+        Thread.CurrentThread.CurrentUICulture <- CultureInfo("mn-MN")
 
         let modes =
             [ {| mode = 0uy
@@ -156,8 +157,8 @@ type TestInternationalisation() =
 
     [<Test>]
     member this.TestTranslateDoorInterlock() =
-        Thread.CurrentThread.CurrentCulture <- CultureInfo("klingon")
-        Thread.CurrentThread.CurrentUICulture <- CultureInfo("klingon")
+        Thread.CurrentThread.CurrentCulture <- CultureInfo("mn-MN")
+        Thread.CurrentThread.CurrentUICulture <- CultureInfo("mn-MN")
 
         let interlocks =
             [ {| interlock = 0uy
@@ -183,8 +184,8 @@ type TestInternationalisation() =
 
     [<Test>]
     member this.TestTranslateTaskCodes() =
-        Thread.CurrentThread.CurrentCulture <- CultureInfo("klingon")
-        Thread.CurrentThread.CurrentUICulture <- CultureInfo("klingon")
+        Thread.CurrentThread.CurrentCulture <- CultureInfo("mn-MN")
+        Thread.CurrentThread.CurrentUICulture <- CultureInfo("mn-MN")
 
         let tasks =
             [ {| task = 0uy
@@ -223,8 +224,8 @@ type TestInternationalisation() =
 
     [<Test>]
     member this.TestTranslateRelayState() =
-        Thread.CurrentThread.CurrentCulture <- CultureInfo("klingon")
-        Thread.CurrentThread.CurrentUICulture <- CultureInfo("klingon")
+        Thread.CurrentThread.CurrentCulture <- CultureInfo("mn-MN")
+        Thread.CurrentThread.CurrentUICulture <- CultureInfo("mn-MN")
 
         let relays =
             [ {| relay = 0uy
@@ -242,8 +243,8 @@ type TestInternationalisation() =
 
     [<Test>]
     member this.TestTranslateInputState() =
-        Thread.CurrentThread.CurrentCulture <- CultureInfo("klingon")
-        Thread.CurrentThread.CurrentUICulture <- CultureInfo("klingon")
+        Thread.CurrentThread.CurrentCulture <- CultureInfo("mn-MN")
+        Thread.CurrentThread.CurrentUICulture <- CultureInfo("mn-MN")
 
         let inputs =
             [ {| input = 0uy
@@ -262,8 +263,8 @@ type TestInternationalisation() =
 
     [<Test>]
     member this.TestTranslateError() =
-        Thread.CurrentThread.CurrentCulture <- CultureInfo("klingon")
-        Thread.CurrentThread.CurrentUICulture <- CultureInfo("klingon")
+        Thread.CurrentThread.CurrentCulture <- CultureInfo("mn-MN")
+        Thread.CurrentThread.CurrentUICulture <- CultureInfo("mn-MN")
 
         let errors =
             [ {| err = Timeout
