@@ -35,3 +35,4 @@ jobs:
     - name: Publish artifacts
       run: |
         dir ./uhppoted/uhppoted/dist
+        make publish
