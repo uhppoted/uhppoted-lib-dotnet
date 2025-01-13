@@ -24,6 +24,7 @@ jobs:
 
     - name: Build
       run: |
+        dotnet --version
         make build-all
         make integration-tests
 
