@@ -22,6 +22,8 @@
 
 - [ ] API
     - [ ] _Cannot access a disposed object._
+        - https://stackoverflow.com/questions/41019997/udpclient-receiveasync-correct-early-termination/41041601?noredirect=1#comment69291144_41041601
+        - https://stackoverflow.com/questions/1921611/c-how-do-i-terminate-a-socket-before-socket-beginreceive-calls-back
 
 - [ ] examples
     - [ ] GCI
