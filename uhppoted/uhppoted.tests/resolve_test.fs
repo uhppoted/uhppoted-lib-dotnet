@@ -85,8 +85,8 @@ type TestResolve() =
     member this.TestResolveNegativeInt32() =
         let expected = InvalidControllerType "System.Int32 - expected uint32 or struct"
 
-        Thread.CurrentThread.CurrentCulture <- CultureInfo("klingon")
-        Thread.CurrentThread.CurrentUICulture <- CultureInfo("klingon")
+        Thread.CurrentThread.CurrentCulture <- CultureInfo("mn-MN")
+        Thread.CurrentThread.CurrentUICulture <- CultureInfo("mn-MN")
 
         match Uhppoted.resolve (-405419896) with
         | Ok response -> Assert.Fail()
