@@ -1,8 +1,7 @@
 # TODO
 
-- [x] Add .NET 9 as a target framework
 - [ ] Package for NuGet
-      - [ ] sigh .. "klingon is an invalid culture identifier."
+      - [x] "klingon is an invalid culture identifier."
       - [x] Copy README on build/release (generate ?)
       - [ ] Fix documentation links in README.
       - [ ] Publish from github workflow

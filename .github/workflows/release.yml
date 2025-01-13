@@ -34,4 +34,4 @@ jobs:
 
     - name: Publish artifacts
       run: |
-        ls -la ./uhppoted/uhppoted/dist
+        dir ./uhppoted/uhppoted/dist
