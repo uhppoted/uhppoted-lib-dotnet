@@ -6,9 +6,10 @@
       - [ ] README: github registry install instructions
       - [ ] README: fix documentation links
       - [ ] Publish from github workflow
-            - https://github.com/actions/setup-dotnet/issues/521
-            - snupkg
-            - automate version
+            - [ ] Github packages
+            - [ ] nuget.org
+            - [ ] Check snupkg is uploaded
+            - [ ] Automate version
       - [ ] Test install from Github packages
       - [ ] Test install from NuGet
       - [ ] Clean up integration test warning on terminate

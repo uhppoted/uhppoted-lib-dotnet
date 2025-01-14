@@ -16,6 +16,5 @@ publish-github:
 
 publish-nuget: 
 	dotnet nuget push $(PACKAGE)  --source https://api.nuget.org/v3/index.json --api-key ${NUGET_API_KEY} --skip-duplicate
-	# dotnet nuget push $(SYMBOLS) --source https://api.nuget.org/v3/index.json --api-key ${NUGET_API_KEY}
 
-publish: publish-github
+publish: publish-github publish-nuget
