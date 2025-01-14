@@ -25,54 +25,67 @@ _ALPHA_
 
 ## Installation
 
-The package can be installed from either [_Nuget_](https://www.nuget.org/packages/uhppoted-dotnet) or
-_Github Packages_:
+The package can be installed from either the [_NuGet_](https://www.nuget.org/packages/uhppoted) registry or
+[_Github Packages_](https://github.com/uhppoted/uhppoted-lib-dotnet/pkgs/nuget/uhppoted):
 
-### Installing from NuGet
+### Installing from the NuGet Registry
 
-CLI:
+Use either the dotnet CLI or _Package Manager_:
+
+- CLI:
 ```
-dotnet add package uhppoted --version latest
+dotnet add package uhppoted
 ```
 
-Package Manager:
+- Package Manager:
 ```
-NuGet\Install-Package uhppoted -Version latest
+NuGet\Install-Package uhppoted -Version <version>
 ```
 
 After installing the package add it the _project_ file:
 ```
   ...
   <ItemGroup>
-    <PackageReference Include="uhppoted" Version="*" />
+    <PackageReference Include="uhppoted" Version="<version>" />
   </ItemGroup>
   ...
 ```
 
 ### Installing from Github Packages
 
-CLI:
-```
-```
+Installing from the _Github Packages_ _NuGet_ registry is a more complicated. Either:
 
-Package Manager:
-```
-```
+- Follow the steps under 
+[_Installing a package_](https://docs.github.com/en/enterprise-server@3.12/packages/working-with-a-github-packages-registry/working-with-the-nuget-registry#installing-a-package) and add the repository URL and package to the project file:
 
-After installing the package add it the _project_ file:
 ```
   ...
+  <PropertyGroup>
+    <RepositoryUrl>https://githbuHOSTNAME/OWNER/REPOSITORY</RepositoryUrl>
+  </PropertyGroup>
+  ...
   <ItemGroup>
-    <PackageReference Include="uhppoted-dotnet" Version="*" />
+    <PackageReference Include="uhppoted" Version="<version>" />
   </ItemGroup>
   ...
 ```
+
+- (OR) use the dotnet CLI:
+   - Create a _personal access token (classic)_
+   - Add a _NuGet_ source:
+   ```
+   dotnet nuget add source https://nuget.pkg.github.com/uhppoted/index.json --name github-uhppoted --username <user-id> --password <personal-access-token>
+   ```
+   - Install the package:
+   ```
+   dotnet add package uhppoted
+   ```
 
 ### Building from source
 
 Requirements:
 - .NET SDK 7.0+
-- (optional) make
+- (_optional_) make
 
 ```
 git clone https://github.com/uhppoted/uhppoted-lib-dotnet.git
@@ -80,7 +93,7 @@ cd uhppoted-lib-dotnet/uhppoted
 make build
 ```
 
-If you prefer to build manually:
+If you prefer to build without _make_:
 ```
    git clone https://github.com/uhppoted/uhppoted-lib-dotnet.git
    cd uhppoted-lib-dotnet/uhppoted
