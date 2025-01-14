@@ -87,7 +87,7 @@ module Stub =
                     return! read stream cancel logger
             with
             | :? OperationCanceledException ->
-                logger.WriteLine("** INFO TCP receive operation canceled.")
+                logger.WriteLine("** INFO TCP receive operation cancelled.")
                 stream.Close()
 
             | :? IOException as x ->
