@@ -7,11 +7,11 @@
       - [x] README: fix documentation links
       - [ ] Publish from github workflow
             - [x] Github packages
-            - [ ] nuget.org
-            - [ ] Check snupkg is uploaded
-            - [ ] Automate version
-      - [ ] Test install from Github packages
+            - [x] nuget.org
+            - [x] Check snupkg is uploaded
+            - [ ] Remove version extension
       - [ ] Test install from NuGet
+      - [ ] Test install from Github packages
       - [x] Clean up integration test warning on terminate
 
 - [ ] API

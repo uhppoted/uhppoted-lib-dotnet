@@ -2,7 +2,7 @@
 ![integration-tests](https://github.com/uhppoted/uhppoted-lib-dotnet/workflows/integration-tests/badge.svg)
 ![nightly](https://github.com/uhppoted/uhppoted-lib-dotnet/workflows/nightly/badge.svg)
 
-# uhppoted-dotnet
+# uhppoted-lib-dotnet
 
 .NET package for the UHPPOTE access controller API.
 

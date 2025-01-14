@@ -1,4 +1,4 @@
-# uhppoted-dotnet
+# uhppoted
 
 .NET package for the UHPPOTE access controller API.
 

@@ -5,9 +5,13 @@ build:
 	dotnet build
 	dotnet fantomas .
 
-release: build
+test: 
+	dotnet test
+
+release: build test
 	rm -rf dist
-	tail -n+5 ../../README.md > README.md
+	echo "# uhppoted" > README.md
+	tail -n+6 ../../README.md >> README.md
 	dotnet pack --include-symbols --configuration Release --output dist
 
 publish-github: 

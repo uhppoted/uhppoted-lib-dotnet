@@ -25,14 +25,9 @@ jobs:
       run: |
         dotnet tool install fantomas
 
-    - name: Build
-      run: |
-        dotnet --version
-        make build-all
-        make integration-tests
-
     - name: Package artifacts
       run: |
+        dotnet --version
         make release
 
     - name: Publish to Github packages
