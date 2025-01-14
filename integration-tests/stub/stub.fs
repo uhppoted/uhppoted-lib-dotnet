@@ -185,7 +185,6 @@ module Stub =
     let terminate (emulator: Emulator) (logger: TextWriter) =
         match emulator.udp with
         | Some(udp, udprx, cts) ->
-            Thread.Sleep(1250)
             cts.Cancel()
 
             if not (udprx.Wait(5000)) then
@@ -195,7 +194,6 @@ module Stub =
 
         match emulator.tcp with
         | Some(tcp, tcprx, cts) ->
-            Thread.Sleep(1250)
             cts.Cancel()
 
             if not (tcprx.Wait(5000)) then

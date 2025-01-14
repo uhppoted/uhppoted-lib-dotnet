@@ -9,7 +9,7 @@ build:
 	dotnet fantomas .
 
 test: build
-	dotnet test
+	dotnet test -p:TestTfmsInParallel=false
 
 debug: build
 	dotnet test -- NUnit.Where="test =~ /TestGetController/" 

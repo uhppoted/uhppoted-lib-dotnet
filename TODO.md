@@ -15,6 +15,7 @@
       - [x] Clean up integration test warning on terminate
 
 - [ ] github workflow
+      - https://github.com/dotnet/sdk/issues/39470
 ```
   Determining projects to restore...
   All projects are up-to-date for restore.
