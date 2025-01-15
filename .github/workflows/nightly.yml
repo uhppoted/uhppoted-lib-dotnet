@@ -13,7 +13,7 @@ jobs:
     name: Build
     strategy:
       matrix:
-        version: ['7.x', '8.x', '9.x']
+        version: ['8.x', '9.x']
     runs-on: ubuntu-latest
     steps:
 
@@ -27,7 +27,7 @@ jobs:
 
     - name: Install fantomas
       run: |
-        dotnet tool install fantomas --version ${{ matrix.version }}
+        dotnet tool install fantomas
 
     - name: Build
       run: |
