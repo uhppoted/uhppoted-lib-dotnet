@@ -27,7 +27,7 @@ jobs:
 
     - name: Install fantomas
       run: |
-        dotnet tool install fantomas
+        dotnet tool install fantomas --version ${{ matrix.version }}
 
     - name: Build
       run: |
