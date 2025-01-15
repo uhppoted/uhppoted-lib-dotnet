@@ -172,7 +172,7 @@ module Stub =
             try
                 match (init mode logger) with
                 | Ok emulator ->
-                    // Thread.Sleep 1000 // delay to let async listener start properly (TCP)
+                    Thread.Sleep 1000 // delay to let async listener start properly (TCP)
                     Ok emulator
                 | _ -> Error "could not initialise stub"
             with err ->
@@ -200,7 +200,6 @@ module Stub =
                 logger.WriteLine("  ** WARN tcp::read cancel timeout")
                 tcp.Server.Close()
 
-        // Thread.Sleep(5000)
         | None -> ()
 
     let event (emulator: Emulator) (event: byte array) (logger: TextWriter) =
