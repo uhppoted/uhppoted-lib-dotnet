@@ -15,7 +15,8 @@
       - [x] Clean up integration test warning on terminate
 
 - [ ] Integration tests
-      - [ ] Remove delays
+      - [x] Remove delays
+      - [ ] Remove retries
 
 - [ ] API
     - [ ] _Cannot access a disposed object._
