@@ -117,6 +117,7 @@ module internal UDP =
             Thread.Sleep timeout
 
             cancel.Cancel()
+
             if not (rx.Wait(5000)) then
                 socket.Close()
 

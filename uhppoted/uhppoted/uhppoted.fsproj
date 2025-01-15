@@ -3,7 +3,7 @@
   <PropertyGroup>
     <PackageId>uhppoted-test</PackageId>
     <Title>uhppoted</Title>
-    <PackageVersion>0.8.9.3-alpha</PackageVersion>
+    <PackageVersion>0.8.9.4-beta</PackageVersion>
     <Description>.NET library for the UHPPOTE access controller API.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/uhppoted/uhppoted-lib-dotnet</PackageProjectUrl>

@@ -33,9 +33,9 @@ jobs:
     - name: Publish to Github packages
       run: |
         dotnet nuget add source --username uhppoted --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/uhppoted/index.json"
-        dotnet nuget push ./uhppoted/uhppoted/dist/uhppoted-test.0.8.9.3-alpha.nupkg  --source "github" --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
-        dotnet nuget push ./uhppoted/uhppoted/dist/uhppoted-test.0.8.9.3-alpha.snupkg --source "github" --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
+        dotnet nuget push ./uhppoted/uhppoted/dist/uhppoted-test.0.8.9.4-beta.nupkg  --source "github" --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
+        dotnet nuget push ./uhppoted/uhppoted/dist/uhppoted-test.0.8.9.4-beta.snupkg --source "github" --api-key ${{ secrets.GITHUB_TOKEN }} --skip-duplicate
 
     - name: Publish to nuget.org
       run: |
-        dotnet nuget push ./uhppoted/uhppoted/dist/uhppoted-test.0.8.9.3-alpha.nupkg --source "https://api.nuget.org/v3/index.json" --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate
+        dotnet nuget push ./uhppoted/uhppoted/dist/uhppoted-test.0.8.9.4-beta.nupkg --source "https://api.nuget.org/v3/index.json" --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate

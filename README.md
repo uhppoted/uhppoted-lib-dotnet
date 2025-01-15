@@ -20,7 +20,7 @@ example CLI implementations in F#, C# and VB.NET that illustrate the use of the 
 
 #### Current Release
 
-_ALPHA_
+_BETA_
 
 
 ## Installation

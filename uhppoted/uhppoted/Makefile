@@ -1,5 +1,8 @@
-PACKAGE = dist/uhppoted-test.0.8.9.3-alpha.nupkg
-SYMBOLS = dist/uhppoted-test.0.8.9.3-alpha.snupkg
+PACKAGE = dist/uhppoted-test.0.8.9.4-beta.nupkg
+SYMBOLS = dist/uhppoted-test.0.8.9.3-beta.snupkg
+
+clean:
+	dotnet clean
 
 build: 
 	dotnet build
