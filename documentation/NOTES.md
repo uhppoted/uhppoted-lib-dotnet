@@ -1,4 +1,4 @@
-# NOTES.md
+# Development Notes
 
 1. https://stackoverflow.com/questions/10110174/best-approach-for-designing-f-libraries-for-use-from-both-f-and-c-sharp
 2. https://learn.microsoft.com/en-us/dotnet/fsharp/style-guide/component-design-guidelines
@@ -20,11 +20,15 @@
     ```
     <Capability Name="privateNetworkClientServer" />
     ```
-18. https://stackoverflow.com/questions/66004814/how-do-you-test-a-nuget-package
-19. https://stackoverflow.com/questions/57889719/how-to-push-nuget-package-in-github-actions
-20. https://github.com/orgs/community/discussions/69522
-21. https://github.com/actions/setup-dotnet/issues/521
-22. [dotnet test runs test assemblies in parallel](https://github.com/dotnet/sdk/issues/39470)
+18. https://learn.microsoft.com/en-us/dotnet/api/system.net.sockets.socket.receiveasync?view=net-8.0
+19. https://stackoverflow.com/questions/41019997/udpclient-receiveasync-correct-early-termination/41041601?noredirect=1#comment69291144_41041601
+20. https://stackoverflow.com/questions/1921611/c-how-do-i-terminate-a-socket-before-socket-beginreceive-calls-back
+21. https://stackoverflow.com/questions/60083939/what-is-the-best-way-to-cancel-a-socket-receive-request
+22. https://stackoverflow.com/questions/66004814/how-do-you-test-a-nuget-package
+23. https://stackoverflow.com/questions/57889719/how-to-push-nuget-package-in-github-actions
+24. https://github.com/orgs/community/discussions/69522
+25. https://github.com/actions/setup-dotnet/issues/521
+26. [dotnet test runs test assemblies in parallel](https://github.com/dotnet/sdk/issues/39470)
 
 ## F#
 1. https://stackoverflow.com/questions/58781292/how-to-generate-f-signature-file-without-visual-studio
