@@ -200,7 +200,7 @@ module Stub =
                 logger.WriteLine("  ** WARN tcp::read cancel timeout")
                 tcp.Server.Close()
 
-            // Thread.Sleep(5000)
+        // Thread.Sleep(5000)
         | None -> ()
 
     let event (emulator: Emulator) (event: byte array) (logger: TextWriter) =

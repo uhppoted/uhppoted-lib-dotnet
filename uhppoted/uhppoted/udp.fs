@@ -17,84 +17,94 @@ module internal UDP =
             let right = String.Join(" ", hex.[p + 8 .. q + 8])
             printfn "    %s  %s" left right
 
-    let rec receiveAll (socket: UdpClient) (closing: CancellationToken) (packets: (byte[] * IPEndPoint) list) =
+    let rec receiveAll (socket: UdpClient) (cancel: CancellationToken) (packets: (byte[] * IPEndPoint) list) =
         async {
             try
-                if closing.IsCancellationRequested || socket.Client.SafeHandle.IsInvalid then
-                    return ()
+                let! result = socket.ReceiveAsync(cancel).AsTask() |> Async.AwaitTask
+                let packet = result.Buffer
+                let remote = result.RemoteEndPoint
 
-                let! (packet, remote) =
-                    Async.FromBeginEnd(
-                        (fun (callback, state) -> socket.BeginReceive(callback, state)),
-                        (fun (iar) ->
-                            let addr = ref Unchecked.defaultof<IPEndPoint>
-                            let packet = socket.EndReceive(iar, addr)
-                            (packet, !addr))
-                    )
-
-                return! receiveAll socket closing ((packet, remote) :: packets)
+                return! receiveAll socket cancel ((packet, remote) :: packets)
 
             with
-            | :? ObjectDisposedException -> return Ok(List.rev packets)
-            | err -> return Error(ReceiveError err.Message)
+            | :? OperationCanceledException ->
+                socket.Close()
+                return Ok(List.rev packets)
+
+            | :? ObjectDisposedException ->
+                socket.Close()
+                return Ok(List.rev packets)
+
+            | :? SocketException as x ->
+                socket.Close()
+                return Error(ReceiveError x.Message)
+
+            | err ->
+                socket.Close()
+                return Error(ReceiveError err.Message)
         }
 
-    let rec receive (socket: UdpClient) : Async<Result<byte array * IPEndPoint, Err>> =
+    let rec receive (socket: UdpClient) (cancel: CancellationToken) : Async<Result<byte array * IPEndPoint, Err>> =
         async {
             try
-                let! (packet, remote) =
-                    Async.FromBeginEnd(
-                        (fun (callback, state) -> socket.BeginReceive(callback, state)),
-                        (fun (iar) ->
-                            let addr = ref Unchecked.defaultof<IPEndPoint>
-                            let packet = socket.EndReceive(iar, addr)
-                            (packet, !addr))
-                    )
+                let! result = socket.ReceiveAsync(cancel).AsTask() |> Async.AwaitTask
 
-                if packet.Length = 64 then
+                match result.Buffer.Length with
+                | 64 ->
+                    let packet = result.Buffer.[0..63]
+                    let remote = result.RemoteEndPoint
+
+                    socket.Close()
                     return Ok(packet, remote)
-                else
-                    return! receive socket
+
+                | _ -> return! receive socket cancel
 
             with err ->
+                socket.Close()
                 return Error(ReceiveError err.Message)
         }
 
     let rec receiveEvent
         (socket: UdpClient)
         (handler: byte array * IPEndPoint -> unit)
-        (closing: CancellationToken)
+        (cancel: CancellationToken)
         : Async<Result<unit, Err>> =
         async {
             try
-                if closing.IsCancellationRequested || socket.Client.SafeHandle.IsInvalid then
-                    return ()
+                let! result = socket.ReceiveAsync(cancel).AsTask() |> Async.AwaitTask
 
-                let! (packet, remote) =
-                    Async.FromBeginEnd(
-                        (fun (callback, state) -> socket.BeginReceive(callback, state)),
-                        (fun (iar) ->
-                            let addr = ref Unchecked.defaultof<IPEndPoint>
-                            let packet = socket.EndReceive(iar, addr)
-                            (packet, !addr))
-                    )
+                if result.Buffer.Length = 64 then
+                    let packet = result.Buffer.[0..63]
+                    let remote = result.RemoteEndPoint
 
-                if packet.Length = 64 then
                     handler (packet, remote)
 
-                return! receiveEvent socket handler closing
+                return! receiveEvent socket handler cancel
 
             with
-            | :? ObjectDisposedException -> return Ok()
-            | err -> return Error(ReceiveError err.Message)
+            | :? OperationCanceledException ->
+                socket.Close()
+                return Ok()
+
+            | :? ObjectDisposedException ->
+                socket.Close()
+                return Ok()
+
+            | :? SocketException as x ->
+                socket.Close()
+                return Error(ReceiveError x.Message)
+
+            | err ->
+                socket.Close()
+                return Error(ReceiveError err.Message)
         }
 
     let broadcast (request: byte array, bind: IPEndPoint, broadcast: IPEndPoint, timeout: int, debug: bool) =
         let socket = new UdpClient(bind)
-        let closing = new CancellationTokenSource()
+        let cancel = new CancellationTokenSource()
 
         try
-            let rx = receiveAll socket closing.Token [] |> Async.StartAsTask
+            let rx = receiveAll socket cancel.Token [] |> Async.StartAsTask
 
             socket.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true)
             socket.EnableBroadcast <- true
@@ -105,8 +115,10 @@ module internal UDP =
                 dump request
 
             Thread.Sleep timeout
-            closing.Cancel()
-            socket.Close()
+
+            cancel.Cancel()
+            if not (rx.Wait(5000)) then
+                socket.Close()
 
             match rx.Result with
             | Ok received ->
@@ -128,6 +140,7 @@ module internal UDP =
         try
             let x: Err = Err.Timeout
             let socket = new UdpClient(bind)
+            let cancel = new CancellationTokenSource()
 
             let timer (timeout: int) : Async<Result<byte array * IPEndPoint, Err>> =
                 async {
@@ -137,7 +150,7 @@ module internal UDP =
 
             try
                 try
-                    let rx = receive socket |> Async.StartAsTask
+                    let rx = receive socket cancel.Token |> Async.StartAsTask
                     let rx_timeout = timer timeout |> Async.StartAsTask
 
                     socket.EnableBroadcast <- true
@@ -150,6 +163,11 @@ module internal UDP =
 
                     // set-IPv4 does not return a reply
                     if request[1] = 0x96uy then
+                        cancel.Cancel()
+
+                        if not (rx.Wait(5000)) then
+                            socket.Close()
+
                         Ok([||])
                     else
                         let completed =
@@ -166,6 +184,11 @@ module internal UDP =
                             | Ok(_, _) -> Error Err.InvalidPacket
                             | Error err -> Error err
                         else
+                            cancel.Cancel()
+
+                            if not (rx.Wait(5000)) then
+                                socket.Close()
+
                             Error Err.Timeout
 
                 with err ->
@@ -177,6 +200,7 @@ module internal UDP =
 
     let sendTo (request: byte array, src: IPEndPoint, dest: IPEndPoint, timeout: int, debug: bool) =
         let socket = new UdpClient(src)
+        let cancel = new CancellationTokenSource()
 
         let timer (timeout: int) : Async<Result<byte array * IPEndPoint, Err>> =
             async {
@@ -186,12 +210,11 @@ module internal UDP =
 
         try
             try
-                socket.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true)
-                socket.Connect(dest)
-
-                let rx = receive socket |> Async.StartAsTask
+                let rx = receive socket cancel.Token |> Async.StartAsTask
                 let rx_timeout = timer timeout |> Async.StartAsTask
 
+                socket.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true)
+                socket.Connect(dest)
                 socket.Send(request, request.Length) |> ignore
 
                 if debug then
@@ -200,6 +223,11 @@ module internal UDP =
 
                 // set-IPv4 does not return a reply
                 if request[1] = 0x96uy then
+                    cancel.Cancel()
+
+                    if not (rx.Wait(5000)) then
+                        socket.Close()
+
                     Ok([||])
                 else
                     let completed =
@@ -216,6 +244,11 @@ module internal UDP =
                         | Ok(_, _) -> Error InvalidPacket
                         | Error err -> Error err
                     else
+                        cancel.Cancel()
+
+                        if not (rx.Wait(5000)) then
+                            socket.Close()
+
                         Error Err.Timeout
 
             with err ->
@@ -225,9 +258,7 @@ module internal UDP =
 
     let listen (bind: IPEndPoint) (callback: byte array -> unit) (token: CancellationToken) (debug: bool) =
         let socket = new UdpClient(bind)
-        let closing = new CancellationTokenSource()
-
-        socket.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true)
+        let cancel = new CancellationTokenSource()
 
         let handler (packet: byte array, addr: IPEndPoint) =
             if debug then
@@ -237,12 +268,21 @@ module internal UDP =
             callback packet
 
         try
-            receiveEvent socket handler closing.Token |> Async.StartAsTask |> ignore
+            try
+                socket.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true)
 
-            token.WaitHandle.WaitOne() |> ignore
-            closing.Cancel()
+                let rx = receiveEvent socket handler cancel.Token |> Async.StartAsTask
+
+                token.WaitHandle.WaitOne() |> ignore
+
+                cancel.Cancel()
+
+                if not (rx.Wait(5000)) then
+                    socket.Close()
+
+                Ok()
+
+            with err ->
+                Error(ListenError err.Message)
+        finally
             socket.Close()
-            Ok()
-
-        with err ->
-            Error(ListenError err.Message)

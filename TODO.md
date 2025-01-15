@@ -14,8 +14,8 @@
       - [ ] Test install from Github packages
       - [x] Clean up integration test warning on terminate
 
-- [ ] Integration tests
-      - [ ] Remove delays
+- [x] Integration tests
+      - [x] Remove delays
 
 - [ ] API
     - [ ] _Cannot access a disposed object._

@@ -1,6 +1,7 @@
 namespace uhppoted
 
 open System
+open System.IO
 open System.Net
 open System.Net.Sockets
 open System.Threading
@@ -17,30 +18,42 @@ module internal TCP =
             let right = String.Join(" ", hex.[p + 8 .. q + 8])
             printfn "    %s  %s" left right
 
-    let rec receive (stream: NetworkStream) : Async<Result<byte array, Err>> =
+    let rec receive (stream: NetworkStream) (cancel: CancellationToken) : Async<Result<Option<byte array>, Err>> =
         async {
             try
-                let! packet =
-                    let buffer = Array.zeroCreate 1024
+                let buffer = Array.zeroCreate<byte> 1024
+                let! N = stream.ReadAsync(buffer, 0, buffer.Length, cancel) |> Async.AwaitTask
 
-                    Async.FromBeginEnd(
-                        (fun (callback, state) -> stream.BeginRead(buffer, 0, buffer.Length, callback, state)),
-                        (fun (iar) ->
-                            let N = stream.EndRead(iar)
-                            buffer[0 .. N - 1])
-                    )
-
-                if packet.Length = 64 then
-                    return Ok(packet)
+                if N <= 0 then
+                    stream.Close()
+                    return Ok(None)
+                else if N = 64 then
+                    stream.Close()
+                    return Ok(Some(buffer.[0..63]))
                 else
-                    return! receive stream
+                    return! receive stream cancel
 
-            with err ->
+            with
+            | :? OperationCanceledException ->
+                stream.Close()
+                return Ok(None)
+
+            | :? IOException as x ->
+                stream.Close()
+                return Error(ReceiveError x.Message)
+
+            | :? SocketException as x ->
+                stream.Close()
+                return Error(ReceiveError x.Message)
+
+            | err ->
+                stream.Close()
                 return Error(ReceiveError err.Message)
         }
 
     let sendTo (request: byte array, src: IPEndPoint, dest: IPEndPoint, timeout: int, debug: bool) =
         let socket = new TcpClient(src)
+        let cancel = new CancellationTokenSource()
 
         let timer (timeout: int) : Async<Result<byte array * IPEndPoint, Err>> =
             async {
@@ -54,7 +67,7 @@ module internal TCP =
                 socket.Connect(dest)
 
                 let stream = socket.GetStream()
-                let rx = receive stream |> Async.StartAsTask
+                let rx = receive stream cancel.Token |> Async.StartAsTask
                 let rx_timeout = timer timeout |> Async.StartAsTask
 
                 stream.Write(request) |> ignore
@@ -65,6 +78,11 @@ module internal TCP =
 
                 // set-IPv4 does not return a reply
                 if request[1] = 0x96uy then
+                    cancel.Cancel()
+
+                    if not (rx.Wait(5000)) then
+                        socket.Close()
+
                     Ok([||])
                 else
                     let completed =
@@ -72,15 +90,20 @@ module internal TCP =
 
                     if completed = rx then
                         match rx.Result with
-                        | Ok(packet) when packet.Length = 64 ->
+                        | Ok(Some packet) ->
                             if debug then
                                 printfn "    ... received %d bytes from %A" packet.Length dest.Address
                                 dump packet
 
                             Ok packet
-                        | Ok(_) -> Error InvalidPacket
+                        | Ok None -> Error InvalidPacket
                         | Error err -> Error err
                     else
+                        cancel.Cancel()
+
+                        if not (rx.Wait(5000)) then
+                            socket.Close()
+
                         Error Err.Timeout
 
             with err ->
