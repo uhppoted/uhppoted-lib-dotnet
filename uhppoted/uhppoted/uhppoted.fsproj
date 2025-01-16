@@ -5,6 +5,7 @@
     <Title>uhppoted</Title>
     <Description>.NET library for the UHPPOTE access controller API.</Description>
     <Authors>uhppoted</Authors>
+    <RepositoryUrl>https://github.com/uhppoted/uhppoted-lib-dotnet</RepositoryUrl>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/uhppoted/uhppoted-lib-dotnet</PackageProjectUrl>

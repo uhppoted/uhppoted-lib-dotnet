@@ -7,8 +7,8 @@
       - [x] README: fix documentation links
       - [x] Clean up integration test warning on terminate
       - [ ] Publish from github workflow
-            - [x] Github packages
             - [x] nuget.org
+            - [x] Github packages
             - [x] Check snupkg is uploaded
             - [x] Remove version extension
       - [ ] Test install from NuGet
@@ -18,8 +18,8 @@
       - [x] Remove delays
       - [ ] Remove retries
 
-- [ ] API
-    - [ ] _Cannot access a disposed object._
+- [x] API
+    - [x] _Cannot access a disposed object._
 
 - [ ] examples
     - [ ] MAUI

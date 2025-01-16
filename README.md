@@ -6,21 +6,28 @@
 
 .NET package for the UHPPOTE access controller API.
 
-The API is described in [API.md](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/API.md) and 
-example CLI implementations in F#, C# and VB.NET that illustrate the use of the API can be found in the 
+The API is described in detail in [API.md](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/API.md) and 
+examples in _F#_, _C#_ and _VB.NET_ that illustrate the use of the API can be found in the 
 [examples](https://github.com/uhppoted/uhppoted-lib-dotnet/tree/main/examples) folder.
 
+---
 - [Release Notes](#release-notes)
 - [Installation](#installation)
+   - [Installing from nuget.org](#installing-from-the-nuget-registry)
+   - [Installing from Github Packages](#installing-from-github-packages)
+   - [Building from source](#building-from-source)
+   - [C#](#c)
+   - [VB.NET](vbnet)
 - [API summary](#api-summary)
 - [API documentation](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/API.md)
 - [Examples](#examples)
+- [Notes](#notes)
 
 ## Release Notes
 
 #### Current Release
 
-_BETA_
+- _uhppoted.0.8.9.1-beta_
 
 
 ## Installation
@@ -30,14 +37,14 @@ The package can be installed from either the [_NuGet_](https://www.nuget.org/pac
 
 ### Installing from the NuGet Registry
 
-Use either the dotnet CLI or _Package Manager_:
+Use either the _dotnet CLI_ or _Package Manager_:
 
 - CLI:
 ```
 dotnet add package uhppoted
 ```
 
-- Package Manager:
+- _Package Manager_ (console):
 ```
 NuGet\Install-Package uhppoted -Version <version>
 ```
@@ -53,42 +60,28 @@ After installing the package it should be referenced in the _project_ file:
 
 ### Installing from Github Packages
 
-Installing from the _Github Packages_ _NuGet_ registry is a more complicated. Either:
+Installing from the _Github Packages_ _NuGet_ registry is similar:
 
-- Follow the steps under 
-[_Installing a package_](https://docs.github.com/en/enterprise-server@3.12/packages/working-with-a-github-packages-registry/working-with-the-nuget-registry#installing-a-package) and add the repository URL and package to the project file:
+- _dotnet CLI_:
+   ```
+   dotnet nuget add source https://nuget.pkg.github.com/uhppoted/index.json
+   dotnet add package uhppoted
+   ```
 
+- _Package Manager_ (console):
+   ```
+   NuGet\Set-Source -Name "GitHubPackages" -Source "https://nuget.pkg.github.com/uhppoted/index.json"
+   NuGet\Install-Package uhppoted
+   ```
+
+After installing the package it should be referenced in the _project_ file:
 ```
-  ...
-  <PropertyGroup>
-    <RepositoryUrl>https://githbuHOSTNAME/OWNER/REPOSITORY</RepositoryUrl>
-  </PropertyGroup>
   ...
   <ItemGroup>
     <PackageReference Include="uhppoted" Version="<version>" />
   </ItemGroup>
   ...
 ```
-
-- (OR) use the dotnet CLI:
-   - Create a [_personal access token (classic)_](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic)
-   - Add a _NuGet_ source:
-   ```
-   dotnet nuget add source https://nuget.pkg.github.com/uhppoted/index.json --name github-uhppoted --username <user-id> --password <personal-access-token>
-   ```
-   - Install the package:
-   ```
-   dotnet add package uhppoted
-   ```
-
-   After installing the package it should be referenced in the _project_ file:
-   ```
-   ...
-     <ItemGroup>
-      <PackageReference Include="uhppoted" Version="<version>" />
-     </ItemGroup>
-   ...
-   ```
 
 ### Building from source
 
@@ -109,31 +102,19 @@ If you prefer to build without _make_:
    dotnet build
 ```
 
-### Notes
-
 #### C#
 
-C# applications may require installing the FSharp.Core package:
+C# applications _may_ additionally require installing the FSharp.Core package:
 ```
 dotnet add package FSharp.Core
 ```
 
 #### VB.NET
 
-VB.NET applications may require installing the FSharp.Core package:
+VB.NET applications _may_ additionally require installing the FSharp.Core package:
 ```
 dotnet add package FSharp.Core
 ```
-
-#### Windows
-
-The dynamic port range in _Windows_ has been extended to include the default _listen_ port (60001):
-
-- [The default dynamic port range for TCP/IP has changed...](https://learn.microsoft.com/en-us/troubleshoot/windows-server/networking/default-dynamic-port-range-tcpip-chang)
-
-Applications running on Windows _may_ need to either provision a different UDP port when listening for 
-events or add port 60001 to the _allowed_ list.
-
 
 ## API summary
 
@@ -250,3 +231,13 @@ Listens for access controller events.
 
 - [CLI](https://github.com/uhppoted/uhppoted-lib-dotnet/tree/main/examples/vb/cli)
 
+### Notes
+
+#### Windows
+
+The dynamic port range in _Windows_ has been extended to include the default _listen_ port (60001):
+
+- [The default dynamic port range for TCP/IP has changed...](https://learn.microsoft.com/en-us/troubleshoot/windows-server/networking/default-dynamic-port-range-tcpip-chang)
+
+Applications running on Windows _may_ need to either provision a different UDP port when listening for 
+events or add port 60001 to the _allowed_ list.
