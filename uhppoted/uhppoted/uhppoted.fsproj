@@ -1,16 +1,20 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <PackageId>uhppoted-test</PackageId>
+    <PackageId>uhppoted</PackageId>
     <Title>uhppoted</Title>
-    <PackageVersion>0.8.9.4-beta</PackageVersion>
     <Description>.NET library for the UHPPOTE access controller API.</Description>
+    <Authors>uhppoted</Authors>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/uhppoted/uhppoted-lib-dotnet</PackageProjectUrl>
     <PackageTags>uhppote;wiegand;access-control;building-security</PackageTags>
-    <Authors>uhppoted</Authors>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageVersion>0.8.9.1-beta</PackageVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Version>0.8.9.1</Version>
   </PropertyGroup>
 
   <PropertyGroup>

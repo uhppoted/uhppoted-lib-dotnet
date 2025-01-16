@@ -5,14 +5,14 @@
       - [x] Copy README on build/release (generate ?)
       - [x] README: github registry install instructions
       - [x] README: fix documentation links
+      - [x] Clean up integration test warning on terminate
       - [ ] Publish from github workflow
             - [x] Github packages
             - [x] nuget.org
             - [x] Check snupkg is uploaded
-            - [ ] Remove version extension
+            - [x] Remove version extension
       - [ ] Test install from NuGet
       - [ ] Test install from Github packages
-      - [x] Clean up integration test warning on terminate
 
 - [ ] Integration tests
       - [x] Remove delays
@@ -22,7 +22,7 @@
     - [ ] _Cannot access a disposed object._
 
 - [ ] examples
-    - [ ] GCI
+    - [ ] MAUI
           - https://mauiman.dev/maui_cli_commandlineinterface.html
 
 

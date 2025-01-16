@@ -42,7 +42,7 @@ dotnet add package uhppoted
 NuGet\Install-Package uhppoted -Version <version>
 ```
 
-After installing the package add it the _project_ file:
+After installing the package it should be referenced in the _project_ file:
 ```
   ...
   <ItemGroup>
@@ -71,7 +71,7 @@ Installing from the _Github Packages_ _NuGet_ registry is a more complicated. Ei
 ```
 
 - (OR) use the dotnet CLI:
-   - Create a _personal access token (classic)_
+   - Create a [_personal access token (classic)_](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic)
    - Add a _NuGet_ source:
    ```
    dotnet nuget add source https://nuget.pkg.github.com/uhppoted/index.json --name github-uhppoted --username <user-id> --password <personal-access-token>
@@ -79,6 +79,15 @@ Installing from the _Github Packages_ _NuGet_ registry is a more complicated. Ei
    - Install the package:
    ```
    dotnet add package uhppoted
+   ```
+
+   After installing the package it should be referenced in the _project_ file:
+   ```
+   ...
+     <ItemGroup>
+      <PackageReference Include="uhppoted" Version="<version>" />
+     </ItemGroup>
+   ...
    ```
 
 ### Building from source

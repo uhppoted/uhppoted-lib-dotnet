@@ -1,6 +1,3 @@
-PACKAGE = dist/uhppoted-test.0.8.9.4-beta.nupkg
-SYMBOLS = dist/uhppoted-test.0.8.9.3-beta.snupkg
-
 clean:
 	dotnet clean
 
@@ -18,10 +15,9 @@ release: build test
 	dotnet pack --include-symbols --configuration Release --output dist
 
 publish-github: 
-	dotnet nuget push $(PACKAGE) --source "github" --api-key "${GITHUB_API_KEY}" --skip-duplicate
-	dotnet nuget push $(SYMBOLS) --source "github" --api-key "${GITHUB_API_KEY}" --skip-duplicate
+	dotnet nuget push dist --no-symbols --source "github" --api-key "${GITHUB_API_KEY}" --skip-duplicate
 
 publish-nuget: 
-	dotnet nuget push $(PACKAGE)  --source https://api.nuget.org/v3/index.json --api-key ${NUGET_API_KEY} --skip-duplicate
+	dotnet nuget push dist --source https://api.nuget.org/v3/index.json --api-key ${NUGET_API_KEY} --skip-duplicate
 
 publish: publish-github publish-nuget
