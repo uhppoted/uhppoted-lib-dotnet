@@ -29,15 +29,12 @@ jobs:
       run: |
         dotnet --version
         make release
+        dir uhppoted/uhppoted/dist/*.nupkg
 
     - name: Publish to Github Packages
       run: |
-        dir 
-        dir uhppoted
-        dir uhppoted/uhppoted
-        dir uhppoted/uhppoted/dist
-        # dotnet nuget add source --username uhppoted --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/uhppoted/index.json"
-        # dotnet nuget push "./uhppoted/uhppoted/dist/*.nupkg" --source "github" --api-key ${{ secrets.GITHUB_TOKEN }} --no-symbols --skip-duplicate 
+        dotnet nuget add source --username uhppoted --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/uhppoted/index.json"
+        dotnet nuget push uhppoted/uhppoted/dist/uhppoted.0.8.9.1-beta.nupkg --source "github" --api-key ${{ secrets.GITHUB_TOKEN }} --no-symbols --skip-duplicate 
 
     # - name: Publish to NuGet
     #   run: |
