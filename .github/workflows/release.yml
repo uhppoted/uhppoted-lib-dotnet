@@ -33,8 +33,8 @@ jobs:
     - name: Publish to Github Packages
       run: |
         dotnet nuget add source --username uhppoted --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/uhppoted/index.json"
-        dotnet nuget push ./uhppoted/uhppoted/dist --source "github" --api-key ${{ secrets.GITHUB_TOKEN }} --no-symbols --skip-duplicate 
+        dotnet nuget push "./uhppoted/uhppoted/dist/*.nupkg" --source "github" --api-key ${{ secrets.GITHUB_TOKEN }} --no-symbols --skip-duplicate 
 
-    - name: Publish to NuGet
-      run: |
-        dotnet nuget push ./uhppoted/uhppoted/dist --source "https://api.nuget.org/v3/index.json" --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate
+    # - name: Publish to NuGet
+    #   run: |
+    #     dotnet nuget push ./uhppoted/uhppoted/dist --source "https://api.nuget.org/v3/index.json" --api-key ${{ secrets.NUGET_API_KEY }} --skip-duplicate
