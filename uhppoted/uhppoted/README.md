@@ -2,9 +2,9 @@
 
 .NET package for the UHPPOTE access controller API.
 
-The API is described in detail in [API.md](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/API.md) and 
-examples in _F#_, _C#_ and _VB.NET_ that illustrate the use of the API can be found in the 
-[examples](https://github.com/uhppoted/uhppoted-lib-dotnet/tree/main/examples) folder.
+The API is described in detail in the [API](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/API.md) documentation and examples 
+in [_F#_](https://github.com/uhppoted/uhppoted-lib-dotnet/tree/main/examples/fsharp), [_C#_](https://github.com/uhppoted/uhppoted-lib-dotnet/tree/main/examples/csharp) 
+and [_VB.NET_](https://github.com/uhppoted/uhppoted-lib-dotnet/tree/main/examples/vb) are included to illustrate the use of the API.
 
 ---
 - [Release Notes](#release-notes)
@@ -37,12 +37,13 @@ Use either the _dotnet CLI_ or _Package Manager_:
 
 - CLI:
 ```
-dotnet add package uhppoted
+dotnet add package uhppoted --version 0.8.9.1-beta
+
 ```
 
 - _Package Manager_ (console):
 ```
-NuGet\Install-Package uhppoted -Version <version>
+NuGet\Install-Package uhppoted -Version 0.8.9.1-beta
 ```
 
 After installing the package it should be referenced in the _project_ file:
@@ -61,13 +62,14 @@ Installing from the _Github Packages_ _NuGet_ registry is similar:
 - _dotnet CLI_:
    ```
    dotnet nuget add source https://nuget.pkg.github.com/uhppoted/index.json
-   dotnet add package uhppoted
+   dotnet add package uhppoteddot --version 0.8.9.1-beta
+
    ```
 
 - _Package Manager_ (console):
    ```
    NuGet\Set-Source -Name "GitHubPackages" -Source "https://nuget.pkg.github.com/uhppoted/index.json"
-   NuGet\Install-Package uhppoted
+   NuGet\Install-Package uhppoted -Version 0.8.9.1-beta
    ```
 
 After installing the package it should be referenced in the _project_ file:

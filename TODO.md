@@ -14,9 +14,9 @@
       - [ ] Test install from NuGet
       - [ ] Test install from Github packages
 
-- [ ] Integration tests
+- [x] Integration tests
       - [x] Remove delays
-      - [ ] Remove retries
+      - [x] Remove retries
 
 - [x] API
     - [x] _Cannot access a disposed object._
