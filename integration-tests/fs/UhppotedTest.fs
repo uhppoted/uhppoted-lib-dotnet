@@ -28,7 +28,7 @@ type TestFindAPI() =
 
     [<OneTimeSetUp>]
     member this.Initialise() =
-        match Stub.initialise "broadcast" TestContext.Error 5 with
+        match Stub.initialise "broadcast" TestContext.Error with
         | Ok emulator -> this.emulator <- Some emulator
         | Error err -> raise (System.Exception(err))
 
@@ -141,7 +141,7 @@ type TestAPI(tt: string) =
     [<OneTimeSetUp>]
     member this.Initialise() =
         let init mode =
-            match Stub.initialise mode TestContext.Error 5 with
+            match Stub.initialise mode TestContext.Error with
             | Ok emulator -> this.emulator <- Some emulator
             | Error err -> raise (System.Exception(err))
 

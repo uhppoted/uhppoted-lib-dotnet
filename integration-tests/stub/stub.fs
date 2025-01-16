@@ -167,20 +167,15 @@ module Stub =
             logger.WriteLine("unknown emulator mode ({0})", mode)
             Ok { udp = None; tcp = None }
 
-    let rec initialise (mode: string) (logger: TextWriter) (count: int) : Result<Emulator, string> =
-        if count > 0 then
-            try
-                match (init mode logger) with
-                | Ok emulator ->
-                    Thread.Sleep 1000 // delay to let async listener start properly (TCP)
-                    Ok emulator
-                | _ -> Error "could not initialise stub"
-            with err ->
-                logger.WriteLine("  ** WARN {0} ... retrying...", err.Message)
-                Thread.Sleep(30000)
-                (initialise mode logger (count - 1))
-        else
-            Error "could not initialise emulator"
+    let initialise (mode: string) (logger: TextWriter) : Result<Emulator, string> =
+        try
+            match (init mode logger) with
+            | Ok emulator ->
+                Thread.Sleep 1000 // delay to let async listener start properly (TCP)
+                Ok emulator
+            | _ -> Error "could not initialise stub"
+        with err ->
+            Error $"could not initialise stub {err}"
 
     let terminate (emulator: Emulator) (logger: TextWriter) =
         match emulator.udp with
