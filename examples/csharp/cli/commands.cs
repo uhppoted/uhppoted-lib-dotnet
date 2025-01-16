@@ -22,6 +22,8 @@ public readonly struct Command
 class Commands
 {
     static readonly uhppoted.Options OPTIONS = new uhppoted.OptionsBuilder()
+                                                           .WithBind(new IPEndPoint(IPAddress.Any, 0))
+                                                           .WithBroadcast(new IPEndPoint(IPAddress.Broadcast, 60000))
                                                            .WithTimeout(1000)
                                                            .WithDebug(true)
                                                            .Build();

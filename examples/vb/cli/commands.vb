@@ -42,6 +42,8 @@ Module Commands
     Private ReadOnly Dim END_DATE As DateOnly = New DateOnly(2024, 12, 31)
 
     Private ReadOnly Dim OPTIONS = New OptionsBuilder().
+                                       WithBind(New IPEndPoint(IPAddress.Any, 0)).
+                                       WithBroadcast(New IPEndPoint(IPAddress.Broadcast, 60000)).
                                        WithTimeout(1000).
                                        WithDebug(True).
                                        Build()

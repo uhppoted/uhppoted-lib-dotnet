@@ -22,7 +22,7 @@
     - [x] _Cannot access a disposed object._
 
 - [ ] examples
-    - [ ] Add bind and broadcast to examples config.
+    - [x] Add bind and broadcast to examples config.
     - [ ] MAUI
           - https://mauiman.dev/maui_cli_commandlineinterface.html
 
