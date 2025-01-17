@@ -35,6 +35,6 @@ jobs:
       run: |
         $file = Get-ChildItem -Path ./uhppoted/uhppoted/dist -Filter *.nupkg | Select-Object -ExpandProperty Name
         echo ">>>>>>>>>>>>>>>> $file"
-        $filepath = Get-ChildItem -Path ./uhppoted/uhppoted/dist -Filter *.nupkg | Select-Object -ExpandProperty PSChildName
+        $filepath = Resolve-Path -Path $file -Relative
         echo ">>>>>>>>>>>>>>>> $filepath"
    

@@ -235,11 +235,11 @@ Listens for access controller events.
 #### Ephemeral ports and binding to `0.0.0.0:0`
 
 As per [Microsoft Knowledgebase Article 929851](https://learn.microsoft.com/en-us/troubleshoot/windows-server/networking/default-dynamic-port-range-tcpip-chang),
-the default Windows ephemeral port range extends from 49152 to 65535, which includes the default UHPPOTE UDP port (60000). Present-day BSD and Linux
+the default Windows ephemeral port range extends from 49152 to 65535, which includes the default UHPPOTE UDP port (`60000`). Present-day BSD and Linux
 have similar ranges.
 
-If an application is assigned port 60000 when binding to e.g. 0.0.0.0:0 it will receive the any outgoing UDP broadcast requests and interpret
-them as replies - which will be, uh, more than a little confusing, e.g.:
+If an application is assigned port `60000` when binding to e.g. `0.0.0.0:0` it will receive the any outgoing UDP broadcast requests and interpret
+them as replies - which will be, uh, a little confusing, e.g.:
 ```
 request:
    17 94 00 00 00 00 00 00  00 00 00 00 00 00 00 00
@@ -272,9 +272,9 @@ get-all-controllers:
 ```
 
 In general this doesn't seem to have been a problem (or at least nobody has raised it as an issue), but if you run into it:
-- Exclude port 60000 from the ephemeral range using whatever is recommended for your operating system of choice.
+- Exclude port `60000` from the ephemeral range using whatever is recommended for your operating system of choice.
 - (OR) Reduce (or move) the ephemeral port range.
-- (OR) Bind a netcat listener to port 60000 before running the application:
+- (OR) Bind a netcat listener to port `60000` before running the application:
 ```
 nc -lu 600000
 ```
