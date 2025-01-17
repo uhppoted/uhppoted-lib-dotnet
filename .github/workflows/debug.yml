@@ -37,5 +37,5 @@ jobs:
 
     - name: Publish to NuGet
       run: |
-        echo ">>>>>>>>>>>>>>>> $$env:NUPKG"
+        echo ">>>>>>>>>>>>>>>> $env:NUPKG"
    
