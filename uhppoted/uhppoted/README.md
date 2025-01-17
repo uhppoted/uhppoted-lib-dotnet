@@ -18,7 +18,7 @@ and [_VB.NET_](https://github.com/uhppoted/uhppoted-lib-dotnet/tree/main/example
 - [API documentation](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/API.md)
 - [Examples](#examples)
 - [Notes](#notes)
-   - [Ephemeral ports](#ephemeral-ports-and-binding-to-0.0.0.0:0)
+   - [Ephemeral ports](#ephemeral-ports-and-binding-to-00000)
 
 ## Release Notes
 
@@ -280,7 +280,7 @@ nc -lu 600000
 ```
 
 References:
-1. [The Ephemeral Port Range](https://www.ncftp.com/ncftpd/doc/misc/ephemeral_ports.html)
-2. [How to change/view the ephemeral port range on Windows machines?](https://stackoverflow.com/questions/7006939/how-to-change-view-the-ephemeral-port-range-on-windows-machines#7007159)
-3. [You cannot exclude ports by using the ReservedPorts registry key in Windows Server 2008 or in Windows Server 2008 R2](https://support.microsoft.com/en-us/topic/you-cannot-exclude-ports-by-using-the-reservedports-registry-key-in-windows-server-2008-or-in-windows-server-2008-r2-a68373fd-9f64-4bde-9d68-c5eded74ea35)
-4. [Listen to UDP data on local port with netcat](https://serverfault.com/questions/207683/listen-to-udp-data-on-local-port-with-netcat)
+1. [_The Ephemeral Port Range_](https://www.ncftp.com/ncftpd/doc/misc/ephemeral_ports.html)
+2. [_How to change/view the ephemeral port range on Windows machines?_](https://stackoverflow.com/questions/7006939/how-to-change-view-the-ephemeral-port-range-on-windows-machines#7007159)
+3. [_You cannot exclude ports by using the ReservedPorts registry key in Windows Server 2008 or in Windows Server 2008 R2_](https://support.microsoft.com/en-us/topic/you-cannot-exclude-ports-by-using-the-reservedports-registry-key-in-windows-server-2008-or-in-windows-server-2008-r2-a68373fd-9f64-4bde-9d68-c5eded74ea35)
+4. [_Listen to UDP data on local port with netcat_](https://serverfault.com/questions/207683/listen-to-udp-data-on-local-port-with-netcat)
