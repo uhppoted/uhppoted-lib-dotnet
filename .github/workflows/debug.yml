@@ -29,12 +29,13 @@ jobs:
       run: |
         dotnet --version
         make release
-        dir uhppoted/uhppoted/dist/*.nupkg
+        $file = Get-ChildItem -Path ./uhppoted/uhppoted/dist -Filter *.nupkg | Select-Object -ExpandProperty Name
+        echo ">>>>>>>>>>>>>>>> $file"
+        $filepath = Join-Path -Path ./uhppoted/uhppoted/dist -ChildPath $file
+        echo ">>>>>>>>>>>>>>>> $filepath"
+        echo "NUPKG=$filepath" >> $env:GITHUB_ENV
 
     - name: Publish to NuGet
       run: |
-        $file = Get-ChildItem -Path ./uhppoted/uhppoted/dist -Filter *.nupkg | Select-Object -ExpandProperty Name
-        echo ">>>>>>>>>>>>>>>> $file"
-        $filepath = Resolve-Path -Path $file -Relative
-        echo ">>>>>>>>>>>>>>>> $filepath"
+        echo ">>>>>>>>>>>>>>>> $"$env:NUPKG"
    
