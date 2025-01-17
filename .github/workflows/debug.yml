@@ -33,6 +33,8 @@ jobs:
 
     - name: Publish to NuGet
       run: |
-        $file = Get-ChildItem -Path ./uhppoted/uhppoted/dist -Filter *.nupkg | Select-Object -ExpandProperty FullName
+        $file = Get-ChildItem -Path ./uhppoted/uhppoted/dist -Filter *.nupkg | Select-Object -ExpandProperty Name
         echo ">>>>>>>>>>>>>>>> $file"
+        $filepath = Get-ChildItem -Path ./uhppoted/uhppoted/dist -Filter *.nupkg | Select-Object -ExpandProperty PSChildName
+        echo ">>>>>>>>>>>>>>>> $filepath"
    
