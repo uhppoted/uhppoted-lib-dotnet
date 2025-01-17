@@ -18,6 +18,7 @@ and [_VB.NET_](https://github.com/uhppoted/uhppoted-lib-dotnet/tree/main/example
 - [API documentation](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/API.md)
 - [Examples](#examples)
 - [Notes](#notes)
+   - [Ephemeral ports](#ephemeral-ports-and-binding-to-0.0.0.0:0)
 
 ## Release Notes
 
@@ -231,11 +232,55 @@ Listens for access controller events.
 
 ### Notes
 
-#### Windows
+#### Ephemeral ports and binding to `0.0.0.0:0`
 
-The dynamic port range in _Windows_ has been extended to include the default _listen_ port (60001):
+As per [Microsoft Knowledgebase Article 929851](https://learn.microsoft.com/en-us/troubleshoot/windows-server/networking/default-dynamic-port-range-tcpip-chang),
+the default Windows ephemeral port range extends from 49152 to 65535, which includes the default UHPPOTE UDP port (60000). Present-day BSD and Linux
+have similar ranges.
 
-- [The default dynamic port range for TCP/IP has changed...](https://learn.microsoft.com/en-us/troubleshoot/windows-server/networking/default-dynamic-port-range-tcpip-chang)
+If an application is assigned port 60000 when binding to e.g. 0.0.0.0:0 it will receive the any outgoing UDP broadcast requests and interpret
+them as replies - which will be, uh, more than a little confusing, e.g.:
+```
+request:
+   17 94 00 00 00 00 00 00  00 00 00 00 00 00 00 00
+   00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00
+   00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00
+   00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00
 
-Applications running on Windows _may_ need to either provision a different UDP port when listening for 
-events or add port 60001 to the _allowed_ list.
+reply:
+   17 94 00 00 78 37 2a 18  c0 a8 01 64 ff ff ff 00
+   c0 a8 01 01 00 12 23 34  45 56 08 92 20 18 11 05
+   00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00
+   00 00 00 00 00 00 00 00  00 00 00 00 00 00 00 00
+      
+get-all-controllers:
+   controller: 0
+      address: 0.0.0.0
+      netmask: 0.0.0.0
+      gateway: 0.0.0.0
+          MAC: 00:00:00:00:00:00
+      version: v0.00
+         date: ---
+
+   controller: 405419896
+      address: 192.168.1.100
+      netmask: 255.255.255.0
+      gateway: 192.168.1.1
+          MAC: 00:12:23:34:45:56
+      version: v8.92
+         date: 2018-11-05
+```
+
+In general this doesn't seem to have been a problem (or at least nobody has raised it as an issue), but if you run into it:
+- Exclude port 60000 from the ephemeral range using whatever is recommended for your operating system of choice.
+- (OR) Reduce (or move) the ephemeral port range.
+- (OR) Bind a netcat listener to port 60000 before running the application:
+```
+nc -lu 600000
+```
+
+References:
+1. [The Ephemeral Port Range](https://www.ncftp.com/ncftpd/doc/misc/ephemeral_ports.html)
+2. [How to change/view the ephemeral port range on Windows machines?](https://stackoverflow.com/questions/7006939/how-to-change-view-the-ephemeral-port-range-on-windows-machines#7007159)
+3. [You cannot exclude ports by using the ReservedPorts registry key in Windows Server 2008 or in Windows Server 2008 R2](https://support.microsoft.com/en-us/topic/you-cannot-exclude-ports-by-using-the-reservedports-registry-key-in-windows-server-2008-or-in-windows-server-2008-r2-a68373fd-9f64-4bde-9d68-c5eded74ea35)
+4. [Listen to UDP data on local port with netcat](https://serverfault.com/questions/207683/listen-to-udp-data-on-local-port-with-netcat)
