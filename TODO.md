@@ -6,12 +6,12 @@
       - [x] README: github registry install instructions
       - [x] README: fix documentation links
       - [x] Clean up integration test warning on terminate
-      - [ ] Publish from github workflow
+      - [x] Publish from github workflow
             - [x] nuget.org
             - [x] Github packages
             - [x] Check snupkg is uploaded
             - [x] Remove version extension
-            - [ ] Automate file version
+            - [x] Automate file version
 
       - [ ] Test install from NuGet
       - [ ] Test install from Github packages
