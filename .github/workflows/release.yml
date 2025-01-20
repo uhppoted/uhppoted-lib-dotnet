@@ -34,13 +34,13 @@ jobs:
         $filepath = Join-Path -Path ./uhppoted/uhppoted/dist -ChildPath $file
         echo "NUPKG=$filepath" >> $env:GITHUB_ENV
 
-    - name: Inspect package
-      run: |
-        mkdir tmp
-        unzip "$env:NUPKG" -d tmp
-        type tmp/uhppoted.nuspec
+    # - name: Inspect package
+    #   run: |
+    #     mkdir tmp
+    #     unzip "$env:NUPKG" -d tmp
+    #     type tmp/uhppoted.nuspec
         
-    - name: Inspect package without unzipping
+    - name: Inspect package (without unzipping)
       run: |
         $zipfile = "$env:NUPKG"
         $filename = "uhppoted.nuspec"
