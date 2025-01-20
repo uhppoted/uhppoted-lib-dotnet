@@ -24,7 +24,7 @@ and [_VB.NET_](https://github.com/uhppoted/uhppoted-lib-dotnet/tree/main/example
 
 #### Current Release
 
-- _uhppoted.0.8.9.1-beta_
+- _uhppoted.0.8.9.2-beta_
 
 
 ## Installation
@@ -38,13 +38,13 @@ Use either the _dotnet CLI_ or _Package Manager_:
 
 - CLI:
 ```
-dotnet add package uhppoted --version 0.8.9.1-beta
+dotnet add package uhppoted --version 0.8.9.2-beta
 
 ```
 
 - _Package Manager_ (console):
 ```
-NuGet\Install-Package uhppoted -Version 0.8.9.1-beta
+NuGet\Install-Package uhppoted -Version 0.8.9.2-beta
 ```
 
 After installing the package it should be referenced in the _project_ file:
@@ -271,10 +271,11 @@ get-all-controllers:
          date: 2018-11-05
 ```
 
-In general this doesn't seem to have been a problem (or at least nobody has raised it as an issue), but if you run into it:
-- Exclude port `60000` from the ephemeral range using whatever is recommended for your operating system of choice.
-- (OR) Reduce (or move) the ephemeral port range.
-- (OR) Bind a netcat listener to port `60000` before running the application:
+In general this doesn't seem to have been a problem (or at least nobody has raised it as an issue) and the implementation will
+return an error if the bind port for a UDP broadcast is 60000. It can be mitigated by:
+- Excluding port `60000` from the ephemeral range using whatever method is recommended for your platform of choice.
+- (OR) Reduce (or move) the ephemeral port range (again using whatever method is recommended for your platform of choice).
+- (OR) (**really not recommended except as a quick hack**) Bind a netcat listener to port `60000` before running the application:
 ```
 nc -lu 600000
 ```
