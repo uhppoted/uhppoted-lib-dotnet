@@ -39,8 +39,20 @@ jobs:
         mkdir tmp
         unzip "$env:NUPKG" -d tmp
         type tmp/uhppoted.nuspec
-        unzip "$env:NUPKG" -p uhppoted.nuspec
         
+    - name: Inspect package without unzipping
+      run: |
+        $zipfile = "$env:NUPKG"
+        $filename = "uhppoted.nuspec"
+        $zip = [System.IO.Compression.ZipFile]::OpenRead($zipfile)
+        $entry = $zip.Entries | Where-Object { $_.FullName -eq $filename }
+        if ($entry) {
+           $reader = New-Object System.IO.StreamReader($entry.Open())
+           Write-Host $reader.ReadToEnd()
+        } else {
+           Write-Host "File not found"
+        }        
+
     # - name: Publish to Github Packages
     #   run: |
     #     dotnet nuget add source --username uhppoted --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/uhppoted/index.json"
