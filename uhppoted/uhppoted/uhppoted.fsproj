@@ -11,11 +11,11 @@
     <PackageProjectUrl>https://github.com/uhppoted/uhppoted-lib-dotnet</PackageProjectUrl>
     <PackageTags>uhppote;wiegand;access-control;building-security</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
-    <PackageVersion>0.8.9.3-beta</PackageVersion>
+    <PackageVersion>0.8.9.4-beta</PackageVersion>
   </PropertyGroup>
 
   <PropertyGroup>
-    <Version>0.8.9.3</Version>
+    <Version>0.8.9.4</Version>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -34,6 +34,18 @@
     <IncludeSymbols>true</IncludeSymbols>
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
+    <PackageReference Update="FSharp.Core" Version="7.0.300" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+    <PackageReference Update="FSharp.Core" Version="8.0.404" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
+    <PackageReference Update="FSharp.Core" Version="9.0.100" />
+  </ItemGroup>
 
   <ItemGroup>
     <Compile Include="enums.fsi" />
