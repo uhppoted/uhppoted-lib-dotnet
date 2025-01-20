@@ -24,7 +24,7 @@ and [_VB.NET_](https://github.com/uhppoted/uhppoted-lib-dotnet/tree/main/example
 
 #### Current Release
 
-- _uhppoted.0.8.9.2-beta_
+- _uhppoted.0.8.9.3-beta_
 
 
 ## Installation
@@ -38,13 +38,13 @@ Use either the _dotnet CLI_ or _Package Manager_:
 
 - CLI:
 ```
-dotnet add package uhppoted --version 0.8.9.2-beta
+dotnet add package uhppoted --version 0.8.9.3-beta
 
 ```
 
 - _Package Manager_ (console):
 ```
-NuGet\Install-Package uhppoted -Version 0.8.9.2-beta
+NuGet\Install-Package uhppoted -Version 0.8.9.3-beta
 ```
 
 After installing the package it should be referenced in the _project_ file:
@@ -58,19 +58,23 @@ After installing the package it should be referenced in the _project_ file:
 
 ### Installing from Github Packages
 
-Installing from the _Github Packages_ _NuGet_ registry is similar:
+Installing from the _Github Packages_ _NuGet_ registry is requires a [_Personal Access Token (classic)_](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic)
+with at least `package: read` permissions.
 
 - _dotnet CLI_:
    ```
+   dotnet nuget add source --username <username> --password <personal-access-token> --store-password-in-clear-text --name uhppoted "https://nuget.pkg.github.com/uhppoted/index.json"
    dotnet nuget add source https://nuget.pkg.github.com/uhppoted/index.json
-   dotnet add package uhppoteddot --version 0.8.9.1-beta
+   dotnet add package uhppoted --version 0.8.9.3-beta
 
    ```
 
 - _Package Manager_ (console):
    ```
-   NuGet\Set-Source -Name "GitHubPackages" -Source "https://nuget.pkg.github.com/uhppoted/index.json"
-   NuGet\Install-Package uhppoted -Version 0.8.9.1-beta
+   NuGet\Set-Source -Name "uhppoted" -Source "https://nuget.pkg.github.com/uhppoted/index.json"
+   NuGet\Set-Source -Name "uhppoted" -Source "https://nuget.pkg.github.com/uhppoted/index.json" -Username "<username>" -Password "<personal-access-token>"
+
+   NuGet\Install-Package uhppoted -Version 0.8.9.3-beta
    ```
 
 After installing the package it should be referenced in the _project_ file:

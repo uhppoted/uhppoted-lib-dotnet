@@ -9,6 +9,7 @@
       - [x] Publish from github workflow
       - [ ] Test install from NuGet
       - [ ] Test install from Github packages
+      - [ ] Test publish from release
 
 - [ ] Release
       - [ ] Bump project and version
