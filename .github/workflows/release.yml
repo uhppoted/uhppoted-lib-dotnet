@@ -37,7 +37,7 @@ jobs:
     - name: Inspect package
       run: |
         unzip "$env:NUPKG" -d uhppoted/uhppoted/dist
-        ls -la uhppoted/uhppoted/dist
+        dir uhppoted/uhppoted/dist
         type uhppoted/uhppoted/dist/uhppoted.nuspec
         
 
