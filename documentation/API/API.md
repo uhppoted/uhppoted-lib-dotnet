@@ -62,6 +62,15 @@ let options: Options =
       debug = true }
 ```
 
+**NB**: 
+
+1. Using a bind port of `60000` is not recommended unless you have superior network-fu (it will receive all UDP broadcasts to the 
+   controllers which is not what you want). In general bind to port `0` and if necessary exclude port `60000` from the ephemeral 
+   port list (see [_Ephemeral ports and binding to `0.0.0.0:0`_](https://github.com/uhppoted/uhppoted-lib-dotnet?tab=readme-ov-file#ephemeral-ports-and-binding-to-00000))
+
+2. A listen port of `60000` is less catastrophic but also not recommended (for the same reason). You do need use the `set-listener` API
+   function to set the controller listener IPv4 address:port to match your chosen listen endpoint though.
+
 ### OptionsBuilder
 
 `OptionsBuilder` is a utility class to simplify construction of an `Options` struct when using C# or VB.NET:

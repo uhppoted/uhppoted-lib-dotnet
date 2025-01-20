@@ -44,9 +44,9 @@ publish: release
 	cd uhppoted && make publish
 
 debug: build
-	dotnet run --project ../examples/fsharp/cli --framework net7.0 get-controller --controller 201020304
-	dotnet run --project ../examples/csharp/cli --framework net7.0 get-controller --controller 201020304
-	dotnet run --project ../examples/vb/cli     --framework net7.0 get-controller --controller 201020304
+	dotnet run --project ../examples/fsharp/cli --framework net7.0 find-controllers
+	dotnet run --project ../examples/csharp/cli --framework net7.0 find-controllers
+	dotnet run --project ../examples/vb/cli     --framework net7.0 find-controllers
 
 swipe:
 	curl -X POST "http://127.0.0.1:8000/uhppote/simulator/405419896/swipe" -H "accept: application/json" -H "Content-Type: application/json" -d '{"door":1,"card-number":1048400,"direction":1,"PIN":7531}'
