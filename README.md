@@ -62,7 +62,7 @@ After installing the package it should be referenced in the _project_ file, e.g.
 
 ### Installing from Github Packages
 
-Installing from the _Github Packages_ _NuGet_ registry is requires a [_Personal Access Token (classic)_](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic)
+Installing from the _Github Packages_ _NuGet_ registry requires a [_Personal Access Token (classic)_](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic)
 with at least `package: read` permissions.
 
 - _dotnet CLI_:
@@ -226,14 +226,17 @@ Listens for access controller events.
 
 #### F#
 
+- [hello world](https://github.com/uhppoted/uhppoted-lib-dotnet/tree/main/examples/fsharp/hello-world)
 - [CLI](https://github.com/uhppoted/uhppoted-lib-dotnet/tree/main/examples/fsharp/cli)
 
 #### C#
 
+- [hello world](https://github.com/uhppoted/uhppoted-lib-dotnet/tree/main/examples/csharp/hello-world)
 - [CLI](https://github.com/uhppoted/uhppoted-lib-dotnet/tree/main/examples/csharp/cli)
 
 #### VB.NET
 
+- [hello world](https://github.com/uhppoted/uhppoted-lib-dotnet/tree/main/examples/vb/hello-world)
 - [CLI](https://github.com/uhppoted/uhppoted-lib-dotnet/tree/main/examples/vb/cli)
 
 ## Notes
