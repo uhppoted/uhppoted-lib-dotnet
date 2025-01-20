@@ -8,9 +8,9 @@
       - [x] Clean up integration test warning on terminate
       - [x] Publish from github workflow
       - [ ] Test install from NuGet
-      - [ ] Test install from Github packages
+      - [x] Test install from Github packages
       - [ ] Test publish from release
 
 - [ ] Release
       - [ ] Bump project and version
-      - [ ] README release notes
+      - [ ] Update version in README and release notes
