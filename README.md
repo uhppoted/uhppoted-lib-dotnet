@@ -51,11 +51,11 @@ dotnet add package uhppoted --version 0.8.9.3-beta
 NuGet\Install-Package uhppoted -Version 0.8.9.3-beta
 ```
 
-After installing the package it should be referenced in the _project_ file:
+After installing the package it should be referenced in the _project_ file, e.g.:
 ```
   ...
   <ItemGroup>
-    <PackageReference Include="uhppoted" Version="<version>" />
+    <PackageReference Include="uhppoted" Version="0.8.9.3-beta" />
   </ItemGroup>
   ...
 ```
@@ -75,17 +75,15 @@ with at least `package: read` permissions.
 
 - _Package Manager_ (console):
    ```
-   NuGet\Set-Source -Name "uhppoted" -Source "https://nuget.pkg.github.com/uhppoted/index.json"
    NuGet\Set-Source -Name "uhppoted" -Source "https://nuget.pkg.github.com/uhppoted/index.json" -Username "<username>" -Password "<personal-access-token>"
-
    NuGet\Install-Package uhppoted -Version 0.8.9.3-beta
    ```
 
-After installing the package it should be referenced in the _project_ file:
+After installing the package it should be referenced in the _project_ file, e.g:
 ```
   ...
   <ItemGroup>
-    <PackageReference Include="uhppoted" Version="<version>" />
+    <PackageReference Include="uhppoted" Version="0.8.9.3-beta" />
   </ItemGroup>
   ...
 ```
