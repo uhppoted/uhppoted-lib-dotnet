@@ -4,7 +4,7 @@
 
 # uhppoted-lib-dotnet
 
-.NET package for the UHPPOTE access controller API.
+.NET package for the UHPPOTE UT0311-L0x* TCP/IP Wiegand access controller API.
 
 The API is described in detail in the [API](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/API.md) documentation and examples 
 in [_F#_](https://github.com/uhppoted/uhppoted-lib-dotnet/tree/main/examples/fsharp), [_C#_](https://github.com/uhppoted/uhppoted-lib-dotnet/tree/main/examples/csharp) 
