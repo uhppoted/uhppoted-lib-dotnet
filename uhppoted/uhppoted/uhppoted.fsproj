@@ -35,18 +35,6 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)' == 'net7.0'">
-    <PackageReference Update="FSharp.Core" Version="[7.0.0, 8.0.0)" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
-    <PackageReference Update="FSharp.Core" Version="[8.0.0, 9.0.0)" />
-  </ItemGroup>
-
-  <ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
-    <PackageReference Update="FSharp.Core" Version="[9.0.0,)" />
-  </ItemGroup>
-
   <ItemGroup>
     <Compile Include="enums.fsi" />
     <Compile Include="types.fsi" />
