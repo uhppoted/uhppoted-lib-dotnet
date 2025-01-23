@@ -18,10 +18,16 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="bin/Release/net7.0/*.dll" target="lib/net7.0/" />
-    <file src="bin/Release/net7.0/*.pdb" target="lib/net7.0/" />
-    <file src="bin/Release/net8.0/*.dll" target="lib/net8.0/" />
-    <file src="bin/Release/net8.0/*.pdb" target="lib/net8.0/" />
+    <file src="bin/Release/net7.0/uhppoted.xml" target="lib/net7.0/" />
+    <file src="bin/Release/net7.0/uhppoted.dll" target="lib/net7.0/" />
+    <file src="bin/Release/net7.0/en-US/uhppoted.resources.dll" target="lib/net7.0/en-US" />
+    <file src="bin/Release/net7.0/uhppoted.pdb" target="lib/net7.0/" />
+
+    <file src="bin/Release/net8.0/uhppoted.xml" target="lib/net8.0/" />
+    <file src="bin/Release/net8.0/uhppoted.dll" target="lib/net8.0/" />
+    <file src="bin/Release/net8.0/en-US/uhppoted.resources.dll" target="lib/net8.0/en-US" />
+    <file src="bin/Release/net8.0/uhppoted.pdb" target="lib/net8.0/" />
+
     <file src="README.md" target="" />
   </files>
 </package>
