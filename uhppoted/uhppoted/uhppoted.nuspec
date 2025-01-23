@@ -12,25 +12,18 @@
     <description>.NET library for the UHPPOTE access controller API.</description>
     <tags>uhppote wiegand access-control building-security</tags>
     <repository url="https://github.com/uhppoted/uhppoted-lib-dotnet" />
+
     <dependencies>
-      <group targetFramework="net7.0"></group>
-      <group targetFramework="net8.0"></group>
-      <group targetFramework="net9.0"></group>
+      <group targetFramework="net7.0">
+        <dependency id="FSharp.Core" version="[7.0.0, 8.0.0)" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net8.0">
+        <dependency id="FSharp.Core" version="[8.0.0, 9.0.0)" exclude="Build,Analyzers" />
+      </group>
+      <group targetFramework="net9.0">
+        <dependency id="FSharp.Core" version="[9.0.0,)" exclude="Build,Analyzers" />
+      </group>
     </dependencies>
+
   </metadata>
-  <files>
-    <file src="bin/Release/net7.0/uhppoted.xml" target="lib/net7.0/" />
-    <file src="bin/Release/net7.0/uhppoted.dll" target="lib/net7.0/" />
-    <file src="bin/Release/net7.0/en-US/uhppoted.resources.dll" target="lib/net7.0/en-US" />
-    <file src="bin/Release/net7.0/uhppoted.pdb" target="lib/net7.0/" />
-    <file src="bin/Release/net8.0/uhppoted.xml" target="lib/net8.0/" />
-    <file src="bin/Release/net8.0/uhppoted.dll" target="lib/net8.0/" />
-    <file src="bin/Release/net8.0/en-US/uhppoted.resources.dll" target="lib/net8.0/en-US" />
-    <file src="bin/Release/net8.0/uhppoted.pdb" target="lib/net8.0/" />
-    <file src="bin/Release/net9.0/uhppoted.xml" target="lib/net9.0/" />
-    <file src="bin/Release/net9.0/uhppoted.dll" target="lib/net9.0/" />
-    <file src="bin/Release/net9.0/en-US/uhppoted.resources.dll" target="lib/net9.0/en-US" />
-    <file src="bin/Release/net9.0/uhppoted.pdb" target="lib/net9.0/" />
-    <file src="README.md" target="" />
-  </files>
 </package>

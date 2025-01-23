@@ -8,7 +8,7 @@ build:
 test: 
 	dotnet test
 
-release-net7: build test
+release-debug: build test
 	rm -rf dist
 	echo "# uhppoted" > README.md
 	tail -n+6 ../../README.md >> README.md
@@ -19,8 +19,7 @@ release: build test
 	rm -rf dist
 	echo "# uhppoted" > README.md
 	tail -n+6 ../../README.md >> README.md
-	dotnet build --configuration Release
-	nuget pack uhppoted.nuspec -Symbols -SymbolPackageFormat snupkg -OutputDirectory dist
+	dotnet pack --include-symbols --configuration Release --output dist
 
 publish-github: 
 	dotnet nuget push dist --no-symbols --source "github" --api-key "${GITHUB_API_KEY}" --skip-duplicate
