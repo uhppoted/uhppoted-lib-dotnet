@@ -29,29 +29,31 @@ jobs:
       run: |
         dotnet --version
         make release
-        dir uhppoted/uhppoted/dist/*.nupkg
-        $file = Get-ChildItem -Path ./uhppoted/uhppoted/dist -Filter *.nupkg | Select-Object -ExpandProperty Name
-        $filepath = Join-Path -Path ./uhppoted/uhppoted/dist -ChildPath $file
-        echo "NUPKG=$filepath" >> $env:GITHUB_ENV
+        dir bin/Release
 
-    - name: Inspect package (without unzipping)
-      run: |
-        $zipfile = "$env:NUPKG"
-        $filename = "uhppoted.nuspec"
-        $zip = [System.IO.Compression.ZipFile]::OpenRead($zipfile)
-        $entry = $zip.Entries | Where-Object { $_.FullName -eq $filename }
-        if ($entry) {
-           $reader = New-Object System.IO.StreamReader($entry.Open())
-           Write-Host $reader.ReadToEnd()
-        } else {
-           Write-Host "File not found"
-        }        
+        # dir uhppoted/uhppoted/dist/*.nupkg
+        # $file = Get-ChildItem -Path ./uhppoted/uhppoted/dist -Filter *.nupkg | Select-Object -ExpandProperty Name
+        # $filepath = Join-Path -Path ./uhppoted/uhppoted/dist -ChildPath $file
+        # echo "NUPKG=$filepath" >> $env:GITHUB_ENV
 
-    - name: unzip it anyway
-      run: |
-        cd dist
-        unzip uhppoted.0.8.9.5-beta.nupkg
-        tree /f /a
+    # - name: Inspect package (without unzipping)
+    #   run: |
+    #     $zipfile = "$env:NUPKG"
+    #     $filename = "uhppoted.nuspec"
+    #     $zip = [System.IO.Compression.ZipFile]::OpenRead($zipfile)
+    #     $entry = $zip.Entries | Where-Object { $_.FullName -eq $filename }
+    #     if ($entry) {
+    #        $reader = New-Object System.IO.StreamReader($entry.Open())
+    #        Write-Host $reader.ReadToEnd()
+    #     } else {
+    #        Write-Host "File not found"
+    #     }        
+
+    # - name: unzip it anyway
+    #   run: |
+    #     cd dist
+    #     unzip uhppoted.0.8.9.5-beta.nupkg
+    #     tree /f /a
 
 
     # - name: Publish to Github Packages
