@@ -10,7 +10,9 @@
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageProjectUrl>https://github.com/uhppoted/uhppoted-lib-dotnet</PackageProjectUrl>
     <PackageTags>uhppote;wiegand;access-control;building-security</PackageTags>
+<!--
     <PackageReadmeFile>README.md</PackageReadmeFile>
+-->
     <PackageVersion>0.8.9.5-beta</PackageVersion>
   </PropertyGroup>
 

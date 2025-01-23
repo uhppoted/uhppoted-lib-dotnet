@@ -29,6 +29,7 @@
 24. https://github.com/orgs/community/discussions/69522
 25. https://github.com/actions/setup-dotnet/issues/521
 26. [dotnet test runs test assemblies in parallel](https://github.com/dotnet/sdk/issues/39470)
+27. https://steveellwoodnlc.medium.com/nu5039-the-readme-file-readme-md-does-not-exist-in-the-package-a7cc1ca90d3d
 
 ## F#
 1. https://stackoverflow.com/questions/58781292/how-to-generate-f-signature-file-without-visual-studio
