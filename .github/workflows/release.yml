@@ -30,11 +30,10 @@ jobs:
         dotnet --version
         make release
         tree uhppoted/uhppoted/bin/Release /f /a
-
-        # dir uhppoted/uhppoted/dist/*.nupkg
-        # $file = Get-ChildItem -Path ./uhppoted/uhppoted/dist -Filter *.nupkg | Select-Object -ExpandProperty Name
-        # $filepath = Join-Path -Path ./uhppoted/uhppoted/dist -ChildPath $file
-        # echo "NUPKG=$filepath" >> $env:GITHUB_ENV
+        dir uhppoted/uhppoted/dist/*.nupkg
+        $file = Get-ChildItem -Path ./uhppoted/uhppoted/dist -Filter *.nupkg | Select-Object -ExpandProperty Name
+        $filepath = Join-Path -Path ./uhppoted/uhppoted/dist -ChildPath $file
+        echo "NUPKG=$filepath" >> $env:GITHUB_ENV
 
     # - name: Inspect package (without unzipping)
     #   run: |
