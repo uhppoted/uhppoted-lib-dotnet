@@ -105,9 +105,10 @@ module internal UDP =
 
         try
             match socket.Client.LocalEndPoint with
-            | :? IPEndPoint as endpoint when endpoint.Port = 60000 ->
-                raise (Exception "port 60000 is invalid for a UDP bind address")
+            | :? IPEndPoint as endpoint when endpoint.Port = broadcast.Port ->
+                raise (Exception(sprintf "invalid UDP bind address: port %d used for broadcast" endpoint.Port))
             | _ -> ()
+
 
             let rx = receiveAll socket cancel.Token [] |> Async.StartAsTask
 
@@ -149,8 +150,8 @@ module internal UDP =
             let cancel = new CancellationTokenSource()
 
             match socket.Client.LocalEndPoint with
-            | :? IPEndPoint as endpoint when endpoint.Port = 60000 ->
-                raise (Exception "port 60000 is invalid for a UDP bind address")
+            | :? IPEndPoint as endpoint when endpoint.Port = broadcast.Port ->
+                raise (Exception(sprintf "invalid UDP bind address: port %d used for broadcast" endpoint.Port))
             | _ -> ()
 
             let timer (timeout: int) : Async<Result<byte array * IPEndPoint, Err>> =
