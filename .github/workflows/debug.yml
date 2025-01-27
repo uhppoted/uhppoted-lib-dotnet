@@ -25,20 +25,21 @@ jobs:
     - name: Build hello-world F# example
       run: |
         cd examples/fsharp/hello-world
-        dotnet add package uhppoted --version 0.8.9.8-beta
+        dotnet nuget add source --username uhppoted --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/uhppoted/index.json"
+        dotnet add package uhppoted --version 0.8.9.9-beta
         dotnet build
         dotnet run
 
     - name: Build hello-world C# example
       run: |
         cd examples/csharp/hello-world
-        dotnet add package uhppoted --version 0.8.9.8-beta
+        dotnet add package uhppoted --version 0.8.9.9-beta
         dotnet build
         dotnet run
 
     - name: Build hello-world VB.NET example
       run: |
         cd examples/vb/hello-world
-        dotnet add package uhppoted --version 0.8.9.8-beta
+        dotnet add package uhppoted --version 0.8.9.9-beta
         dotnet build
         dotnet run
