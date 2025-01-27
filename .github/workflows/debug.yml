@@ -1,0 +1,44 @@
+name: debug
+
+on:
+  workflow_dispatch:
+
+jobs:
+
+  build:
+    name: Build
+    strategy:
+      matrix:
+        version: ['7.x', '8.x', '9.x']
+    runs-on: windows-latest
+    steps:
+    - name: Set up .NET
+      uses: actions/setup-dotnet@v4
+
+    - name: Check out code
+      uses: actions/checkout@v4
+
+    - name: Install fantomas
+      run: |
+        dotnet tool install fantomas
+
+    - name: Build hello-world F# example
+      run: |
+        cd examples/fsharp/hello-world
+        dotnet add package uhppoted --version 0.8.9.8-beta
+        dotnet build
+        dotnet run
+
+    - name: Build hello-world C# example
+      run: |
+        cd examples/csharp/hello-world
+        dotnet add package uhppoted --version 0.8.9.8-beta
+        dotnet build
+        dotnet run
+
+    - name: Build hello-world VB.NET example
+      run: |
+        cd examples/vb/hello-world
+        dotnet add package uhppoted --version 0.8.9.8-beta
+        dotnet build
+        dotnet run
