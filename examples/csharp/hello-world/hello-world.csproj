@@ -2,10 +2,21 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
     <RootNamespace>hello_world</RootNamespace>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+
+  </PropertyGroup>
+  <PropertyGroup>
+    <TargetFrameworks>net7.0; net8.0; net9.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(NETCoreSdkVersion)' &lt; '9.0'">
+    <TargetFrameworks>net8.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(NETCoreSdkVersion)' &lt; '8.0'">
+    <TargetFrameworks>net7.0</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
