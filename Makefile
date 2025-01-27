@@ -1,5 +1,6 @@
-CLI = dotnet run --project ./examples/fsharp/cli --framework net7.0
+NUPKG = $(subst v,,${VERSION})
 
+CLI = dotnet run --project ./examples/fsharp/cli --framework net7.0
 CONTROLLER ?= 405419896
 DOOR ?= 3
 CARD ?= 10058400
@@ -42,8 +43,11 @@ integration-tests:
 release:
 	cd uhppoted && make release
 
-publish:
-	cd uhppoted && make publish
+publish: release
+	@echo "Releasing version $(VERSION)"
+	# gh release create "$(VERSION)" "./uhppoted/uhppoted/dist/uhppoted.$(NUPKG).nupkg"  \
+	#                                "./uhppoted/uhppoted/dist/uhppoted.$(NUPKG).snupkg" \
+	#                                --draft --prerelease --title "$(VERSION)-beta" --notes-file release-notes.md
 
 find-controllers:
 	$(CLI) find-controllers

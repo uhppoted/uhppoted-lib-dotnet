@@ -5,11 +5,11 @@ format:
 	dotnet fantomas .
 
 build: 
-	dotnet build
+	export VERSION="" && dotnet build
 	dotnet fantomas .
 
 test: build
-	dotnet test -p:TestTfmsInParallel=false
+	export VERSION="" && dotnet test -p:TestTfmsInParallel=false
 
 debug: build
 	dotnet test -- NUnit.Where="test =~ /TestGetController/" 

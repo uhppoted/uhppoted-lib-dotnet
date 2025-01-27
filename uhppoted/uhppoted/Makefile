@@ -2,11 +2,11 @@ clean:
 	dotnet clean
 
 build: 
-	dotnet build
+	export VERSION="" && dotnet build
 	dotnet fantomas .
 
 test: 
-	dotnet test
+	export VERSION="" && dotnet test
 
 release-debug: build test
 	rm -rf dist

@@ -28,11 +28,11 @@ format:
 	dotnet fantomas .
 
 build:
-	dotnet build
+	export VERSION="" && dotnet build
 	dotnet fantomas .
 
 test:
-	dotnet test
+	export VERSION="" && dotnet test
 
 integration-tests:
 	cd ../integration-tests && make test

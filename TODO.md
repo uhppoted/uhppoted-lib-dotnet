@@ -15,6 +15,7 @@
       - [x] Test VB.NET with published package
       - [x] "hello world" examples
       - [x] Version weirdness
+      - [ ] Test dotnet restore on github
 
 - [x] integration test fail with occasional port 60000 in nightly/release builds
 
