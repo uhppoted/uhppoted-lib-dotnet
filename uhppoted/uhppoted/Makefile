@@ -1,5 +1,8 @@
 clean:
 	dotnet clean
+	rm -rf bin
+	rm -rf obj
+	rm -rf dist
 
 build: 
 	export VERSION="" && dotnet build

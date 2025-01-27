@@ -25,11 +25,9 @@ KEYPADS ?= "1,2,4"
 .PHONY: integration-tests
 
 clean:
-	cd uhppoted            && make clean
-	cd integration-tests   && make clean
-	cd examples/fsharp/cli && make clean
-	cd examples/csharp/cli && make clean
-	cd examples/vb/cli     && make clean
+	cd uhppoted           && make clean
+	cd integration-tests  && make clean
+	cd examples           && make clean
 
 build-all:
 	cd uhppoted            && make build && make test

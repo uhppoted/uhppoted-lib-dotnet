@@ -23,6 +23,8 @@ KEYPADS ?= "1,2,4"
 
 clean:
 	dotnet clean
+	cd uhppoted       && make clean
+	cd uhppoted.tests && make clean
 
 format:
 	dotnet fantomas .
