@@ -1,4 +1,4 @@
-name: debug
+name: examples
 
 on:
   workflow_dispatch:
@@ -9,8 +9,8 @@ jobs:
     name: Build
     strategy:
       matrix:
-        version: ['7.x', '8.x', '9.x']
-        framework: ['net7.0', 'net8.0', 'net9.0']
+        version: ['8.x', '9.x']
+        framework: ['net8.0', 'net9.0']
     runs-on: windows-latest
     steps:
     - name: Set up .NET
@@ -21,14 +21,13 @@ jobs:
     - name: Check out code
       uses: actions/checkout@v4
 
-    - name: Install fantomas
+    - name: Add Github Packages NuGet registry
       run: |
-        dotnet tool install fantomas
+        dotnet nuget add source --username uhppoted --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/uhppoted/index.json"
 
     - name: Build hello-world F# example
       run: |
         cd examples/fsharp/hello-world
-        dotnet nuget add source --username uhppoted --password ${{ secrets.GITHUB_TOKEN }} --store-password-in-clear-text --name github "https://nuget.pkg.github.com/uhppoted/index.json"
         dotnet add package uhppoted --version 0.8.9.9-beta
         dotnet build --framework=${{ matrix.framework }}
         dotnet run   --framework=${{ matrix.framework }}
