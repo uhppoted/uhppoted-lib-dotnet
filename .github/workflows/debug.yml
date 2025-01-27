@@ -9,7 +9,7 @@ jobs:
     name: Build
     strategy:
       matrix:
-        version: ['7.x', '8.x', '9.x']
+        version: ['8.x', '9.x']
     runs-on: windows-latest
     steps:
     - name: Set up .NET
