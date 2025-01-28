@@ -28,7 +28,9 @@ and [_VB.NET_](https://github.com/uhppoted/uhppoted-lib-dotnet/tree/main/example
 
 #### Current Release
 
-- _uhppoted.0.8.9.9-beta_
+**[v0.8.10](https://github.com/uhppoted/uhppoted-lib-dotnet/releases/tag/v0.8.10) - 2025-01-31**
+
+1. Initial release.
 
 
 ## Installation
@@ -42,20 +44,20 @@ Use either the _dotnet CLI_ or _Package Manager_:
 
 - CLI:
 ```
-dotnet add package uhppoted --version 0.8.9.9-beta
+dotnet add package uhppoted --version 0.8.10
 
 ```
 
 - _Package Manager_ (console):
 ```
-NuGet\Install-Package uhppoted -Version 0.8.9.9-beta
+NuGet\Install-Package uhppoted -Version 0.8.10
 ```
 
 After installing the package it should be referenced in the _project_ file, e.g.:
 ```
   ...
   <ItemGroup>
-    <PackageReference Include="uhppoted" Version="0.8.9.9-beta" />
+    <PackageReference Include="uhppoted" Version="0.8.10" />
   </ItemGroup>
   ...
 ```
@@ -69,21 +71,21 @@ with at least `package: read` permissions.
    ```
    dotnet nuget add source --username <username> --password <personal-access-token> --store-password-in-clear-text --name uhppoted "https://nuget.pkg.github.com/uhppoted/index.json"
    dotnet nuget add source https://nuget.pkg.github.com/uhppoted/index.json
-   dotnet add package uhppoted --version 0.8.9.9-beta
+   dotnet add package uhppoted --version 0.8.10
 
    ```
 
 - _Package Manager_ (console):
    ```
    NuGet\Set-Source -Name "uhppoted" -Source "https://nuget.pkg.github.com/uhppoted/index.json" -Username "<username>" -Password "<personal-access-token>"
-   NuGet\Install-Package uhppoted -Version 0.8.9.9-beta
+   NuGet\Install-Package uhppoted -Version 0.8.10
    ```
 
 After installing the package it should be referenced in the _project_ file, e.g:
 ```
   ...
   <ItemGroup>
-    <PackageReference Include="uhppoted" Version="0.8.9.9-beta" />
+    <PackageReference Include="uhppoted" Version="0.8.10" />
   </ItemGroup>
   ...
 ```

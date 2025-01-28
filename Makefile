@@ -29,14 +29,22 @@ clean:
 	cd integration-tests  && make clean
 	cd examples           && make clean
 
-build-all:
-	cd uhppoted            && make build && make test
-	cd examples/fsharp/cli && make build
-	cd examples/csharp/cli && make build
-	cd examples/vb/cli     && make build
+update:
+	@echo "update: nothing to do"
+
+build:
+	cd uhppoted && make build
+
+test: build
+	cd uhppoted && make test
 
 integration-tests: 
 	cd integration-tests && make test
+
+build-all: build test integration-tests
+	cd examples/fsharp/cli && make build
+	cd examples/csharp/cli && make build
+	cd examples/vb/cli     && make build
 
 release:
 	cd uhppoted && make release
