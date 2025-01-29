@@ -32,6 +32,9 @@ clean:
 update:
 	@echo "update: nothing to do"
 
+update-release:
+	@echo "update-release: nothing to do"
+
 build:
 	cd uhppoted && make build
 
@@ -51,9 +54,9 @@ release:
 
 publish: release
 	@echo "Releasing version $(VERSION)"
-	# gh release create "$(VERSION)" "./uhppoted/uhppoted/dist/uhppoted.$(NUPKG).nupkg"  \
-	#                                "./uhppoted/uhppoted/dist/uhppoted.$(NUPKG).snupkg" \
-	#                                --draft --prerelease --title "$(VERSION)-beta" --notes-file release-notes.md
+	gh release create "$(VERSION)" "./uhppoted/uhppoted/dist/uhppoted.$(NUPKG).nupkg"  \
+	                               "./uhppoted/uhppoted/dist/uhppoted.$(NUPKG).snupkg" \
+	                               --draft --prerelease --title "$(VERSION)-beta" --notes-file release-notes.md
 
 find-controllers:
 	$(CLI) find-controllers
