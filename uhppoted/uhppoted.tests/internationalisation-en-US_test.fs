@@ -182,6 +182,31 @@ type TestInternationalisation_en_US() =
             Assert.That(message, Is.EqualTo(t.expected)))
 
     [<Test>]
+    member this.TestTranslateAntiPassback() =
+        Thread.CurrentThread.CurrentCulture <- CultureInfo("en-US")
+        Thread.CurrentThread.CurrentUICulture <- CultureInfo("en-US")
+
+        let antipassbacks =
+            [ {| antipassback = 0uy
+                 expected = "disabled" |}
+              {| antipassback = 1uy
+                 expected = "(1:2);(3:4)" |}
+              {| antipassback = 2uy
+                 expected = "(1,3):(2,4)" |}
+              {| antipassback = 3uy
+                 expected = "1:(2,3)" |}
+              {| antipassback = 4uy
+                 expected = "1:(2,3,4)" |}
+              {| antipassback = 255uy
+                 expected = "unknown (255)" |} ]
+
+        antipassbacks
+        |> List.iter (fun t ->
+            let message = internationalisation.TranslateAntiPassback t.antipassback
+
+            Assert.That(message, Is.EqualTo(t.expected)))
+
+    [<Test>]
     member this.TestTranslateTaskCodes() =
         Thread.CurrentThread.CurrentCulture <- CultureInfo("en-US")
         Thread.CurrentThread.CurrentUICulture <- CultureInfo("en-US")

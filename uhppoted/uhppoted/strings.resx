@@ -242,6 +242,26 @@
         <value>unknown</value>
     </data>
 
+    <!-- antipassback -->
+    <data name="doors.antipassback.0">
+        <value>disabled</value>
+    </data>
+    <data name="doors.antipassback.1">
+        <value>(1:2);(3:4)</value>
+    </data>
+    <data name="doors.antipassback.2">
+        <value>(1,3):(2,4)</value>
+    </data>
+    <data name="doors.antipassback.3">
+        <value>1:(2,3)</value>
+    </data>
+    <data name="doors.antipassback.4">
+        <value>1:(2,3,4)</value>
+    </data>
+    <data name="doors.antipassback.unknown">
+        <value>unknown</value>
+    </data>
+
     <!-- relays -->
     <data name="relay.1">
         <value>locked</value>

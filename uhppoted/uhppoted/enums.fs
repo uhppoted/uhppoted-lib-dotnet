@@ -119,6 +119,27 @@ type TaskCode =
     /// <summary>Unknown task code.</summary>
     | Unknown = 255
 
+
+/// <summary>Defines the anti-passback modes for an access controller.</summary>
+type AntiPassback =
+    /// <summary>No anti-passback.</summary>
+    | Disabled = 0
+
+    /// <summary>Doors 1 and 2 are anti-passbacked and doors 3 and 4 are anti-passbacked.</summary>
+    | Doors12_34 = 1
+
+    /// <summary>Doors 1 and 3 are anti-passbacked with doors 2 and 4.</summary>
+    | Doors13_24 = 2
+
+    /// <summary>Door 1 is anti-passbacked with doors 2 and 3.</summary>
+    | Doors1_23 = 3
+
+    /// <summary>Door 1 is anti-passbacked with doors 2,3 and 4.</summary>
+    | Doors1_234 = 4
+
+    /// <summary>Unknown antipassback mode.</summary>
+    | Unknown = 255
+
 module internal Enums =
     let internal doorMode (v: uint8) : DoorMode =
         match v with
@@ -136,6 +157,15 @@ module internal Enums =
         | 4uy -> Interlock.Doors123
         | 8uy -> Interlock.Doors1234
         | _ -> Interlock.Unknown
+
+    let internal antipassback (v: uint8) : AntiPassback =
+        match v with
+        | 0uy -> AntiPassback.Disabled
+        | 1uy -> AntiPassback.Doors12_34
+        | 2uy -> AntiPassback.Doors13_24
+        | 3uy -> AntiPassback.Doors1_23
+        | 4uy -> AntiPassback.Doors1_234
+        | _ -> AntiPassback.Unknown
 
     let internal direction (v: uint8) : Direction =
         match v with

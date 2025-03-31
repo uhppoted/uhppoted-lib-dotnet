@@ -436,6 +436,28 @@ type TestDecoder() =
         | Error err -> Assert.Fail(err)
 
     [<Test>]
+    member this.TestDecodeSetAntiPassbackResponse() =
+        let packet = TestResponses.setAntiPassback
+
+        let expected: SetAntiPassbackResponse = { controller = 405419896u; ok = true }
+
+        match Decode.setAntiPassbackResponse packet with
+        | Ok response -> Assert.That(response, Is.EqualTo(expected))
+        | Error err -> Assert.Fail(err)
+
+    [<Test>]
+    member this.TestDecodeGetAntiPassbackResponse() =
+        let packet = TestResponses.getAntiPassback
+
+        let expected: GetAntiPassbackResponse =
+            { controller = 405419896u
+              antipassback = 2uy }
+
+        match Decode.getAntiPassbackResponse packet with
+        | Ok response -> Assert.That(response, Is.EqualTo(expected))
+        | Error err -> Assert.Fail(err)
+
+    [<Test>]
     member this.TestDecodeRestoreDefaultParametersResponse() =
         let packet = TestResponses.restoreDefaultParameters
 

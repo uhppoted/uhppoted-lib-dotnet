@@ -476,6 +476,25 @@ module internal Encode =
 
         packet
 
+    let getAntiPassbackRequest (controller: uint32) =
+        let packet: byte array = Array.zeroCreate 64
+
+        pack packet 0 (byte messages.SOM)
+        pack packet 1 (byte messages.GET_ANTIPASSBACK)
+        pack packet 4 controller
+
+        packet
+
+    let setAntiPassbackRequest (controller: uint32) (antipassback: AntiPassback) =
+        let packet: byte array = Array.zeroCreate 64
+
+        pack packet 0 (byte messages.SOM)
+        pack packet 1 (byte messages.SET_ANTIPASSBACK)
+        pack packet 4 controller
+        pack packet 8 (uint8 antipassback)
+
+        packet
+
     let restoreDefaultParametersRequest (controller: uint32) =
         let packet: byte array = Array.zeroCreate 64
 

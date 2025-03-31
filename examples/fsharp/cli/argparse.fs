@@ -56,6 +56,15 @@ let (|Interlock|_|) (value: string) =
     | "1&2&3&4" -> Some Interlock.Doors1234
     | _ -> None
 
+let (|AntiPassback|_|) (value: string) =
+    match value.ToLowerInvariant() with
+    | "disabled" -> Some AntiPassback.Disabled
+    | "(1:2);(3:4)" -> Some AntiPassback.Doors12_34
+    | "(1,3):(2,4)" -> Some AntiPassback.Doors13_24
+    | "1:(2,3)" -> Some AntiPassback.Doors1_23
+    | "1:(2,3,4)" -> Some AntiPassback.Doors1_234
+    | _ -> None
+
 let (|TaskCode|_|) (value: string) =
     match value.ToLowerInvariant() with
     | "control door" -> Some TaskCode.ControlDoor
@@ -191,6 +200,7 @@ let rec argparse (args: string list) flag (defval: 'T) : 'T =
         | :? DateOnly, DateOnly parsed -> unbox parsed
         | :? DoorMode, DoorMode parsed -> unbox parsed
         | :? Interlock, Interlock parsed -> unbox parsed
+        | :? AntiPassback, AntiPassback parsed -> unbox parsed
         | :? TaskCode, TaskCode parsed -> unbox parsed
 
         | _ when typeof<'T> = typeof<UInt32[]> ->

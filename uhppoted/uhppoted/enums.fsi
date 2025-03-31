@@ -23,6 +23,15 @@ type Interlock =
     | Doors1234 = 8
     | Unknown = 255
 
+/// <summary>Defines the door anti-passback modes for an access controller.</summary>
+type AntiPassback =
+    | Disabled = 0
+    | Doors12_34 = 1
+    | Doors13_24 = 2
+    | Doors1_23 = 3
+    | Doors1_234 = 4
+    | Unknown = 255
+
 /// <summary>Defines whether a relay is active or inactive.</summary>
 type Relay =
     | Unknown = 0
@@ -55,6 +64,7 @@ type TaskCode =
 module internal Enums =
     val internal doorMode: v: uint8 -> DoorMode
     val internal interlock: v: uint8 -> Interlock
+    val internal antipassback: v: uint8 -> AntiPassback
     val internal direction: v: uint8 -> Direction
     val internal relay: v: uint8 -> mask: uint8 -> Relay
     val internal input: v: uint8 -> mask: uint8 -> Input

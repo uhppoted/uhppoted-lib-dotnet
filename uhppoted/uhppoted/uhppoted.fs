@@ -809,6 +809,41 @@ module Uhppoted =
             | Error err -> Error err
 
     /// <summary>
+    /// Sets the access controller anti-passback mode.
+    /// </summary>
+    /// <param name="controller">Controller ID or struct with controller ID, endpoint and protocol.</param>
+    /// <param name="antipassback">Anti-passback mode (disabled, (1:2);(3:4), (1,3):(2,4), 1:(2,3), or 1:(2,3,4).</param>
+    /// <param name="options">Bind, broadcast and listen addresses.</param>
+    /// <returns>
+    /// Result with the boolean success/fail result or an Error if the request failed.
+    /// </returns>
+    let SetAntiPassback (controller: 'T, antipassback: AntiPassback, options: Options) =
+        match resolve controller with
+        | Error err -> Error err
+        | Ok c ->
+            let request = Encode.setAntiPassbackRequest c.controller antipassback
+
+            match exec c request Decode.setAntiPassbackResponse options with
+            | Ok response -> Ok response.ok
+            | Error err -> Error err
+
+    /// <summary>
+    /// Retrieves the controller anti-passback mode.
+    /// </summary>
+    /// <param name="controller">Controller ID or struct with controller ID, endpoint and protocol.</param>
+    /// <param name="options">Bind, broadcast and listen addresses.</param>
+    /// <returns>Ok with an anti-passback value or Error.</returns>
+    let GetAntiPassback (controller: 'T, options: Options) =
+        match resolve controller with
+        | Error err -> Error err
+        | Ok c ->
+            let request = Encode.getAntiPassbackRequest c.controller
+
+            match exec c request Decode.getAntiPassbackResponse options with
+            | Ok response -> Ok(Enums.antipassback response.antipassback)
+            | Error err -> Error err
+
+    /// <summary>
     /// Restores the manufacturer defaults.
     /// </summary>
     /// <param name="controller">Controller ID or struct with controller ID, endpoint and protocol.</param>
@@ -912,6 +947,7 @@ module Uhppoted =
     /// - event door direction
     /// - door control mode
     /// - door interlock code
+    /// - antipassback mode
     /// - task code
     /// - relay state
     /// - input state
@@ -925,6 +961,7 @@ module Uhppoted =
         | :? DoorMode as mode -> internationalisation.TranslateDoorMode(uint8 mode)
         | :? Direction as direction -> internationalisation.TranslateDoorDirection(uint8 direction)
         | :? Interlock as interlock -> internationalisation.TranslateDoorInterlock(uint8 interlock)
+        | :? AntiPassback as antipassback -> internationalisation.TranslateAntiPassback(uint8 antipassback)
         | :? Relay as relay -> internationalisation.TranslateRelayState(uint8 relay)
         | :? Input as input -> internationalisation.TranslateInputState(uint8 input)
         | :? TaskCode as task -> internationalisation.TranslateTaskCode(uint8 task)

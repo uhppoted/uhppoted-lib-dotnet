@@ -450,7 +450,27 @@ module internal Decode =
         else
             Ok
                 { controller = unpackU32 packet[4..]
-                  ok = unpackBool (packet[8..]) }
+                  ok = unpackBool packet[8..] }
+
+    let getAntiPassbackResponse (packet: byte array) : Result<GetAntiPassbackResponse, string> =
+        if packet[0] <> messages.SOM then
+            Error("invalid controller response")
+        else if packet[1] <> messages.GET_ANTIPASSBACK then
+            Error("invalid get-antipassback response")
+        else
+            Ok
+                { controller = unpackU32 packet[4..]
+                  antipassback = unpackU8 packet[8..] }
+
+    let setAntiPassbackResponse (packet: byte array) : Result<SetAntiPassbackResponse, string> =
+        if packet[0] <> messages.SOM then
+            Error("invalid controller response")
+        else if packet[1] <> messages.SET_ANTIPASSBACK then
+            Error("invalid set-antipassback response")
+        else
+            Ok
+                { controller = unpackU32 packet[4..]
+                  ok = unpackBool packet[8..] }
 
     let restoreDefaultParametersResponse (packet: byte array) : Result<RestoreDefaultParametersResponse, string> =
         if packet[0] <> messages.SOM then
@@ -460,7 +480,7 @@ module internal Decode =
         else
             Ok
                 { controller = unpackU32 packet[4..]
-                  ok = unpackBool (packet[8..]) }
+                  ok = unpackBool packet[8..] }
 
     let listenEvent (packet: byte array) : Result<ListenEvent, string> =
         if packet[0] <> messages.SOM && packet[0] <> messages.SOM_v6_62 then

@@ -44,6 +44,12 @@ module internal messages =
     let GET_DOOR = 0x82uy
 
     [<Literal>]
+    let SET_ANTIPASSBACK = 0x84uy
+
+    [<Literal>]
+    let GET_ANTIPASSBACK = 0x86uy
+
+    [<Literal>]
     let SET_TIME_PROFILE = 0x88uy
 
     [<Literal>]

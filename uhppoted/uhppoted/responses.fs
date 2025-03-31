@@ -279,6 +279,20 @@ type internal ActivateKeypadsResponse =
     interface IResponse with
         member this.controller = this.controller
 
+type SetAntiPassbackResponse =
+    { controller: uint32
+      ok: bool }
+
+    interface IResponse with
+        member this.controller = this.controller
+
+type GetAntiPassbackResponse =
+    { controller: uint32
+      antipassback: uint8 }
+
+    interface IResponse with
+        member this.controller = this.controller
+
 type internal RestoreDefaultParametersResponse =
     { controller: uint32
       ok: bool }

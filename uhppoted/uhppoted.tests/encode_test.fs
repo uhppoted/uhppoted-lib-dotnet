@@ -374,6 +374,25 @@ type TestEncoder() =
         Assert.That(packet, Is.EqualTo(expected))
 
     [<Test>]
+    member this.TestEncodeSetAntiPassback() =
+        let expected = TestRequests.setAntiPassback
+
+        let controller = 405419896u
+        let antipassback = AntiPassback.Doors13_24
+        let packet = Encode.setAntiPassbackRequest controller antipassback
+
+        Assert.That(packet, Is.EqualTo(expected))
+
+    [<Test>]
+    member this.TestEncodeGetAntiPassback() =
+        let expected = TestRequests.getAntiPassback
+
+        let controller = 405419896u
+        let packet = Encode.getAntiPassbackRequest controller
+
+        Assert.That(packet, Is.EqualTo(expected))
+
+    [<Test>]
     member this.TestRestoreDefaultParametersRequest() =
         let expected = TestRequests.restoreDefaultParameters
 

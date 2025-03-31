@@ -112,6 +112,25 @@ module internal internationalisation =
             $"#{interlock}"
 
     /// <summary>
+    /// Translates an anti-passback mode into a human readable string using the active 'CurrentCulture' setting.
+    /// (e.g. Thread.CurrentThread.CurrentCulture <- CultureInfo("en-US"))
+    /// </summary>
+    /// <param name="antipassback">Anti-passback mode.</param>
+    /// <returns>
+    /// Human readable anti-passback string or "unknown (<code>)".
+    /// </returns>
+    let TranslateAntiPassback (antipassback: uint8) =
+        let message = translate ($"doors.antipassback.{antipassback}")
+        let unknown = translate ("doors.antipassback.unknown")
+
+        if not <| String.IsNullOrEmpty(message) then
+            message
+        else if not <| String.IsNullOrEmpty(unknown) then
+            $"{unknown} ({antipassback})"
+        else
+            $"#{antipassback}"
+
+    /// <summary>
     /// Translates a task code into a human readable string using the active 'CurrentCulture' setting.
     /// (e.g. Thread.CurrentThread.CurrentCulture <- CultureInfo("en-US"))
     /// </summary>

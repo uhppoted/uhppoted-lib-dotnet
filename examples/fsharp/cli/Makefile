@@ -20,6 +20,7 @@ PERMISSIONS ?= "1,2,4:17"
 PIN ?= 7531
 INTERLOCK ?= "1&2,3&4"
 KEYPADS ?= "1,2,4"
+ANTIPASSBACK ?= "(1,3):(2,4)"
 
 clean:
 	dotnet clean
@@ -145,6 +146,12 @@ set-interlock: build
 
 activate-keypads: build
 	$(CLI) activate-keypads --controller $(CONTROLLER) --keypads $(KEYPADS)
+
+set-antipassback: build
+	$(CLI) set-antipassback --controller $(CONTROLLER) --antipassback $(ANTIPASSBACK)
+
+get-antipassback:build
+	$(CLI) get-antipassback --controller $(CONTROLLER)
 
 restore-default-parameters: build
 	$(CLI) restore-default-parameters --controller $(CONTROLLER)

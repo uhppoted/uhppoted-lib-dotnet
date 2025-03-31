@@ -253,6 +253,20 @@ module Uhppoted =
             Result<bool, Err>
 
     /// <summary>
+    /// Sets the access controller anti-passback mode.
+    /// </summary>
+    /// <param name="controller">Controller ID or struct with controller ID, endpoint and protocol.</param>
+    /// <param name="antipassback">Anti-passback mode (disabled, (1:2);(3:4), (1,3):(2,4), 1:(2,3), or 1:(2,3,4).</param>
+    /// <param name="options">Bind, broadcast and listen addresses.</param>
+    /// <returns>
+    /// Result with the boolean success/fail result or an Error if the request failed.
+    /// </returns>
+    val SetAntiPassback: controller: 'T * antipassback: AntiPassback * options: Options -> Result<bool, Err>
+
+    /// Retrieves the controller anti-passback mode.
+    val GetAntiPassback: controller: 'T * options: Options -> Result<AntiPassback, Err>
+
+    /// <summary>
     /// Restores the manufacturer defaults.
     /// </summary>
     /// <param name="controller">Controller ID or struct with controller ID, endpoint and protocol.</param>
