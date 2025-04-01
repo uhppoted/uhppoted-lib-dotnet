@@ -38,6 +38,8 @@
 - [`SetPCControl`](set-pc-control.md)
 - [`SetInterlock`](set-interlock.md)
 - [`ActivateKeypads`](activate-keypads.md)
+- [`GetAntiPassback`](get-antipassback.md)
+- [`SetAntiPassback`](set-antipassback.md)
 - [`RestoreDefaultParameters`](restore-default-parameters.md)
 - [`Listen`](listen.md)
 
@@ -199,6 +201,16 @@ Defines the door interlocks for an access controller:
 - `Doors123`: interlock between doors 1, 2 & 3
 - `Doors1234`: interlocks all doors
 
+#### AntiPassback
+
+Defines the anti-passback modes for an access controller:
+
+- `Disabled`: no anti-passback 
+- `Doors12_34`: doors 1 and 2 are interlocked, doors 3 and 4 are interlocked
+- `Doors13_24`: doors 1 and 3 are interlocked with doors 2 and 4
+- `Doors1_23`: door 1 is interlocked with doors 2 and 3
+- `Doors1_234`: door 1 is interlocked with doors 2,3 and 4
+
 #### Relay
 
 Defines the relay contact states for the door unlock relays:
@@ -270,4 +282,5 @@ Translations are defined for the following values:
 - door relay states
 - external inputs
 - task codes
+- anti-passback modes
 
