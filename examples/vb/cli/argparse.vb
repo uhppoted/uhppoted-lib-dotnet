@@ -3,6 +3,7 @@ Imports System.Net
 Imports DoorMode = uhppoted.DoorMode
 Imports Interlock = uhppoted.Interlock
 Imports TaskCode = uhppoted.TaskCode
+Imports AntiPassback = uhppoted.AntiPassback
 
 Module ArgParse
 
@@ -98,6 +99,27 @@ Module ArgParse
 
                         Case "1&2&3&4"
                             Return CType(CObj(Interlock.Doors1234), T)
+
+                        Case Else
+                            Return defval
+                    End Select
+
+                Case "AntiPassback" :
+                    Select Case args(ix).ToLowerInvariant()
+                        Case "disabled"
+                            Return CType(CObj(AntiPassback.Disabled), T)
+
+                        Case "(1:2);(3:4)"
+                            Return CType(CObj(AntiPassback.Doors12_34), T)
+
+                        Case "(1,3):(2,4)"
+                            Return CType(CObj(AntiPassback.Doors13_24), T)
+
+                        Case "1:(2,3)"
+                            Return CType(CObj(AntiPassback.Doors1_23), T)
+
+                        Case "1:(2,3,4)"
+                            Return CType(CObj(AntiPassback.Doors1_234), T)
 
                         Case Else
                             Return defval

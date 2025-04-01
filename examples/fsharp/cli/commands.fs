@@ -780,6 +780,23 @@ let activateKeypads args =
         Ok()
     | Error err -> Error(translate err)
 
+let getAntiPassback args =
+    let controller = argparse args "--controller" CONTROLLER
+
+    let result =
+        match lookup controller with
+        | Some c -> Uhppoted.GetAntiPassback(c, OPTIONS)
+        | None -> Uhppoted.GetAntiPassback(controller, OPTIONS)
+
+    match result with
+    | Ok antipassback ->
+        printfn "get-antipassback"
+        printfn "  controller      %u" controller
+        printfn "    anti-passback %s" (translate antipassback)
+        printfn ""
+        Ok()
+    | Error err -> Error(translate err)
+
 let setAntiPassback args =
     let controller = argparse args "--controller" CONTROLLER
     let antipassback = argparse args "--antipassback" AntiPassback.Disabled
@@ -795,23 +812,6 @@ let setAntiPassback args =
         printfn "  controller    %u" controller
         printfn "   antipassback %s" (translate antipassback)
         printfn "             ok %b" ok
-        printfn ""
-        Ok()
-    | Error err -> Error(translate err)
-
-let getAntiPassback args =
-    let controller = argparse args "--controller" CONTROLLER
-
-    let result =
-        match lookup controller with
-        | Some c -> Uhppoted.GetAntiPassback(c, OPTIONS)
-        | None -> Uhppoted.GetAntiPassback(controller, OPTIONS)
-
-    match result with
-    | Ok antipassback ->
-        printfn "get-antipassback"
-        printfn "  controller      %u" controller
-        printfn "    anti-passback %s" (translate antipassback)
         printfn ""
         Ok()
     | Error err -> Error(translate err)
@@ -1017,13 +1017,13 @@ let commands =
         description = "Activates the access reader keypads attached to a controller"
         f = activateKeypads }
 
-      { command = "set-antipassback"
-        description = "Sets the anti-passback mode for a controller"
-        f = setAntiPassback }
-
       { command = "get-antipassback"
         description = "Retrieves the controller anti-passback mode"
         f = getAntiPassback }
+
+      { command = "set-antipassback"
+        description = "Sets the anti-passback mode for a controller"
+        f = setAntiPassback }
 
       { command = "restore-default-parameters"
         description = "Restores the manufacturer defaults"

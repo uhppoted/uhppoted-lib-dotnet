@@ -5,8 +5,8 @@
       - [x] `set-antipassback`
       - [x] internationalisation
       - [x] integration tests
-      - [ ] examples
+      - [x] examples
       - [ ] documentation
-      - [ ] CHANGELOG
+      - [x] CHANGELOG
       - [ ] README
 

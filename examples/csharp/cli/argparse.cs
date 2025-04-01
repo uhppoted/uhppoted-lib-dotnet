@@ -95,6 +95,26 @@ static class ArgParse
                     }
                     break;
 
+                case AntiPassback:
+                    switch (args[ix])
+                    {
+                        case "disabled":
+                            return (T)(object)AntiPassback.Disabled;
+
+                        case "(1:2);(3:4)":
+                            return (T)(object)AntiPassback.Doors12_34;
+
+                        case "(1,3):(2,4)":
+                            return (T)(object)AntiPassback.Doors13_24;
+
+                        case "1:(2,3)":
+                            return (T)(object)AntiPassback.Doors1_23;
+
+                        case "1:(2,3,4)":
+                            return (T)(object)AntiPassback.Doors1_234;
+                    }
+                    break;
+
                 case TaskCode:
                     switch (args[ix])
                     {

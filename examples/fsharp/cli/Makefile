@@ -147,11 +147,11 @@ set-interlock: build
 activate-keypads: build
 	$(CLI) activate-keypads --controller $(CONTROLLER) --keypads $(KEYPADS)
 
-set-antipassback: build
-	$(CLI) set-antipassback --controller $(CONTROLLER) --antipassback $(ANTIPASSBACK)
-
 get-antipassback:build
 	$(CLI) get-antipassback --controller $(CONTROLLER)
+
+set-antipassback: build
+	$(CLI) set-antipassback --controller $(CONTROLLER) --antipassback $(ANTIPASSBACK)
 
 restore-default-parameters: build
 	$(CLI) restore-default-parameters --controller $(CONTROLLER)

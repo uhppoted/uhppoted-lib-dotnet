@@ -95,6 +95,8 @@ class Commands
           new Command ("set-pc-control", "Enables (or disables) remote access control management", SetPCControl),
           new Command ("set-interlock", "Sets the door interlock mode for a controller", SetInterlock),
           new Command ("activate-keypads", "Activates the access reader keypads attached to a controller", ActivateKeypads),
+          new Command ("get-antipassback","Retrieves the controller anti-passback mode", GetAntiPassback),
+          new Command ("set-antipassback","Sets the anti-passback mode for a controller",SetAntiPassback),
           new Command ("restore-default-parameters", "Restores the manufacturer defaults", RestoreDefaultParameters),
           new Command ("listen", "Listens for access controller events", Listen),
     };
@@ -1014,6 +1016,54 @@ class Commands
             WriteLine("    reader 3 {0}", reader3);
             WriteLine("    reader 4 {0}", reader4);
             WriteLine("          ok {0}", ok);
+            WriteLine();
+        }
+        else if (result.IsError)
+        {
+            throw new Exception(translate(result.ErrorValue));
+        }
+    }
+
+    public static void GetAntiPassback(string[] args)
+    {
+        var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
+
+        var result = CONTROLLERS.TryGetValue(controller, out var c)
+                     ? Uhppoted.GetAntiPassback(c, OPTIONS)
+                     : Uhppoted.GetAntiPassback(controller, OPTIONS);
+
+        if (result.IsOk)
+        {
+            var antipassback = result.ResultValue;
+
+            WriteLine("get-antipassback");
+            WriteLine("  controller      {0}", controller);
+            WriteLine("    anti-passback {0}", translate(antipassback));
+            WriteLine();
+        }
+        else if (result.IsError)
+        {
+            throw new Exception(translate(result.ErrorValue));
+        }
+    }
+
+    public static void SetAntiPassback(string[] args)
+    {
+        var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
+        var antipassback = ArgParse.Parse(args, "--antipassback", AntiPassback.Disabled);
+
+        var result = CONTROLLERS.TryGetValue(controller, out var c)
+                     ? Uhppoted.SetAntiPassback(c, antipassback, OPTIONS)
+                     : Uhppoted.SetAntiPassback(controller, antipassback, OPTIONS);
+
+        if (result.IsOk)
+        {
+            var ok = result.ResultValue;
+
+            WriteLine("set-antipassback");
+            WriteLine("  controller      {0}", controller);
+            WriteLine("    anti-passback {0}", translate(antipassback));
+            WriteLine("               ok {0}", ok);
             WriteLine();
         }
         else if (result.IsError)

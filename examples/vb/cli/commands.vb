@@ -7,6 +7,7 @@ Imports OptionsBuilder = uhppoted.OptionsBuilder
 Imports CBuilder = uhppoted.CBuilder
 Imports DoorMode = uhppoted.DoorMode
 Imports Interlock = uhppoted.Interlock
+Imports AntiPassback = uhppoted.AntiPassback
 Imports Err = uhppoted.Err
 
 Public Structure Command
@@ -60,6 +61,7 @@ Module Commands
                           Build()
         }
      }
+
     Public Dim commands As New List(Of Command) From {
            New Command("find-controllers", "Retrieves a list of controllers accessible on the local LAN", AddressOf FindControllers),
            New Command("get-controller", "Retrieves the controller information from a controller", AddressOf GetController),
@@ -92,6 +94,8 @@ Module Commands
            New Command("set-pc-control", "Enables (or disables) remote access control management", AddressOf SetPCControl),
            New Command("set-interlock", "Sets the door interlock mode for a controller", AddressOf SetInterlock),
            New Command("activate-keypads", "Activates the access reader keypads attached to a controller", AddressOf ActivateKeypads),
+           New Command("get-antipassback", "Retrieves the controller anti-passback mode", AddressOf GetAntiPassback),
+           New Command("set-antipassback", "Sets the anti-passback mode for a controller", AddressOf SetAntiPassback),
            New Command("restore-default-parameters", "Restores the manufacturer defaults", AddressOf RestoreDefaultParameters),
            New Command("listen", "Listens for access controller events", AddressOf Listen)
        }
@@ -874,6 +878,46 @@ Module Commands
             WriteLine("    reader 3 {0}", reader3)
             WriteLine("    reader 4 {0}", reader4)
             WriteLine("          ok {0}", ok)
+            WriteLine()
+        Else If (result.IsError)
+            Throw New Exception(translate(result.ErrorValue))
+        End If
+    End Sub
+
+    Sub GetAntiPassback(args As String())
+        Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
+
+        Dim result = If(CONTROLLERS.ContainsKey(controller),
+                        UHPPOTE.GetAntiPassback(CONTROLLERS(controller), OPTIONS),
+                        UHPPOTE.GetAntiPassback(controller, OPTIONS))
+
+        If (result.IsOk)
+            Dim antipassback = result.ResultValue
+
+            WriteLine("get-antipassback")
+            WriteLine("  controller      {0}", controller)
+            WriteLine("    anti-passback {0}", translate(antipassback))
+            WriteLine()
+        Else If (result.IsError)
+            Throw New Exception(translate(result.ErrorValue))
+        End If
+    End Sub
+
+    Sub SetAntiPassback(args As String())
+        Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
+        Dim antipassback As AntiPassback = ArgParse.Parse(args, "--antipassback", AntiPassback.Disabled)
+
+        Dim result = If(CONTROLLERS.ContainsKey(controller),
+                        UHPPOTE.SetAntiPassback(CONTROLLERS(controller), antipassback, OPTIONS),
+                        UHPPOTE.SetAntiPassback(controller, antipassback, OPTIONS))
+
+        If (result.IsOk)
+            Dim ok = result.ResultValue
+
+            WriteLine("set-antipassback")
+            WriteLine("  controller      {0}", controller)
+            WriteLine("    anti-passback {0}", translate(antipassback))
+            WriteLine("               ok {0}", ok)
             WriteLine()
         Else If (result.IsError)
             Throw New Exception(translate(result.ErrorValue))
