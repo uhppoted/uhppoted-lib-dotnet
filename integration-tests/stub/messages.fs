@@ -173,6 +173,14 @@ module Messages =
             request = Requests.activateKeypads
             responses = [ Responses.activateKeypads ] }
 
+          { test = "get-antipassback"
+            request = Requests.getAntiPassback
+            responses = [ Responses.getAntiPassback ] }
+
+          { test = "set-antipassback"
+            request = Requests.setAntiPassback
+            responses = [ Responses.setAntiPassback ] }
+
           { test = "restore-default-parameters"
             request = Requests.restoreDefaultParameters
             responses = [ Responses.restoreDefaultParameters ] } ]

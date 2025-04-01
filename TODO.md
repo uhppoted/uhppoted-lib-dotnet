@@ -4,8 +4,8 @@
       - [x] `get-antipassback`
       - [x] `set-antipassback`
       - [x] internationalisation
+      - [x] integration tests
       - [ ] examples
-      - [ ] integration tests
       - [ ] documentation
       - [ ] CHANGELOG
       - [ ] README

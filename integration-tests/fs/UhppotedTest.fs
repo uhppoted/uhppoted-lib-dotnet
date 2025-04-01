@@ -932,6 +932,37 @@ type TestAPI(tt: string) =
             | Error err -> Assert.Fail($"{err}")
 
     [<Test>]
+    member this.TestGetAntiPassback() =
+        let expected: AntiPassback = AntiPassback.Doors13_24
+
+        match controllers[tt] with
+        | Id controller ->
+            match Uhppoted.GetAntiPassback(controller, OPTIONS) with
+            | Ok response -> Assert.That(response, Is.EqualTo(expected))
+            | Error err -> Assert.Fail($"{err}")
+
+        | Controller controller ->
+            match Uhppoted.GetAntiPassback(controller, OPTIONS) with
+            | Ok response -> Assert.That(response, Is.EqualTo(expected))
+            | Error err -> Assert.Fail($"{err}")
+
+    [<Test>]
+    member this.TestSetAntiPassback() =
+        let expected: bool = true
+        let antipassback = AntiPassback.Doors13_24
+
+        match controllers[tt] with
+        | Id controller ->
+            match Uhppoted.SetAntiPassback(controller, antipassback, OPTIONS) with
+            | Ok response -> Assert.That(response, Is.EqualTo(expected))
+            | Error err -> Assert.Fail($"{err}")
+
+        | Controller controller ->
+            match Uhppoted.SetAntiPassback(controller, antipassback, OPTIONS) with
+            | Ok response -> Assert.That(response, Is.EqualTo(expected))
+            | Error err -> Assert.Fail($"{err}")
+
+    [<Test>]
     member this.TestRestoreDefaultParameters() =
         let expected = true
 
