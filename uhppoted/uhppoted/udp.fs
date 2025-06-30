@@ -106,7 +106,7 @@ module internal UDP =
         try
             match socket.Client.LocalEndPoint with
             | :? IPEndPoint as endpoint when endpoint.Port = broadcast.Port ->
-                raise (Exception(sprintf "invalid UDP bind address: port %d used for broadcast" endpoint.Port))
+                raise (Exception(sprintf "invalid UDP bind address: port %d reserved for broadcast" endpoint.Port))
             | _ -> ()
 
 
@@ -151,7 +151,7 @@ module internal UDP =
 
             match socket.Client.LocalEndPoint with
             | :? IPEndPoint as endpoint when endpoint.Port = broadcast.Port ->
-                raise (Exception(sprintf "invalid UDP bind address: port %d used for broadcast" endpoint.Port))
+                raise (Exception(sprintf "invalid UDP bind address: port %d reserved for broadcast" endpoint.Port))
             | _ -> ()
 
             let timer (timeout: int) : Async<Result<byte array * IPEndPoint, Err>> =

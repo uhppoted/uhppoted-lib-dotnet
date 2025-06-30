@@ -24,9 +24,10 @@ and [_VB.NET_](https://github.com/uhppoted/uhppoted-lib-dotnet/tree/main/example
 
 #### Current Release
 
-**[v0.8.10](https://github.com/uhppoted/uhppoted-lib-dotnet/releases/tag/v0.8.10) - 2025-01-30**
+**[v0.8.11](https://github.com/uhppoted/uhppoted-lib-dotnet/releases/tag/v0.8.11) - 2025-07-01**
 
-1. Initial release.
+### Added
+1. `get-antipassback` and `set-antipassback API functions.
 
 
 ## Installation
@@ -213,6 +214,12 @@ Sets the door interlock mode for an access controller.
 
 #### [`ActivateKeypads`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/activate-keypads.md)
 Activates/deactivates the access reader keypads attached to an access controller.
+
+#### [`GetAntiPassback`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/get-antipassback.md)
+Gets a controller anti-passback mode.
+
+#### [`SetAntiPassback`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/set-antipassback.md)
+Sets a controller anti-passback mode.
 
 #### [`RestoreDefaultSettings`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/restore-default-settings.md)
 Restores the manufacturer default settings.
