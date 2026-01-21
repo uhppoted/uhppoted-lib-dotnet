@@ -28,20 +28,20 @@ jobs:
     - name: Build hello-world F# example
       run: |
         cd examples/fsharp/hello-world
-        dotnet add package uhppoted --version 0.8.11-beta
+        dotnet add package uhppoted --version 0.9.0-beta
         dotnet build --framework=${{ matrix.framework }}
         dotnet run   --framework=${{ matrix.framework }}
 
     - name: Build hello-world C# example
       run: |
         cd examples/csharp/hello-world
-        dotnet add package uhppoted --version 0.8.11-beta
+        dotnet add package uhppoted --version 0.9.0-beta
         dotnet build --framework=${{ matrix.framework }}
         dotnet run   --framework=${{ matrix.framework }}
 
     - name: Build hello-world VB.NET example
       run: |
         cd examples/vb/hello-world
-        dotnet add package uhppoted --version 0.8.11-beta
+        dotnet add package uhppoted --version 0.9.0-beta
         dotnet build --framework=${{ matrix.framework }}
         dotnet run   --framework=${{ matrix.framework }}

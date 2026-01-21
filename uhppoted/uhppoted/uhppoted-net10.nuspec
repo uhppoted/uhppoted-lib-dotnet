@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>uhppoted</id>
+    <version>0.9.0-beta</version>
+    <title>uhppoted</title>
+    <authors>uhppoted</authors>
+    <license type="expression">MIT</license>
+    <licenseUrl>https://licenses.nuget.org/MIT</licenseUrl>
+    <readme>README.md</readme>
+    <projectUrl>https://github.com/uhppoted/uhppoted-lib-dotnet</projectUrl>
+    <description>.NET library for the UHPPOTE access controller API.</description>
+    <tags>uhppote wiegand access-control building-security</tags>
+    <repository url="https://github.com/uhppoted/uhppoted-lib-dotnet" />
+    <dependencies>
+      <group targetFramework="net7.0"></group>
+      <group targetFramework="net8.0"></group>
+      <group targetFramework="net9.0"></group>
+      <group targetFramework="net10.0"></group>
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin/Release/net7.0/uhppoted.xml" target="lib/net7.0/" />
+    <file src="bin/Release/net7.0/uhppoted.dll" target="lib/net7.0/" />
+    <file src="bin/Release/net7.0/en-US/uhppoted.resources.dll" target="lib/net7.0/en-US" />
+    <file src="bin/Release/net7.0/uhppoted.pdb" target="lib/net7.0/" />
+
+    <file src="bin/Release/net8.0/uhppoted.xml" target="lib/net8.0/" />
+    <file src="bin/Release/net8.0/uhppoted.dll" target="lib/net8.0/" />
+    <file src="bin/Release/net8.0/en-US/uhppoted.resources.dll" target="lib/net8.0/en-US" />
+    <file src="bin/Release/net8.0/uhppoted.pdb" target="lib/net8.0/" />
+
+    <file src="bin/Release/net9.0/uhppoted.xml" target="lib/net9.0/" />
+    <file src="bin/Release/net9.0/uhppoted.dll" target="lib/net9.0/" />
+    <file src="bin/Release/net9.0/en-US/uhppoted.resources.dll" target="lib/net9.0/en-US" />
+    <file src="bin/Release/net9.0/uhppoted.pdb" target="lib/net9.0/" />
+
+    <file src="bin/Release/net10.0/uhppoted.xml" target="lib/net10.0/" />
+    <file src="bin/Release/net10.0/uhppoted.dll" target="lib/net10.0/" />
+    <file src="bin/Release/net10.0/en-US/uhppoted.resources.dll" target="lib/net10.0/en-US" />
+    <file src="bin/Release/net10.0/uhppoted.pdb" target="lib/net10.0/" />
+
+    <file src="README.md" target="" />
+  </files>
+</package>

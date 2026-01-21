@@ -4,7 +4,7 @@ class CLI
 {
     static void Main(string[] args)
     {
-        WriteLine("**uhppoted-Lib-dotnet C# CLI v0.8.10");
+        WriteLine("**uhppoted-Lib-dotnet C# CLI v0.9.0");
         WriteLine();
 
         if (args.Length > 0)

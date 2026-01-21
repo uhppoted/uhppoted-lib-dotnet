@@ -10,7 +10,7 @@ let usage () =
 
 [<EntryPoint>]
 let main args =
-    printfn "** uhppoted-lib-dotnet F# CLI v0.8.10\n"
+    printfn "** uhppoted-lib-dotnet F# CLI v0.9.0\n"
 
     match args |> List.ofSeq with
     | "help" :: [] ->

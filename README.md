@@ -45,20 +45,20 @@ Use either the _dotnet CLI_ or _Package Manager_:
 
 - CLI:
 ```
-dotnet add package uhppoted --version 0.8.10
+dotnet add package uhppoted --version 0.9.0
 
 ```
 
 - _Package Manager_ (console):
 ```
-NuGet\Install-Package uhppoted -Version 0.8.10
+NuGet\Install-Package uhppoted -Version 0.9.0
 ```
 
 After installing the package it should be referenced in the _project_ file, e.g.:
 ```
   ...
   <ItemGroup>
-    <PackageReference Include="uhppoted" Version="0.8.10" />
+    <PackageReference Include="uhppoted" Version="0.9.0" />
   </ItemGroup>
   ...
 ```
@@ -72,21 +72,21 @@ with at least `package: read` permissions.
    ```
    dotnet nuget add source --username <username> --password <personal-access-token> --store-password-in-clear-text --name uhppoted "https://nuget.pkg.github.com/uhppoted/index.json"
    dotnet nuget add source https://nuget.pkg.github.com/uhppoted/index.json
-   dotnet add package uhppoted --version 0.8.10
+   dotnet add package uhppoted --version 0.9.0
 
    ```
 
 - _Package Manager_ (console):
    ```
    NuGet\Set-Source -Name "uhppoted" -Source "https://nuget.pkg.github.com/uhppoted/index.json" -Username "<username>" -Password "<personal-access-token>"
-   NuGet\Install-Package uhppoted -Version 0.8.10
+   NuGet\Install-Package uhppoted -Version 0.9.0
    ```
 
 After installing the package it should be referenced in the _project_ file, e.g:
 ```
   ...
   <ItemGroup>
-    <PackageReference Include="uhppoted" Version="0.8.10" />
+    <PackageReference Include="uhppoted" Version="0.9.0" />
   </ItemGroup>
   ...
 ```

@@ -3,7 +3,7 @@ Imports System.Linq
 
 Module Program
     Sub Main(args As String())
-        WriteLine("**uhppoted-Lib-dotnet VB.NET CLI v0.8.10")
+        WriteLine("**uhppoted-Lib-dotnet VB.NET CLI v0.9.0")
         WriteLine()
 
         If args.Length > 0

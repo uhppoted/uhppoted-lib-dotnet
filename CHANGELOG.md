@@ -1,6 +1,6 @@
 # CHANGELOG
 
-## [0.9.0](https://github.com/uhppoted/uhppoted-lib-dotnet/releases/tag/v0.9.0) - 2026-01-21
+## Unreleased
 
 ### Added
 1. Updated to build for .NET10
