@@ -45,7 +45,7 @@ module Stub =
                         logger.WriteLine("*** ERROR unknown packet")
                         dump packet logger
 
-                | N -> logger.WriteLine($"*** WARN invalid packet size {N}")
+                | length -> logger.WriteLine($"*** WARN invalid packet size {length}")
 
                 return! recv socket cancel logger
             with

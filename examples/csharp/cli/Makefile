@@ -1,4 +1,4 @@
-CLI = dotnet run --framework net7.0
+CLI = dotnet run --framework net10.0
 
 CONTROLLER ?= 405419896
 DOOR ?= 3
