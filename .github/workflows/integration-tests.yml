@@ -2,8 +2,6 @@ name: integration-tests
 
 on:
   workflow_dispatch:
-  schedule:
-    - cron:  '30 1 * * *'
 
 jobs:
 
@@ -12,7 +10,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        version: ['8.x', '9.x']
+        version: ['8.x', '9.x', '10.x']
     runs-on: ${{ matrix.os }}
     steps:
 
