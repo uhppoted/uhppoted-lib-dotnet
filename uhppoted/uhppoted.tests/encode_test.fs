@@ -12,7 +12,7 @@ type TestEncoder() =
         let expected = TestRequests.getAllControllers
         let packet = Encode.getControllerRequest 0u
 
-        Assert.That(packet, Is.EqualTo(expected))
+        Assert.That(packet, Is.EqualTo<byte array>(expected))
 
     [<Test>]
     member this.TestEncodeGetControllerRequestWithValidControllerID() =
@@ -21,7 +21,7 @@ type TestEncoder() =
         let controller = 405419896u
         let packet = Encode.getControllerRequest controller
 
-        Assert.That(packet, Is.EqualTo(expected))
+        Assert.That(packet, Is.EqualTo<byte array>(expected))
 
     [<Test>]
     member this.TestEncodeSetIPv4Request() =
@@ -33,7 +33,7 @@ type TestEncoder() =
         let gateway = IPAddress.Parse("192.168.1.1")
         let packet = Encode.setIPv4Request controller address netmask gateway
 
-        Assert.That(packet, Is.EqualTo(expected))
+        Assert.That(packet, Is.EqualTo<byte array>(expected))
 
     [<Test>]
     member this.TestEncodeGetListenerRequest() =
@@ -42,7 +42,7 @@ type TestEncoder() =
         let controller = 405419896u
         let packet = Encode.getListenerRequest controller
 
-        Assert.That(packet, Is.EqualTo(expected))
+        Assert.That(packet, Is.EqualTo<byte array>(expected))
 
     [<Test>]
     member this.TestEncodeSetListenerRequest() =
@@ -54,7 +54,7 @@ type TestEncoder() =
         let interval = 17uy
         let packet = Encode.setListenerRequest controller address port interval
 
-        Assert.That(packet, Is.EqualTo(expected))
+        Assert.That(packet, Is.EqualTo<byte array>(expected))
 
     [<Test>]
     member this.TestEncodeGetTimeRequest() =
@@ -63,7 +63,7 @@ type TestEncoder() =
         let controller = 405419896u
         let packet = Encode.getTimeRequest controller
 
-        Assert.That(packet, Is.EqualTo(expected))
+        Assert.That(packet, Is.EqualTo<byte array>(expected))
 
     [<Test>]
     member this.TestEncodeSetTimeRequest() =
@@ -76,7 +76,7 @@ type TestEncoder() =
 
         let packet = Encode.setTimeRequest controller datetime
 
-        Assert.That(packet, Is.EqualTo(expected))
+        Assert.That(packet, Is.EqualTo<byte array>(expected))
 
     [<Test>]
     member this.TestEncodeGetDoorRequest() =
@@ -86,7 +86,7 @@ type TestEncoder() =
         let door = 3uy
         let packet = Encode.getDoorRequest controller door
 
-        Assert.That(packet, Is.EqualTo(expected))
+        Assert.That(packet, Is.EqualTo<byte array>(expected))
 
     [<Test>]
     member this.TestEncodeSetDoorRequest() =
@@ -98,7 +98,7 @@ type TestEncoder() =
         let delay = 17uy
         let packet = Encode.setDoorRequest controller door mode delay
 
-        Assert.That(packet, Is.EqualTo(expected))
+        Assert.That(packet, Is.EqualTo<byte array>(expected))
 
     [<Test>]
     member this.TestEncodeSetDoorPasscodesRequest() =
@@ -111,7 +111,7 @@ type TestEncoder() =
         let packet =
             Encode.setDoorPasscodesRequest controller door passcodes[0] passcodes[1] passcodes[2] passcodes[3]
 
-        Assert.That(packet, Is.EqualTo(expected))
+        Assert.That(packet, Is.EqualTo<byte array>(expected))
 
     [<Test>]
     member this.TestEncodeSetDoorPasscodesRequestWithInvalidPasscode() =
@@ -124,7 +124,7 @@ type TestEncoder() =
         let packet =
             Encode.setDoorPasscodesRequest controller door passcodes[0] passcodes[1] passcodes[2] passcodes[3]
 
-        Assert.That(packet, Is.EqualTo(expected))
+        Assert.That(packet, Is.EqualTo<byte array>(expected))
 
     [<Test>]
     member this.TestEncodeOpenDoorRequest() =
@@ -135,7 +135,7 @@ type TestEncoder() =
 
         let packet = Encode.openDoorRequest controller door
 
-        Assert.That(packet, Is.EqualTo(expected))
+        Assert.That(packet, Is.EqualTo<byte array>(expected))
 
     [<Test>]
     member this.TestEncodeGetStatusRequest() =
@@ -144,7 +144,7 @@ type TestEncoder() =
         let controller = 405419896u
         let packet = Encode.getStatusRequest controller
 
-        Assert.That(packet, Is.EqualTo(expected))
+        Assert.That(packet, Is.EqualTo<byte array>(expected))
 
     [<Test>]
     member this.TestEncodeGetCardsRequest() =
@@ -153,7 +153,7 @@ type TestEncoder() =
         let controller = 405419896u
         let packet = Encode.getCardsRequest controller
 
-        Assert.That(packet, Is.EqualTo(expected))
+        Assert.That(packet, Is.EqualTo<byte array>(expected))
 
     [<Test>]
     member this.TestEncodeGetCardRequest() =
@@ -163,7 +163,7 @@ type TestEncoder() =
         let card = 10058400u
         let packet = Encode.getCardRequest controller card
 
-        Assert.That(packet, Is.EqualTo(expected))
+        Assert.That(packet, Is.EqualTo<byte array>(expected))
 
     [<Test>]
     member this.TestEncodeGetCardAtIndexRequest() =
@@ -173,7 +173,7 @@ type TestEncoder() =
         let index = 135u
         let packet = Encode.getCardAtIndexRequest controller index
 
-        Assert.That(packet, Is.EqualTo(expected))
+        Assert.That(packet, Is.EqualTo<byte array>(expected))
 
     [<Test>]
     member this.TestEncodePutCardRequest() =
@@ -193,7 +193,7 @@ type TestEncoder() =
 
         let packet = Encode.putCardRequest controller card
 
-        Assert.That(packet, Is.EqualTo(expected))
+        Assert.That(packet, Is.EqualTo<byte array>(expected))
 
     [<Test>]
     member this.TestEncodeDeleteCardRequest() =
@@ -203,7 +203,7 @@ type TestEncoder() =
         let card = 10058400u
         let packet = Encode.deleteCardRequest controller card
 
-        Assert.That(packet, Is.EqualTo(expected))
+        Assert.That(packet, Is.EqualTo<byte array>(expected))
 
     [<Test>]
     member this.TestEncodeDeleteAllCardsRequest() =
@@ -212,7 +212,7 @@ type TestEncoder() =
         let controller = 405419896u
         let packet = Encode.deleteAllCardsRequest controller
 
-        Assert.That(packet, Is.EqualTo(expected))
+        Assert.That(packet, Is.EqualTo<byte array>(expected))
 
     [<Test>]
     member this.TestEncodeGetEventRequest() =
@@ -222,7 +222,7 @@ type TestEncoder() =
         let index = 13579u
         let packet = Encode.getEventRequest controller index
 
-        Assert.That(packet, Is.EqualTo(expected))
+        Assert.That(packet, Is.EqualTo<byte array>(expected))
 
     [<Test>]
     member this.TestEncodeGetEventIndexRequest() =
@@ -231,7 +231,7 @@ type TestEncoder() =
         let controller = 405419896u
         let packet = Encode.getEventIndexRequest controller
 
-        Assert.That(packet, Is.EqualTo(expected))
+        Assert.That(packet, Is.EqualTo<byte array>(expected))
 
     [<Test>]
     member this.TestEncodeSetEventIndexRequest() =
@@ -241,7 +241,7 @@ type TestEncoder() =
         let index = 13579u
         let packet = Encode.setEventIndexRequest controller index
 
-        Assert.That(packet, Is.EqualTo(expected))
+        Assert.That(packet, Is.EqualTo<byte array>(expected))
 
     [<Test>]
     member this.TestRecordSpecialEventsRequest() =
@@ -251,7 +251,7 @@ type TestEncoder() =
         let enabled = true
         let packet = Encode.recordSpecialEventsRequest controller enabled
 
-        Assert.That(packet, Is.EqualTo(expected))
+        Assert.That(packet, Is.EqualTo<byte array>(expected))
 
     [<Test>]
     member this.TestGetTimeProfileRequest() =
@@ -261,7 +261,7 @@ type TestEncoder() =
         let profile = 37uy
         let packet = Encode.getTimeProfileRequest controller profile
 
-        Assert.That(packet, Is.EqualTo(expected))
+        Assert.That(packet, Is.EqualTo<byte array>(expected))
 
     [<Test>]
     member this.TestSetTimeProfileRequest() =
@@ -290,7 +290,7 @@ type TestEncoder() =
 
         let packet = Encode.setTimeProfileRequest controller profile
 
-        Assert.That(packet, Is.EqualTo(expected))
+        Assert.That(packet, Is.EqualTo<byte array>(expected))
 
     [<Test>]
     member this.TestClearTimeProfilesRequest() =
@@ -299,7 +299,7 @@ type TestEncoder() =
         let controller = 405419896u
         let packet = Encode.clearTimeProfilesRequest controller
 
-        Assert.That(packet, Is.EqualTo(expected))
+        Assert.That(packet, Is.EqualTo<byte array>(expected))
 
     [<Test>]
     member this.TestAddTaskRequest() =
@@ -324,7 +324,7 @@ type TestEncoder() =
 
         let packet = Encode.addTaskRequest controller task
 
-        Assert.That(packet, Is.EqualTo(expected))
+        Assert.That(packet, Is.EqualTo<byte array>(expected))
 
     [<Test>]
     member this.TestClearTasklistRequest() =
@@ -333,7 +333,7 @@ type TestEncoder() =
         let controller = 405419896u
         let packet = Encode.clearTaskListRequest controller
 
-        Assert.That(packet, Is.EqualTo(expected))
+        Assert.That(packet, Is.EqualTo<byte array>(expected))
 
     [<Test>]
     member this.TestRefreshTasklistRequest() =
@@ -342,7 +342,7 @@ type TestEncoder() =
         let controller = 405419896u
         let packet = Encode.refreshTaskListRequest controller
 
-        Assert.That(packet, Is.EqualTo(expected))
+        Assert.That(packet, Is.EqualTo<byte array>(expected))
 
     [<Test>]
     member this.TestSetPCControlRequest() =
@@ -352,7 +352,7 @@ type TestEncoder() =
         let enable = true
         let packet = Encode.setPCControlRequest controller true
 
-        Assert.That(packet, Is.EqualTo(expected))
+        Assert.That(packet, Is.EqualTo<byte array>(expected))
 
     [<Test>]
     member this.TestSetInterlockRequest() =
@@ -362,7 +362,7 @@ type TestEncoder() =
         let interlock = Interlock.Doors1234
         let packet = Encode.setInterlockRequest controller interlock
 
-        Assert.That(packet, Is.EqualTo(expected))
+        Assert.That(packet, Is.EqualTo<byte array>(expected))
 
     [<Test>]
     member this.TestActivateKeypadsRequest() =
@@ -371,7 +371,7 @@ type TestEncoder() =
         let controller = 405419896u
         let packet = Encode.activateKeypadsRequest controller true true false true
 
-        Assert.That(packet, Is.EqualTo(expected))
+        Assert.That(packet, Is.EqualTo<byte array>(expected))
 
     [<Test>]
     member this.TestEncodeSetAntiPassback() =
@@ -381,7 +381,7 @@ type TestEncoder() =
         let antipassback = AntiPassback.Doors13_24
         let packet = Encode.setAntiPassbackRequest controller antipassback
 
-        Assert.That(packet, Is.EqualTo(expected))
+        Assert.That(packet, Is.EqualTo<byte array>(expected))
 
     [<Test>]
     member this.TestEncodeGetAntiPassback() =
@@ -390,7 +390,7 @@ type TestEncoder() =
         let controller = 405419896u
         let packet = Encode.getAntiPassbackRequest controller
 
-        Assert.That(packet, Is.EqualTo(expected))
+        Assert.That(packet, Is.EqualTo<byte array>(expected))
 
     [<Test>]
     member this.TestRestoreDefaultParametersRequest() =
@@ -399,4 +399,4 @@ type TestEncoder() =
         let controller = 405419896u
         let packet = Encode.restoreDefaultParametersRequest controller
 
-        Assert.That(packet, Is.EqualTo(expected))
+        Assert.That(packet, Is.EqualTo<byte array>(expected))

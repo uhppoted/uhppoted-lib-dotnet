@@ -72,7 +72,7 @@ type TestFindAPI() =
                  Date = Nullable(DateOnly.ParseExact("2020-01-01", "yyyy-MM-dd")) } |]
 
         match Uhppoted.FindControllers(OPTIONS) with
-        | Ok controllers -> Assert.That(controllers, Is.EqualTo(expected))
+        | Ok controllers -> Assert.That(controllers, Is.EqualTo<Controller array>(expected))
         | Error err -> Assert.Fail($"{err}")
 
 
@@ -1069,8 +1069,8 @@ type TestAPI(tt: string) =
                 Status = status
                 Event = Nullable() } ]
 
-        Assert.That(events, Is.EqualTo(expected))
-        Assert.That(errors, Is.EqualTo([ PacketError "invalid listen-event packet" ]))
+        Assert.That(events, Is.EqualTo<ListenerEvent list>(expected))
+        Assert.That(errors, Is.EqualTo<Err list>([ PacketError "invalid listen-event packet" ]))
 
     member this.TestListen() =
         match this.emulator with

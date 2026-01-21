@@ -22,7 +22,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="uhppoted" Version="0.8.9.9-beta" />
+    <PackageReference Include="uhppoted" Version="0.9.0-beta" />
   </ItemGroup>
 
 </Project>

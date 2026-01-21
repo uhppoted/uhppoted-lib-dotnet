@@ -26,7 +26,7 @@ clean:
 	dotnet clean
 
 format:
-	dotnet format .
+	dotnet format . --verbosity quiet
 
 build: format
 	dotnet build
