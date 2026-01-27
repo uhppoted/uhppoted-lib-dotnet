@@ -28,10 +28,9 @@ and [_VB.NET_](https://github.com/uhppoted/uhppoted-lib-dotnet/tree/main/example
 
 #### Current Release
 
-**[v0.8.11](https://github.com/uhppoted/uhppoted-lib-dotnet/releases/tag/v0.8.11) - 2025-07-01**
+**[v0.9.0](https://github.com/uhppoted/uhppoted-lib-dotnet/releases/tag/v0.9.0) - 2026-01-27**
 
-### Added
-1. `get-antipassback` and `set-antipassback API functions.
+1. Updated for .NET10
 
 
 ## Installation
