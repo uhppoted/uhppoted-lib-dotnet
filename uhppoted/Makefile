@@ -31,7 +31,7 @@ format:
 	dotnet fantomas .
 
 build:
-	export VERSION="" && dotnet build
+	export VERSION="" && dotnet build --no-incremental
 	dotnet fantomas .
 
 test:
