@@ -1,6 +1,6 @@
 NUPKG = $(subst v,,${VERSION})
 
-CLI = dotnet run --project ./examples/fsharp/cli --framework net10.0
+CLI = dotnet run --project ./examples/fsharp/cli --framework net10.0  --debug --bind 192.168.1.125 --broadcast 192.168.1.255:60000 --listen 192.168.1.125:60001 --timeout 1.25 
 CONTROLLER ?= 405419896
 DOOR ?= 3
 CARD ?= 10058400
@@ -58,6 +58,12 @@ publish: release
 	gh release create "$(VERSION)" "./uhppoted/uhppoted/dist/uhppoted.$(NUPKG).nupkg"  \
 	                               "./uhppoted/uhppoted/dist/uhppoted.$(NUPKG).snupkg" \
 	                               --draft --prerelease --title "$(VERSION)-beta" --notes-file release-notes.md
+
+debug: build
+	$(CLI) find-controllers
+
+help: 
+	$(CLI) help
 
 find-controllers:
 	$(CLI) find-controllers
