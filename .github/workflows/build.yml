@@ -11,17 +11,16 @@ jobs:
 
   build:
     name: Build
-    # strategy:
-    #   matrix:
-    #     # version: ['8.x', '9.x', '10.x']
+    strategy:
+      matrix:
+        # version: ['8.x', '9.x', '10.x']
     runs-on: ubuntu-latest
     steps:
 
     - name: Set up .NET
       uses: actions/setup-dotnet@v5
       with:
-        # dotnet-version: ${{ matrix.version }}
-        dotnet-version: '10.0.x'
+        dotnet-version: ${{ matrix.version }}
 
     - name: Check out code
       uses: actions/checkout@v6
