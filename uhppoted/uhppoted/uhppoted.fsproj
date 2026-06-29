@@ -12,7 +12,6 @@
     <PackageTags>uhppote;wiegand;access-control;building-security</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageVersion>0.9.1</PackageVersion>
-    <EnableDefaultItems>false</EnableDefaultItems>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -49,12 +48,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="enums.fsi" />
-    <Compile Include="types.fsi" />
-    <Compile Include="builders.fsi" />
-    <Compile Include="options.fsi" />
-    <Compile Include="uhppoted.fsi" />
-
     <Compile Include="enums.fs" />
     <Compile Include="types.fs" />
     <Compile Include="builders.fs" />
