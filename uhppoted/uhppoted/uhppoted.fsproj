@@ -12,6 +12,7 @@
     <PackageTags>uhppote;wiegand;access-control;building-security</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageVersion>0.9.1</PackageVersion>
+    <EnableDefaultItems>false</EnableDefaultItems>
   </PropertyGroup>
 
   <PropertyGroup>
