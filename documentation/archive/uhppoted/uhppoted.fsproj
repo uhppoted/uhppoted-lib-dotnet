@@ -1,0 +1,72 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <PackageId>uhppoted</PackageId>
+    <Title>uhppoted</Title>
+    <Description>.NET library for the UHPPOTE access controller API.</Description>
+    <Authors>uhppoted</Authors>
+    <RepositoryUrl>https://github.com/uhppoted/uhppoted-lib-dotnet</RepositoryUrl>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageProjectUrl>https://github.com/uhppoted/uhppoted-lib-dotnet</PackageProjectUrl>
+    <PackageTags>uhppote;wiegand;access-control;building-security</PackageTags>
+    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageVersion>0.9.1</PackageVersion>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <Version>0.9.1</Version>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <TargetFrameworks>net8.0; net9.0; net10.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(NETCoreSdkVersion)' &lt; '10.0'">
+    <TargetFrameworks>net9.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(NETCoreSdkVersion)' &lt; '9.0'">
+    <TargetFrameworks>net8.0</TargetFrameworks>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <IncludeSymbols>true</IncludeSymbols>
+    <SymbolPackageFormat>snupkg</SymbolPackageFormat>
+  </PropertyGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net8.0'">
+    <PackageReference Update="FSharp.Core" Version="[8.0.100,)" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net9.0'">
+    <PackageReference Update="FSharp.Core" Version="[9.0.100,)" />
+  </ItemGroup>
+
+  <ItemGroup Condition="'$(TargetFramework)' == 'net10.0'">
+    <PackageReference Update="FSharp.Core" Version="[10.0.102,)" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Include="enums.fsi" />
+    <Compile Include="types.fsi" />
+    <Compile Include="builders.fsi" />
+    <Compile Include="options.fsi" />
+    <Compile Include="uhppoted.fsi" />
+
+    <Compile Include="enums.fs" />
+    <Compile Include="types.fs" />
+    <Compile Include="builders.fs" />
+    <Compile Include="options.fs" />
+    <Compile Include="internationalisation.fs" />
+    <Compile Include="responses.fs" />
+    <Compile Include="codec.fs" />
+    <Compile Include="encode.fs" />
+    <Compile Include="decode.fs" />
+    <Compile Include="udp.fs" />
+    <Compile Include="tcp.fs" />
+    <Compile Include="uhppoted.fs" />
+    <None Include="README.md" Pack="true" PackagePath="\" />
+  </ItemGroup>
+
+</Project>
