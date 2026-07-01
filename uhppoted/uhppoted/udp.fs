@@ -78,40 +78,35 @@ module internal UDP =
             | err -> return Error(ReceiveError err.Message)
         }
 
-    let broadcast (request: byte array, bind: IPEndPoint, broadcast: IPEndPoint, timeout: int, debug: bool) =
-        let oops (socket: UdpClient) =
-            match socket.Client.LocalEndPoint with
-            | :? IPEndPoint as endpoint when endpoint.Port = broadcast.Port && bind.Port <> 0 ->
-                raise (Exception(sprintf "invalid UDP bind address: port %d reserved for broadcast" endpoint.Port))
-            | :? IPEndPoint as endpoint when endpoint.Port = broadcast.Port -> true
-            | _ -> true
-
-        let cancel = new CancellationTokenSource()
+    let broadcast (request: byte array, src: IPEndPoint, broadcast: IPEndPoint, timeout: int, debug: bool) =
         let mutable sockets: UdpClient list = []
-        let mutable retries = 0
 
         use _ =
             { new System.IDisposable with
                 member _.Dispose() =
                     sockets |> List.iter (fun s -> s.Dispose()) }
 
-        try
-            let mutable socket = new UdpClient(bind)
+        let bind =
+            let rec loop retries =
+                let socket = new UdpClient(src)
+                let port = (socket.Client.LocalEndPoint :?> IPEndPoint).Port
 
-            sockets <- socket :: sockets
-
-            while oops (socket) && retries < 5 do
-                retries <- retries + 1
-                socket <- new UdpClient(bind)
                 sockets <- socket :: sockets
 
-            match socket.Client.LocalEndPoint with
-            | :? IPEndPoint as endpoint when endpoint.Port = broadcast.Port ->
-                raise (
-                    Exception(sprintf "OS returned UDP bind socket with port %d reserved for broadcast)" endpoint.Port)
-                )
-            | _ -> ()
+                if port = broadcast.Port && src.Port <> 0 then
+                    failwithf "invalid UDP bind address: port %d reserved for broadcast" port
+                elif port = broadcast.Port && retries >= 5 then
+                    failwithf "OS returned UDP bind socket with port %d reserved for broadcast" port
+                elif port = broadcast.Port then
+                    loop (retries + 1)
+                else
+                    socket
 
+            loop 0
+
+        try
+            let socket = bind
+            let cancel = new CancellationTokenSource()
             let rx = receiveAll socket cancel.Token [] |> Async.StartAsTask
 
             socket.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true)
@@ -142,40 +137,35 @@ module internal UDP =
             Error(ReceiveError err.Message)
 
 
-    let broadcastTo (request: byte array, bind: IPEndPoint, broadcast: IPEndPoint, timeout: int, debug: bool) =
-        let oops (socket: UdpClient) =
-            match socket.Client.LocalEndPoint with
-            | :? IPEndPoint as endpoint when endpoint.Port = broadcast.Port && bind.Port <> 0 ->
-                raise (Exception(sprintf "invalid UDP bind address: port %d reserved for broadcast" endpoint.Port))
-            | :? IPEndPoint as endpoint when endpoint.Port = broadcast.Port -> true
-            | _ -> true
-
-        let cancel = new CancellationTokenSource()
+    let broadcastTo (request: byte array, src: IPEndPoint, broadcast: IPEndPoint, timeout: int, debug: bool) =
         let mutable sockets: UdpClient list = []
-        let mutable retries = 0
 
         use _ =
             { new System.IDisposable with
                 member _.Dispose() =
                     sockets |> List.iter (fun s -> s.Dispose()) }
 
-        try
-            let x: Err = Err.Timeout
-            let mutable socket = new UdpClient(bind)
+        let bind =
+            let rec loop retries =
+                let socket = new UdpClient(src)
+                let port = (socket.Client.LocalEndPoint :?> IPEndPoint).Port
 
-            sockets <- socket :: sockets
-
-            while oops (socket) && retries < 5 do
-                retries <- retries + 1
-                socket <- new UdpClient(bind)
                 sockets <- socket :: sockets
 
-            match socket.Client.LocalEndPoint with
-            | :? IPEndPoint as endpoint when endpoint.Port = broadcast.Port ->
-                raise (
-                    Exception(sprintf "OS returned UDP bind socket with port %d reserved for broadcast)" endpoint.Port)
-                )
-            | _ -> ()
+                if port = broadcast.Port && src.Port <> 0 then
+                    failwithf "invalid UDP bind address: port %d reserved for broadcast" port
+                elif port = broadcast.Port && retries >= 5 then
+                    failwithf "OS returned UDP bind socket with port %d reserved for broadcast" port
+                elif port = broadcast.Port then
+                    loop (retries + 1)
+                else
+                    socket
+
+            loop 0
+
+        try
+            let socket = bind
+            let cancel = new CancellationTokenSource()
 
             let timer (timeout: int) : Async<Result<byte array * IPEndPoint, Err>> =
                 async {
@@ -194,7 +184,7 @@ module internal UDP =
                 printfn "    ... sent %d bytes to %A" request.Length broadcast.Address
                 dump request
 
-            // set-IPv4 does not return a reply
+            // NTS: set-IPv4 does not return a reply
             if request[1] = 0x96uy then
                 cancel.Cancel()
                 Ok([||])
@@ -219,43 +209,41 @@ module internal UDP =
             Error(ReceiveError err.Message)
 
 
-    let sendTo (request: byte array, bind: IPEndPoint, dest: IPEndPoint, timeout: int, debug: bool) =
-        let oops (socket: UdpClient) =
-            match socket.Client.LocalEndPoint with
-            | :? IPEndPoint as endpoint when endpoint = dest && bind.Port <> 0 ->
-                raise (Exception(sprintf "UDP bind address:port %A is the same as 'dest'" endpoint))
-            | :? IPEndPoint as endpoint when endpoint = dest -> true
-            | _ -> true
-
-        let cancel = new CancellationTokenSource()
+    let sendTo (request: byte array, src: IPEndPoint, dest: IPEndPoint, timeout: int, debug: bool) =
         let mutable sockets: UdpClient list = []
-        let mutable retries = 0
 
         use _ =
             { new System.IDisposable with
                 member _.Dispose() =
                     sockets |> List.iter (fun s -> s.Dispose()) }
 
-        let timer (timeout: int) : Async<Result<byte array * IPEndPoint, Err>> =
-            async {
-                do! Async.Sleep timeout
-                return Error Err.Timeout
-            }
+        let bind =
+            let rec loop retries =
+                let socket = new UdpClient(src)
+                let endpoint = socket.Client.LocalEndPoint :?> IPEndPoint
 
-        try
-            let mutable socket = new UdpClient(bind)
-
-            sockets <- socket :: sockets
-
-            while oops (socket) && retries < 5 do
-                retries <- retries + 1
-                socket <- new UdpClient(bind)
                 sockets <- socket :: sockets
 
-            match socket.Client.LocalEndPoint with
-            | :? IPEndPoint as endpoint when endpoint = dest ->
-                raise (Exception(sprintf "OS bound UDP src socket to destination address:port (%A))" endpoint))
-            | _ -> ()
+                if endpoint = dest && src.Port <> 0 then
+                    failwithf "UDP bind address:port %A is the same as destination" endpoint
+                elif endpoint = dest && retries >= 5 then
+                    failwithf "UDP bind address:port %A is the same as destination" endpoint
+                elif endpoint = dest then
+                    loop (retries + 1)
+                else
+                    socket
+
+            loop 0
+
+        try
+            let socket = bind
+            let cancel = new CancellationTokenSource()
+
+            let timer (timeout: int) : Async<Result<byte array * IPEndPoint, Err>> =
+                async {
+                    do! Async.Sleep timeout
+                    return Error Err.Timeout
+                }
 
             let rx = receive socket cancel.Token |> Async.StartAsTask
             let rx_timeout = timer timeout |> Async.StartAsTask
@@ -268,7 +256,7 @@ module internal UDP =
                 printfn "    ... sent %d bytes to %A" request.Length dest.Address
                 dump request
 
-            // set-IPv4 does not return a reply
+            // NTS: set-IPv4 does not return a reply
             if request[1] = 0x96uy then
                 cancel.Cancel()
                 Ok([||])
@@ -313,7 +301,7 @@ module internal UDP =
         try
             socket.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true)
 
-            receiveEvent socket handler cancel.Token |> Async.StartAsTask
+            receiveEvent socket handler cancel.Token |> Async.StartAsTask |> ignore
 
             token.WaitHandle.WaitOne() |> ignore
             cancel.Cancel()

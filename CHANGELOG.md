@@ -5,6 +5,7 @@
 
 ### Updated
 1. Removed support for .NET7 (end of life).
+2. Added checks for _connect to self_ in UDP transport.
 
 
 ## [0.9.0](https://github.com/uhppoted/uhppoted-lib-dotnet/releases/tag/v0.9.0) - 2026-01-27
