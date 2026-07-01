@@ -60,7 +60,7 @@ publish: release
 	                               --draft --prerelease --title "$(VERSION)-beta" --notes-file release-notes.md
 
 debug: build
-	$(CLI) find-controllers
+	$(CLI) get-controller --controller 303986753
 
 help: 
 	$(CLI) help

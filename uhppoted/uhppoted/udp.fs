@@ -28,11 +28,8 @@ module internal UDP =
 
             with
             | :? OperationCanceledException -> return Ok(List.rev packets)
-
             | :? ObjectDisposedException -> return Ok(List.rev packets)
-
             | :? SocketException as x -> return Error(ReceiveError x.Message)
-
             | err -> return Error(ReceiveError err.Message)
         }
 
@@ -46,13 +43,11 @@ module internal UDP =
                     let packet = result.Buffer.[0..63]
                     let remote = result.RemoteEndPoint
 
-                    socket.Close()
                     return Ok(packet, remote)
 
                 | _ -> return! receive socket cancel
 
             with err ->
-                socket.Close()
                 return Error(ReceiveError err.Message)
         }
 
@@ -94,7 +89,7 @@ module internal UDP =
     let broadcast (request: byte array, bind: IPEndPoint, broadcast: IPEndPoint, timeout: int, debug: bool) =
         let oops (socket: UdpClient) =
             match socket.Client.LocalEndPoint with
-            | :? IPEndPoint as endpoint when endpoint.Port = broadcast.Port && bind.Port = 0 ->
+            | :? IPEndPoint as endpoint when endpoint.Port = broadcast.Port && bind.Port <> 0 ->
                 raise (Exception(sprintf "invalid UDP bind address: port %d reserved for broadcast" endpoint.Port))
             | :? IPEndPoint as endpoint when endpoint.Port = broadcast.Port -> true
             | _ -> true
@@ -158,7 +153,7 @@ module internal UDP =
     let broadcastTo (request: byte array, bind: IPEndPoint, broadcast: IPEndPoint, timeout: int, debug: bool) =
         let oops (socket: UdpClient) =
             match socket.Client.LocalEndPoint with
-            | :? IPEndPoint as endpoint when endpoint.Port = broadcast.Port && bind.Port = 0 ->
+            | :? IPEndPoint as endpoint when endpoint.Port = broadcast.Port && bind.Port <> 0 ->
                 raise (Exception(sprintf "invalid UDP bind address: port %d reserved for broadcast" endpoint.Port))
             | :? IPEndPoint as endpoint when endpoint.Port = broadcast.Port -> true
             | _ -> true
@@ -232,9 +227,22 @@ module internal UDP =
             Error(ReceiveError err.Message)
 
 
-    let sendTo (request: byte array, src: IPEndPoint, dest: IPEndPoint, timeout: int, debug: bool) =
-        let socket = new UdpClient(src)
+    let sendTo (request: byte array, bind: IPEndPoint, dest: IPEndPoint, timeout: int, debug: bool) =
+        let oops (socket: UdpClient) =
+            match socket.Client.LocalEndPoint with
+            | :? IPEndPoint as endpoint when endpoint = dest && bind.Port <> 0 ->
+                raise (Exception(sprintf "UDP bind address:port %A is the same as 'dest'" endpoint))
+            | :? IPEndPoint as endpoint when endpoint = dest -> true
+            | _ -> true
+
         let cancel = new CancellationTokenSource()
+        let mutable sockets: UdpClient list = []
+        let mutable retries = 0
+
+        use _ =
+            { new System.IDisposable with
+                member _.Dispose() =
+                    sockets |> List.iter (fun s -> s.Dispose()) }
 
         let timer (timeout: int) : Async<Result<byte array * IPEndPoint, Err>> =
             async {
@@ -243,52 +251,56 @@ module internal UDP =
             }
 
         try
-            try
-                let rx = receive socket cancel.Token |> Async.StartAsTask
-                let rx_timeout = timer timeout |> Async.StartAsTask
+            let mutable socket = new UdpClient(bind)
 
-                socket.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true)
-                socket.Connect(dest)
-                socket.Send(request, request.Length) |> ignore
+            sockets <- socket :: sockets
 
-                if debug then
-                    printfn "    ... sent %d bytes to %A" request.Length dest.Address
-                    dump request
+            while oops (socket) && retries < 5 do
+                retries <- retries + 1
+                socket <- new UdpClient(bind)
+                sockets <- socket :: sockets
 
-                // set-IPv4 does not return a reply
-                if request[1] = 0x96uy then
-                    cancel.Cancel()
+            match socket.Client.LocalEndPoint with
+            | :? IPEndPoint as endpoint when endpoint = dest ->
+                raise (Exception(sprintf "OS bound UDP src socket to destination address:port (%A))" endpoint))
+            | _ -> ()
 
-                    if not (rx.Wait(5000)) then
-                        socket.Close()
+            let rx = receive socket cancel.Token |> Async.StartAsTask
+            let rx_timeout = timer timeout |> Async.StartAsTask
 
-                    Ok([||])
+            socket.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true)
+            socket.Connect(dest)
+            socket.Send(request, request.Length) |> ignore
+
+            if debug then
+                printfn "    ... sent %d bytes to %A" request.Length dest.Address
+                dump request
+
+            // set-IPv4 does not return a reply
+            if request[1] = 0x96uy then
+                cancel.Cancel()
+                Ok([||])
+            else
+                let completed =
+                    Task.WhenAny(rx, rx_timeout) |> Async.AwaitTask |> Async.RunSynchronously
+
+                if completed = rx then
+                    match rx.Result with
+                    | Ok(packet, addr) when packet.Length = 64 ->
+                        if debug then
+                            printfn "    ... received %d bytes from %A" packet.Length addr.Address
+                            dump packet
+
+                        Ok packet
+                    | Ok(_, _) -> Error InvalidPacket
+                    | Error err -> Error err
                 else
-                    let completed =
-                        Task.WhenAny(rx, rx_timeout) |> Async.AwaitTask |> Async.RunSynchronously
+                    cancel.Cancel()
+                    Error Err.Timeout
 
-                    if completed = rx then
-                        match rx.Result with
-                        | Ok(packet, addr) when packet.Length = 64 ->
-                            if debug then
-                                printfn "    ... received %d bytes from %A" packet.Length addr.Address
-                                dump packet
+        with err ->
+            Error(ReceiveError err.Message)
 
-                            Ok packet
-                        | Ok(_, _) -> Error InvalidPacket
-                        | Error err -> Error err
-                    else
-                        cancel.Cancel()
-
-                        if not (rx.Wait(5000)) then
-                            socket.Close()
-
-                        Error Err.Timeout
-
-            with err ->
-                Error(ReceiveError err.Message)
-        finally
-            socket.Close()
 
     let listen (bind: IPEndPoint) (callback: byte array -> unit) (token: CancellationToken) (debug: bool) =
         let socket = new UdpClient(bind)

@@ -1,6 +1,12 @@
 # TODO
 
-- [ ] Retry on UDP port conflict (cf. https://github.com/uhppoted/uhppoted-lib-python/issues/21)
+- [ ] UDP and TCP self connection (cf. https://github.com/uhppoted/uhppoted/issues/86)
+    - [x] broadcast
+    - [x] broadcast-to
+    - [x] send
+    - [ ] TCP
+    - [ ] CHANGELOG
+    - [ ] README
 
 - [] 'first card' API (cf. https://github.com/uhppoted/uhppoted/issues/82)
     - [ ] set-firstcard
@@ -13,14 +19,22 @@
 
 ## TODO
 
+### F#
+- [ ] CLI --dest
+- [ ] CLI --transport (or --dest udp::...)
+
 ### C#
 - [ ] CLI --bind
 - [ ] CLI --broadcast
 - [ ] CLI --listen
 - [ ] CLI --debug
+- [ ] CLI --dest
+- [ ] CLI --transport (or --dest udp::...)
 
 ### VB.NET
 - [ ] CLI --bind
 - [ ] CLI --broadcast
 - [ ] CLI --listen
 - [ ] CLI --debug
+- [ ] CLI --dest
+- [ ] CLI --transport (or --dest udp::...)
