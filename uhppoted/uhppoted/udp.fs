@@ -69,21 +69,13 @@ module internal UDP =
                 return! receiveEvent socket handler cancel
 
             with
-            | :? OperationCanceledException ->
-                socket.Close()
-                return Ok()
+            | :? OperationCanceledException -> return Ok()
 
-            | :? ObjectDisposedException ->
-                socket.Close()
-                return Ok()
+            | :? ObjectDisposedException -> return Ok()
 
-            | :? SocketException as x ->
-                socket.Close()
-                return Error(ReceiveError x.Message)
+            | :? SocketException as x -> return Error(ReceiveError x.Message)
 
-            | err ->
-                socket.Close()
-                return Error(ReceiveError err.Message)
+            | err -> return Error(ReceiveError err.Message)
         }
 
     let broadcast (request: byte array, bind: IPEndPoint, broadcast: IPEndPoint, timeout: int, debug: bool) =
@@ -303,8 +295,13 @@ module internal UDP =
 
 
     let listen (bind: IPEndPoint) (callback: byte array -> unit) (token: CancellationToken) (debug: bool) =
-        let socket = new UdpClient(bind)
         let cancel = new CancellationTokenSource()
+        let socket = new UdpClient(bind)
+
+        use _ =
+            { new System.IDisposable with
+                member _.Dispose() = socket.Dispose() }
+
 
         let handler (packet: byte array, addr: IPEndPoint) =
             if debug then
@@ -314,21 +311,13 @@ module internal UDP =
             callback packet
 
         try
-            try
-                socket.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true)
+            socket.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true)
 
-                let rx = receiveEvent socket handler cancel.Token |> Async.StartAsTask
+            receiveEvent socket handler cancel.Token |> Async.StartAsTask
 
-                token.WaitHandle.WaitOne() |> ignore
+            token.WaitHandle.WaitOne() |> ignore
+            cancel.Cancel()
+            Ok()
 
-                cancel.Cancel()
-
-                if not (rx.Wait(5000)) then
-                    socket.Close()
-
-                Ok()
-
-            with err ->
-                Error(ListenError err.Message)
-        finally
-            socket.Close()
+        with err ->
+            Error(ListenError err.Message)
