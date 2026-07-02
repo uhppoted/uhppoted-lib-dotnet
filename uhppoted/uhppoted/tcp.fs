@@ -48,12 +48,16 @@ module internal TCP =
                 member _.Dispose() =
                     sockets |> List.iter (fun s -> s.Dispose()) }
 
-        let bind =
+        let connect =
             let rec loop retries =
                 let socket = new TcpClient(src)
-                let endpoint = socket.Client.LocalEndPoint :?> IPEndPoint
 
                 sockets <- socket :: sockets
+
+                socket.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true)
+                socket.Connect(dest)
+
+                let endpoint = socket.Client.LocalEndPoint :?> IPEndPoint
 
                 if endpoint = dest && src.Port <> 0 then
                     failwithf "TCP bind address:port %A is the same as destination" endpoint
@@ -67,7 +71,7 @@ module internal TCP =
             loop 0
 
         try
-            let socket = bind
+            let socket = connect
             let cancel = new CancellationTokenSource()
 
             let timer (timeout: int) : Async<Result<byte array * IPEndPoint, Err>> =
@@ -75,9 +79,6 @@ module internal TCP =
                     do! Async.Sleep timeout
                     return Error Err.Timeout
                 }
-
-            socket.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true)
-            socket.Connect(dest)
 
             let stream = socket.GetStream()
             let rx = receive stream cancel.Token |> Async.StartAsTask

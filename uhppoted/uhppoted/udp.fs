@@ -217,12 +217,16 @@ module internal UDP =
                 member _.Dispose() =
                     sockets |> List.iter (fun s -> s.Dispose()) }
 
-        let bind =
+        let connect =
             let rec loop retries =
                 let socket = new UdpClient(src)
-                let endpoint = socket.Client.LocalEndPoint :?> IPEndPoint
 
                 sockets <- socket :: sockets
+
+                socket.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true)
+                socket.Connect(dest)
+
+                let endpoint = socket.Client.LocalEndPoint :?> IPEndPoint
 
                 if endpoint = dest && src.Port <> 0 then
                     failwithf "UDP bind address:port %A is the same as destination" endpoint
@@ -236,7 +240,7 @@ module internal UDP =
             loop 0
 
         try
-            let socket = bind
+            let socket = connect
             let cancel = new CancellationTokenSource()
 
             let timer (timeout: int) : Async<Result<byte array * IPEndPoint, Err>> =
@@ -248,8 +252,6 @@ module internal UDP =
             let rx = receive socket cancel.Token |> Async.StartAsTask
             let rx_timeout = timer timeout |> Async.StartAsTask
 
-            socket.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true)
-            socket.Connect(dest)
             socket.Send(request, request.Length) |> ignore
 
             if debug then

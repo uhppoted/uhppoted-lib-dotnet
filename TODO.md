@@ -1,13 +1,13 @@
 # TODO
 
-- [ ] UDP and TCP self connection (cf. https://github.com/uhppoted/uhppoted/issues/86)
+- [x] UDP and TCP self connection (cf. https://github.com/uhppoted/uhppoted/issues/86)
     - [x] broadcast
     - [x] broadcast-to
     - [x] send
     - [x] TCP
     - [x] CHANGELOG
     - [x] README
-    - [ ] vultr
+    - [x] vultr
 
 - [] 'first card' API (cf. https://github.com/uhppoted/uhppoted/issues/82)
     - [ ] set-firstcard
