@@ -24,90 +24,92 @@ module internal TCP =
                 let buffer = Array.zeroCreate<byte> 1024
                 let! N = stream.ReadAsync(buffer, 0, buffer.Length, cancel) |> Async.AwaitTask
 
-                if N <= 0 then
-                    stream.Close()
-                    return Ok(None)
-                else if N = 64 then
-                    stream.Close()
-                    return Ok(Some(buffer.[0..63]))
-                else
-                    return! receive stream cancel
+                if N <= 0 then return Ok(None)
+                else if N = 64 then return Ok(Some(buffer.[0..63]))
+                else return! receive stream cancel
 
             with
-            | :? OperationCanceledException ->
-                stream.Close()
-                return Ok(None)
+            | :? OperationCanceledException -> return Ok(None)
 
-            | :? IOException as x ->
-                stream.Close()
-                return Error(ReceiveError x.Message)
+            | :? IOException as x -> return Error(ReceiveError x.Message)
 
             | :? SocketException as x ->
                 stream.Close()
                 return Error(ReceiveError x.Message)
 
-            | err ->
-                stream.Close()
-                return Error(ReceiveError err.Message)
+            | err -> return Error(ReceiveError err.Message)
         }
 
     let sendTo (request: byte array, src: IPEndPoint, dest: IPEndPoint, timeout: int, debug: bool) =
-        let socket = new TcpClient(src)
-        let cancel = new CancellationTokenSource()
+        let mutable sockets: TcpClient list = []
 
-        let timer (timeout: int) : Async<Result<byte array * IPEndPoint, Err>> =
-            async {
-                do! Async.Sleep timeout
-                return Error Err.Timeout
-            }
+        use _ =
+            { new System.IDisposable with
+                member _.Dispose() =
+                    sockets |> List.iter (fun s -> s.Dispose()) }
+
+        let bind =
+            let rec loop retries =
+                let socket = new TcpClient(src)
+                let endpoint = socket.Client.LocalEndPoint :?> IPEndPoint
+
+                sockets <- socket :: sockets
+
+                if endpoint = dest && src.Port <> 0 then
+                    failwithf "TCP bind address:port %A is the same as destination" endpoint
+                elif endpoint = dest && retries >= 5 then
+                    failwithf "TCP bind address:port %A is the same as destination" endpoint
+                elif endpoint = dest then
+                    loop (retries + 1)
+                else
+                    socket
+
+            loop 0
 
         try
-            try
-                socket.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true)
-                socket.Connect(dest)
+            let socket = bind
+            let cancel = new CancellationTokenSource()
 
-                let stream = socket.GetStream()
-                let rx = receive stream cancel.Token |> Async.StartAsTask
-                let rx_timeout = timer timeout |> Async.StartAsTask
+            let timer (timeout: int) : Async<Result<byte array * IPEndPoint, Err>> =
+                async {
+                    do! Async.Sleep timeout
+                    return Error Err.Timeout
+                }
 
-                stream.Write(request) |> ignore
+            socket.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true)
+            socket.Connect(dest)
 
-                if debug then
-                    printfn "    ... sent %d bytes to %A" request.Length dest.Address
-                    dump request
+            let stream = socket.GetStream()
+            let rx = receive stream cancel.Token |> Async.StartAsTask
+            let rx_timeout = timer timeout |> Async.StartAsTask
 
-                // set-IPv4 does not return a reply
-                if request[1] = 0x96uy then
-                    cancel.Cancel()
+            stream.Write(request) |> ignore
 
-                    if not (rx.Wait(5000)) then
-                        socket.Close()
+            if debug then
+                printfn "    ... sent %d bytes to %A" request.Length dest.Address
+                dump request
 
-                    Ok([||])
+            // NTS: set-IPv4 does not return a reply
+            if request[1] = 0x96uy then
+                cancel.Cancel()
+                Ok([||])
+            else
+                let completed =
+                    Task.WhenAny(rx, rx_timeout) |> Async.AwaitTask |> Async.RunSynchronously
+
+                if completed = rx then
+                    match rx.Result with
+                    | Ok(Some packet) ->
+                        if debug then
+                            printfn "    ... received %d bytes from %A" packet.Length dest.Address
+                            dump packet
+
+                        Ok packet
+                    | Ok None -> Error InvalidPacket
+                    | Error err -> Error err
                 else
-                    let completed =
-                        Task.WhenAny(rx, rx_timeout) |> Async.AwaitTask |> Async.RunSynchronously
+                    cancel.Cancel()
+                    Error Err.Timeout
 
-                    if completed = rx then
-                        match rx.Result with
-                        | Ok(Some packet) ->
-                            if debug then
-                                printfn "    ... received %d bytes from %A" packet.Length dest.Address
-                                dump packet
-
-                            Ok packet
-                        | Ok None -> Error InvalidPacket
-                        | Error err -> Error err
-                    else
-                        cancel.Cancel()
-
-                        if not (rx.Wait(5000)) then
-                            socket.Close()
-
-                        Error Err.Timeout
-
-            with err ->
-                Error(ReceiveError err.Message)
-
-        finally
-            socket.Close()
+        with err ->
+            Error(ReceiveError err.Message)

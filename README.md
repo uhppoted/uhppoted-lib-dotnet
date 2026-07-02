@@ -288,8 +288,9 @@ get-all-controllers:
          date: 2018-11-05
 ```
 
-In general this doesn't seem to have been a problem (or at least nobody has raised it as an issue) and the implementation will
-return an error if the bind port for a UDP broadcast is 60000. It can be mitigated by:
+As of v0.9.1 the library includes a check for the condition and will retry up to 5 times before raising an error.
+
+Prior to v0.9.1 the implementation will simply return an error if the bind port for a UDP broadcast is 60000. It can be mitigated by:
 - Excluding port `60000` from the ephemeral range using whatever method is recommended for your platform of choice.
 - (OR) Reduce (or move) the ephemeral port range (again using whatever method is recommended for your platform of choice).
 - (OR) (**really not recommended except as a quick hack**) Bind a netcat listener to port `60000` before running the application:

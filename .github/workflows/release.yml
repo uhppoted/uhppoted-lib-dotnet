@@ -16,7 +16,7 @@ jobs:
     steps:
 
     - name: Set up .NET
-      uses: actions/setup-dotnet@v4
+      uses: actions/setup-dotnet@v5
 
     - name: Check out code
       uses: actions/checkout@v6

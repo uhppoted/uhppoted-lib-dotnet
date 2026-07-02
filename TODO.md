@@ -4,9 +4,10 @@
     - [x] broadcast
     - [x] broadcast-to
     - [x] send
-    - [ ] TCP
-    - [ ] CHANGELOG
-    - [ ] README
+    - [x] TCP
+    - [x] CHANGELOG
+    - [x] README
+    - [ ] vultr
 
 - [] 'first card' API (cf. https://github.com/uhppoted/uhppoted/issues/82)
     - [ ] set-firstcard
