@@ -495,6 +495,42 @@ module internal Encode =
 
         packet
 
+    let setFirstCardRequest (controller: uint32) (door: uint8) (firstcard: FirstCard) =
+        let packet: byte array = Array.zeroCreate 64
+
+        let active =
+            match firstcard.ActiveMode with
+            | DoorMode.Controlled -> 0uy
+            | DoorMode.NormallyOpen -> 1uy
+            | DoorMode.NormallyClosed -> 2uy
+            | _ -> 0uy
+
+        let inactive =
+            match firstcard.InactiveMode with
+            | DoorMode.Controlled -> 0uy
+            | DoorMode.NormallyOpen -> 1uy
+            | DoorMode.NormallyClosed -> 2uy
+            | DoorMode.FirstCardOnly -> 3uy
+            | _ -> 0uy
+
+        pack packet 0 (byte messages.SOM)
+        pack packet 1 (byte messages.SET_FIRSTCARD)
+        pack packet 4 controller
+        pack packet 8 door
+        pack packet 9 firstcard.StartTime
+        pack packet 11 active
+        pack packet 12 firstcard.EndTime
+        pack packet 14 inactive
+        pack packet 15 firstcard.Monday
+        pack packet 16 firstcard.Tuesday
+        pack packet 17 firstcard.Wednesday
+        pack packet 18 firstcard.Thursday
+        pack packet 19 firstcard.Friday
+        pack packet 20 firstcard.Saturday
+        pack packet 21 firstcard.Sunday
+
+        packet
+
     let restoreDefaultParametersRequest (controller: uint32) =
         let packet: byte array = Array.zeroCreate 64
 

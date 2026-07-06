@@ -393,6 +393,30 @@ type TestEncoder() =
         Assert.That(packet, Is.EqualTo<byte array>(expected))
 
     [<Test>]
+    member this.TestEncodeSetFirstCard() =
+        let expected = TestRequests.setFirstCard
+
+        let controller = 405419896u
+        let door = 3uy
+
+        let firstcard: FirstCard =
+            { StartTime = Nullable(TimeOnly(8, 30))
+              EndTime = Nullable(TimeOnly(17, 45))
+              ActiveMode = DoorMode.NormallyOpen
+              InactiveMode = DoorMode.FirstCardOnly
+              Monday = true
+              Tuesday = true
+              Wednesday = false
+              Thursday = true
+              Friday = false
+              Saturday = true
+              Sunday = true }
+
+        let packet = Encode.setFirstCardRequest controller door firstcard
+
+        Assert.That(packet, Is.EqualTo<byte array>(expected))
+
+    [<Test>]
     member this.TestRestoreDefaultParametersRequest() =
         let expected = TestRequests.restoreDefaultParameters
 

@@ -92,7 +92,7 @@ module internal messages =
     let ADD_TASK = 0xa8uy
 
     [<Literal>]
-    let SET_FIRST_CARD = 0xaauy
+    let SET_FIRSTCARD = 0xaauy
 
     [<Literal>]
     let REFRESH_TASKLIST = 0xacuy

@@ -14,6 +14,9 @@ type DoorMode =
     /// <summary>Door lock is managed by access controller.</summary>
     | Controlled = 3
 
+    /// <summary>Door can only be unlocked by a card with 'first card' privileges.</summary>
+    | FirstCardOnly = 4
+
 
 /// <summary>Defines whether a door was unlocked for entrance or exit.</summary>
 type Direction =
@@ -146,6 +149,7 @@ module internal Enums =
         | 1uy -> DoorMode.NormallyOpen
         | 2uy -> DoorMode.NormallyClosed
         | 3uy -> DoorMode.Controlled
+        | 4uy -> DoorMode.FirstCardOnly
         | _ -> DoorMode.Unknown
 
     let internal interlock (v: uint8) : Interlock =

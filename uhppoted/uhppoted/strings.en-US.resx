@@ -319,4 +319,10 @@
     <data name="error.time-profile.not-found">
         <value>time profile not found</value>
     </data>
+    <data name="error.invalid-active-mode">
+        <value>invalid first-card active mode</value>
+    </data>
+    <data name="error.invalid-inactive-mode">
+        <value>invalid first-card inactive mode</value>
+    </data>
 </root>

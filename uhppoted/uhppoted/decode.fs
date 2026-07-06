@@ -472,6 +472,16 @@ module internal Decode =
                 { controller = unpackU32 packet[4..]
                   ok = unpackBool packet[8..] }
 
+    let setFirstCardResponse (packet: byte array) : Result<SetFirstCardResponse, string> =
+        if packet[0] <> messages.SOM then
+            Error("invalid controller response")
+        else if packet[1] <> messages.SET_FIRSTCARD then
+            Error("invalid set-firstcard response")
+        else
+            Ok
+                { controller = unpackU32 packet[4..]
+                  ok = unpackBool packet[8..] }
+
     let restoreDefaultParametersResponse (packet: byte array) : Result<RestoreDefaultParametersResponse, string> =
         if packet[0] <> messages.SOM then
             Error("invalid controller response")

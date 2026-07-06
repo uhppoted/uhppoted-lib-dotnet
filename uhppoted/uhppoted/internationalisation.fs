@@ -211,6 +211,8 @@ module internal internationalisation =
             | EventNotFound -> translate ("error.event.not-found")
             | EventOverwritten -> translate ("error.event.overwritten")
             | TimeProfileNotFound -> translate ("error.time-profile.not-found")
+            | InvalidActiveMode -> translate ("error.invalid-active-mode")
+            | InvalidInactiveMode -> translate ("error.invalid-inactive-mode")
 
         if not <| String.IsNullOrEmpty(message) then
             message

@@ -844,6 +844,47 @@ module Uhppoted =
             | Error err -> Error err
 
     /// <summary>
+    /// Sets the 'first card' configuration for a controller managed door. The configuration only takes effect once the tasklist
+    /// has been refreshed.
+    /// </summary>
+    /// <param name="controller">Controller ID or struct with controller ID, endpoint and protocol.</param>
+    /// <param name="door">Door ID [1..4] to be configured.</param>
+    /// <param name="firstcard">First card configuration record.</param>
+    /// <param name="options">Bind, broadcast and listen addresses.</param>
+    /// <returns>
+    /// Ok with true if the first-card configuration was accepted, or Error.
+    /// </returns>
+    let SetFirstCard (controller: 'T, door: uint8, firstcard: FirstCard, options: Options) =
+        let activeModeOk =
+            match firstcard.ActiveMode with
+            | DoorMode.Controlled
+            | DoorMode.NormallyOpen
+            | DoorMode.NormallyClosed -> true
+            | _ -> false
+
+        let inactiveModeOk =
+            match firstcard.InactiveMode with
+            | DoorMode.NormallyOpen
+            | DoorMode.NormallyClosed
+            | DoorMode.Controlled
+            | DoorMode.FirstCardOnly -> true
+            | _ -> false
+
+        if not activeModeOk then
+            Error InvalidActiveMode
+        elif not inactiveModeOk then
+            Error InvalidInactiveMode
+        else
+            match resolve controller with
+            | Error err -> Error err
+            | Ok c ->
+                let request = Encode.setFirstCardRequest c.controller door firstcard
+
+                match exec c request Decode.setFirstCardResponse options with
+                | Ok response -> Ok response.ok
+                | Error err -> Error err
+
+    /// <summary>
     /// Restores the manufacturer defaults.
     /// </summary>
     /// <param name="controller">Controller ID or struct with controller ID, endpoint and protocol.</param>

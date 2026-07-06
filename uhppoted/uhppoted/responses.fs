@@ -293,6 +293,13 @@ type GetAntiPassbackResponse =
     interface IResponse with
         member this.controller = this.controller
 
+type SetFirstCardResponse =
+    { controller: uint32
+      ok: bool }
+
+    interface IResponse with
+        member this.controller = this.controller
+
 type internal RestoreDefaultParametersResponse =
     { controller: uint32
       ok: bool }

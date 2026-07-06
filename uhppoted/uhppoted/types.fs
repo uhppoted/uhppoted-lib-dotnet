@@ -16,6 +16,8 @@ type Err =
     | EventNotFound
     | EventOverwritten
     | TimeProfileNotFound
+    | InvalidActiveMode
+    | InvalidInactiveMode
 
 /// Container configuration struct for controllers that require 'connected UDP' or TCP/IP.
 [<Struct>]
@@ -316,6 +318,45 @@ type Task =
 
         /// Number of 'more cards' for 'more cards' task.
         MoreCards: uint8
+    }
+
+
+/// First card configuration record for a door.
+[<Struct>]
+type FirstCard =
+    {
+        /// Time from which first-card can be activated.
+        StartTime: TimeOnly Nullable
+
+        /// Time after which first-card is deactivated.
+        EndTime: TimeOnly Nullable
+
+        /// Door control mode after first-card swipe.
+        ActiveMode: DoorMode
+
+        /// Door control mode after first-card mode deactivated.
+        InactiveMode: DoorMode
+
+        /// Triggers on Mondays if true.
+        Monday: bool
+
+        /// Triggers on Tuesdays if true.
+        Tuesday: bool
+
+        /// Triggers on Wednesdays if true.
+        Wednesday: bool
+
+        /// Triggers on Thursdays if true.
+        Thursday: bool
+
+        /// Triggers on Fridays if true.
+        Friday: bool
+
+        /// Triggers on Saturdays if true.
+        Saturday: bool
+
+        /// Triggers on Sundays if true.
+        Sunday: bool
     }
 
 /// Event listener configuration information.
