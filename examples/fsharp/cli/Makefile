@@ -1,4 +1,9 @@
-CLI = dotnet run --framework net10.0
+BIND ?= 192.168.1.125
+BROADCAST ?= 192.168.1.255:60000
+LISTEN ?= 192.168.1.125:60001
+TIMEOUT?= 1.25 
+
+CLI = dotnet run --framework net10.0 --debug --bind $(BIND) --broadcast $(BROADCAST) --listen $(LISTEN) --timeout $(TIMEOUT)
 
 CONTROLLER ?= 405419896
 DOOR ?= 3
@@ -21,6 +26,8 @@ PIN ?= 7531
 INTERLOCK ?= "1&2,3&4"
 KEYPADS ?= "1,2,4"
 ANTIPASSBACK ?= "(1,3):(2,4)"
+FIRSTCARD ?= 08:30,16:45,normally open,firstcard only,[Mon,Tues,Fri]
+
 
 clean:
 	dotnet clean
@@ -152,6 +159,9 @@ get-antipassback:build
 
 set-antipassback: build
 	$(CLI) set-antipassback --controller $(CONTROLLER) --antipassback $(ANTIPASSBACK)
+
+set-firstcard: build
+	$(CLI) set-firstcard --controller $(CONTROLLER) --door $(DOOR) --firstcard "$(FIRSTCARD)"
 
 restore-default-parameters: build
 	$(CLI) restore-default-parameters --controller $(CONTROLLER)

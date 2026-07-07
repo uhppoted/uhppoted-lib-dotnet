@@ -809,6 +809,27 @@ let setAntiPassback (options, args) =
         Ok()
     | Error err -> Error(translate err)
 
+let setFirstCard (options, args) =
+    let controller = argparse args "--controller" CONTROLLER
+    let door = argparse args "--door" DOOR
+    let firstcard: FirstCard = argparse args "--firstcard" Unchecked.defaultof<_>
+
+    let result =
+        match lookup controller with
+        | Some c -> Uhppoted.SetFirstCard(c, door, firstcard, options)
+        | None -> Uhppoted.SetFirstCard(controller, door, firstcard, options)
+
+    match result with
+    | Ok ok ->
+        printfn "set-firstcard"
+        printfn "  controller %u" controller
+        printfn "        door %u" door
+        printfn "   firstcard %A" firstcard
+        printfn "          ok %b" ok
+        printfn ""
+        Ok()
+    | Error err -> Error(translate err)
+
 let restoreDefaultParameters (options, args) =
     let controller = argparse args "--controller" CONTROLLER
 
@@ -1017,6 +1038,10 @@ let commands =
       { command = "set-antipassback"
         description = "Sets the anti-passback mode for a controller"
         f = setAntiPassback }
+
+      { command = "set-firstcard"
+        description = "Sets the first card configuration for a door"
+        f = setFirstCard }
 
       { command = "restore-default-parameters"
         description = "Restores the manufacturer defaults"

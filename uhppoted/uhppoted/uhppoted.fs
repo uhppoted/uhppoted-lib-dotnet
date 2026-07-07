@@ -855,6 +855,8 @@ module Uhppoted =
     /// Ok with true if the first-card configuration was accepted, or Error.
     /// </returns>
     let SetFirstCard (controller: 'T, door: uint8, firstcard: FirstCard, options: Options) =
+        printfn "--------------- > %A" firstcard
+
         let activeModeOk =
             match firstcard.ActiveMode with
             | DoorMode.Controlled

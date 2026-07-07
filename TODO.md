@@ -10,6 +10,9 @@
     - [ ] README
     - [ ] doc
     - [ ] CLI
+        - [x] F#
+        - [ ] C#
+        - [ ] VB.NET
 
 
 ## TODO

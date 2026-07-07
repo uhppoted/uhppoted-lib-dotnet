@@ -2,6 +2,8 @@ module argparse
 
 open System
 open System.Net
+open System.Collections.Generic
+
 open uhppoted
 
 let (|UInt32|_|) (value: string) =
@@ -187,6 +189,61 @@ let (|Segments|_|) (value: string) =
     with _ ->
         None
 
+let (|FirstCard|_|) (value: string) =
+    try
+        let tokens = value.ToLower().Split(',', 5) |> Seq.toList
+
+        match tokens with
+        | t1 :: t2 :: t3 :: t4 :: t5 ->
+            let startTime =
+                match TimeOnly.TryParse(t1) with
+                | (true, p) -> Nullable(p)
+                | _ -> Nullable()
+
+            let endTime =
+                match TimeOnly.TryParse(t2) with
+                | (true, p) -> Nullable(p)
+                | _ -> Nullable()
+
+            let activeMode =
+                match t3 with
+                | "controlled" -> DoorMode.Controlled
+                | "normally open" -> DoorMode.NormallyOpen
+                | "normally closed" -> DoorMode.NormallyClosed
+                | _ -> DoorMode.Controlled
+
+            let inactiveMode =
+                match t4 with
+                | "controlled" -> DoorMode.Controlled
+                | "normally open" -> DoorMode.NormallyOpen
+                | "normally closed" -> DoorMode.NormallyClosed
+                | "firstcard only" -> DoorMode.FirstCardOnly
+                | _ -> DoorMode.Controlled
+
+            let weekdays = t5[0].Split(',') |> Set.ofSeq
+
+            let weekday (day: string) =
+                Set.exists (fun (e: string) -> e.StartsWith(day)) weekdays
+
+            let firstcard =
+                { StartTime = startTime
+                  EndTime = endTime
+                  ActiveMode = activeMode
+                  InactiveMode = inactiveMode
+                  Monday = weekday "mon"
+                  Tuesday = weekday "tue"
+                  Wednesday = weekday "wed"
+                  Thursday = weekday "thu"
+                  Friday = weekday "fri"
+                  Saturday = weekday "sat"
+                  Sunday = weekday "sun" }
+
+            Some firstcard
+        | _ -> None
+
+    with _ ->
+        None
+
 let rec argparse (args: string list) flag (defval: 'T) : 'T =
     match args with
     | arg :: value :: rest when arg = flag ->
@@ -202,6 +259,7 @@ let rec argparse (args: string list) flag (defval: 'T) : 'T =
         | :? Interlock, Interlock parsed -> unbox parsed
         | :? AntiPassback, AntiPassback parsed -> unbox parsed
         | :? TaskCode, TaskCode parsed -> unbox parsed
+        | :? FirstCard, FirstCard parsed -> unbox parsed
 
         | _ when typeof<'T> = typeof<UInt32[]> ->
             match value with

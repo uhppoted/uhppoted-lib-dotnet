@@ -1,6 +1,12 @@
 NUPKG = $(subst v,,${VERSION})
 
-CLI = dotnet run --project ./examples/fsharp/cli --framework net10.0  --debug --bind 192.168.1.125 --broadcast 192.168.1.255:60000 --listen 192.168.1.125:60001 --timeout 1.25 
+BIND ?= 192.168.1.125
+BROADCAST ?= 192.168.1.255:60000
+LISTEN ?= 192.168.1.125:60001
+TIMEOUT?= 1.25 
+
+CLI = dotnet run --project ./examples/fsharp/cli --framework net10.0  --debug --bind $(BIND) --broadcast $(BROADCAST) --listen $(LISTEN) --timeout $(TIMEOUT)
+
 CONTROLLER ?= 405419896
 DOOR ?= 3
 CARD ?= 10058400
@@ -22,6 +28,7 @@ PIN ?= 7531
 INTERLOCK ?= "1&2,3&4"
 KEYPADS ?= "1,2,4"
 ANTIPASSBACK ?= "(1,3):(2,4)"
+FIRSTCARD ?= 08:30,16:45,normally open,firstcard only,[Mon,Tues,Fri]
 
 .PHONY: integration-tests
 
@@ -171,11 +178,14 @@ set-interlock: build
 activate-keypads: build
 	$(CLI) activate-keypads --controller $(CONTROLLER) --keypads $(KEYPADS)
 
+get-antipassback:build
+	$(CLI) get-antipassback --controller $(CONTROLLER)
+
 set-antipassback: build
 	$(CLI) set-antipassback --controller $(CONTROLLER) --antipassback $(ANTIPASSBACK)
 
-get-antipassback:build
-	$(CLI) get-antipassback --controller $(CONTROLLER)
+set-firstcard: build
+	$(CLI) set-firstcard --controller $(CONTROLLER) --door $(DOOR) --firstcard "$(FIRSTCARD)"
 
 restore-default-parameters: build
 	$(CLI) restore-default-parameters --controller $(CONTROLLER)
