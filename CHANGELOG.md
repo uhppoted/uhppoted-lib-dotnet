@@ -3,6 +3,9 @@
 ## Unreleased
 
 
+### Added
+1. `set-firstcard` API function to configure first-card mode for a controller managed door.
+
 ### Updated
 1. Removed support for .NET7 (end of life).
 2. Added checks and retries for _connect to self_ in UDP and TCP transports.

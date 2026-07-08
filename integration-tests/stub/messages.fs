@@ -181,6 +181,10 @@ module Messages =
             request = Requests.setAntiPassback
             responses = [ Responses.setAntiPassback ] }
 
+          { test = "set-firstcard"
+            request = Requests.setFirstCard
+            responses = [ Responses.setFirstCard ] }
+
           { test = "restore-default-parameters"
             request = Requests.restoreDefaultParameters
             responses = [ Responses.restoreDefaultParameters ] } ]

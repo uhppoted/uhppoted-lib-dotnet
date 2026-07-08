@@ -121,7 +121,7 @@ Dim controller As New CBuilder(405419896UI).
                       WithProtocol("udp").
                       Build()
 
-DIm task = New TaskBuilder(4,3).
+Dim task = New TaskBuilder(4,3).
                WithStartDate(DateOnly.Parse("2024-01-01")).
                WithEndDate(DateOnly.Parse("2024-12-31")).
                WithStartTime(TimeOnly.Parse("08:30")).

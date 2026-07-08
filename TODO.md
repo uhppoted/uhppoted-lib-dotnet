@@ -4,11 +4,13 @@
 
 - [] 'first card' API (cf. https://github.com/uhppoted/uhppoted/issues/82)
     - [x] set-firstcard
-    - [ ] update put-card
+    - [x] integration tests
+    - [ ] firstcard builder
+    - [ ] update put-card/card builder
     - [ ] update get-card
     - [ ] CHANGELOG
-    - [ ] README
-    - [ ] doc
+    - [x] README
+    - [x] doc
     - [ ] CLI
         - [x] F#
         - [x] C#

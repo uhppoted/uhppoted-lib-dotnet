@@ -224,6 +224,9 @@ Gets a controller anti-passback mode.
 #### [`SetAntiPassback`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/set-antipassback.md)
 Sets a controller anti-passback mode.
 
+#### [`SetFirstCard`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/set-firstcard.md)
+Sets the first card configuration for a controller managed door.
+
 #### [`RestoreDefaultSettings`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/restore-default-settings.md)
 Restores the manufacturer default settings.
 

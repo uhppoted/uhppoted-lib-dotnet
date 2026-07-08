@@ -962,6 +962,37 @@ type TestAPI(tt: string) =
             | Ok response -> Assert.That(response, Is.EqualTo(expected))
             | Error err -> Assert.Fail($"{err}")
 
+
+    [<Test>]
+    member this.TestSetFirstCard() =
+        let expected: bool = true
+        let door = 3uy
+
+        let firstcard: FirstCard =
+            { StartTime = Nullable(TimeOnly(8, 30))
+              EndTime = Nullable(TimeOnly(17, 45))
+              ActiveMode = DoorMode.NormallyOpen
+              InactiveMode = DoorMode.FirstCardOnly
+              Monday = true
+              Tuesday = true
+              Wednesday = false
+              Thursday = true
+              Friday = false
+              Saturday = true
+              Sunday = true }
+
+
+        match controllers[tt] with
+        | Id controller ->
+            match Uhppoted.SetFirstCard(controller, door, firstcard, OPTIONS) with
+            | Ok response -> Assert.That(response, Is.EqualTo(expected))
+            | Error err -> Assert.Fail($"{err}")
+
+        | Controller controller ->
+            match Uhppoted.SetFirstCard(controller, door, firstcard, OPTIONS) with
+            | Ok response -> Assert.That(response, Is.EqualTo(expected))
+            | Error err -> Assert.Fail($"{err}")
+
     [<Test>]
     member this.TestRestoreDefaultParameters() =
         let expected = true
