@@ -28,7 +28,6 @@ KEYPADS ?= "1,2,4"
 ANTIPASSBACK ?= "(1,3):(2,4)"
 FIRSTCARD ?= 08:30,16:45,normally open,firstcard only,[Mon,Tues,Fri]
 
-
 clean:
 	dotnet clean
 

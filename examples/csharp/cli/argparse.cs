@@ -262,6 +262,77 @@ static class ArgParse
 
                     }
                     return (T)(object)permissions;
+
+                case FirstCard:
+                    var tokens = args[ix].ToLower().Split(',', 5);
+                    TimeOnly startTime;
+                    TimeOnly endTime;
+                    var activeMode = DoorMode.Controlled;
+                    var inactiveMode = DoorMode.Controlled;
+
+                    TimeOnly.TryParse(tokens[0].Trim(), out startTime);
+                    TimeOnly.TryParse(tokens[1].Trim(), out endTime);
+
+                    switch (tokens[2])
+                    {
+                        case "controlled":
+                            activeMode = DoorMode.Controlled;
+                            break;
+
+                        case "normally open":
+                            activeMode = DoorMode.NormallyOpen;
+                            break;
+
+                        case "normally closed":
+                            activeMode = DoorMode.NormallyClosed;
+                            break;
+                    }
+
+                    switch (tokens[3])
+                    {
+                        case "controlled":
+                            inactiveMode = DoorMode.Controlled;
+                            break;
+
+                        case "normally open":
+                            inactiveMode = DoorMode.NormallyOpen;
+                            break;
+
+                        case "normally closed":
+                            inactiveMode = DoorMode.NormallyClosed;
+                            break;
+
+                        case "firstcard only":
+                            inactiveMode = DoorMode.FirstCardOnly;
+                            break;
+                    }
+
+                    var _weekdays = new HashSet<string>(tokens[4].Trim('[', ']').Split(','));
+                    bool weekday(string day) => _weekdays.Any(e => e.StartsWith(day));
+
+                    var monday = weekday("mon");
+                    var tuesday = weekday("tue");
+                    var wednesday = weekday("wed");
+                    var thursday = weekday("thu");
+                    var friday = weekday("fri");
+                    var saturday = weekday("sat");
+                    var sunday = weekday("sun");
+
+                    var firstcard = new FirstCard(
+                        startTime,
+                        endTime,
+                        activeMode,
+                        inactiveMode,
+                        monday,
+                        tuesday,
+                        wednesday,
+                        thursday,
+                        friday,
+                        saturday,
+                        sunday);
+
+                    return (T)(object)firstcard;
+
             }
         }
 
