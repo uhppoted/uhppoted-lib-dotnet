@@ -5,7 +5,7 @@
 - [] 'first card' API (cf. https://github.com/uhppoted/uhppoted/issues/82)
     - [x] set-firstcard
     - [x] integration tests
-    - [ ] firstcard builder
+    - [x] firstcard builder
     - [ ] update put-card/card builder
     - [ ] update get-card
     - [ ] CHANGELOG

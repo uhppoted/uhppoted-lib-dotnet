@@ -113,7 +113,9 @@ Dim firstcard = New FirstCardBuilder().
                     WithEndTime(TimeOnly.Parse("16:45")).
                     WithActiveMode(DoorMode.NormallyOpen).
                     WithInactiveMode(DoorMode.FirstCardOnly).
-                    WithWeekdays(true,true,false,false,true,false,false).
+                    WithMonday().
+                    WithTuesday().
+                    WithFriday().
                     build()
 
 Dim options As New OptionsBuilder().WithTimeout(1250).build()

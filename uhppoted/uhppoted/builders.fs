@@ -241,3 +241,112 @@ type TaskBuilder(task: TaskCode, door: uint8) =
           Saturday = saturday
           Sunday = sunday
           MoreCards = moreCards }
+
+
+type FirstCardBuilder() =
+    let mutable startTime: Nullable<TimeOnly> = Nullable()
+    let mutable endTime: Nullable<TimeOnly> = Nullable()
+    let mutable activeMode: DoorMode = DoorMode.Controlled
+    let mutable inactiveMode: DoorMode = DoorMode.Controlled
+    let mutable monday: bool = false
+    let mutable tuesday: bool = false
+    let mutable wednesday: bool = false
+    let mutable thursday: bool = false
+    let mutable friday: bool = false
+    let mutable saturday: bool = false
+    let mutable sunday: bool = false
+
+    member this.WithStartTime(time: TimeOnly) =
+        startTime <- Nullable(time)
+        this
+
+    member this.WithEndTime(time: TimeOnly) =
+        endTime <- Nullable(time)
+        this
+
+    member this.WithActiveMode(mode: DoorMode) =
+        activeMode <- mode
+        this
+
+    member this.WithInactiveMode(mode: DoorMode) =
+        inactiveMode <- mode
+        this
+
+    member this.WithWeekdays(mon: bool, tue: bool, wed: bool, thurs: bool, fri: bool, sat: bool, sun: bool) =
+        monday <- mon
+        tuesday <- tue
+        wednesday <- wed
+        thursday <- thurs
+        friday <- fri
+        saturday <- sat
+        sunday <- sun
+        this
+
+    member this.WithMonday() =
+        monday <- true
+        this
+
+    member this.WithTuesday() =
+        tuesday <- true
+        this
+
+    member this.WithWednesday() =
+        wednesday <- true
+        this
+
+    member this.WithThursday() =
+        thursday <- true
+        this
+
+    member this.WithFriday() =
+        friday <- true
+        this
+
+    member this.WithSaturday() =
+        saturday <- true
+        this
+
+    member this.WithSunday() =
+        sunday <- true
+        this
+
+    member this.WithMonday(enabled: bool) =
+        monday <- enabled
+        this
+
+    member this.WithTuesday(enabled: bool) =
+        tuesday <- enabled
+        this
+
+    member this.WithWednesday(enabled: bool) =
+        wednesday <- enabled
+        this
+
+    member this.WithThursday(enabled: bool) =
+        thursday <- enabled
+        this
+
+    member this.WithFriday(enabled: bool) =
+        friday <- enabled
+        this
+
+    member this.WithSaturday(enabled: bool) =
+        saturday <- enabled
+        this
+
+    member this.WithSunday(enabled: bool) =
+        sunday <- enabled
+        this
+
+    member this.Build() =
+        { StartTime = startTime
+          EndTime = endTime
+          ActiveMode = activeMode
+          InactiveMode = inactiveMode
+          Monday = monday
+          Tuesday = tuesday
+          Wednesday = wednesday
+          Thursday = thursday
+          Friday = friday
+          Saturday = saturday
+          Sunday = sunday }

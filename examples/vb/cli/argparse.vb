@@ -5,6 +5,7 @@ Imports Interlock = uhppoted.Interlock
 Imports TaskCode = uhppoted.TaskCode
 Imports AntiPassback = uhppoted.AntiPassback
 Imports FirstCard = uhppoted.FirstCard
+Imports FirstCardBuilder = uhppoted.FirstCardBuilder
 
 Module ArgParse
 
@@ -229,80 +230,66 @@ Module ArgParse
                     Return CType(CObj(segments), T)
 
                 Case "FirstCard"
+                    Dim builder = New FirstCardBuilder()
                     Dim tokens = args(ix).ToLower().Split(",", 5)
                     Dim startTime As TimeOnly
                     Dim endTime As TimeOnly
-                    Dim activeMode = DoorMode.Controlled
-                    Dim inactiveMode = DoorMode.Controlled
 
-                    TimeOnly.TryParse(tokens(0).Trim(), startTime)
-                    TimeOnly.TryParse(tokens(1).Trim(), endTime)
+                    If TimeOnly.TryParse(tokens(0).Trim(), startTime) Then
+                        builder.WithStartTime(startTime)
+                    End If
+
+                    If TimeOnly.TryParse(tokens(1).Trim(), endTime) Then
+                        builder.WithEndTime(endTime)
+                    End If
 
                     Select Case tokens(2)
                         Case "controlled"
-                            activeMode = DoorMode.Controlled
+                            builder.WithActiveMode(DoorMode.Controlled)
 
                         Case "normally open"
-                            activeMode = DoorMode.NormallyOpen
+                            builder.WithActiveMode(DoorMode.NormallyOpen)
 
                         Case "normally closed"
-                            activeMode = DoorMode.NormallyClosed
+                            builder.WithActiveMode(DoorMode.NormallyClosed)
                     End Select
 
                     Select Case tokens(3)
                         Case "controlled"
-                            inactiveMode = DoorMode.Controlled
+                            builder.WithInactiveMode(DoorMode.Controlled)
 
                         Case "normally open"
-                            inactiveMode = DoorMode.NormallyOpen
+                            builder.WithInactiveMode(DoorMode.NormallyOpen)
 
                         Case "normally closed"
-                            inactiveMode = DoorMode.NormallyClosed
+                            builder.WithInactiveMode(DoorMode.NormallyClosed)
 
                         Case "firstcard only"
-                            inactiveMode = DoorMode.FirstCardOnly
+                            builder.WithInactiveMode(DoorMode.FirstCardOnly)
                     End Select
-
-                    Dim monday = False
-                    Dim tuesday = False
-                    Dim wednesday = False
-                    Dim thursday = False
-                    Dim friday = False
-                    Dim saturday = False
-                    Dim sunday = False
 
                     Dim days = tokens(4).Trim("[", "]").Split(",")
 
                     For Each dow In days
                         Select Case True
                             Case dow.StartsWith("mon")
-                                monday = True
+                                builder.WithMonday()
                             Case dow.StartsWith("tue")
-                                tuesday = True
+                                builder.WithTuesday()
                             Case dow.StartsWith("wed")
-                                wednesday = True
+                                builder.WithWednesday()
                             Case dow.StartsWith("thu")
-                                thursday = True
+                                builder.WithThursday()
                             Case dow.StartsWith("fri")
-                                friday = True
+                                builder.WithFriday()
                             Case dow.StartsWith("sat")
-                                saturday = True
+                                builder.WithSaturday()
                             Case dow.StartsWith("sun")
-                                sunday = True
+                                builder.WithSunday()
                         End Select
                     Next
 
-                    Dim firstcard = new FirstCard(startTime,
-                                                  endTime,
-                                                  activeMode,
-                                                  inactiveMode,
-                                                  monday,
-                                                  tuesday,
-                                                  wednesday,
-                                                  thursday,
-                                                  friday,
-                                                  saturday,
-                                                  sunday)
+                    Dim firstcard = builder.Build()
 
                     Return CType(CObj(firstcard), T)
 
