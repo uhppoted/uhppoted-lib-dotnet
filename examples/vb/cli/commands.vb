@@ -3,19 +3,20 @@ Imports System.Net
 Imports System.Threading
 
 Imports UHPPOTE = uhppoted.Uhppoted
-Imports OptionsBuilder = uhppoted.OptionsBuilder
+Imports Options = uhppoted.Options
 Imports CBuilder = uhppoted.CBuilder
 Imports DoorMode = uhppoted.DoorMode
 Imports Interlock = uhppoted.Interlock
 Imports AntiPassback = uhppoted.AntiPassback
+Imports FirstCard = uhppoted.FirstCard
 Imports Err = uhppoted.Err
 
 Public Structure Command
     Public ReadOnly command As String
     Public ReadOnly description As String
-    Public ReadOnly f As Action(Of String())
+    Public ReadOnly f As Action(Of Options, String())
 
-    Public Sub New(command As String, description As String, f As Action(Of String()))
+    Public Sub New(command As String, description As String, f As Action(Of Options, String()))
         Me.command = command
         Me.description = description
         Me.f = f
@@ -41,13 +42,6 @@ Module Commands
     Private ReadOnly Dim EVENT_LISTENER = IPEndPoint.Parse("192.168.1.250:60001")
     Private ReadOnly Dim START_DATE As DateOnly = New DateOnly(2024, 1, 1)
     Private ReadOnly Dim END_DATE As DateOnly = New DateOnly(2024, 12, 31)
-
-    Private ReadOnly Dim OPTIONS = New OptionsBuilder().
-                                       WithBind(New IPEndPoint(IPAddress.Any, 0)).
-                                       WithBroadcast(New IPEndPoint(IPAddress.Broadcast, 60000)).
-                                       WithTimeout(1000).
-                                       WithDebug(True).
-                                       Build()
 
     Private ReadOnly CONTROLLERS As New Dictionary(Of UInteger, Uhppoted.C) From {
         {303986753UI, New CBuilder(303986753UI).
@@ -96,12 +90,13 @@ Module Commands
            New Command("activate-keypads", "Activates the access reader keypads attached to a controller", AddressOf ActivateKeypads),
            New Command("get-antipassback", "Retrieves the controller anti-passback mode", AddressOf GetAntiPassback),
            New Command("set-antipassback", "Sets the anti-passback mode for a controller", AddressOf SetAntiPassback),
+           New Command("set-firstcard", "Sets the first card configuration for a controller managed door", AddressOf SetFirstCard),
            New Command("restore-default-parameters", "Restores the manufacturer defaults", AddressOf RestoreDefaultParameters),
            New Command("listen", "Listens for access controller events", AddressOf Listen)
        }
 
-    Sub FindControllers(args As String())
-        Dim result = UHPPOTE.FindControllers(OPTIONS)
+    Sub FindControllers(options As Options, args As String())
+        Dim result = UHPPOTE.FindControllers(options)
 
         If (result.IsOk)
             Dim controllers = result.ResultValue
@@ -122,12 +117,12 @@ Module Commands
         End If
     End Sub
 
-    Sub GetController(args As String())
+    Sub GetController(options As Options, args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
 
         Dim result = If(CONTROLLERS.ContainsKey(controller),
-                        UHPPOTE.GetController(CONTROLLERS(controller), OPTIONS),
-                        UHPPOTE.GetController(controller, OPTIONS))
+                        UHPPOTE.GetController(CONTROLLERS(controller), options),
+                        UHPPOTE.GetController(controller, options))
 
         If (result.IsOk)
             Dim record = result.ResultValue
@@ -146,15 +141,15 @@ Module Commands
         End If
     End Sub
 
-    Sub SetIPv4(args As String())
+    Sub SetIPv4(options As Options, args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
         Dim address = ArgParse.Parse(args, "--address", IPv4_ADDRESS)
         Dim netmask = ArgParse.Parse(args, "--netmask", IPv4_NETMASK)
         Dim gateway = ArgParse.Parse(args, "--gateway", IPv4_GATEWAY)
 
         Dim result = If(CONTROLLERS.ContainsKey(controller),
-                       UHPPOTE.SetIPv4(CONTROLLERS(controller), address, netmask, gateway, OPTIONS),
-                       UHPPOTE.SetIPv4(controller, address, netmask, gateway, OPTIONS))
+                       UHPPOTE.SetIPv4(CONTROLLERS(controller), address, netmask, gateway, options),
+                       UHPPOTE.SetIPv4(controller, address, netmask, gateway, options))
 
         If (result.IsOk)
             WriteLine("set-IPv4")
@@ -164,12 +159,12 @@ Module Commands
         End If
     End Sub
 
-    Sub GetListener(args As String())
+    Sub GetListener(options As Options, args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
 
         Dim result = If(CONTROLLERS.ContainsKey(controller),
-                       UHPPOTE.GetListener(CONTROLLERS(controller), OPTIONS),
-                       UHPPOTE.GetListener(controller, OPTIONS))
+                       UHPPOTE.GetListener(CONTROLLERS(controller), options),
+                       UHPPOTE.GetListener(controller, options))
 
         If (result.IsOk)
             Dim record = result.ResultValue
@@ -184,14 +179,14 @@ Module Commands
         End If
     End Sub
 
-    Sub SetListener(args As String())
+    Sub SetListener(options As Options, args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
         Dim listener = ArgParse.Parse(args, "--listener", EVENT_LISTENER)
         Dim interval = ArgParse.Parse(args, "--interval", EVENT_INTERVAL)
 
         Dim result = If(CONTROLLERS.ContainsKey(controller),
-                        UHPPOTE.SetListener(CONTROLLERS(controller), listener, interval, OPTIONS),
-                        UHPPOTE.SetListener(controller, listener, interval, OPTIONS))
+                        UHPPOTE.SetListener(CONTROLLERS(controller), listener, interval, options),
+                        UHPPOTE.SetListener(controller, listener, interval, options))
 
         If (result.IsOk)
             Dim ok = result.ResultValue
@@ -205,12 +200,12 @@ Module Commands
         End If
     End Sub
 
-    Sub GetTime(args As String())
+    Sub GetTime(options As Options, args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
 
         Dim result = If(CONTROLLERS.ContainsKey(controller),
-                        UHPPOTE.GetTime(CONTROLLERS(controller), OPTIONS),
-                        UHPPOTE.GetTime(controller, OPTIONS))
+                        UHPPOTE.GetTime(CONTROLLERS(controller), options),
+                        UHPPOTE.GetTime(controller, options))
 
         If (result.IsOk)
             Dim datetime = result.ResultValue
@@ -224,13 +219,13 @@ Module Commands
         End If
     End Sub
 
-    Sub SetTime(args As String())
+    Sub SetTime(options As Options, args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
         Dim now = ArgParse.Parse(args, "--datetime", DateTime.Now)
 
         Dim result = If(CONTROLLERS.ContainsKey(controller),
-                        UHPPOTE.SetTime(CONTROLLERS(controller), now, OPTIONS),
-                        UHPPOTE.SetTime(controller, now, OPTIONS))
+                        UHPPOTE.SetTime(CONTROLLERS(controller), now, options),
+                        UHPPOTE.SetTime(controller, now, options))
 
         If (result.IsOk)
             Dim datetime = result.ResultValue
@@ -244,13 +239,13 @@ Module Commands
         End If
     End Sub
 
-    Sub GetDoor(args As String())
+    Sub GetDoor(options As Options, args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
         Dim door As Byte = ArgParse.Parse(args, "--door", DOOR)
 
         Dim result = If(CONTROLLERS.ContainsKey(controller),
-                        UHPPOTE.GetDoor(CONTROLLERS(controller), door, OPTIONS),
-                        UHPPOTE.GetDoor(controller, door, OPTIONS))
+                        UHPPOTE.GetDoor(CONTROLLERS(controller), door, options),
+                        UHPPOTE.GetDoor(controller, door, options))
 
         If (result.IsOk)
             Dim record = result.ResultValue
@@ -266,15 +261,15 @@ Module Commands
         End If
     End Sub
 
-    Sub SetDoor(args As String())
+    Sub SetDoor(options As Options, args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
         Dim door As Byte = ArgParse.Parse(args, "--door", DOOR)
         Dim mode As DoorMode = ArgParse.Parse(args, "--mode", MODE)
         Dim delay As Byte = ArgParse.Parse(args, "--delay", DELAY)
 
         Dim result = If(CONTROLLERS.ContainsKey(controller),
-                        UHPPOTE.SetDoor(CONTROLLERS(controller), door, mode, delay, OPTIONS),
-                        UHPPOTE.SetDoor(controller, door, mode, delay, OPTIONS))
+                        UHPPOTE.SetDoor(CONTROLLERS(controller), door, mode, delay, options),
+                        UHPPOTE.SetDoor(controller, door, mode, delay, options))
 
         If (result.IsOk)
             Dim record = result.ResultValue
@@ -290,14 +285,14 @@ Module Commands
         End If
     End Sub
 
-    Sub SetDoorPasscodes(args As String())
+    Sub SetDoorPasscodes(options As Options, args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
         Dim door As Byte = ArgParse.Parse(args, "--door", DOOR)
         Dim passcodes As UInteger() = ArgParse.Parse(args, "--passcodes", new UInteger() {})
 
         Dim result = If(CONTROLLERS.ContainsKey(controller),
-                        UHPPOTE.SetDoorPasscodes(CONTROLLERS(controller), door, passcodes, OPTIONS),
-                        UHPPOTE.SetDoorPasscodes(controller, door, passcodes, OPTIONS))
+                        UHPPOTE.SetDoorPasscodes(CONTROLLERS(controller), door, passcodes, options),
+                        UHPPOTE.SetDoorPasscodes(controller, door, passcodes, options))
 
         If (result.IsOk)
             Dim ok = result.ResultValue
@@ -312,13 +307,13 @@ Module Commands
         End If
     End Sub
 
-    Sub OpenDoor(args As String())
+    Sub OpenDoor(options As Options, args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
         Dim door As Byte = ArgParse.Parse(args, "--door", DOOR)
 
         Dim result = If(CONTROLLERS.ContainsKey(controller),
-                        UHPPOTE.OpenDoor(CONTROLLERS(controller), door, OPTIONS),
-                        UHPPOTE.OpenDoor(controller, door, OPTIONS))
+                        UHPPOTE.OpenDoor(CONTROLLERS(controller), door, options),
+                        UHPPOTE.OpenDoor(controller, door, options))
 
         If (result.IsOk)
             Dim ok = result.ResultValue
@@ -333,12 +328,12 @@ Module Commands
         End If
     End Sub
 
-    Sub GetStatus(args As String())
+    Sub GetStatus(options As Options, args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
 
         Dim result = If(CONTROLLERS.ContainsKey(controller),
-                        UHPPOTE.GetStatus(CONTROLLERS(controller), OPTIONS),
-                        UHPPOTE.GetStatus(controller, OPTIONS))
+                        UHPPOTE.GetStatus(CONTROLLERS(controller), options),
+                        UHPPOTE.GetStatus(controller, options))
 
         If (result.IsOk)
             Dim status = result.ResultValue.Item1
@@ -381,12 +376,12 @@ Module Commands
         End If
     End Sub
 
-    Sub GetCards(args As String())
+    Sub GetCards(options As Options, args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
 
         Dim result = If(CONTROLLERS.ContainsKey(controller),
-                        UHPPOTE.GetCards(CONTROLLERS(controller), OPTIONS),
-                        UHPPOTE.GetCards(controller, OPTIONS))
+                        UHPPOTE.GetCards(CONTROLLERS(controller), options),
+                        UHPPOTE.GetCards(controller, options))
 
         If (result.IsOk)
             Dim cards = result.ResultValue
@@ -400,13 +395,13 @@ Module Commands
         End If
     End Sub
 
-    Sub GetCard(args As String())
+    Sub GetCard(options As Options, args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
         Dim card = ArgParse.Parse(args, "--card", CARD_NUMBER)
 
         Dim result = If(CONTROLLERS.ContainsKey(controller),
-                        UHPPOTE.GetCard(CONTROLLERS(controller), card, OPTIONS),
-                        UHPPOTE.GetCard(controller, card, OPTIONS))
+                        UHPPOTE.GetCard(CONTROLLERS(controller), card, options),
+                        UHPPOTE.GetCard(controller, card, options))
 
         If (result.IsOk)
             Dim record = result.ResultValue
@@ -429,13 +424,13 @@ Module Commands
         End If
     End Sub
 
-    Sub GetCardAtIndex(args As String())
+    Sub GetCardAtIndex(options As Options, args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
         Dim index = ArgParse.Parse(args, "--card", CARD_INDEX)
 
         Dim result = If(CONTROLLERS.ContainsKey(controller),
-                        UHPPOTE.GetCardAtIndex(CONTROLLERS(controller), index, OPTIONS),
-                        UHPPOTE.GetCardAtIndex(controller, index, OPTIONS))
+                        UHPPOTE.GetCardAtIndex(CONTROLLERS(controller), index, options),
+                        UHPPOTE.GetCardAtIndex(controller, index, options))
 
         If (result.IsOk And result.ResultValue.HasValue)
             Dim record = result.ResultValue.Value
@@ -458,7 +453,7 @@ Module Commands
         End If
     End Sub
 
-    Sub PutCard(args As String())
+    Sub PutCard(options As Options, args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
         Dim cardNumber = ArgParse.Parse(args, "--card", CARD_NUMBER)
         Dim startDate = ArgParse.Parse(args, "--start-date", START_DATE)
@@ -484,8 +479,8 @@ Module Commands
 
 
         Dim result = If(CONTROLLERS.ContainsKey(controller),
-                        UHPPOTE.PutCard(CONTROLLERS(controller), card, OPTIONS),
-                        UHPPOTE.PutCard(controller, card, OPTIONS))
+                        UHPPOTE.PutCard(CONTROLLERS(controller), card, options),
+                        UHPPOTE.PutCard(controller, card, options))
 
         If (result.IsOk)
             Dim ok = result.ResultValue
@@ -500,13 +495,13 @@ Module Commands
         End If
     End Sub
 
-    Sub DeleteCard(args As String())
+    Sub DeleteCard(options As Options, args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
         Dim card = ArgParse.Parse(args, "--card", CARD_NUMBER)
 
         Dim result = If(CONTROLLERS.ContainsKey(controller),
-                        UHPPOTE.DeleteCard(CONTROLLERS(controller), card, OPTIONS),
-                        UHPPOTE.DeleteCard(controller, card, OPTIONS))
+                        UHPPOTE.DeleteCard(CONTROLLERS(controller), card, options),
+                        UHPPOTE.DeleteCard(controller, card, options))
 
         If (result.IsOk)
             Dim ok = result.ResultValue
@@ -521,12 +516,12 @@ Module Commands
         End If
     End Sub
 
-    Sub DeleteAllCards(args As String())
+    Sub DeleteAllCards(options As Options, args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
 
         Dim result = If(CONTROLLERS.ContainsKey(controller),
-                        UHPPOTE.DeleteAllCards(CONTROLLERS(controller), OPTIONS),
-                        UHPPOTE.DeleteAllCards(controller, OPTIONS))
+                        UHPPOTE.DeleteAllCards(CONTROLLERS(controller), options),
+                        UHPPOTE.DeleteAllCards(controller, options))
 
         If (result.IsOk)
             Dim ok = result.ResultValue
@@ -540,13 +535,13 @@ Module Commands
         End If
     End Sub
 
-    Sub GetEvent(args As String())
+    Sub GetEvent(options As Options, args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
         Dim index = ArgParse.Parse(args, "--index", EVENT_INDEX)
 
         Dim result = If(CONTROLLERS.ContainsKey(controller),
-                        UHPPOTE.GetEvent(CONTROLLERS(controller), index, OPTIONS),
-                        UHPPOTE.GetEvent(controller, index, OPTIONS))
+                        UHPPOTE.GetEvent(CONTROLLERS(controller), index, options),
+                        UHPPOTE.GetEvent(controller, index, options))
 
         If (result.IsOk)
             Dim record = result.ResultValue
@@ -571,12 +566,12 @@ Module Commands
         End If
     End Sub
 
-    Sub GetEventIndex(args As String())
+    Sub GetEventIndex(options As Options, args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
 
         Dim result = If(CONTROLLERS.ContainsKey(controller),
-                        UHPPOTE.GetEventIndex(CONTROLLERS(controller), OPTIONS),
-                        UHPPOTE.GetEventIndex(controller, OPTIONS))
+                        UHPPOTE.GetEventIndex(CONTROLLERS(controller), options),
+                        UHPPOTE.GetEventIndex(controller, options))
 
         If (result.IsOk)
             Dim index = result.ResultValue
@@ -590,13 +585,13 @@ Module Commands
         End If
     End Sub
 
-    Sub SetEventIndex(args As String())
+    Sub SetEventIndex(options As Options, args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
         Dim index = ArgParse.Parse(args, "--index", EVENT_INDEX)
 
         Dim result = If(CONTROLLERS.ContainsKey(controller),
-                        UHPPOTE.SetEventIndex(CONTROLLERS(controller), index, OPTIONS),
-                        UHPPOTE.SetEventIndex(controller, index, OPTIONS))
+                        UHPPOTE.SetEventIndex(CONTROLLERS(controller), index, options),
+                        UHPPOTE.SetEventIndex(controller, index, options))
 
         If (result.IsOk)
             Dim ok = result.ResultValue
@@ -610,13 +605,13 @@ Module Commands
         End If
     End Sub
 
-    Sub RecordSpecialEvents(args As String())
+    Sub RecordSpecialEvents(options As Options, args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
         Dim enable As Boolean = ArgParse.Parse(args, "--enable", ENABLE)
 
         Dim result = If(CONTROLLERS.ContainsKey(controller),
-                        UHPPOTE.RecordSpecialEvents(CONTROLLERS(controller), enable, OPTIONS),
-                        UHPPOTE.RecordSpecialEvents(controller, enable, OPTIONS))
+                        UHPPOTE.RecordSpecialEvents(CONTROLLERS(controller), enable, options),
+                        UHPPOTE.RecordSpecialEvents(controller, enable, options))
 
         If (result.IsOk)
             Dim ok = result.ResultValue
@@ -630,13 +625,13 @@ Module Commands
         End If
     End Sub
 
-    Sub GetTimeProfile(args As String())
+    Sub GetTimeProfile(options As Options, args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
         Dim profile = ArgParse.Parse(args, "--profile", TIME_PROFILE_ID)
 
         Dim result = If(CONTROLLERS.ContainsKey(controller),
-                        UHPPOTE.GetTimeProfile(CONTROLLERS(controller), profile, OPTIONS),
-                        UHPPOTE.GetTimeProfile(controller, profile, OPTIONS))
+                        UHPPOTE.GetTimeProfile(CONTROLLERS(controller), profile, options),
+                        UHPPOTE.GetTimeProfile(controller, profile, options))
 
         If (result.IsOk)
             Dim record = result.ResultValue
@@ -668,7 +663,7 @@ Module Commands
         End If
     End Sub
 
-    Sub SetTimeProfile(args As String())
+    Sub SetTimeProfile(options As Options, args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
         Dim profile_id = ArgParse.Parse(args, "--profile", TIME_PROFILE_ID)
         Dim linked As Byte = ArgParse.Parse(args, "--linked", CType(0, Byte))
@@ -696,8 +691,8 @@ Module Commands
                                    build()
 
         Dim result = If(CONTROLLERS.ContainsKey(controller),
-                        UHPPOTE.SetTimeProfile(CONTROLLERS(controller), profile, OPTIONS),
-                        UHPPOTE.SetTimeProfile(controller, profile, OPTIONS))
+                        UHPPOTE.SetTimeProfile(CONTROLLERS(controller), profile, options),
+                        UHPPOTE.SetTimeProfile(controller, profile, options))
 
         If (result.IsOk)
             Dim ok = result.ResultValue
@@ -712,12 +707,12 @@ Module Commands
         End If
     End Sub
 
-    Sub ClearTimeProfiles(args As String())
+    Sub ClearTimeProfiles(options As Options, args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
 
         Dim result = If(CONTROLLERS.ContainsKey(controller),
-                        UHPPOTE.ClearTimeProfiles(CONTROLLERS(controller), OPTIONS),
-                        UHPPOTE.ClearTimeProfiles(controller, OPTIONS))
+                        UHPPOTE.ClearTimeProfiles(CONTROLLERS(controller), options),
+                        UHPPOTE.ClearTimeProfiles(controller, options))
 
         If (result.IsOk)
             Dim ok = result.ResultValue
@@ -731,7 +726,7 @@ Module Commands
         End If
     End Sub
 
-    Sub AddTask(args As String())
+    Sub AddTask(options As Options, args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
         Dim taskCode As Byte = ArgParse.Parse(args, "--task", TASK_CODE)
         Dim doorId As Byte = ArgParse.Parse(args, "--door", DOOR)
@@ -758,8 +753,8 @@ Module Commands
                                 build()
 
         Dim result = If(CONTROLLERS.ContainsKey(controller),
-                        UHPPOTE.AddTask(CONTROLLERS(controller), task, OPTIONS),
-                        UHPPOTE.AddTask(controller, task, OPTIONS))
+                        UHPPOTE.AddTask(CONTROLLERS(controller), task, options),
+                        UHPPOTE.AddTask(controller, task, options))
 
         If (result.IsOk)
             Dim ok = result.ResultValue
@@ -775,12 +770,12 @@ Module Commands
         End If
     End Sub
 
-    Sub ClearTaskList(args As String())
+    Sub ClearTaskList(options As Options, args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
 
         Dim result = If(CONTROLLERS.ContainsKey(controller),
-                        UHPPOTE.ClearTaskList(CONTROLLERS(controller), OPTIONS),
-                        UHPPOTE.ClearTaskList(controller, OPTIONS))
+                        UHPPOTE.ClearTaskList(CONTROLLERS(controller), options),
+                        UHPPOTE.ClearTaskList(controller, options))
 
         If (result.IsOk)
             Dim ok = result.ResultValue
@@ -794,12 +789,12 @@ Module Commands
         End If
     End Sub
 
-    Sub RefreshTaskList(args As String())
+    Sub RefreshTaskList(options As Options, args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
 
         Dim result = If(CONTROLLERS.ContainsKey(controller),
-                        UHPPOTE.RefreshTaskList(CONTROLLERS(controller), OPTIONS),
-                        UHPPOTE.RefreshTaskList(controller, OPTIONS))
+                        UHPPOTE.RefreshTaskList(CONTROLLERS(controller), options),
+                        UHPPOTE.RefreshTaskList(controller, options))
 
         If (result.IsOk)
             Dim ok = result.ResultValue
@@ -813,13 +808,13 @@ Module Commands
         End If
     End Sub
 
-    Sub SetPCControl(args As String())
+    Sub SetPCControl(options As Options, args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
         Dim enable = ArgParse.Parse(args, "--enable", False)
 
         Dim result = If(CONTROLLERS.ContainsKey(controller),
-                        UHPPOTE.SetPCControl(CONTROLLERS(controller), enable, OPTIONS),
-                        UHPPOTE.SetPCControl(controller, enable, OPTIONS))
+                        UHPPOTE.SetPCControl(CONTROLLERS(controller), enable, options),
+                        UHPPOTE.SetPCControl(controller, enable, options))
 
         If (result.IsOk)
             Dim ok = result.ResultValue
@@ -834,13 +829,13 @@ Module Commands
         End If
     End Sub
 
-    Sub SetInterlock(args As String())
+    Sub SetInterlock(options As Options, args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
         Dim interlock As Interlock = ArgParse.Parse(args, "--interlock", Interlock.None)
 
         Dim result = If(CONTROLLERS.ContainsKey(controller),
-                        UHPPOTE.SetInterlock(CONTROLLERS(controller), interlock, OPTIONS),
-                        UHPPOTE.SetInterlock(controller, interlock, OPTIONS))
+                        UHPPOTE.SetInterlock(CONTROLLERS(controller), interlock, options),
+                        UHPPOTE.SetInterlock(controller, interlock, options))
 
         If (result.IsOk)
             Dim ok = result.ResultValue
@@ -855,7 +850,7 @@ Module Commands
         End If
     End Sub
 
-    Sub ActivateKeypads(args As String())
+    Sub ActivateKeypads(options As Options, args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
         Dim keypads = ArgParse.Parse(args, "--keypads", new Byte() {})
 
@@ -865,8 +860,8 @@ Module Commands
         Dim reader4 = keypads.Contains(4)
 
         Dim result = If(CONTROLLERS.ContainsKey(controller),
-                        UHPPOTE.ActivateKeypads(CONTROLLERS(controller), reader1, reader2, reader3, reader4, OPTIONS),
-                        UHPPOTE.ActivateKeypads(controller, reader1, reader2, reader3, reader4, OPTIONS))
+                        UHPPOTE.ActivateKeypads(CONTROLLERS(controller), reader1, reader2, reader3, reader4, options),
+                        UHPPOTE.ActivateKeypads(controller, reader1, reader2, reader3, reader4, options))
 
         If (result.IsOk)
             Dim ok = result.ResultValue
@@ -884,12 +879,12 @@ Module Commands
         End If
     End Sub
 
-    Sub GetAntiPassback(args As String())
+    Sub GetAntiPassback(options As Options, args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
 
         Dim result = If(CONTROLLERS.ContainsKey(controller),
-                        UHPPOTE.GetAntiPassback(CONTROLLERS(controller), OPTIONS),
-                        UHPPOTE.GetAntiPassback(controller, OPTIONS))
+                        UHPPOTE.GetAntiPassback(CONTROLLERS(controller), options),
+                        UHPPOTE.GetAntiPassback(controller, options))
 
         If (result.IsOk)
             Dim antipassback = result.ResultValue
@@ -903,13 +898,13 @@ Module Commands
         End If
     End Sub
 
-    Sub SetAntiPassback(args As String())
+    Sub SetAntiPassback(options As Options, args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
         Dim antipassback As AntiPassback = ArgParse.Parse(args, "--antipassback", AntiPassback.Disabled)
 
         Dim result = If(CONTROLLERS.ContainsKey(controller),
-                        UHPPOTE.SetAntiPassback(CONTROLLERS(controller), antipassback, OPTIONS),
-                        UHPPOTE.SetAntiPassback(controller, antipassback, OPTIONS))
+                        UHPPOTE.SetAntiPassback(CONTROLLERS(controller), antipassback, options),
+                        UHPPOTE.SetAntiPassback(controller, antipassback, options))
 
         If (result.IsOk)
             Dim ok = result.ResultValue
@@ -924,12 +919,34 @@ Module Commands
         End If
     End Sub
 
-    Sub RestoreDefaultParameters(args As String())
+    Sub SetFirstCard(options As Options, args As String())
+        Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
+        Dim door As Byte = ArgParse.Parse(args, "--door", DOOR)
+        Dim firstcard As FirstCard = ArgParse.Parse(args, "--firstcard", New FirstCard())
+
+        Dim result = If(CONTROLLERS.ContainsKey(controller),
+                        UHPPOTE.SetFirstCard(CONTROLLERS(controller), door, firstcard, options),
+                        UHPPOTE.SetFirstCard(controller, door, firstcard, options))
+
+        If (result.IsOk)
+            Dim ok = result.ResultValue
+
+            WriteLine("set-firstcard")
+            WriteLine("  controller  {0}", controller)
+            WriteLine("    firstcard {0}", firstcard)
+            WriteLine("           ok {0}", ok)
+            WriteLine()
+        Else If (result.IsError)
+            Throw New Exception(translate(result.ErrorValue))
+        End If
+    End Sub
+
+    Sub RestoreDefaultParameters(options As Options, args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
 
         Dim result = If(CONTROLLERS.ContainsKey(controller),
-                        UHPPOTE.RestoreDefaultParameters(CONTROLLERS(controller), OPTIONS),
-                        UHPPOTE.RestoreDefaultParameters(controller, OPTIONS))
+                        UHPPOTE.RestoreDefaultParameters(CONTROLLERS(controller), options),
+                        UHPPOTE.RestoreDefaultParameters(controller, options))
 
         If (result.IsOk)
             Dim ok = result.ResultValue
@@ -943,7 +960,7 @@ Module Commands
         End If
     End Sub
 
-    Sub Listen(args As String())
+    Sub Listen(options As Options, args As String())
         Dim cancel = New CancellationTokenSource()
 
         AddHandler Console.CancelKeyPress, Sub(sender, e)
@@ -954,7 +971,7 @@ Module Commands
         Dim onevent As New uhppoted.OnEvent(AddressOf eventHandler)
         Dim onerror As New uhppoted.OnError(AddressOf errorHandler)
 
-        UHPPOTE.Listen(onevent, onerror, cancel.Token, OPTIONS)
+        UHPPOTE.Listen(onevent, onerror, cancel.Token, options)
     End Sub
 
     Private Sub eventHandler(e As uhppoted.ListenerEvent)

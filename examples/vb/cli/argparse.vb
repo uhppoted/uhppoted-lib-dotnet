@@ -4,6 +4,7 @@ Imports DoorMode = uhppoted.DoorMode
 Imports Interlock = uhppoted.Interlock
 Imports TaskCode = uhppoted.TaskCode
 Imports AntiPassback = uhppoted.AntiPassback
+Imports FirstCard = uhppoted.FirstCard
 
 Module ArgParse
 
@@ -91,7 +92,7 @@ Module ArgParse
                         Case "3&4"
                             Return CType(CObj(Interlock.Doors34), T)
 
-                        Case "1&2,3&4"
+                        Case "1&2, 3&4"
                             Return CType(CObj(Interlock.Doors12And34), T)
 
                         Case "1&2&3"
@@ -109,7 +110,7 @@ Module ArgParse
                         Case "disabled"
                             Return CType(CObj(AntiPassback.Disabled), T)
 
-                        Case "(1:2);(3:4)"
+                        Case "(1: 2);(3:4)"
                             Return CType(CObj(AntiPassback.Doors12_34), T)
 
                         Case "(1,3):(2,4)"
@@ -227,6 +228,84 @@ Module ArgParse
                     Next
                     Return CType(CObj(segments), T)
 
+                Case "FirstCard"
+                    Dim tokens = args(ix).ToLower().Split(",", 5)
+                    Dim startTime As TimeOnly
+                    Dim endTime As TimeOnly
+                    Dim activeMode = DoorMode.Controlled
+                    Dim inactiveMode = DoorMode.Controlled
+
+                    TimeOnly.TryParse(tokens(0).Trim(), startTime)
+                    TimeOnly.TryParse(tokens(1).Trim(), endTime)
+
+                    Select Case tokens(2)
+                        Case "controlled"
+                            activeMode = DoorMode.Controlled
+
+                        Case "normally open"
+                            activeMode = DoorMode.NormallyOpen
+
+                        Case "normally closed"
+                            activeMode = DoorMode.NormallyClosed
+                    End Select
+
+                    Select Case tokens(3)
+                        Case "controlled"
+                            inactiveMode = DoorMode.Controlled
+
+                        Case "normally open"
+                            inactiveMode = DoorMode.NormallyOpen
+
+                        Case "normally closed"
+                            inactiveMode = DoorMode.NormallyClosed
+
+                        Case "firstcard only"
+                            inactiveMode = DoorMode.FirstCardOnly
+                    End Select
+
+                    Dim monday = False
+                    Dim tuesday = False
+                    Dim wednesday = False
+                    Dim thursday = False
+                    Dim friday = False
+                    Dim saturday = False
+                    Dim sunday = False
+
+                    Dim days = tokens(4).Trim("[", "]").Split(",")
+
+                    For Each dow In days
+                        Select Case True
+                            Case dow.StartsWith("mon")
+                                monday = True
+                            Case dow.StartsWith("tue")
+                                tuesday = True
+                            Case dow.StartsWith("wed")
+                                wednesday = True
+                            Case dow.StartsWith("thu")
+                                thursday = True
+                            Case dow.StartsWith("fri")
+                                friday = True
+                            Case dow.StartsWith("sat")
+                                saturday = True
+                            Case dow.StartsWith("sun")
+                                sunday = True
+                        End Select
+                    Next
+
+                    Dim firstcard = new FirstCard(startTime,
+                                                  endTime,
+                                                  activeMode,
+                                                  inactiveMode,
+                                                  monday,
+                                                  tuesday,
+                                                  wednesday,
+                                                  thursday,
+                                                  friday,
+                                                  saturday,
+                                                  sunday)
+
+                    Return CType(CObj(firstcard), T)
+
                 Case "Dictionary(Of Integer,Byte)"
                     For Each token In args(ix).Split(","c)
                         Dim permission = token.Split(":"c)
@@ -249,6 +328,8 @@ Module ArgParse
 
             End Select
         End If
+
+        WriteLine(">>>>>> WTF????")
 
         return defval
     End Function

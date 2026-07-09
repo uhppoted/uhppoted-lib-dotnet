@@ -11,10 +11,10 @@
     - [ ] CHANGELOG
     - [x] README
     - [x] doc
-    - [ ] CLI
+    - [x] CLI
         - [x] F#
         - [x] C#
-        - [ ] VB.NET
+        - [x] VB.NET
 
 
 ## TODO
@@ -24,10 +24,10 @@
 - [ ] CLI --transport (or --dest udp::...)
 
 ### C#
-- [ ] CLI --bind
-- [ ] CLI --broadcast
-- [ ] CLI --listen
-- [ ] CLI --debug
+- [x] CLI --bind
+- [x] CLI --broadcast
+- [x] CLI --listen
+- [x] CLI --debug
 - [ ] CLI --dest
 - [ ] CLI --transport (or --dest udp::...)
 
