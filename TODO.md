@@ -6,8 +6,11 @@
     - [x] set-firstcard
     - [x] integration tests
     - [x] firstcard builder
-    - [ ] update put-card/card builder
-    - [ ] update get-card
+    - [x] get-card
+    - [x] get-card-by-index
+    - [ ] card builder
+    - [ ] update put-card
+        - [ ] CLI
     - [ ] CHANGELOG
     - [x] README
     - [x] doc
@@ -20,6 +23,10 @@
 ## TODO
 
 ### F#
+- [x] CLI --bind
+- [x] CLI --broadcast
+- [x] CLI --listen
+- [x] CLI --debug
 - [ ] CLI --dest
 - [ ] CLI --transport (or --dest udp::...)
 
@@ -32,9 +39,9 @@
 - [ ] CLI --transport (or --dest udp::...)
 
 ### VB.NET
-- [ ] CLI --bind
-- [ ] CLI --broadcast
-- [ ] CLI --listen
-- [ ] CLI --debug
+- [x] CLI --bind
+- [x] CLI --broadcast
+- [x] CLI --listen
+- [x] CLI --debug
 - [ ] CLI --dest
 - [ ] CLI --transport (or --dest udp::...)

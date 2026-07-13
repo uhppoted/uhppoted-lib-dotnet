@@ -189,7 +189,8 @@ type TestEncoder() =
               Door2 = 0uy
               Door3 = 17uy
               Door4 = 1uy
-              PIN = 999999u }
+              PIN = 999999u
+              FirstCard = true }
 
         let packet = Encode.putCardRequest controller card
 

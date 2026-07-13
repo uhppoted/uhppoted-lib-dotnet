@@ -18,6 +18,13 @@ module internal Decode =
         let u16 = u16 + (uint16 slice[1] <<< 8)
         u16
 
+    let unpackU24 (slice: byte array) =
+        let u32 = uint32 0
+        let u32 = u32 + uint32 slice[0]
+        let u32 = u32 + (uint32 slice[1] <<< 8)
+        let u32 = u32 + (uint32 slice[2] <<< 16)
+        u32
+
     let unpackU32 (slice: byte array) =
         let u32 = uint32 0
         let u32 = u32 + uint32 slice[0]
@@ -250,7 +257,8 @@ module internal Decode =
                   door2 = unpackU8 (packet[21..])
                   door3 = unpackU8 (packet[22..])
                   door4 = unpackU8 (packet[23..])
-                  PIN = unpackU32 (packet[24..]) }
+                  PIN = unpackU24 (packet[24..])
+                  FirstCard = unpackBool (packet[27..]) }
 
     let getCardAtIndexResponse (packet: byte array) : Result<GetCardAtIndexResponse, string> =
         if packet[0] <> messages.SOM then
@@ -267,7 +275,8 @@ module internal Decode =
                   door2 = unpackU8 (packet[21..])
                   door3 = unpackU8 (packet[22..])
                   door4 = unpackU8 (packet[23..])
-                  PIN = unpackU32 (packet[24..]) }
+                  PIN = unpackU24 (packet[24..])
+                  FirstCard = unpackBool (packet[27..]) }
 
     let putCardResponse (packet: byte array) : Result<PutCardResponse, string> =
         if packet[0] <> messages.SOM then

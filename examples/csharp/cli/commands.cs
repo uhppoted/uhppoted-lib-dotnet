@@ -475,6 +475,7 @@ class Commands
             WriteLine("      door 3 {0}", record.Door3);
             WriteLine("      door 4 {0}", record.Door4);
             WriteLine("         PIN {0}", record.PIN);
+            WriteLine("  first-card {0}", record.FirstCard);
             WriteLine();
         }
         else if (result.IsError && result.ErrorValue == CardNotFound)
@@ -510,6 +511,7 @@ class Commands
             WriteLine("      door 3 {0}", record.Door3);
             WriteLine("      door 4 {0}", record.Door4);
             WriteLine("         PIN {0}", record.PIN);
+            WriteLine("  first-card {0}", record.FirstCard);
             WriteLine();
         }
         else if (result.IsOk)

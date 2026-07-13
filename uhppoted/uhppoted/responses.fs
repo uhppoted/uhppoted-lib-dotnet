@@ -125,7 +125,8 @@ type GetCardResponse =
       door2: uint8
       door3: uint8
       door4: uint8
-      PIN: uint32 }
+      PIN: uint32
+      FirstCard: bool }
 
     interface IResponse with
         member this.controller = this.controller
@@ -139,7 +140,8 @@ type internal GetCardAtIndexResponse =
       door2: uint8
       door3: uint8
       door4: uint8
-      PIN: uint32 }
+      PIN: uint32
+      FirstCard: bool }
 
     interface IResponse with
         member this.controller = this.controller

@@ -496,7 +496,8 @@ type TestAPI(tt: string) =
               Door2 = 0uy
               Door3 = 17uy
               Door4 = 1uy
-              PIN = 7531u }
+              PIN = 7531u
+              FirstCard = true }
 
         match controllers[tt] with
         | Id controller ->
@@ -534,7 +535,8 @@ type TestAPI(tt: string) =
               Door2 = 0uy
               Door3 = 17uy
               Door4 = 1uy
-              PIN = 7531u }
+              PIN = 7531u
+              FirstCard = true }
 
         match controllers[tt] with
         | Id controller ->
@@ -589,7 +591,8 @@ type TestAPI(tt: string) =
               Door2 = 0uy
               Door3 = 17uy
               Door4 = 1uy
-              PIN = 7531u }
+              PIN = 7531u
+              FirstCard = true }
 
         match controllers[tt] with
         | Id controller ->

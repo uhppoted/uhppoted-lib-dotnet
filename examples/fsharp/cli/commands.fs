@@ -366,6 +366,7 @@ let getCard (options, args) =
         printfn "      door 3 %u" record.Door3
         printfn "      door 4 %u" record.Door4
         printfn "         PIN %u" record.PIN
+        printfn "  first-card %b" record.FirstCard
         printfn ""
         Ok()
     | Error CardNotFound -> Error "card not found"
@@ -394,6 +395,7 @@ let getCardAtIndex (options, args) =
         printfn "      door 3 %u" record.Door3
         printfn "      door 4 %u" record.Door4
         printfn "         PIN %u" record.PIN
+        printfn "  first-card %b" record.FirstCard
         printfn ""
         Ok()
     | Ok _ -> Error "card not found"
@@ -411,7 +413,8 @@ let putCard (options, args) =
           Door2 = (permissions |> Map.tryFind 2 |> Option.defaultValue 0uy)
           Door3 = (permissions |> Map.tryFind 3 |> Option.defaultValue 0uy)
           Door4 = (permissions |> Map.tryFind 4 |> Option.defaultValue 0uy)
-          PIN = argparse args "--PIN" 0u }
+          PIN = argparse args "--PIN" 0u
+          FirstCard = false }
 
 
     let result =

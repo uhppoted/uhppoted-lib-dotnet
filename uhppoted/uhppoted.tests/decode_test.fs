@@ -221,7 +221,8 @@ type TestDecoder() =
               door2 = 0uy
               door3 = 17uy
               door4 = 1uy
-              PIN = 999999u }
+              PIN = 999999u
+              FirstCard = true }
 
         match Decode.getCardResponse packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
@@ -240,7 +241,8 @@ type TestDecoder() =
               door2 = 0uy
               door3 = 17uy
               door4 = 1uy
-              PIN = 999999u }
+              PIN = 999999u
+              FirstCard = true }
 
         match Decode.getCardAtIndexResponse packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
