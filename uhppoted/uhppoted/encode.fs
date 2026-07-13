@@ -22,6 +22,14 @@ module internal Encode =
 
         Array.blit bytes 0 packet offset 4
 
+    let packU24 (packet: byte array) (offset: int) (v: uint32) =
+        let bytes =
+            [| (byte ((v >>> 0) &&& 0x00ffu))
+               (byte ((v >>> 8) &&& 0x00ffu))
+               (byte ((v >>> 16) &&& 0x00ffu)) |]
+
+        Array.blit bytes 0 packet offset 3
+
     let packU16 (packet: byte array) (offset: int) (v: uint16) =
         let bytes = [| (byte ((v >>> 0) &&& 0x00ffus)); (byte ((v >>> 8) &&& 0x00ffus)) |]
         Array.blit bytes 0 packet offset 2
@@ -290,7 +298,8 @@ module internal Encode =
         pack packet 21 card.Door2
         pack packet 22 card.Door3
         pack packet 23 card.Door4
-        pack packet 24 card.PIN
+        packU24 packet 24 card.PIN
+        pack packet 27 card.FirstCard
 
         packet
 

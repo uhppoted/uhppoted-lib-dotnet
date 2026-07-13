@@ -9,8 +9,10 @@ CLI = dotnet run --project ./examples/fsharp/cli --framework net10.0  --debug --
 
 CONTROLLER ?= 405419896
 DOOR ?= 3
-CARD ?= 10058400
+CARD_NUMBER ?= 10058400
 MISSING_CARD ?= 10058399
+CARD ?= "10058400,2026-02-03,2026-12-29,[1,2,4:17],7531,Y"
+
 ADDRESS ?= 192.168.1.100
 NETMASK ?= 255.255.255.0
 GATEWAY ?= 192.168.1.1
@@ -115,17 +117,17 @@ get-cards: build
 	$(CLI) get-cards --controller $(CONTROLLER)
 
 get-card: build
-	$(CLI) get-card --controller $(CONTROLLER) --card $(CARD)
+	$(CLI) get-card --controller $(CONTROLLER) --card $(CARD_NUMBER)
 	$(CLI) get-card --controller $(CONTROLLER) --card $(MISSING_CARD)
 
 get-card-at-index: build
 	$(CLI) get-card-at-index --controller $(CONTROLLER)
 
 put-card: build
-	$(CLI) put-card --controller $(CONTROLLER) --card $(CARD) --start-date $(START_DATE) --end-date $(END_DATE) --permissions $(PERMISSIONS) --PIN $(PIN)
+	$(CLI) put-card --controller $(CONTROLLER) --card $(CARD)
 
 delete-card: build
-	$(CLI) delete-card --controller $(CONTROLLER) --card $(CARD)
+	$(CLI) delete-card --controller $(CONTROLLER) --card $(CARD_NUMBER)
 
 delete-all-cards: build
 	$(CLI) delete-all-cards --controller $(CONTROLLER) --controller $(CONTROLLER)

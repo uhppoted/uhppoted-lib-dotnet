@@ -403,19 +403,7 @@ let getCardAtIndex (options, args) =
 
 let putCard (options, args) =
     let controller = argparse args "--controller" CONTROLLER
-    let permissions = argparse args "--permissions" Map.empty
-
-    let card: Card =
-        { Card = argparse args "--card" CARD
-          StartDate = Nullable(argparse args "--start-date" START_DATE)
-          EndDate = Nullable(argparse args "--end-date" END_DATE)
-          Door1 = (permissions |> Map.tryFind 1 |> Option.defaultValue 0uy)
-          Door2 = (permissions |> Map.tryFind 2 |> Option.defaultValue 0uy)
-          Door3 = (permissions |> Map.tryFind 3 |> Option.defaultValue 0uy)
-          Door4 = (permissions |> Map.tryFind 4 |> Option.defaultValue 0uy)
-          PIN = argparse args "--PIN" 0u
-          FirstCard = false }
-
+    let card: Card = argparse args "--card" Unchecked.defaultof<_>
 
     let result =
         match lookup controller with
@@ -427,6 +415,14 @@ let putCard (options, args) =
         printfn "put-card"
         printfn "  controller %u" controller
         printfn "        card %u" card.Card
+        printfn "  start date %s" (YYYYMMDD(card.StartDate))
+        printfn "    end date %s" (YYYYMMDD(card.EndDate))
+        printfn "      door 1 %u" card.Door1
+        printfn "      door 2 %u" card.Door2
+        printfn "      door 3 %u" card.Door3
+        printfn "      door 4 %u" card.Door4
+        printfn "         PIN %u" card.PIN
+        printfn "  first-card %b" card.FirstCard
         printfn "          ok %b" ok
         printfn ""
         Ok()

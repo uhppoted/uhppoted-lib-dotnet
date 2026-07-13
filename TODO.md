@@ -11,13 +11,13 @@
     - [ ] card builder
     - [ ] update put-card
         - [ ] CLI
+            - [x] F#
+            - [ ] C#
+            - [ ] VB.NET
     - [ ] CHANGELOG
     - [x] README
     - [x] doc
     - [x] CLI
-        - [x] F#
-        - [x] C#
-        - [x] VB.NET
 
 
 ## TODO

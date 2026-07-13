@@ -3,6 +3,7 @@ module argparse
 open System
 open System.Net
 open System.Collections.Generic
+open System.Text.RegularExpressions
 
 open uhppoted
 
@@ -189,6 +190,74 @@ let (|Segments|_|) (value: string) =
     with _ ->
         None
 
+let (|Card|_|) (value: string) =
+    try
+        let tokens = value.ToLower().Split(',', 4) |> Seq.toList
+
+        match tokens with
+        | t1 :: t2 :: t3 :: rest ->
+            let card =
+                match UInt32.TryParse t1 with
+                | (true, v) -> v
+                | _ -> 0u
+
+            let startDate =
+                match DateOnly.TryParse t2 with
+                | true, v -> Nullable(v)
+                | _ -> Nullable()
+
+            let endDate =
+                match DateOnly.TryParse t3 with
+                | true, v -> Nullable(v)
+                | _ -> Nullable()
+
+            let pattern = @"\[(.*)\](?:,([^,]*)(?:,([ynYN])))?"
+            let m = Regex.Match(rest[0], pattern)
+            let permissions = m.Groups.[1].Value.Split(',')
+
+            let door d =
+                match permissions |> Array.tryFind (fun v -> v = string d) with
+                | Some _ -> 1uy
+                | None ->
+                    match
+                        permissions
+                        |> Array.tryPick (fun v ->
+                            let m = Regex.Match(v, $@"^{d}:(\d+)$")
+
+                            match m.Success, Byte.TryParse m.Groups.[1].Value with
+                            | true, (true, v) -> Some(v)
+                            | _ -> None)
+                    with
+                    | Some value -> value
+                    | None -> 0uy
+
+            let PIN =
+                match UInt32.TryParse m.Groups[2].Value with
+                | (true, v) -> v
+                | _ -> 0u
+
+            let firstcard =
+                match m.Groups[3].Value with
+                | "Y"
+                | "y" -> true
+                | _ -> false
+
+            Some
+                { Card = card
+                  StartDate = startDate
+                  EndDate = endDate
+                  Door1 = (door 1)
+                  Door2 = (door 2)
+                  Door3 = (door 3)
+                  Door4 = (door 4)
+                  PIN = PIN
+                  FirstCard = firstcard }
+
+        | _ -> None
+
+    with _ ->
+        None
+
 let (|FirstCard|_|) (value: string) =
     try
         let tokens = value.ToLower().Split(',', 5) |> Seq.toList
@@ -259,6 +328,7 @@ let rec argparse (args: string list) flag (defval: 'T) : 'T =
         | :? Interlock, Interlock parsed -> unbox parsed
         | :? AntiPassback, AntiPassback parsed -> unbox parsed
         | :? TaskCode, TaskCode parsed -> unbox parsed
+        | :? Card, Card parsed -> unbox parsed
         | :? FirstCard, FirstCard parsed -> unbox parsed
 
         | _ when typeof<'T> = typeof<UInt32[]> ->
