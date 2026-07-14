@@ -8,6 +8,7 @@ Imports CBuilder = uhppoted.CBuilder
 Imports DoorMode = uhppoted.DoorMode
 Imports Interlock = uhppoted.Interlock
 Imports AntiPassback = uhppoted.AntiPassback
+Imports Card = uhppoted.Card
 Imports FirstCard = uhppoted.FirstCard
 Imports Err = uhppoted.Err
 
@@ -457,28 +458,7 @@ Module Commands
 
     Sub PutCard(options As Options, args As String())
         Dim controller = ArgParse.Parse(args, "--controller", CONTROLLER_ID)
-        Dim cardNumber = ArgParse.Parse(args, "--card", CARD_NUMBER)
-        Dim startDate = ArgParse.Parse(args, "--start-date", START_DATE)
-        Dim endDate = ArgParse.Parse(args, "--end-date", END_DATE)
-        Dim permissions = ArgParse.Parse(args, "--permissions", New Dictionary(Of Integer, Byte))
-        Dim PIN = ArgParse.Parse(args, "--PIN", CUint(0))
-
-        Dim u8 As Byte
-        Dim door1 As Byte = If(permissions.TryGetValue(1, u8), u8, 0)
-        Dim door2 As Byte = If(permissions.TryGetValue(2, u8), u8, 0)
-        Dim door3 As Byte = If(permissions.TryGetValue(3, u8), u8, 0)
-        Dim door4 As Byte = If(permissions.TryGetValue(4, u8), u8, 0)
-
-        Dim card = New uhppoted.CardBuilder(cardNumber).
-                                WithStartDate(startDate).
-                                WithEndDate(endDate).
-                                WithDoor1(door1).
-                                WithDoor2(door2).
-                                WithDoor3(door3).
-                                WithDoor4(door4).
-                                WithPIN(PIN).
-                                Build()
-
+        Dim card = ArgParse.Parse(args, "--card", new Card())
 
         Dim result = If(CONTROLLERS.ContainsKey(controller),
                         UHPPOTE.PutCard(CONTROLLERS(controller), card, options),
@@ -490,6 +470,14 @@ Module Commands
             WriteLine("put-card")
             WriteLine("  controller {0}", controller)
             WriteLine("        card {0}", card.Card)
+            WriteLine("  start date {0}", (YYYYMMDD(card.StartDate)))
+            WriteLine("    end date {0}", (YYYYMMDD(card.EndDate)))
+            WriteLine("      door 1 {0}", card.Door1)
+            WriteLine("      door 2 {0}", card.Door2)
+            WriteLine("      door 3 {0}", card.Door3)
+            WriteLine("      door 4 {0}", card.Door4)
+            WriteLine("         PIN {0}", card.PIN)
+            WriteLine("  first-card {0}", card.FirstCard)
             WriteLine("          ok {0}", ok)
             WriteLine()
         Else If (result.IsError)

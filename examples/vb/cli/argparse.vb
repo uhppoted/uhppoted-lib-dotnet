@@ -1,9 +1,12 @@
 Imports System.Console
 Imports System.Net
+Imports System.Text.RegularExpressions
+
 Imports DoorMode = uhppoted.DoorMode
 Imports Interlock = uhppoted.Interlock
 Imports TaskCode = uhppoted.TaskCode
 Imports AntiPassback = uhppoted.AntiPassback
+Imports Card = uhppoted.Card
 Imports FirstCard = uhppoted.FirstCard
 Imports FirstCardBuilder = uhppoted.FirstCardBuilder
 
@@ -229,69 +232,11 @@ Module ArgParse
                     Next
                     Return CType(CObj(segments), T)
 
+                Case "Card"
+                    Return CType(CObj(ParseCard(args(ix))), T)
+
                 Case "FirstCard"
-                    Dim builder = New FirstCardBuilder()
-                    Dim tokens = args(ix).ToLower().Split(",", 5)
-                    Dim startTime As TimeOnly
-                    Dim endTime As TimeOnly
-
-                    If TimeOnly.TryParse(tokens(0).Trim(), startTime) Then
-                        builder.WithStartTime(startTime)
-                    End If
-
-                    If TimeOnly.TryParse(tokens(1).Trim(), endTime) Then
-                        builder.WithEndTime(endTime)
-                    End If
-
-                    Select Case tokens(2)
-                        Case "controlled"
-                            builder.WithActiveMode(DoorMode.Controlled)
-
-                        Case "normally open"
-                            builder.WithActiveMode(DoorMode.NormallyOpen)
-
-                        Case "normally closed"
-                            builder.WithActiveMode(DoorMode.NormallyClosed)
-                    End Select
-
-                    Select Case tokens(3)
-                        Case "controlled"
-                            builder.WithInactiveMode(DoorMode.Controlled)
-
-                        Case "normally open"
-                            builder.WithInactiveMode(DoorMode.NormallyOpen)
-
-                        Case "normally closed"
-                            builder.WithInactiveMode(DoorMode.NormallyClosed)
-
-                        Case "firstcard only"
-                            builder.WithInactiveMode(DoorMode.FirstCardOnly)
-                    End Select
-
-                    Dim days = tokens(4).Trim("[", "]").Split(",")
-
-                    For Each dow In days
-                        Select Case True
-                            Case dow.StartsWith("mon")
-                                builder.WithMonday()
-                            Case dow.StartsWith("tue")
-                                builder.WithTuesday()
-                            Case dow.StartsWith("wed")
-                                builder.WithWednesday()
-                            Case dow.StartsWith("thu")
-                                builder.WithThursday()
-                            Case dow.StartsWith("fri")
-                                builder.WithFriday()
-                            Case dow.StartsWith("sat")
-                                builder.WithSaturday()
-                            Case dow.StartsWith("sun")
-                                builder.WithSunday()
-                        End Select
-                    Next
-
-                    Dim firstcard = builder.Build()
-
-                    Return CType(CObj(firstcard), T)
+                    Return CType(CObj(ParseFirstCard(args(ix))), T)
 
                 Case "Dictionary(Of Integer,Byte)"
                     For Each token In args(ix).Split(","c)
@@ -316,9 +261,127 @@ Module ArgParse
             End Select
         End If
 
-        WriteLine(">>>>>> WTF????")
-
         return defval
+    End Function
+
+    Function ParseCard(arg As String) As Card
+        Dim tokens = arg.ToLower().Split(","c, 4)
+
+        Dim card As UInteger = 0
+        If Not UInteger.TryParse(tokens(0), card) Then
+            Throw New Exception("invalid card number")
+        End If
+
+        Dim builder = New uhppoted.CardBuilder(card)
+
+        Dim startDate As DateOnly
+        if DateOnly.TryParse(tokens(1), startDate) Then
+            builder.WithStartDate(startDate)
+        End If
+
+        Dim endDate As DateOnly
+        if DateOnly.TryParse(tokens(2), endDate) Then
+            builder.WithEndDate(endDate)
+        End If
+
+        Dim pattern = "\[(.*)\](?:,([^,]*)(?:,([ynYN])))?"
+        Dim m = Regex.Match(tokens(3), pattern)
+        Dim permissions = m.Groups(1).Value.Split(","c)
+        Dim door = Function(d As Integer) As Byte
+                       If permissions.Contains(d.ToString()) Then
+                           Return 1
+                       End If
+
+                       Dim doorPattern = $"^{d}:(\d+)$"
+                       For Each v In permissions
+                           Dim match = Regex.Match(v, doorPattern)
+                           Dim value As Byte
+                           If match.Success AndAlso Byte.TryParse(match.Groups(1).Value, value) Then
+                               Return value
+                           End If
+                       Next
+
+                       Return 0
+                   End Function
+
+        Dim PIN As UInteger = 0
+        If UInteger.TryParse(m.Groups(2).Value, PIN) Then
+            builder.WithPIN(PIN)
+        End If
+
+        If m.Groups(3).Value = "y" OrElse m.Groups(3).Value = "Y" Then
+            builder.WithFirstCard(true)
+        End If
+
+        Return builder.
+               WithDoor1(door(1)).
+               WithDoor2(door(2)).
+               WithDoor3(door(3)).
+               WithDoor4(door(4)).
+               Build()
+    End Function
+
+    Function ParseFirstCard(arg As String) As FirstCard
+        Dim builder = New FirstCardBuilder()
+        Dim tokens = arg.ToLower().Split(",", 5)
+        Dim startTime As TimeOnly
+        Dim endTime As TimeOnly
+
+        If TimeOnly.TryParse(tokens(0).Trim(), startTime) Then
+            builder.WithStartTime(startTime)
+        End If
+
+        If TimeOnly.TryParse(tokens(1).Trim(), endTime) Then
+            builder.WithEndTime(endTime)
+        End If
+
+        Select Case tokens(2)
+            Case "controlled"
+                builder.WithActiveMode(DoorMode.Controlled)
+
+            Case "normally open"
+                builder.WithActiveMode(DoorMode.NormallyOpen)
+
+            Case "normally closed"
+                builder.WithActiveMode(DoorMode.NormallyClosed)
+        End Select
+
+        Select Case tokens(3)
+            Case "controlled"
+                builder.WithInactiveMode(DoorMode.Controlled)
+
+            Case "normally open"
+                builder.WithInactiveMode(DoorMode.NormallyOpen)
+
+            Case "normally closed"
+                builder.WithInactiveMode(DoorMode.NormallyClosed)
+
+            Case "firstcard only"
+                builder.WithInactiveMode(DoorMode.FirstCardOnly)
+        End Select
+
+        Dim days = tokens(4).Trim("[", "]").Split(",")
+
+        For Each dow In days
+            Select Case True
+                Case dow.StartsWith("mon")
+                    builder.WithMonday()
+                Case dow.StartsWith("tue")
+                    builder.WithTuesday()
+                Case dow.StartsWith("wed")
+                    builder.WithWednesday()
+                Case dow.StartsWith("thu")
+                    builder.WithThursday()
+                Case dow.StartsWith("fri")
+                    builder.WithFriday()
+                Case dow.StartsWith("sat")
+                    builder.WithSaturday()
+                Case dow.StartsWith("sun")
+                    builder.WithSunday()
+            End Select
+        Next
+
+        return builder.Build()
     End Function
 
 End Module

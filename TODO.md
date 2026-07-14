@@ -1,24 +1,7 @@
 # TODO
 
 - [x] UDP and TCP self connection (cf. https://github.com/uhppoted/uhppoted/issues/86)
-
-- [] 'first card' API (cf. https://github.com/uhppoted/uhppoted/issues/82)
-    - [x] set-firstcard
-    - [x] integration tests
-    - [x] firstcard builder
-    - [x] get-card
-    - [x] get-card-by-index
-    - [ ] card builder
-    - [ ] update put-card
-        - [ ] CLI
-            - [x] F#
-            - [ ] C#
-            - [ ] VB.NET
-    - [ ] CHANGELOG
-    - [x] README
-    - [x] doc
-    - [x] CLI
-
+- [x] 'first card' API (cf. https://github.com/uhppoted/uhppoted/issues/82)
 
 ## TODO
 

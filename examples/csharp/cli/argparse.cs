@@ -1,4 +1,5 @@
 using System.Net;
+using System.Text.RegularExpressions;
 
 using static System.Console;
 using uhppoted;
@@ -263,74 +264,149 @@ static class ArgParse
                     }
                     return (T)(object)permissions;
 
+                case Card:
+                    return (T)(object)ParseCard(args[ix]);
+
                 case FirstCard:
-                    var builder = new FirstCardBuilder();
-                    var tokens = args[ix].ToLower().Split(',', 5);
-                    TimeOnly startTime;
-                    TimeOnly endTime;
-
-                    if (TimeOnly.TryParse(tokens[0].Trim(), out startTime))
-                    {
-                        builder.WithStartTime(startTime);
-                    }
-
-                    if (TimeOnly.TryParse(tokens[1].Trim(), out endTime))
-                    {
-                        builder.WithEndTime(endTime);
-                    }
-
-                    switch (tokens[2])
-                    {
-                        case "controlled":
-                            builder.WithActiveMode(DoorMode.Controlled);
-                            break;
-
-                        case "normally open":
-                            builder.WithActiveMode(DoorMode.NormallyOpen);
-                            break;
-
-                        case "normally closed":
-                            builder.WithActiveMode(DoorMode.NormallyClosed);
-                            break;
-                    }
-
-                    switch (tokens[3])
-                    {
-                        case "controlled":
-                            builder.WithInactiveMode(DoorMode.Controlled);
-                            break;
-
-                        case "normally open":
-                            builder.WithInactiveMode(DoorMode.NormallyOpen);
-                            break;
-
-                        case "normally closed":
-                            builder.WithInactiveMode(DoorMode.NormallyClosed);
-                            break;
-
-                        case "firstcard only":
-                            builder.WithInactiveMode(DoorMode.FirstCardOnly);
-                            break;
-                    }
-
-                    var _weekdays = new HashSet<string>(tokens[4].Trim('[', ']').Split(','));
-                    bool weekday(string day) => _weekdays.Any(e => e.StartsWith(day));
-
-                    builder.WithMonday(weekday("mon"));
-                    builder.WithTuesday(weekday("tue"));
-                    builder.WithWednesday(weekday("wed"));
-                    builder.WithThursday(weekday("thu"));
-                    builder.WithFriday(weekday("fri"));
-                    builder.WithSaturday(weekday("sat"));
-                    builder.WithSunday(weekday("sun"));
-
-                    var firstcard = builder.Build();
-
-                    return (T)(object)firstcard;
+                    return (T)(object)ParseFirstCard(args[ix]);
 
             }
         }
 
         return defval;
+    }
+
+    private static Card ParseCard(string arg)
+    {
+        var tokens = arg.ToLower().Split(',', 4);
+
+        UInt32 card = 0;
+        if (!UInt32.TryParse(tokens[0], out card))
+        {
+            throw new Exception("invalid card number");
+        }
+
+        var builder = new uhppoted.CardBuilder(card);
+
+        DateOnly startDate;
+        if (DateOnly.TryParse(tokens[1], out startDate))
+        {
+            builder.WithStartDate(startDate);
+        }
+
+        DateOnly endDate;
+        if (DateOnly.TryParse(tokens[2], out endDate))
+        {
+            builder.WithEndDate(endDate);
+        }
+
+        var pattern = @"\[(.*)\](?:,([^,]*)(?:,([ynYN])))?";
+        var m = Regex.Match(tokens[3], pattern);
+        var permissions = m.Groups[1].Value.Split(',');
+        byte door(int d)
+        {
+            if (permissions.Contains(d.ToString()))
+            {
+                return 1;
+            }
+
+            var doorPattern = $"^{d}:(\\d+)$";
+            foreach (var v in permissions)
+            {
+                var match = Regex.Match(v, doorPattern);
+                if (match.Success && byte.TryParse(match.Groups[1].Value, out byte value))
+                {
+                    return value;
+                }
+            }
+
+            return 0;
+        }
+
+        UInt32 PIN = 0;
+        if (UInt32.TryParse(m.Groups[2].Value, out PIN))
+        {
+            builder.WithPIN(PIN);
+        }
+
+        if (m.Groups[3].Value == "y" || m.Groups[3].Value == "Y")
+        {
+            builder.WithFirstCard(true);
+        }
+
+        return builder
+               .WithDoor1(door(1))
+               .WithDoor2(door(2))
+               .WithDoor3(door(3))
+               .WithDoor4(door(4))
+               .Build();
+    }
+
+    private static FirstCard ParseFirstCard(string arg)
+    {
+        var builder = new FirstCardBuilder();
+        var tokens = arg.ToLower().Split(',', 5);
+
+        TimeOnly startTime;
+        if (TimeOnly.TryParse(tokens[0].Trim(), out startTime))
+        {
+            builder.WithStartTime(startTime);
+        }
+
+        TimeOnly endTime;
+        if (TimeOnly.TryParse(tokens[1].Trim(), out endTime))
+        {
+            builder.WithEndTime(endTime);
+        }
+
+        switch (tokens[2])
+        {
+            case "controlled":
+                builder.WithActiveMode(DoorMode.Controlled);
+                break;
+
+            case "normally open":
+                builder.WithActiveMode(DoorMode.NormallyOpen);
+                break;
+
+            case "normally closed":
+                builder.WithActiveMode(DoorMode.NormallyClosed);
+                break;
+        }
+
+        switch (tokens[3])
+        {
+            case "controlled":
+                builder.WithInactiveMode(DoorMode.Controlled);
+                break;
+
+            case "normally open":
+                builder.WithInactiveMode(DoorMode.NormallyOpen);
+                break;
+
+            case "normally closed":
+                builder.WithInactiveMode(DoorMode.NormallyClosed);
+                break;
+
+            case "firstcard only":
+                builder.WithInactiveMode(DoorMode.FirstCardOnly);
+                break;
+        }
+
+        var _weekdays = new HashSet<string>(tokens[4].Trim('[', ']').Split(','));
+        bool weekday(string day) => _weekdays.Any(e => e.StartsWith(day));
+
+        builder.WithMonday(weekday("mon"));
+        builder.WithTuesday(weekday("tue"));
+        builder.WithWednesday(weekday("wed"));
+        builder.WithThursday(weekday("thu"));
+        builder.WithFriday(weekday("fri"));
+        builder.WithSaturday(weekday("sat"));
+        builder.WithSunday(weekday("sun"));
+
+        var firstcard = builder.Build();
+
+        return firstcard;
+
     }
 }

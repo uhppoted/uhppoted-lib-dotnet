@@ -527,27 +527,7 @@ class Commands
     public static void PutCard(uhppoted.Options options, string[] args)
     {
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
-        var cardNumber = ArgParse.Parse(args, "--card", CARD);
-        var startDate = ArgParse.Parse(args, "--start-date", START_DATE);
-        var endDate = ArgParse.Parse(args, "--end-date", END_DATE);
-        var permissions = ArgParse.Parse(args, "--permissions", new Dictionary<int, byte>());
-        var PIN = ArgParse.Parse(args, "--PIN", 0u);
-
-        byte u8;
-        byte door1 = permissions.TryGetValue(1, out u8) ? u8 : (byte)0;
-        byte door2 = permissions.TryGetValue(2, out u8) ? u8 : (byte)0;
-        byte door3 = permissions.TryGetValue(3, out u8) ? u8 : (byte)0;
-        byte door4 = permissions.TryGetValue(4, out u8) ? u8 : (byte)0;
-
-        var card = new uhppoted.CardBuilder(cardNumber)
-                               .WithStartDate(startDate)
-                               .WithEndDate(endDate)
-                               .WithDoor1(door1)
-                               .WithDoor2(door2)
-                               .WithDoor3(door3)
-                               .WithDoor4(door4)
-                               .WithPIN(PIN)
-                               .Build();
+        var card = ArgParse.Parse(args, "--card", new Card());
 
         var result = CONTROLLERS.TryGetValue(controller, out var c)
                      ? Uhppoted.PutCard(c, card, options)
@@ -560,6 +540,14 @@ class Commands
             WriteLine("put-card");
             WriteLine("  controller {0}", controller);
             WriteLine("        card {0}", card.Card);
+            WriteLine("  start date {0}", (YYYYMMDD(card.StartDate)));
+            WriteLine("    end date {0}", (YYYYMMDD(card.EndDate)));
+            WriteLine("      door 1 {0}", card.Door1);
+            WriteLine("      door 2 {0}", card.Door2);
+            WriteLine("      door 3 {0}", card.Door3);
+            WriteLine("      door 4 {0}", card.Door4);
+            WriteLine("         PIN {0}", card.PIN);
+            WriteLine("  first-card {0}", card.FirstCard);
             WriteLine("          ok {0}", ok);
             WriteLine();
         }

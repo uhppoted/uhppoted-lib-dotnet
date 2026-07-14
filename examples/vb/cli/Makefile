@@ -8,8 +8,11 @@ CLI = dotnet run --framework net10.0 --debug --bind $(BIND) --broadcast $(BROADC
 
 CONTROLLER ?= 405419896
 DOOR ?= 3
-CARD ?= 10058400
+
+CARD_NUMBER ?= 10058400
 MISSING_CARD ?= 10058399
+CARD ?= "10058400,2026-02-03,2026-12-29,[1,2,4:17],7531,Y"
+
 ADDRESS ?= 192.168.1.100
 NETMASK ?= 255.255.255.0
 GATEWAY ?= 192.168.1.1
@@ -20,10 +23,7 @@ RECORD_SPECIAL_EVENTS ?= true
 TIME_PROFILE ?= 29
 TASK ?= "enable time profiles"
 PCCONTROL ?= true
-START_DATE ?= 2024-02-03
-END_DATE ?= 2024-12-29
-PERMISSIONS ?= "1,2,4:17"
-PIN ?= 7531
+
 INTERLOCK ?= "1&2,3&4"
 KEYPADS ?= "1,2,4"
 ANTIPASSBACK ?= "(1,3):(2,4)"
@@ -81,17 +81,17 @@ get-cards: build
 	$(CLI) get-cards --controller $(CONTROLLER)
 
 get-card: build
-	$(CLI) get-card --controller $(CONTROLLER) --card $(CARD)
+	$(CLI) get-card --controller $(CONTROLLER) --card $(CARD_NUMBER)
 	$(CLI) get-card --controller $(CONTROLLER) --card $(MISSING_CARD)
 
 get-card-at-index: build
 	$(CLI) get-card-at-index --controller $(CONTROLLER)
 
 put-card: build
-	$(CLI) put-card --controller $(CONTROLLER) --card $(CARD) --start-date $(START_DATE) --end-date $(END_DATE) --permissions $(PERMISSIONS) --PIN $(PIN)
+	$(CLI) put-card --controller $(CONTROLLER) --card $(CARD)
 
 delete-card: build
-	$(CLI) delete-card --controller $(CONTROLLER) --card $(CARD)
+	$(CLI) delete-card --controller $(CONTROLLER) --card $(CARD_NUMBER)
 
 delete-all-cards: build
 	$(CLI) delete-all-cards --controller $(CONTROLLER)
