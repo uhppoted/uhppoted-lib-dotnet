@@ -69,10 +69,7 @@ publish: release
 	                               --draft --prerelease --title "$(VERSION)-beta" --notes-file release-notes.md
 
 debug: build
-	$(CLI) find-controllers
-	$(CLI) get-controller --controller 405419896
-	$(CLI) get-controller --controller 303986753
-	$(CLI) get-controller --controller 201020304
+	$(CLI) get-controller --dest tcp::192.168.1.125 --controller 303986753
 
 help: 
 	$(CLI) help

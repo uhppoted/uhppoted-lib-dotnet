@@ -7,6 +7,10 @@ open System.Text.RegularExpressions
 
 open uhppoted
 
+type Destination =
+    { endpoint: IPEndPoint
+      transport: string }
+
 let (|UInt32|_|) (value: string) =
     match UInt32.TryParse value with
     | true, v -> Some v
@@ -313,6 +317,16 @@ let (|FirstCard|_|) (value: string) =
     with _ ->
         None
 
+let (|Destination|_|) (value: string) =
+    let m = Regex.Match(value, $@"(?:(udp|tcp)::)?(.*)")
+
+    match IPEndPoint.TryParse m.Groups[2].Value with
+    | true, endpoint ->
+        Some
+            { endpoint = endpoint
+              transport = m.Groups[1].Value }
+    | _ -> None
+
 let rec argparse (args: string list) flag (defval: 'T) : 'T =
     match args with
     | arg :: value :: rest when arg = flag ->
@@ -359,6 +373,16 @@ let rec argparse (args: string list) flag (defval: 'T) : 'T =
         | _ when typeof<'T> = typeof<TimeOnly array> ->
             match value with
             | Segments parsed -> unbox parsed
+            | _ -> defval
+
+        | _ when typeof<'T> = typeof<IPEndPoint> ->
+            match value with
+            | IPEndPoint parsed -> unbox parsed
+            | _ -> defval
+
+        | _ when typeof<'T> = typeof<Destination> ->
+            match value with
+            | Destination parsed -> unbox parsed
             | _ -> defval
 
         | _ -> defval

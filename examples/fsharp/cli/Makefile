@@ -42,7 +42,11 @@ run: build
 	$(CLI)
 
 debug:
-	$(CLI) get-controller --controller $(CONTROLLER)
+# 	$(CLI) get-controller --controller 303986753
+# 	$(CLI) get-controller --dest 192.168.1.125 --controller 303986753
+# 	$(CLI) get-controller --dest 192.168.1.125:60000 --controller 303986753
+# 	$(CLI) get-controller --dest udp::192.168.1.125 --controller 303986753
+	$(CLI) get-controller --dest tcp::192.168.1.125 --controller 303986753
 
 usage: build
 	$(CLI) 

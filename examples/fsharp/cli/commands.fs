@@ -31,18 +31,23 @@ let TASK_CODE = TaskCode.Unknown
 let START_DATE = DateOnly(2024, 1, 1)
 let END_DATE = DateOnly(2024, 12, 31)
 
-let CONTROLLERS =
-    Map.ofList
-        [ (303986753u,
-           { controller = 303986753u
-             endpoint = Some(IPEndPoint.Parse("192.168.1.125:60000"))
-             protocol = Some("udp") })
-          (201020304u,
-           { controller = 201020304u
-             endpoint = Some(IPEndPoint.Parse("192.168.1.125:60000"))
-             protocol = Some("tcp") }) ]
+let resolve (controller, dest: Destination) =
+    match dest with
+    | _ when isNull (box dest) -> None
+    | dest when isNull (dest.endpoint) -> None
 
-let lookup (controller: uint32) = CONTROLLERS.TryFind controller
+    | dest when dest.endpoint.Port = 0 ->
+        Some
+            { controller = controller
+              endpoint = Some(IPEndPoint(dest.endpoint.Address, 60000))
+              protocol = Some(dest.transport) }
+
+    | dest ->
+        Some
+            { controller = controller
+              endpoint = Some(dest.endpoint)
+              protocol = Some(dest.transport) }
+
 
 let YYYYMMDD (date: Nullable<DateOnly>) =
     if date.HasValue then
@@ -84,11 +89,12 @@ let findControllers (options, args) =
     | Error err -> Error(translate err)
 
 let getController (options, args) =
+    let dest: Destination = argparse args "--dest" Unchecked.defaultof<_>
     let controller = argparse args "--controller" CONTROLLER
 
     let result =
-        match lookup controller with
-        | Some c -> Uhppoted.GetController(c, options)
+        match resolve (controller, dest) with
+        | Some(c) -> Uhppoted.GetController(c, options)
         | None -> Uhppoted.GetController(controller, options)
 
     match result with
@@ -106,13 +112,14 @@ let getController (options, args) =
     | Error err -> Error(translate err)
 
 let setIPv4 (options, args) =
+    let dest: Destination = argparse args "--dest" Unchecked.defaultof<_>
     let controller = argparse args "--controller" CONTROLLER
     let address = argparse args "--address" ADDRESS
     let netmask = argparse args "--netmask" NETMASK
     let gateway = argparse args "--gateway" GATEWAY
 
     let result =
-        match lookup controller with
+        match resolve (controller, dest) with
         | Some c -> Uhppoted.SetIPv4(c, address, netmask, gateway, options)
         | None -> Uhppoted.SetIPv4(controller, address, netmask, gateway, options)
 
@@ -125,10 +132,11 @@ let setIPv4 (options, args) =
     | Error err -> Error(translate err)
 
 let getListener (options, args) =
+    let dest: Destination = argparse args "--dest" Unchecked.defaultof<_>
     let controller = argparse args "--controller" CONTROLLER
 
     let result =
-        match lookup controller with
+        match resolve (controller, dest) with
         | Some c -> Uhppoted.GetListener(c, options)
         | None -> Uhppoted.GetListener(controller, options)
 
@@ -143,12 +151,13 @@ let getListener (options, args) =
     | Error err -> Error(translate err)
 
 let setListener (options, args) =
+    let dest: Destination = argparse args "--dest" Unchecked.defaultof<_>
     let controller = argparse args "--controller" CONTROLLER
     let listener = argparse args "--listener" LISTENER
     let interval = argparse args "--interval" INTERVAL
 
     let result =
-        match lookup controller with
+        match resolve (controller, dest) with
         | Some c -> Uhppoted.SetListener(c, listener, interval, options)
         | None -> Uhppoted.SetListener(controller, listener, interval, options)
 
@@ -162,10 +171,11 @@ let setListener (options, args) =
     | Error err -> Error(translate err)
 
 let getTime (options, args) =
+    let dest: Destination = argparse args "--dest" Unchecked.defaultof<_>
     let controller = argparse args "--controller" CONTROLLER
 
     let result =
-        match lookup controller with
+        match resolve (controller, dest) with
         | Some c -> Uhppoted.GetTime(c, options)
         | None -> Uhppoted.GetTime(controller, options)
 
@@ -179,11 +189,12 @@ let getTime (options, args) =
     | Error err -> Error(translate err)
 
 let setTime (options, args) =
+    let dest: Destination = argparse args "--dest" Unchecked.defaultof<_>
     let controller = argparse args "--controller" CONTROLLER
     let now = argparse args "--datetime" DateTime.Now
 
     let result =
-        match lookup controller with
+        match resolve (controller, dest) with
         | Some c -> Uhppoted.SetTime(c, now, options)
         | None -> Uhppoted.SetTime(controller, now, options)
 
@@ -197,11 +208,12 @@ let setTime (options, args) =
     | Error err -> Error(translate err)
 
 let getDoor (options, args) =
+    let dest: Destination = argparse args "--dest" Unchecked.defaultof<_>
     let controller = argparse args "--controller" CONTROLLER
     let door = argparse args "--door" DOOR
 
     let result =
-        match lookup controller with
+        match resolve (controller, dest) with
         | Some c -> Uhppoted.GetDoor(c, door, options)
         | None -> Uhppoted.GetDoor(controller, door, options)
 
@@ -218,13 +230,14 @@ let getDoor (options, args) =
     | Error err -> Error(translate err)
 
 let setDoor (options, args) =
+    let dest: Destination = argparse args "--dest" Unchecked.defaultof<_>
     let controller = argparse args "--controller" CONTROLLER
     let door = argparse args "--door" DOOR
     let mode = argparse args "--mode" MODE
     let delay = argparse args "--delay" DELAY
 
     let result =
-        match lookup controller with
+        match resolve (controller, dest) with
         | Some c -> Uhppoted.SetDoor(c, door, mode, delay, options)
         | None -> Uhppoted.SetDoor(controller, door, mode, delay, options)
 
@@ -240,12 +253,13 @@ let setDoor (options, args) =
     | Error err -> Error(translate err)
 
 let setDoorPasscodes (options, args) =
+    let dest: Destination = argparse args "--dest" Unchecked.defaultof<_>
     let controller = argparse args "--controller" CONTROLLER
     let door = argparse args "--door" DOOR
     let passcodes: uint32 array = argparse args "--passcodes" [||]
 
     let result =
-        match lookup controller with
+        match resolve (controller, dest) with
         | Some c -> Uhppoted.SetDoorPasscodes(c, door, passcodes, options)
         | None -> Uhppoted.SetDoorPasscodes(controller, door, passcodes, options)
 
@@ -260,11 +274,12 @@ let setDoorPasscodes (options, args) =
     | Error err -> Error(translate err)
 
 let openDoor (options, args) =
+    let dest: Destination = argparse args "--dest" Unchecked.defaultof<_>
     let controller = argparse args "--controller" CONTROLLER
     let door = argparse args "--door" DOOR
 
     let result =
-        match lookup controller with
+        match resolve (controller, dest) with
         | Some c -> Uhppoted.OpenDoor(c, door, options)
         | None -> Uhppoted.OpenDoor(controller, door, options)
 
@@ -279,6 +294,7 @@ let openDoor (options, args) =
     | Error err -> Error(translate err)
 
 let getStatus (options, args) =
+    let dest: Destination = argparse args "--dest" Unchecked.defaultof<_>
     let controller = argparse args "--controller" CONTROLLER
 
     let door isopen relay =
@@ -288,7 +304,7 @@ let getStatus (options, args) =
             $"{translate relay},closed"
 
     let result =
-        match lookup controller with
+        match resolve (controller, dest) with
         | Some c -> Uhppoted.GetStatus(c, options)
         | None -> Uhppoted.GetStatus(controller, options)
 
@@ -329,10 +345,11 @@ let getStatus (options, args) =
     | Error err -> Error(translate err)
 
 let getCards (options, args) =
+    let dest: Destination = argparse args "--dest" Unchecked.defaultof<_>
     let controller = argparse args "--controller" CONTROLLER
 
     let result =
-        match lookup controller with
+        match resolve (controller, dest) with
         | Some c -> Uhppoted.GetCards(c, options)
         | None -> Uhppoted.GetCards(controller, options)
 
@@ -346,11 +363,12 @@ let getCards (options, args) =
     | Error err -> Error(translate err)
 
 let getCard (options, args) =
+    let dest: Destination = argparse args "--dest" Unchecked.defaultof<_>
     let controller = argparse args "--controller" CONTROLLER
     let card = argparse args "--card" CARD
 
     let result =
-        match lookup controller with
+        match resolve (controller, dest) with
         | Some c -> Uhppoted.GetCard(c, card, options)
         | None -> Uhppoted.GetCard(controller, card, options)
 
@@ -373,11 +391,12 @@ let getCard (options, args) =
     | Error err -> Error(translate err)
 
 let getCardAtIndex (options, args) =
+    let dest: Destination = argparse args "--dest" Unchecked.defaultof<_>
     let controller = argparse args "--controller" CONTROLLER
     let index = argparse args "--card" CARD_INDEX
 
     let result =
-        match lookup controller with
+        match resolve (controller, dest) with
         | Some c -> Uhppoted.GetCardAtIndex(c, index, options)
         | None -> Uhppoted.GetCardAtIndex(controller, index, options)
 
@@ -402,11 +421,12 @@ let getCardAtIndex (options, args) =
     | Error err -> Error(translate err)
 
 let putCard (options, args) =
+    let dest: Destination = argparse args "--dest" Unchecked.defaultof<_>
     let controller = argparse args "--controller" CONTROLLER
     let card: Card = argparse args "--card" Unchecked.defaultof<_>
 
     let result =
-        match lookup controller with
+        match resolve (controller, dest) with
         | Some c -> Uhppoted.PutCard(c, card, options)
         | None -> Uhppoted.PutCard(controller, card, options)
 
@@ -429,11 +449,12 @@ let putCard (options, args) =
     | Error err -> Error(translate err)
 
 let deleteCard (options, args) =
+    let dest: Destination = argparse args "--dest" Unchecked.defaultof<_>
     let controller = argparse args "--controller" CONTROLLER
     let card = argparse args "--card" CARD
 
     let result =
-        match lookup controller with
+        match resolve (controller, dest) with
         | Some c -> Uhppoted.DeleteCard(c, card, options)
         | None -> Uhppoted.DeleteCard(controller, card, options)
 
@@ -448,10 +469,11 @@ let deleteCard (options, args) =
     | Error err -> Error(translate err)
 
 let deleteAllCards (options, args) =
+    let dest: Destination = argparse args "--dest" Unchecked.defaultof<_>
     let controller = argparse args "--controller" CONTROLLER
 
     let result =
-        match lookup controller with
+        match resolve (controller, dest) with
         | Some c -> Uhppoted.DeleteAllCards(c, options)
         | None -> Uhppoted.DeleteAllCards(controller, options)
 
@@ -465,11 +487,12 @@ let deleteAllCards (options, args) =
     | Error err -> Error(translate err)
 
 let getEvent (options, args) =
+    let dest: Destination = argparse args "--dest" Unchecked.defaultof<_>
     let controller = argparse args "--controller" CONTROLLER
     let index = argparse args "--index" EVENT_INDEX
 
     let result =
-        match lookup controller with
+        match resolve (controller, dest) with
         | Some c -> Uhppoted.GetEvent(c, index, options)
         | None -> Uhppoted.GetEvent(controller, index, options)
 
@@ -492,10 +515,11 @@ let getEvent (options, args) =
     | Error err -> Error(translate err)
 
 let getEventIndex (options, args) =
+    let dest: Destination = argparse args "--dest" Unchecked.defaultof<_>
     let controller = argparse args "--controller" CONTROLLER
 
     let result =
-        match lookup controller with
+        match resolve (controller, dest) with
         | Some c -> Uhppoted.GetEventIndex(c, options)
         | None -> Uhppoted.GetEventIndex(controller, options)
 
@@ -509,11 +533,12 @@ let getEventIndex (options, args) =
     | Error err -> Error(translate err)
 
 let setEventIndex (options, args) =
+    let dest: Destination = argparse args "--dest" Unchecked.defaultof<_>
     let controller = argparse args "--controller" CONTROLLER
     let index = argparse args "--index" EVENT_INDEX
 
     let result =
-        match lookup controller with
+        match resolve (controller, dest) with
         | Some c -> Uhppoted.SetEventIndex(c, index, options)
         | None -> Uhppoted.SetEventIndex(controller, index, options)
 
@@ -527,11 +552,12 @@ let setEventIndex (options, args) =
     | Error err -> Error(translate err)
 
 let recordSpecialEvents (options, args) =
+    let dest: Destination = argparse args "--dest" Unchecked.defaultof<_>
     let controller = argparse args "--controller" CONTROLLER
     let enable = argparse args "--enable" ENABLE
 
     let result =
-        match lookup controller with
+        match resolve (controller, dest) with
         | Some c -> Uhppoted.RecordSpecialEvents(c, enable, options)
         | None -> Uhppoted.RecordSpecialEvents(controller, enable, options)
 
@@ -545,11 +571,12 @@ let recordSpecialEvents (options, args) =
     | Error err -> Error(translate err)
 
 let getTimeProfile (options, args) =
+    let dest: Destination = argparse args "--dest" Unchecked.defaultof<_>
     let controller = argparse args "--controller" CONTROLLER
     let profile = argparse args "--profile" TIME_PROFILE_ID
 
     let result =
-        match lookup controller with
+        match resolve (controller, dest) with
         | Some c -> Uhppoted.GetTimeProfile(c, profile, options)
         | None -> Uhppoted.GetTimeProfile(controller, profile, options)
 
@@ -580,6 +607,7 @@ let getTimeProfile (options, args) =
     | Error err -> Error(translate err)
 
 let setTimeProfile (options, args) =
+    let dest: Destination = argparse args "--dest" Unchecked.defaultof<_>
     let controller = argparse args "--controller" CONTROLLER
     let profileId = argparse args "--profile" TIME_PROFILE_ID
     let startDate = argparse args "--start-date" START_DATE
@@ -607,7 +635,7 @@ let setTimeProfile (options, args) =
           LinkedProfile = argparse args "--linked" 0uy }
 
     let result =
-        match lookup controller with
+        match resolve (controller, dest) with
         | Some c -> Uhppoted.SetTimeProfile(c, profile, options)
         | None -> Uhppoted.SetTimeProfile(controller, profile, options)
 
@@ -622,10 +650,11 @@ let setTimeProfile (options, args) =
     | Error err -> Error(translate err)
 
 let clearTimeProfiles (options, args) =
+    let dest: Destination = argparse args "--dest" Unchecked.defaultof<_>
     let controller = argparse args "--controller" CONTROLLER
 
     let result =
-        match lookup controller with
+        match resolve (controller, dest) with
         | Some c -> Uhppoted.ClearTimeProfiles(c, options)
         | None -> Uhppoted.ClearTimeProfiles(controller, options)
 
@@ -639,6 +668,7 @@ let clearTimeProfiles (options, args) =
     | Error err -> Error(translate err)
 
 let addTask (options, args) =
+    let dest: Destination = argparse args "--dest" Unchecked.defaultof<_>
     let controller = argparse args "--controller" CONTROLLER
     let weekdays: string list = argparse args "--weekdays" []
 
@@ -658,7 +688,7 @@ let addTask (options, args) =
           MoreCards = argparse args "--more-cards" 0uy }
 
     let result =
-        match lookup controller with
+        match resolve (controller, dest) with
         | Some c -> Uhppoted.AddTask(c, task, options)
         | None -> Uhppoted.AddTask(controller, task, options)
 
@@ -674,10 +704,11 @@ let addTask (options, args) =
     | Error err -> Error(translate err)
 
 let clearTaskList (options, args) =
+    let dest: Destination = argparse args "--dest" Unchecked.defaultof<_>
     let controller = argparse args "--controller" CONTROLLER
 
     let result =
-        match lookup controller with
+        match resolve (controller, dest) with
         | Some c -> Uhppoted.ClearTaskList(c, options)
         | None -> Uhppoted.ClearTaskList(controller, options)
 
@@ -691,10 +722,11 @@ let clearTaskList (options, args) =
     | Error err -> Error(translate err)
 
 let refreshTaskList (options, args) =
+    let dest: Destination = argparse args "--dest" Unchecked.defaultof<_>
     let controller = argparse args "--controller" CONTROLLER
 
     let result =
-        match lookup controller with
+        match resolve (controller, dest) with
         | Some c -> Uhppoted.RefreshTaskList(c, options)
         | None -> Uhppoted.RefreshTaskList(controller, options)
 
@@ -708,11 +740,12 @@ let refreshTaskList (options, args) =
     | Error err -> Error(translate err)
 
 let setPCControl (options, args) =
+    let dest: Destination = argparse args "--dest" Unchecked.defaultof<_>
     let controller = argparse args "--controller" CONTROLLER
     let enable = argparse args "--enable" false
 
     let result =
-        match lookup controller with
+        match resolve (controller, dest) with
         | Some c -> Uhppoted.SetPCControl(c, enable, options)
         | None -> Uhppoted.SetPCControl(controller, enable, options)
 
@@ -727,11 +760,12 @@ let setPCControl (options, args) =
     | Error err -> Error(translate err)
 
 let setInterlock (options, args) =
+    let dest: Destination = argparse args "--dest" Unchecked.defaultof<_>
     let controller = argparse args "--controller" CONTROLLER
     let interlock = argparse args "--interlock" Interlock.None
 
     let result =
-        match lookup controller with
+        match resolve (controller, dest) with
         | Some c -> Uhppoted.SetInterlock(c, interlock, options)
         | None -> Uhppoted.SetInterlock(controller, interlock, options)
 
@@ -746,6 +780,7 @@ let setInterlock (options, args) =
     | Error err -> Error(translate err)
 
 let activateKeypads (options, args) =
+    let dest: Destination = argparse args "--dest" Unchecked.defaultof<_>
     let controller = argparse args "--controller" CONTROLLER
     let keypads = argparse args "--keypads" ([]: uint8 list)
 
@@ -755,7 +790,7 @@ let activateKeypads (options, args) =
     let reader4 = keypads |> List.contains 4uy
 
     let result =
-        match lookup controller with
+        match resolve (controller, dest) with
         | Some c -> Uhppoted.ActivateKeypads(c, reader1, reader2, reader3, reader4, options)
         | None -> Uhppoted.ActivateKeypads(controller, reader1, reader2, reader3, reader4, options)
 
@@ -773,10 +808,11 @@ let activateKeypads (options, args) =
     | Error err -> Error(translate err)
 
 let getAntiPassback (options, args) =
+    let dest: Destination = argparse args "--dest" Unchecked.defaultof<_>
     let controller = argparse args "--controller" CONTROLLER
 
     let result =
-        match lookup controller with
+        match resolve (controller, dest) with
         | Some c -> Uhppoted.GetAntiPassback(c, options)
         | None -> Uhppoted.GetAntiPassback(controller, options)
 
@@ -790,11 +826,12 @@ let getAntiPassback (options, args) =
     | Error err -> Error(translate err)
 
 let setAntiPassback (options, args) =
+    let dest: Destination = argparse args "--dest" Unchecked.defaultof<_>
     let controller = argparse args "--controller" CONTROLLER
     let antipassback = argparse args "--antipassback" AntiPassback.Disabled
 
     let result =
-        match lookup controller with
+        match resolve (controller, dest) with
         | Some c -> Uhppoted.SetAntiPassback(c, antipassback, options)
         | None -> Uhppoted.SetAntiPassback(controller, antipassback, options)
 
@@ -809,12 +846,13 @@ let setAntiPassback (options, args) =
     | Error err -> Error(translate err)
 
 let setFirstCard (options, args) =
+    let dest: Destination = argparse args "--dest" Unchecked.defaultof<_>
     let controller = argparse args "--controller" CONTROLLER
     let door = argparse args "--door" DOOR
     let firstcard: FirstCard = argparse args "--firstcard" Unchecked.defaultof<_>
 
     let result =
-        match lookup controller with
+        match resolve (controller, dest) with
         | Some c -> Uhppoted.SetFirstCard(c, door, firstcard, options)
         | None -> Uhppoted.SetFirstCard(controller, door, firstcard, options)
 
@@ -830,10 +868,11 @@ let setFirstCard (options, args) =
     | Error err -> Error(translate err)
 
 let restoreDefaultParameters (options, args) =
+    let dest: Destination = argparse args "--dest" Unchecked.defaultof<_>
     let controller = argparse args "--controller" CONTROLLER
 
     let result =
-        match lookup controller with
+        match resolve (controller, dest) with
         | Some c -> Uhppoted.RestoreDefaultParameters(c, options)
         | None -> Uhppoted.RestoreDefaultParameters(controller, options)
 
