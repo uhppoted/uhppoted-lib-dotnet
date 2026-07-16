@@ -21,20 +21,6 @@ public readonly struct Command
 
 class Commands
 {
-    static readonly Dictionary<uint, uhppoted.C> CONTROLLERS = new Dictionary<uint, uhppoted.C>()
-   {
-    { 303986753u, new uhppoted.CBuilder(303986753u)
-                              .WithEndPoint(IPEndPoint.Parse("192.168.1.125:60000"))
-                              .WithProtocol("udp")
-                              .Build()
-    },
-    { 201020304u, new uhppoted.CBuilder(201020304u)
-                              .WithEndPoint(IPEndPoint.Parse("192.168.1.125:60000"))
-                              .WithProtocol("tcp")
-                              .Build()
-    },
-   };
-
     const uint CONTROLLER = 1u;
 
     const byte INTERVAL = 0;
@@ -124,9 +110,10 @@ class Commands
 
     public static void GetController(uhppoted.Options options, string[] args)
     {
+        var dest = ArgParse.Parse(args, "--dest", new Destination());
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
 
-        var result = CONTROLLERS.TryGetValue(controller, out var c)
+        var result = resolve(controller, dest, out var c)
                      ? Uhppoted.GetController(c, options)
                      : Uhppoted.GetController(controller, options);
 
@@ -152,12 +139,13 @@ class Commands
 
     public static void SetIPv4(uhppoted.Options options, string[] args)
     {
+        var dest = ArgParse.Parse(args, "--dest", new Destination());
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
         var address = ArgParse.Parse(args, "--address", ADDRESS);
         var netmask = ArgParse.Parse(args, "--netmask", NETMASK);
         var gateway = ArgParse.Parse(args, "--gateway", GATEWAY);
 
-        var result = CONTROLLERS.TryGetValue(controller, out var c)
+        var result = resolve(controller, dest, out var c)
                      ? Uhppoted.SetIPv4(c, address, netmask, gateway, options)
                      : Uhppoted.SetIPv4(controller, address, netmask, gateway, options);
 
@@ -174,9 +162,10 @@ class Commands
 
     public static void GetListener(uhppoted.Options options, string[] args)
     {
+        var dest = ArgParse.Parse(args, "--dest", new Destination());
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
 
-        var result = CONTROLLERS.TryGetValue(controller, out var c)
+        var result = resolve(controller, dest, out var c)
                      ? Uhppoted.GetListener(c, options)
                      : Uhppoted.GetListener(controller, options);
 
@@ -198,11 +187,12 @@ class Commands
 
     public static void SetListener(uhppoted.Options options, string[] args)
     {
+        var dest = ArgParse.Parse(args, "--dest", new Destination());
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
         var listener = ArgParse.Parse(args, "--listener", LISTENER);
         var interval = ArgParse.Parse(args, "--interval", INTERVAL);
 
-        var result = CONTROLLERS.TryGetValue(controller, out var c)
+        var result = resolve(controller, dest, out var c)
                      ? Uhppoted.SetListener(c, listener, interval, options)
                      : Uhppoted.SetListener(controller, listener, interval, options);
 
@@ -223,9 +213,10 @@ class Commands
 
     public static void GetTime(uhppoted.Options options, string[] args)
     {
+        var dest = ArgParse.Parse(args, "--dest", new Destination());
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
 
-        var result = CONTROLLERS.TryGetValue(controller, out var c)
+        var result = resolve(controller, dest, out var c)
                      ? Uhppoted.GetTime(c, options)
                      : Uhppoted.GetTime(controller, options);
 
@@ -246,10 +237,11 @@ class Commands
 
     public static void SetTime(uhppoted.Options options, string[] args)
     {
+        var dest = ArgParse.Parse(args, "--dest", new Destination());
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
         var now = ArgParse.Parse(args, "--datetime", DateTime.Now);
 
-        var result = CONTROLLERS.TryGetValue(controller, out var c)
+        var result = resolve(controller, dest, out var c)
                      ? Uhppoted.SetTime(c, now, options)
                      : Uhppoted.SetTime(controller, now, options);
 
@@ -270,10 +262,11 @@ class Commands
 
     public static void GetDoor(uhppoted.Options options, string[] args)
     {
+        var dest = ArgParse.Parse(args, "--dest", new Destination());
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
         var door = ArgParse.Parse(args, "--door", DOOR);
 
-        var result = CONTROLLERS.TryGetValue(controller, out var c)
+        var result = resolve(controller, dest, out var c)
                      ? Uhppoted.GetDoor(c, door, options)
                      : Uhppoted.GetDoor(controller, door, options);
 
@@ -296,12 +289,13 @@ class Commands
 
     public static void SetDoor(uhppoted.Options options, string[] args)
     {
+        var dest = ArgParse.Parse(args, "--dest", new Destination());
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
         var door = ArgParse.Parse(args, "--door", DOOR);
         var mode = ArgParse.Parse(args, "--mode", MODE);
         var delay = ArgParse.Parse(args, "--delay", DELAY);
 
-        var result = CONTROLLERS.TryGetValue(controller, out var c)
+        var result = resolve(controller, dest, out var c)
                      ? Uhppoted.SetDoor(c, door, mode, delay, options)
                      : Uhppoted.SetDoor(controller, door, mode, delay, options);
 
@@ -324,12 +318,13 @@ class Commands
 
     public static void SetDoorPasscodes(uhppoted.Options options, string[] args)
     {
+        var dest = ArgParse.Parse(args, "--dest", new Destination());
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
         var door = ArgParse.Parse(args, "--door", DOOR);
         var mode = ArgParse.Parse(args, "--mode", MODE);
         var passcodes = ArgParse.Parse(args, "--passcodes", new uint[] { });
 
-        var result = CONTROLLERS.TryGetValue(controller, out var c)
+        var result = resolve(controller, dest, out var c)
                      ? Uhppoted.SetDoorPasscodes(c, door, passcodes, options)
                      : Uhppoted.SetDoorPasscodes(controller, door, passcodes, options);
 
@@ -351,10 +346,11 @@ class Commands
 
     public static void OpenDoor(uhppoted.Options options, string[] args)
     {
+        var dest = ArgParse.Parse(args, "--dest", new Destination());
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
         var door = ArgParse.Parse(args, "--door", DOOR);
 
-        var result = CONTROLLERS.TryGetValue(controller, out var c)
+        var result = resolve(controller, dest, out var c)
                      ? Uhppoted.OpenDoor(c, door, options)
                      : Uhppoted.OpenDoor(controller, door, options);
 
@@ -376,9 +372,10 @@ class Commands
 
     public static void GetStatus(uhppoted.Options options, string[] args)
     {
+        var dest = ArgParse.Parse(args, "--dest", new Destination());
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
 
-        var result = CONTROLLERS.TryGetValue(controller, out var c)
+        var result = resolve(controller, dest, out var c)
                      ? Uhppoted.GetStatus(c, options)
                      : Uhppoted.GetStatus(controller, options);
 
@@ -430,10 +427,11 @@ class Commands
 
     public static void GetCards(uhppoted.Options options, string[] args)
     {
+        var dest = ArgParse.Parse(args, "--dest", new Destination());
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
         var card = ArgParse.Parse(args, "--card", CARD);
 
-        var result = CONTROLLERS.TryGetValue(controller, out var c)
+        var result = resolve(controller, dest, out var c)
                      ? Uhppoted.GetCards(c, options)
                      : Uhppoted.GetCards(controller, options);
 
@@ -454,10 +452,11 @@ class Commands
 
     public static void GetCard(uhppoted.Options options, string[] args)
     {
+        var dest = ArgParse.Parse(args, "--dest", new Destination());
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
         var card = ArgParse.Parse(args, "--card", CARD);
 
-        var result = CONTROLLERS.TryGetValue(controller, out var c)
+        var result = resolve(controller, dest, out var c)
                      ? Uhppoted.GetCard(c, card, options)
                      : Uhppoted.GetCard(controller, card, options);
 
@@ -490,10 +489,11 @@ class Commands
 
     public static void GetCardAtIndex(uhppoted.Options options, string[] args)
     {
+        var dest = ArgParse.Parse(args, "--dest", new Destination());
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
         var index = ArgParse.Parse(args, "--index", CARD_INDEX);
 
-        var result = CONTROLLERS.TryGetValue(controller, out var c)
+        var result = resolve(controller, dest, out var c)
                      ? Uhppoted.GetCardAtIndex(c, index, options)
                      : Uhppoted.GetCardAtIndex(controller, index, options);
 
@@ -526,10 +526,11 @@ class Commands
 
     public static void PutCard(uhppoted.Options options, string[] args)
     {
+        var dest = ArgParse.Parse(args, "--dest", new Destination());
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
         var card = ArgParse.Parse(args, "--card", new Card());
 
-        var result = CONTROLLERS.TryGetValue(controller, out var c)
+        var result = resolve(controller, dest, out var c)
                      ? Uhppoted.PutCard(c, card, options)
                      : Uhppoted.PutCard(controller, card, options);
 
@@ -559,10 +560,11 @@ class Commands
 
     public static void DeleteCard(uhppoted.Options options, string[] args)
     {
+        var dest = ArgParse.Parse(args, "--dest", new Destination());
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
         var card = ArgParse.Parse(args, "--card", CARD);
 
-        var result = CONTROLLERS.TryGetValue(controller, out var c)
+        var result = resolve(controller, dest, out var c)
                      ? Uhppoted.DeleteCard(c, card, options)
                      : Uhppoted.DeleteCard(controller, card, options);
 
@@ -584,9 +586,10 @@ class Commands
 
     public static void DeleteAllCards(uhppoted.Options options, string[] args)
     {
+        var dest = ArgParse.Parse(args, "--dest", new Destination());
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
 
-        var result = CONTROLLERS.TryGetValue(controller, out var c)
+        var result = resolve(controller, dest, out var c)
                      ? Uhppoted.DeleteAllCards(c, options)
                      : Uhppoted.DeleteAllCards(controller, options);
 
@@ -607,10 +610,11 @@ class Commands
 
     public static void GetEvent(uhppoted.Options options, string[] args)
     {
+        var dest = ArgParse.Parse(args, "--dest", new Destination());
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
         var index = ArgParse.Parse(args, "--index", EVENT_INDEX);
 
-        var result = CONTROLLERS.TryGetValue(controller, out var c)
+        var result = resolve(controller, dest, out var c)
                      ? Uhppoted.GetEvent(c, index, options)
                      : Uhppoted.GetEvent(controller, index, options);
 
@@ -646,9 +650,10 @@ class Commands
 
     public static void GetEventIndex(uhppoted.Options options, string[] args)
     {
+        var dest = ArgParse.Parse(args, "--dest", new Destination());
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
 
-        var result = CONTROLLERS.TryGetValue(controller, out var c)
+        var result = resolve(controller, dest, out var c)
                      ? Uhppoted.GetEventIndex(c, options)
                      : Uhppoted.GetEventIndex(controller, options);
 
@@ -669,10 +674,11 @@ class Commands
 
     public static void SetEventIndex(uhppoted.Options options, string[] args)
     {
+        var dest = ArgParse.Parse(args, "--dest", new Destination());
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
         var index = ArgParse.Parse(args, "--index", EVENT_INDEX);
 
-        var result = CONTROLLERS.TryGetValue(controller, out var c)
+        var result = resolve(controller, dest, out var c)
                      ? Uhppoted.SetEventIndex(c, index, options)
                      : Uhppoted.SetEventIndex(controller, index, options);
 
@@ -693,10 +699,11 @@ class Commands
 
     public static void RecordSpecialEvents(uhppoted.Options options, string[] args)
     {
+        var dest = ArgParse.Parse(args, "--dest", new Destination());
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
         var enable = ArgParse.Parse(args, "--enable", ENABLE);
 
-        var result = CONTROLLERS.TryGetValue(controller, out var c)
+        var result = resolve(controller, dest, out var c)
                      ? Uhppoted.RecordSpecialEvents(c, enable, options)
                      : Uhppoted.RecordSpecialEvents(controller, enable, options);
 
@@ -717,10 +724,11 @@ class Commands
 
     public static void GetTimeProfile(uhppoted.Options options, string[] args)
     {
+        var dest = ArgParse.Parse(args, "--dest", new Destination());
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
         var profile = ArgParse.Parse(args, "--profile", TIME_PROFILE_ID);
 
-        var result = CONTROLLERS.TryGetValue(controller, out var c)
+        var result = resolve(controller, dest, out var c)
                      ? Uhppoted.GetTimeProfile(c, profile, options)
                      : Uhppoted.GetTimeProfile(controller, profile, options);
 
@@ -761,6 +769,7 @@ class Commands
 
     public static void SetTimeProfile(uhppoted.Options options, string[] args)
     {
+        var dest = ArgParse.Parse(args, "--dest", new Destination());
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
         var profile_id = ArgParse.Parse(args, "--profile", TIME_PROFILE_ID);
         var linked = ArgParse.Parse(args, "--linked", (byte)0);
@@ -787,7 +796,7 @@ class Commands
                                   .WithLinkedProfile(linked)
                                   .Build();
 
-        var result = CONTROLLERS.TryGetValue(controller, out var c)
+        var result = resolve(controller, dest, out var c)
                      ? Uhppoted.SetTimeProfile(c, profile, options)
                      : Uhppoted.SetTimeProfile(controller, profile, options);
 
@@ -809,9 +818,10 @@ class Commands
 
     public static void ClearTimeProfiles(uhppoted.Options options, string[] args)
     {
+        var dest = ArgParse.Parse(args, "--dest", new Destination());
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
 
-        var result = CONTROLLERS.TryGetValue(controller, out var c)
+        var result = resolve(controller, dest, out var c)
                      ? Uhppoted.ClearTimeProfiles(c, options)
                      : Uhppoted.ClearTimeProfiles(controller, options);
 
@@ -832,6 +842,7 @@ class Commands
 
     public static void AddTask(uhppoted.Options options, string[] args)
     {
+        var dest = ArgParse.Parse(args, "--dest", new Destination());
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
         var task_code = ArgParse.Parse(args, "--task", TASK_CODE);
         var door = ArgParse.Parse(args, "--door", DOOR);
@@ -858,7 +869,7 @@ class Commands
                                   .Build();
 
 
-        var result = CONTROLLERS.TryGetValue(controller, out var c)
+        var result = resolve(controller, dest, out var c)
                      ? Uhppoted.AddTask(c, task, options)
                      : Uhppoted.AddTask(controller, task, options);
 
@@ -881,9 +892,10 @@ class Commands
 
     public static void ClearTaskList(uhppoted.Options options, string[] args)
     {
+        var dest = ArgParse.Parse(args, "--dest", new Destination());
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
 
-        var result = CONTROLLERS.TryGetValue(controller, out var c)
+        var result = resolve(controller, dest, out var c)
                      ? Uhppoted.ClearTaskList(c, options)
                      : Uhppoted.ClearTaskList(controller, options);
 
@@ -904,9 +916,10 @@ class Commands
 
     public static void RefreshTaskList(uhppoted.Options options, string[] args)
     {
+        var dest = ArgParse.Parse(args, "--dest", new Destination());
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
 
-        var result = CONTROLLERS.TryGetValue(controller, out var c)
+        var result = resolve(controller, dest, out var c)
                      ? Uhppoted.RefreshTaskList(c, options)
                      : Uhppoted.RefreshTaskList(controller, options);
 
@@ -927,10 +940,11 @@ class Commands
 
     public static void SetPCControl(uhppoted.Options options, string[] args)
     {
+        var dest = ArgParse.Parse(args, "--dest", new Destination());
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
         var enable = ArgParse.Parse(args, "--enable", false);
 
-        var result = CONTROLLERS.TryGetValue(controller, out var c)
+        var result = resolve(controller, dest, out var c)
                      ? Uhppoted.SetPCControl(c, enable, options)
                      : Uhppoted.SetPCControl(controller, enable, options);
 
@@ -952,10 +966,11 @@ class Commands
 
     public static void SetInterlock(uhppoted.Options options, string[] args)
     {
+        var dest = ArgParse.Parse(args, "--dest", new Destination());
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
         var interlock = ArgParse.Parse(args, "--interlock", Interlock.None);
 
-        var result = CONTROLLERS.TryGetValue(controller, out var c)
+        var result = resolve(controller, dest, out var c)
                      ? Uhppoted.SetInterlock(c, interlock, options)
                      : Uhppoted.SetInterlock(controller, interlock, options);
 
@@ -977,6 +992,7 @@ class Commands
 
     public static void ActivateKeypads(uhppoted.Options options, string[] args)
     {
+        var dest = ArgParse.Parse(args, "--dest", new Destination());
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
         var keypads = ArgParse.Parse(args, "--keypads", new byte[] { });
 
@@ -985,7 +1001,7 @@ class Commands
         var reader3 = keypads.Contains((byte)3);
         var reader4 = keypads.Contains((byte)4);
 
-        var result = CONTROLLERS.TryGetValue(controller, out var c)
+        var result = resolve(controller, dest, out var c)
                      ? Uhppoted.ActivateKeypads(c, reader1, reader2, reader3, reader4, options)
                      : Uhppoted.ActivateKeypads(controller, reader1, reader2, reader3, reader4, options);
 
@@ -1010,9 +1026,10 @@ class Commands
 
     public static void GetAntiPassback(uhppoted.Options options, string[] args)
     {
+        var dest = ArgParse.Parse(args, "--dest", new Destination());
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
 
-        var result = CONTROLLERS.TryGetValue(controller, out var c)
+        var result = resolve(controller, dest, out var c)
                      ? Uhppoted.GetAntiPassback(c, options)
                      : Uhppoted.GetAntiPassback(controller, options);
 
@@ -1033,10 +1050,11 @@ class Commands
 
     public static void SetAntiPassback(uhppoted.Options options, string[] args)
     {
+        var dest = ArgParse.Parse(args, "--dest", new Destination());
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
         var antipassback = ArgParse.Parse(args, "--antipassback", AntiPassback.Disabled);
 
-        var result = CONTROLLERS.TryGetValue(controller, out var c)
+        var result = resolve(controller, dest, out var c)
                      ? Uhppoted.SetAntiPassback(c, antipassback, options)
                      : Uhppoted.SetAntiPassback(controller, antipassback, options);
 
@@ -1058,11 +1076,12 @@ class Commands
 
     public static void SetFirstCard(uhppoted.Options options, string[] args)
     {
+        var dest = ArgParse.Parse(args, "--dest", new Destination());
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
         var door = ArgParse.Parse(args, "--door", DOOR);
         var firstcard = ArgParse.Parse(args, "--firstcard", new FirstCard());
 
-        var result = CONTROLLERS.TryGetValue(controller, out var c)
+        var result = resolve(controller, dest, out var c)
                      ? Uhppoted.SetFirstCard(c, door, firstcard, options)
                      : Uhppoted.SetFirstCard(controller, door, firstcard, options);
 
@@ -1085,9 +1104,10 @@ class Commands
 
     public static void RestoreDefaultParameters(uhppoted.Options options, string[] args)
     {
+        var dest = ArgParse.Parse(args, "--dest", new Destination());
         var controller = ArgParse.Parse(args, "--controller", CONTROLLER);
 
-        var result = CONTROLLERS.TryGetValue(controller, out var c)
+        var result = resolve(controller, dest, out var c)
                      ? Uhppoted.RestoreDefaultParameters(c, options)
                      : Uhppoted.RestoreDefaultParameters(controller, options);
 
@@ -1172,6 +1192,33 @@ class Commands
 
         Uhppoted.Listen(onevent, onerror, cancel.Token, options);
     }
+
+    private static bool resolve(UInt32 controller, Destination dest, out uhppoted.C? c)
+    {
+        if (dest.endpoint == null)
+        {
+            c = null;
+            return false;
+        }
+
+        if (dest.endpoint.Port == 0)
+        {
+            c = new uhppoted.CBuilder(controller)
+                                      .WithEndPoint(new IPEndPoint(dest.endpoint.Address, 60000))
+                                      .WithProtocol(dest.transport ?? "")
+                                      .Build();
+
+            return true;
+        }
+
+        c = new uhppoted.CBuilder(controller)
+                                  .WithEndPoint(dest.endpoint)
+                                  .WithProtocol(dest.transport ?? "")
+                                  .Build();
+
+        return true;
+    }
+
 
     private static string YYYYMMDD(DateOnly? date)
     {

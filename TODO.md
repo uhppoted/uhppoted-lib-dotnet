@@ -18,7 +18,7 @@
 - [x] CLI --broadcast
 - [x] CLI --listen
 - [x] CLI --debug
-- [ ] CLI --dest
+- [x] CLI --dest
 
 ### VB.NET
 - [x] CLI --bind

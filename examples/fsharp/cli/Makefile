@@ -59,6 +59,8 @@ find-controllers: build
 
 get-controller: build
 	$(CLI) get-controller --controller $(CONTROLLER)
+	$(CLI) get-controller --dest udp::192.168.1.125 --controller $(CONTROLLER)
+	$(CLI) get-controller --dest tcp::192.168.1.125 --controller $(CONTROLLER)
 
 set-IPv4: build
 	$(CLI) set-IPv4 --controller $(CONTROLLER) --address $(ADDRESS) --netmask $(NETMASK) --gateway $(GATEWAY)

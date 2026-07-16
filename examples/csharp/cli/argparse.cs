@@ -4,6 +4,19 @@ using System.Text.RegularExpressions;
 using static System.Console;
 using uhppoted;
 
+public readonly struct Destination
+{
+    public readonly IPEndPoint endpoint;
+    public readonly string transport;
+
+
+    public Destination(IPEndPoint endpoint, string transport)
+    {
+        this.endpoint = endpoint;
+        this.transport = transport;
+    }
+}
+
 static class ArgParse
 {
     public static T Parse<T>(string[] args, string arg, T defval)
@@ -270,6 +283,9 @@ static class ArgParse
                 case FirstCard:
                     return (T)(object)ParseFirstCard(args[ix]);
 
+                case Destination:
+                    return (T)(object)ParseDestination(args[ix]);
+
             }
         }
 
@@ -408,5 +424,18 @@ static class ArgParse
 
         return firstcard;
 
+    }
+
+    private static Destination ParseDestination(string arg)
+    {
+        var pattern = @"(?:(udp|tcp)::)?(.*)";
+        var m = Regex.Match(arg, pattern);
+
+        if (IPEndPoint.TryParse(m.Groups[2].Value, out var endpoint))
+        {
+            return new Destination(endpoint, m.Groups[1].Value);
+        }
+
+        return new Destination();
     }
 }
