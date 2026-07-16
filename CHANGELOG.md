@@ -5,11 +5,13 @@
 
 ### Added
 1. `set-firstcard` API function to configure first-card mode for a controller managed door.
+2. Added _first card_ privilege to `get-card`, `get-card-at-index` and `put-card`.
+3. Added checks and retries for _connect to self_ in UDP and TCP transports.
 
 ### Updated
 1. Removed support for .NET7 (end of life).
-2. Added checks and retries for _connect to self_ in UDP and TCP transports.
-3. Added _first card_ privilege to `get-card`, `get-card-at-index` and `put-card`.
+2. Reworked CLI examples to support `-bind`, `--broadcast` and `--listen` command line arguments.
+3. Reworked CLI examples to replace internal lookup list with `--dest` command line argument.
 
 
 ## [0.9.0](https://github.com/uhppoted/uhppoted-lib-dotnet/releases/tag/v0.9.0) - 2026-01-27

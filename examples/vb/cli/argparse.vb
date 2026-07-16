@@ -12,6 +12,16 @@ Imports FirstCardBuilder = uhppoted.FirstCardBuilder
 
 Module ArgParse
 
+    Public Structure Destination
+        Public ReadOnly endpoint As IPEndPoint
+        Public ReadOnly transport As String
+
+        Public Sub New(endpoint As IPEndPoint, transport As String)
+            Me.endpoint = endpoint
+            Me.transport = transport
+        End Sub
+    End Structure
+
     Function Parse(Of T)(args As String(), arg As String, defval As T) As T
         Dim ix As Integer = Array.IndexOf(args, arg)
         Dim u32 As UInteger
@@ -238,6 +248,9 @@ Module ArgParse
                 Case "FirstCard"
                     Return CType(CObj(ParseFirstCard(args(ix))), T)
 
+                Case "Destination"
+                    Return CType(CObj(ParseDestination(args(ix))), T)
+
                 Case "Dictionary(Of Integer,Byte)"
                     For Each token In args(ix).Split(","c)
                         Dim permission = token.Split(":"c)
@@ -382,6 +395,18 @@ Module ArgParse
         Next
 
         return builder.Build()
+    End Function
+
+    Function ParseDestination(arg As String) As Destination
+        Dim pattern = "(?:(udp|tcp)::)?(.*)"
+        Dim match = Regex.Match(arg, pattern)
+        Dim endpoint As New IPEndPoint(0, 0)
+
+        If IPEndPoint.TryParse(match.Groups(2).Value, endpoint) Then
+            return new Destination(endpoint, match.Groups(1).Value)
+        End If
+
+        return new Destination()
     End Function
 
 End Module

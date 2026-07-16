@@ -429,11 +429,11 @@ static class ArgParse
     private static Destination ParseDestination(string arg)
     {
         var pattern = @"(?:(udp|tcp)::)?(.*)";
-        var m = Regex.Match(arg, pattern);
+        var match = Regex.Match(arg, pattern);
 
-        if (IPEndPoint.TryParse(m.Groups[2].Value, out var endpoint))
+        if (IPEndPoint.TryParse(match.Groups[2].Value, out var endpoint))
         {
-            return new Destination(endpoint, m.Groups[1].Value);
+            return new Destination(endpoint, match.Groups[1].Value);
         }
 
         return new Destination();

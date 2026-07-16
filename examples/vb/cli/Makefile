@@ -41,11 +41,20 @@ build: format
 run: build
 	$(CLI)
 
+debug: format
+	$(CLI) get-controller --controller 303986753
+	$(CLI) get-controller --dest 192.168.1.125 --controller 303986753
+	$(CLI) get-controller --dest 192.168.1.125:60000 --controller 303986753
+	$(CLI) get-controller --dest udp::192.168.1.125 --controller 303986753
+	$(CLI) get-controller --dest tcp::192.168.1.125 --controller 303986753
+
 find-controllers: build
 	$(CLI) find-controllers
 
 get-controller: build
 	$(CLI) get-controller --controller $(CONTROLLER)
+	$(CLI) get-controller --dest udp::192.168.1.125 --controller $(CONTROLLER)
+	$(CLI) get-controller --dest tcp::192.168.1.125 --controller $(CONTROLLER)
 
 set-IPv4: build
 	$(CLI) set-IPv4 --controller $(CONTROLLER) --address $(ADDRESS)
