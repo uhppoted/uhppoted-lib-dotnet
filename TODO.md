@@ -5,3 +5,6 @@
 - [x] Replace CLI default endpoints with --bind, --broadcast and --listen args.
 - [x] Replace CLI lookup tables with --dest arg.
 
+## To Be Done
+
+- (?) [G#](https://davidobando.github.io/gsharp)
