@@ -6,9 +6,10 @@
 
 .NET package for the UHPPOTE UT0311-L0x* TCP/IP Wiegand access controller API.
 
-The API is described in detail in the [API](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/API.md) documentation and examples 
-in [_F#_](https://github.com/uhppoted/uhppoted-lib-dotnet/tree/main/examples/fsharp), [_C#_](https://github.com/uhppoted/uhppoted-lib-dotnet/tree/main/examples/csharp) 
-and [_VB.NET_](https://github.com/uhppoted/uhppoted-lib-dotnet/tree/main/examples/vb) are included to illustrate the use of the API.
+The API is described in detail in the [API](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/API.md) documentation and examples 
+in [_F#_](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/tree/main/examples/fsharp), 
+[_C#_](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/tree/main/examples/csharp) 
+and [_VB.NET_](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/tree/main/examples/vb) are included to illustrate the use of the API.
 
 ---
 - [Release Notes](#release-notes)
@@ -19,7 +20,7 @@ and [_VB.NET_](https://github.com/uhppoted/uhppoted-lib-dotnet/tree/main/example
    - [C#](#c)
    - [VB.NET](vbnet)
 - [API summary](#api-summary)
-- [API documentation](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/API.md)
+- [API documentation](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/API.md)
 - [Examples](#examples)
 - [Notes](#notes)
    - [Ephemeral ports](#ephemeral-ports-and-binding-to-00000)
@@ -36,7 +37,7 @@ and [_VB.NET_](https://github.com/uhppoted/uhppoted-lib-dotnet/tree/main/example
 ## Installation
 
 The package can be installed from either the [_NuGet_](https://www.nuget.org/packages/uhppoted) registry or
-[_Github Packages_](https://github.com/uhppoted/uhppoted-lib-dotnet/pkgs/nuget/uhppoted):
+[_Github Packages_](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/pkgs/nuget/uhppoted):
 
 ### Installing from the NuGet Registry
 
@@ -69,15 +70,15 @@ with at least `package: read` permissions.
 
 - _dotnet CLI_:
    ```
-   dotnet nuget add source --username <username> --password <personal-access-token> --store-password-in-clear-text --name uhppoted "https://nuget.pkg.github.com/uhppoted/index.json"
-   dotnet nuget add source https://nuget.pkg.github.com/uhppoted/index.json
+   dotnet nuget add source --username <username> --password <personal-access-token> --store-password-in-clear-text --name uhppoted "https://nuget.pkg.codeberg.org/uhppoted/index.json"
+   dotnet nuget add source https://nuget.pkg.codeberg.org/uhppoted/index.json
    dotnet add package uhppoted --version 0.9.0
 
    ```
 
 - _Package Manager_ (console):
    ```
-   NuGet\Set-Source -Name "uhppoted" -Source "https://nuget.pkg.github.com/uhppoted/index.json" -Username "<username>" -Password "<personal-access-token>"
+   NuGet\Set-Source -Name "uhppoted" -Source "https://nuget.pkg.codeberg.org/uhppoted/index.json" -Username "<username>" -Password "<personal-access-token>"
    NuGet\Install-Package uhppoted -Version 0.9.0
    ```
 
@@ -97,14 +98,14 @@ Requirements:
 - (_optional_) make
 
 ```
-git clone https://github.com/uhppoted/uhppoted-lib-dotnet.git
+git clone https://codeberg.org/uhppoted/uhppoted-lib-dotnet.git
 cd uhppoted-lib-dotnet/uhppoted
 make build
 ```
 
 If you prefer to build without _make_:
 ```
-   git clone https://github.com/uhppoted/uhppoted-lib-dotnet.git
+   git clone https://codeberg.org/uhppoted/uhppoted-lib-dotnet.git
    cd uhppoted-lib-dotnet/uhppoted
    dotnet build
 ```
@@ -125,130 +126,130 @@ dotnet add package FSharp.Core
 
 ## API summary
 
-#### [`FindControllers`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/find-controllers.md)
+#### [`FindControllers`](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/find-controllers.md)
 Discovers all controllers accessible via a UDP broadcast on the local LAN.
 
-#### [`GetController`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/get-controller.md)
+#### [`GetController`](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/get-controller.md)
 Retrieves the IPv4 configuration, MAC address and version information for an access controller.
 
-#### [`SetIPv4`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/set-IPv4.md)
+#### [`SetIPv4`](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/set-IPv4.md)
 Sets a controller IPv4 address, netmask and gateway address.
 
-#### [`GetListener`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/get-listener.md)
+#### [`GetListener`](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/get-listener.md)
 Gets a controller event listener address:port and auto-send interval.
 
-#### [`SetListener`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/set-listener.md)
+#### [`SetListener`](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/set-listener.md)
 Sets a controller event listener endpoint and auto-send interval.
 
-#### [`GetTime`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/get-time.md)
+#### [`GetTime`](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/get-time.md)
 Gets a controller current date and time.
 
-#### [`SetTime`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/set-time.md)
+#### [`SetTime`](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/set-time.md)
 Sets a controller current date and time.
 
-#### [`GetDoor`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/get-door.md)
+#### [`GetDoor`](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/get-door.md)
 Gets a controller door operational mode and unlocked delay.
 
-#### [`SetDoor`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/set-door.md)
+#### [`SetDoor`](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/set-door.md)
 Sets a controller door operational mode and unlocked delay.
 
-#### [`SetDoorPasscodes`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/set-door-passcodes.md)
+#### [`SetDoorPasscodes`](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/set-door-passcodes.md)
 Sets up to 4 passcodes for a controller door.
 
-#### [`OpenDoor`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/open-door.md)
+#### [`OpenDoor`](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/open-door.md)
 Unlocks a door controlled by a controller.
 
-#### [`GetStatus`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/get-status.md)
+#### [`GetStatus`](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/get-status.md)
 Retrieves a controller status and most recent event (if any).
 
-#### [`GetCards`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/get-cards.md)
+#### [`GetCards`](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/get-cards.md)
 Retrieves the number of card records stored on a controller.
 
-#### [`GetCard`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/get-card.md)
+#### [`GetCard`](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/get-card.md)
 Retrieves a card record by card number.
 
-#### [`GetCardAtIndex`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/get-card-at-index.md)
+#### [`GetCardAtIndex`](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/get-card-at-index.md)
 Retrieves the card record (if any) at the index from a controller.
 
-#### [`PutCard`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/put-card.md)
+#### [`PutCard`](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/put-card.md)
 Adds or updates a card record on a controller.
 
-#### [`DeleteCard`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/delete-card.md)
+#### [`DeleteCard`](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/delete-card.md)
 Deletes a card record from a controller.
 
-#### [`DeleteAllCards`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/delete-all-cards.md)
+#### [`DeleteAllCards`](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/delete-all-cards.md)
 Deletes all card records from a controller.
 
-#### [`GetEvent`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/get-event.md)
+#### [`GetEvent`](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/get-event.md)
 Retrieves the event record (if any) at the index from a controller.
 
-#### [`GetEventIndex`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/get-event-index.md)
+#### [`GetEventIndex`](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/get-event-index.md)
 Retrieves the current event index from a controller.
 
-#### [`SetEventIndex`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/set-event-index.md)
+#### [`SetEventIndex`](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/set-event-index.md)
 Sets a controller event index.
 
-#### [`RecordSpecialEvents`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/record-special-events.md)
+#### [`RecordSpecialEvents`](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/record-special-events.md)
 Enables (or disables) events for door open/close, button press, etc.
 
-#### [`GetTimeProfile`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/get-time-profile.md)
+#### [`GetTimeProfile`](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/get-time-profile.md)
 Retrieves an access time profile from a controller.
 
-#### [`GetTimeProfile`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/set-time-profile.md)
+#### [`GetTimeProfile`](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/set-time-profile.md)
 Adds or updates an access time profile on a controller.
 
-#### [`ClearTimeProfiles`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/clear-time-profiles.md)
+#### [`ClearTimeProfiles`](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/clear-time-profiles.md)
 Clears all access time profiles stored on a controller.
 
-#### [`AddTask`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/add-task.md)
+#### [`AddTask`](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/add-task.md)
 Adds or updates a scheduled task on a controller.
 
-#### [`ClearTaskList`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/clear-tasklist.md)
+#### [`ClearTaskList`](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/clear-tasklist.md)
 Clears all scheduled tasks from a controller tasklist.
 
-#### [`RefreshTaskList`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/refresh-tasklist.md)
+#### [`RefreshTaskList`](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/refresh-tasklist.md)
 Schedules added tasks.
 
-#### [`SetPCControl`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/set-pc-control.md)
+#### [`SetPCControl`](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/set-pc-control.md)
 Enables/disables remote access control management. 
 
 #### [`SetInterlock`](sdocumentation/API/set-interlock.md)
 Sets the door interlock mode for an access controller.
 
-#### [`ActivateKeypads`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/activate-keypads.md)
+#### [`ActivateKeypads`](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/activate-keypads.md)
 Activates/deactivates the access reader keypads attached to an access controller.
 
-#### [`GetAntiPassback`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/get-antipassback.md)
+#### [`GetAntiPassback`](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/get-antipassback.md)
 Gets a controller anti-passback mode.
 
-#### [`SetAntiPassback`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/set-antipassback.md)
+#### [`SetAntiPassback`](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/set-antipassback.md)
 Sets a controller anti-passback mode.
 
-#### [`SetFirstCard`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/set-firstcard.md)
+#### [`SetFirstCard`](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/set-firstcard.md)
 Sets the first card configuration for a controller managed door.
 
-#### [`RestoreDefaultSettings`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/restore-default-settings.md)
+#### [`RestoreDefaultSettings`](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/restore-default-settings.md)
 Restores the manufacturer default settings.
 
-#### [`Listen`](https://github.com/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/listen.md)
+#### [`Listen`](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/listen.md)
 Listens for access controller events.
 
 ## Examples
 
 #### F#
 
-- [hello world](https://github.com/uhppoted/uhppoted-lib-dotnet/tree/main/examples/fsharp/hello-world)
-- [CLI](https://github.com/uhppoted/uhppoted-lib-dotnet/tree/main/examples/fsharp/cli)
+- [hello world](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/tree/main/examples/fsharp/hello-world)
+- [CLI](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/tree/main/examples/fsharp/cli)
 
 #### C#
 
-- [hello world](https://github.com/uhppoted/uhppoted-lib-dotnet/tree/main/examples/csharp/hello-world)
-- [CLI](https://github.com/uhppoted/uhppoted-lib-dotnet/tree/main/examples/csharp/cli)
+- [hello world](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/tree/main/examples/csharp/hello-world)
+- [CLI](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/tree/main/examples/csharp/cli)
 
 #### VB.NET
 
-- [hello world](https://github.com/uhppoted/uhppoted-lib-dotnet/tree/main/examples/vb/hello-world)
-- [CLI](https://github.com/uhppoted/uhppoted-lib-dotnet/tree/main/examples/vb/cli)
+- [hello world](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/tree/main/examples/vb/hello-world)
+- [CLI](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/tree/main/examples/vb/cli)
 
 ## Notes
 

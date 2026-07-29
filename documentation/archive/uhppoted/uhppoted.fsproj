@@ -5,10 +5,10 @@
     <Title>uhppoted</Title>
     <Description>.NET library for the UHPPOTE access controller API.</Description>
     <Authors>uhppoted</Authors>
-    <RepositoryUrl>https://github.com/uhppoted/uhppoted-lib-dotnet</RepositoryUrl>
+    <RepositoryUrl>https://codeberg.org/uhppoted/uhppoted-lib-dotnet</RepositoryUrl>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
-    <PackageProjectUrl>https://github.com/uhppoted/uhppoted-lib-dotnet</PackageProjectUrl>
+    <PackageProjectUrl>https://codeberg.org/uhppoted/uhppoted-lib-dotnet</PackageProjectUrl>
     <PackageTags>uhppote;wiegand;access-control;building-security</PackageTags>
     <PackageReadmeFile>README.md</PackageReadmeFile>
     <PackageVersion>0.9.1</PackageVersion>

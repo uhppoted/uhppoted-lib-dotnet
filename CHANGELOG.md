@@ -2,7 +2,6 @@
 
 ## Unreleased
 
-
 ### Added
 1. `set-firstcard` API function to configure first-card mode for a controller managed door.
 2. Added _first card_ privilege to `get-card`, `get-card-at-index` and `put-card`.
@@ -12,6 +11,7 @@
 1. Removed support for .NET7 (end of life).
 2. Reworked CLI examples to support `-bind`, `--broadcast` and `--listen` command line arguments.
 3. Reworked CLI examples to replace internal lookup list with `--dest` command line argument.
+4. Migrated from _github.com/uhppoted/uhppoted-lib-dotnet_ to _codeberg.org/uhppoted/uhppoted-lib-dotnet_.
 
 
 ## [0.9.0](https://github.com/uhppoted/uhppoted-lib-dotnet/releases/tag/v0.9.0) - 2026-01-27

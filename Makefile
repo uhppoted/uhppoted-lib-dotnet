@@ -39,6 +39,10 @@ clean:
 	cd integration-tests  && make clean
 	cd examples           && make clean
 
+push:
+	git push
+	git push bitbucket
+
 update:
 	@echo "update: nothing to do"
 
