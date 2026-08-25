@@ -316,9 +316,11 @@ static class ArgParse
             builder.WithEndDate(endDate);
         }
 
-        var pattern = @"\[(.*)\](?:,([^,]*)(?:,([ynYN])))?";
+        var pattern = @"\[(.*?)\](?:,([^,]*)(?:,\[(.*)\]))?";
         var m = Regex.Match(tokens[3], pattern);
         var permissions = m.Groups[1].Value.Split(',');
+        var privileges = m.Groups[3].Value.Split(',');
+
         byte door(int d)
         {
             if (permissions.Contains(d.ToString()))
@@ -345,9 +347,14 @@ static class ArgParse
             builder.WithPIN(PIN);
         }
 
-        if (m.Groups[3].Value == "y" || m.Groups[3].Value == "Y")
+        bool firstcard(int d)
         {
-            builder.WithFirstCard(true);
+            if (privileges.Contains(d.ToString()))
+            {
+                return true;
+            }
+
+            return false;
         }
 
         return builder
@@ -355,6 +362,7 @@ static class ArgParse
                .WithDoor2(door(2))
                .WithDoor3(door(3))
                .WithDoor4(door(4))
+               .WithFirstCard(firstcard(1), firstcard(2), firstcard(3), firstcard(4))
                .Build();
     }
 

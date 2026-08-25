@@ -38,7 +38,10 @@ type CardBuilder(card: uint32) =
     let mutable door3: uint8 = 0uy
     let mutable door4: uint8 = 0uy
     let mutable PIN: uint32 = 0u
-    let mutable FirstCard: bool = false
+    let mutable FirstCard1: bool = false
+    let mutable FirstCard2: bool = false
+    let mutable FirstCard3: bool = false
+    let mutable FirstCard4: bool = false
 
     /// Sets the card date from which the card is valid.
     /// - Parameter `date`: Card 'start date'.
@@ -104,8 +107,11 @@ type CardBuilder(card: uint32) =
     /// Sets the (optional) 'first card' privilege for the card.
     /// - Parameter `enabled`: Grants the 'first card' privilege if true (defaults to false).
     /// - Returns: The updated builder instance.
-    member this.WithFirstCard(enabled: bool) =
-        FirstCard <- enabled
+    member this.WithFirstCard(door1: bool, door2: bool, door3: bool, door4: bool) =
+        FirstCard1 <- door1
+        FirstCard2 <- door2
+        FirstCard3 <- door3
+        FirstCard4 <- door4
         this
 
     /// Builds a Card record.
@@ -120,7 +126,10 @@ type CardBuilder(card: uint32) =
           Door3 = door3
           Door4 = door4
           PIN = PIN
-          FirstCard = FirstCard }
+          FirstCard1 = FirstCard1
+          FirstCard2 = FirstCard2
+          FirstCard3 = FirstCard3
+          FirstCard4 = FirstCard4 }
 
 type TimeProfileBuilder(profile: uint8) =
     let mutable startDate: Nullable<DateOnly> = Nullable()

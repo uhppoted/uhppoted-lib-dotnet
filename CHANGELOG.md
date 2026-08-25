@@ -4,7 +4,7 @@
 
 ### Added
 1. `set-firstcard` API function to configure first-card mode for a controller managed door.
-2. Added _first card_ privilege to `get-card`, `get-card-at-index` and `put-card`.
+2. Added _first card_ privileges to `get-card`, `get-card-at-index` and `put-card`.
 3. Added checks and retries for _connect to self_ in UDP and TCP transports.
 
 ### Updated

@@ -375,16 +375,19 @@ let getCard (options, args) =
     match result with
     | Ok record ->
         printfn "get-card"
-        printfn "  controller %u" controller
-        printfn "        card %u" record.Card
-        printfn "  start date %s" (YYYYMMDD(record.StartDate))
-        printfn "    end date %s" (YYYYMMDD(record.EndDate))
-        printfn "      door 1 %u" record.Door1
-        printfn "      door 2 %u" record.Door2
-        printfn "      door 3 %u" record.Door3
-        printfn "      door 4 %u" record.Door4
-        printfn "         PIN %u" record.PIN
-        printfn "  first-card %b" record.FirstCard
+        printfn "    controller %u" controller
+        printfn "          card %u" record.Card
+        printfn "    start date %s" (YYYYMMDD(record.StartDate))
+        printfn "      end date %s" (YYYYMMDD(record.EndDate))
+        printfn "       doors 1 %u" record.Door1
+        printfn "             2 %u" record.Door2
+        printfn "             3 %u" record.Door3
+        printfn "             4 %u" record.Door4
+        printfn "           PIN %u" record.PIN
+        printfn "  first-card 1 %b" record.FirstCard1
+        printfn "             2 %b" record.FirstCard2
+        printfn "             3 %b" record.FirstCard3
+        printfn "             4 %b" record.FirstCard4
         printfn ""
         Ok()
     | Error CardNotFound -> Error "card not found"
@@ -393,7 +396,7 @@ let getCard (options, args) =
 let getCardAtIndex (options, args) =
     let dest: Destination = argparse args "--dest" Unchecked.defaultof<_>
     let controller = argparse args "--controller" CONTROLLER
-    let index = argparse args "--card" CARD_INDEX
+    let index = argparse args "--index" CARD_INDEX
 
     let result =
         match resolve (controller, dest) with
@@ -405,16 +408,19 @@ let getCardAtIndex (options, args) =
         let record = v.Value
 
         printfn "get-card-at-index"
-        printfn "  controller %u" controller
-        printfn "        card %u" record.Card
-        printfn "  start date %s" (YYYYMMDD(record.StartDate))
-        printfn "    end date %s" (YYYYMMDD(record.EndDate))
-        printfn "      door 1 %u" record.Door1
-        printfn "      door 2 %u" record.Door2
-        printfn "      door 3 %u" record.Door3
-        printfn "      door 4 %u" record.Door4
-        printfn "         PIN %u" record.PIN
-        printfn "  first-card %b" record.FirstCard
+        printfn "    controller %u" controller
+        printfn "          card %u" record.Card
+        printfn "    start date %s" (YYYYMMDD(record.StartDate))
+        printfn "      end date %s" (YYYYMMDD(record.EndDate))
+        printfn "       doors 1 %u" record.Door1
+        printfn "             2 %u" record.Door2
+        printfn "             3 %u" record.Door3
+        printfn "             4 %u" record.Door4
+        printfn "           PIN %u" record.PIN
+        printfn "  first-card 1 %b" record.FirstCard1
+        printfn "             2 %b" record.FirstCard2
+        printfn "             3 %b" record.FirstCard3
+        printfn "             4 %b" record.FirstCard4
         printfn ""
         Ok()
     | Ok _ -> Error "card not found"
@@ -433,16 +439,19 @@ let putCard (options, args) =
     match result with
     | Ok ok ->
         printfn "put-card"
-        printfn "  controller %u" controller
-        printfn "        card %u" card.Card
-        printfn "  start date %s" (YYYYMMDD(card.StartDate))
-        printfn "    end date %s" (YYYYMMDD(card.EndDate))
-        printfn "      door 1 %u" card.Door1
-        printfn "      door 2 %u" card.Door2
-        printfn "      door 3 %u" card.Door3
-        printfn "      door 4 %u" card.Door4
-        printfn "         PIN %u" card.PIN
-        printfn "  first-card %b" card.FirstCard
+        printfn "    controller %u" controller
+        printfn "          card %u" card.Card
+        printfn "    start date %s" (YYYYMMDD(card.StartDate))
+        printfn "      end date %s" (YYYYMMDD(card.EndDate))
+        printfn "       doors 1 %u" card.Door1
+        printfn "             2 %u" card.Door2
+        printfn "             3 %u" card.Door3
+        printfn "             4 %u" card.Door4
+        printfn "           PIN %u" card.PIN
+        printfn "  first-card 1 %b" card.FirstCard1
+        printfn "             2 %b" card.FirstCard2
+        printfn "             3 %b" card.FirstCard3
+        printfn "             4 %b" card.FirstCard4
         printfn "          ok %b" ok
         printfn ""
         Ok()

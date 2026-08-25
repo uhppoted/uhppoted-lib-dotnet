@@ -215,14 +215,17 @@ type TestDecoder() =
         let expected: GetCardResponse =
             { controller = 405419896u
               card = 10058400u
-              startDate = Nullable(DateOnly(2024, 1, 1))
-              endDate = Nullable(DateOnly(2024, 12, 31))
+              startDate = Nullable(DateOnly(2026, 1, 1))
+              endDate = Nullable(DateOnly(2026, 12, 31))
               door1 = 1uy
               door2 = 0uy
               door3 = 17uy
               door4 = 1uy
               PIN = 999999u
-              FirstCard = true }
+              firstcard1 = true
+              firstcard2 = true
+              firstcard3 = false
+              firstcard4 = true }
 
         match Decode.getCardResponse packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))
@@ -235,14 +238,17 @@ type TestDecoder() =
         let expected: GetCardAtIndexResponse =
             { controller = 405419896u
               card = 10058400u
-              startDate = Nullable(DateOnly(2024, 1, 1))
-              endDate = Nullable(DateOnly(2024, 12, 31))
+              startDate = Nullable(DateOnly(2026, 1, 1))
+              endDate = Nullable(DateOnly(2026, 12, 31))
               door1 = 1uy
               door2 = 0uy
               door3 = 17uy
               door4 = 1uy
               PIN = 999999u
-              FirstCard = true }
+              firstcard1 = true
+              firstcard2 = false
+              firstcard3 = true
+              firstcard4 = true }
 
         match Decode.getCardAtIndexResponse packet with
         | Ok response -> Assert.That(response, Is.EqualTo(expected))

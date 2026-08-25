@@ -18,6 +18,10 @@ A `Card` record has the following fields:
   - `Door3` (`uint8`): Door 3 access permission (0: NONE, 1: ALWAYS, [2.254]: time profile).
   - `Door4` (`uint8`): Door 4 access permission (0: NONE, 1: ALWAYS, [2.254]: time profile).
   - `PIN` (`uint32`): Optional card PIN (0 for _none_).
+  - `FirstCard1` (`bool`): true if the card has _first card_ privilege for door 1.
+  - `FirstCard2` (`bool`): true if the card has _first card_ privilege for door 2.
+  - `FirstCard3` (`bool`): true if the card has _first card_ privilege for door 3.
+  - `FirstCard4` (`bool`): true if the card has _first card_ privilege for door 4.
 
 #### CardBuilder
 
@@ -30,6 +34,7 @@ A `Card` record has the following fields:
 - **`WithDoor3(profile: uint8)`**: Sets the access profile for door 3.
 - **`WithDoor4(profile: uint8)`**: Sets the access profile for door 4.
 - **`WithPIN(pin: uint32)`**: Sets the optional card keypad PIN code.
+- **`WithFirstCard(door1: bool, door2: bool, door3: bool, door4: bool)`**: Sets the card first-card privileges.
 - **`Build()`**: Builds the `Card` struct.
 
 ```csharp
@@ -40,6 +45,7 @@ static readonly Card card = new CardBuilder(10058400u)
                                 .WithDoor2(0)
                                 .WithDoor3(17)
                                 .WithDoor4(1)
+                                .WithFirstCard(true, true, false, true)
                                 .Build();
 ```
 
@@ -56,6 +62,7 @@ Private ReadOnly Dim card = New CardBuilder().
                                 WithDoor2(0).
                                 WithDoor3(17).
                                 WithDoor4(1).
+                                WithFirstCard(True, True, False, True).
                                 Build()
 ```
 
@@ -79,15 +86,15 @@ let card: Card = {
     Door2 = 0uy
     Door3 = 17uy
     Door4 = 1uy
-    PIN = 7531u }
+    PIN = 7531u
+    FirstCard1 = true
+    FirstCard2 = true
+    FirstCard3 = false
+    FirstCard4 = true }
 
 let options = { broadcast = IPAddress.Broadcast; timeout = 1250; debug = true }
 
-                              .WithEndPoint(IPEndPoint.Parse("192.168.1.100:60000"))
-                              .WithProtocol("udp")
-                              .Build()
-
-
+let controller = { 
     controller=405419896u; 
     endpoint=Some(IPEndPoint.Parse("192.168.1.100:60000")); 
     protocol=Some("tcp") }
@@ -110,6 +117,7 @@ var card = new CardBuilder(10058400u)
                .WithDoor2(0)
                .WithDoor3(17)
                .WithDoor4(1)
+               .WithFirstCard(true, true, false, true)
                .Build();
 
 var options = new OptionsBuilder().WithTimeout(1250).build();
@@ -150,6 +158,7 @@ Dim card = New CardBuilder().
                WithDoor2(0).
                WithDoor3(17).
                WithDoor4(1).
+               WithFirstCard(True, True, False, True).
                Build()
 
 Dim options As New OptionsBuilder().WithTimeout(1250).build()

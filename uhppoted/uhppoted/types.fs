@@ -219,8 +219,17 @@ type Card =
         /// Optional PIN code for card reader keypad (1-999999, 0 for none).
         PIN: uint32
 
-        /// 'First card' privilege.
-        FirstCard: bool
+        /// 'First card' privilege for door1.
+        FirstCard1: bool
+
+        /// 'First card' privilege for door2.
+        FirstCard2: bool
+
+        /// 'First card' privilege for door3.
+        FirstCard3: bool
+
+        /// 'First card' privilege for door4.
+        FirstCard4: bool
     }
 
 /// Time profile configuration information.

@@ -25,7 +25,10 @@ A `Card` record has the following fields:
   - `Door3` (`uint8`): Door 3 access permission (0: NONE, 1: ALWAYS, [2.254]: time profile).
   - `Door4` (`uint8`): Door 4 access permission (0: NONE, 1: ALWAYS, [2.254]: time profile).
   - `PIN` (`uint32`): Optional card PIN (0 for _none_).
-  - `FirstCard` (`bool`): true if the card has _first card_ privileges.
+  - `FirstCard1` (`bool`): true if the card has _first card_ privilege for door 1.
+  - `FirstCard2` (`bool`): true if the card has _first card_ privilege for door 2.
+  - `FirstCard3` (`bool`): true if the card has _first card_ privilege for door 3.
+  - `FirstCard4` (`bool`): true if the card has _first card_ privilege for door 4.
 
 ### Examples
 #### F#

@@ -297,9 +297,11 @@ Module ArgParse
             builder.WithEndDate(endDate)
         End If
 
-        Dim pattern = "\[(.*)\](?:,([^,]*)(?:,([ynYN])))?"
+        Dim pattern = "\[(.*?)\](?:,([^,]*)(?:,\[(.*)\]))?"
         Dim m = Regex.Match(tokens(3), pattern)
         Dim permissions = m.Groups(1).Value.Split(","c)
+        Dim privileges = m.Groups(3).Value.Split(","c)
+
         Dim door = Function(d As Integer) As Byte
                        If permissions.Contains(d.ToString()) Then
                            Return 1
@@ -322,15 +324,20 @@ Module ArgParse
             builder.WithPIN(PIN)
         End If
 
-        If m.Groups(3).Value = "y" OrElse m.Groups(3).Value = "Y" Then
-            builder.WithFirstCard(true)
-        End If
+        Dim firstcard = Function(d As Integer) As Byte
+                            If privileges.Contains(d.ToString()) Then
+                                Return True
+                            End If
+
+                            Return False
+                        End Function
 
         Return builder.
                WithDoor1(door(1)).
                WithDoor2(door(2)).
                WithDoor3(door(3)).
                WithDoor4(door(4)).
+               WithFirstCard(firstcard(1), firstcard(2), firstcard(3), firstcard(4)).
                Build()
     End Function
 

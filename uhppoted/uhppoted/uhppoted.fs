@@ -430,7 +430,10 @@ module Uhppoted =
                       Door3 = response.door3
                       Door4 = response.door4
                       PIN = response.PIN
-                      FirstCard = response.FirstCard }
+                      FirstCard1 = response.firstcard1
+                      FirstCard2 = response.firstcard2
+                      FirstCard3 = response.firstcard3
+                      FirstCard4 = response.firstcard4 }
             | Error err -> Error err
 
     /// <summary>
@@ -464,7 +467,10 @@ module Uhppoted =
                           Door3 = response.door3
                           Door4 = response.door4
                           PIN = response.PIN
-                          FirstCard = response.FirstCard }
+                          FirstCard1 = response.firstcard1
+                          FirstCard2 = response.firstcard2
+                          FirstCard3 = response.firstcard3
+                          FirstCard4 = response.firstcard4 }
                 )
             | Error err -> Error err
 

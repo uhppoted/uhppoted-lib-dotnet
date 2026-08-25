@@ -258,7 +258,10 @@ module internal Decode =
                   door3 = unpackU8 (packet[22..])
                   door4 = unpackU8 (packet[23..])
                   PIN = unpackU24 (packet[24..])
-                  FirstCard = unpackBool (packet[27..]) }
+                  firstcard1 = unpackU8 (packet[27..]) &&& 0x01uy = 0x01uy
+                  firstcard2 = unpackU8 (packet[27..]) &&& 0x02uy = 0x02uy
+                  firstcard3 = unpackU8 (packet[27..]) &&& 0x04uy = 0x04uy
+                  firstcard4 = unpackU8 (packet[27..]) &&& 0x08uy = 0x08uy }
 
     let getCardAtIndexResponse (packet: byte array) : Result<GetCardAtIndexResponse, string> =
         if packet[0] <> messages.SOM then
@@ -276,7 +279,10 @@ module internal Decode =
                   door3 = unpackU8 (packet[22..])
                   door4 = unpackU8 (packet[23..])
                   PIN = unpackU24 (packet[24..])
-                  FirstCard = unpackBool (packet[27..]) }
+                  firstcard1 = unpackU8 (packet[27..]) &&& 0x01uy = 0x01uy
+                  firstcard2 = unpackU8 (packet[27..]) &&& 0x02uy = 0x02uy
+                  firstcard3 = unpackU8 (packet[27..]) &&& 0x04uy = 0x04uy
+                  firstcard4 = unpackU8 (packet[27..]) &&& 0x08uy = 0x08uy }
 
     let putCardResponse (packet: byte array) : Result<PutCardResponse, string> =
         if packet[0] <> messages.SOM then

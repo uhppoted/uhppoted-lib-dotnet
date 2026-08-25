@@ -183,14 +183,17 @@ type TestEncoder() =
 
         let card: Card =
             { Card = 10058400u
-              StartDate = Nullable(DateOnly(2024, 1, 1))
-              EndDate = Nullable(DateOnly(2024, 12, 31))
+              StartDate = Nullable(DateOnly(2026, 1, 1))
+              EndDate = Nullable(DateOnly(2026, 12, 31))
               Door1 = 1uy
               Door2 = 0uy
               Door3 = 17uy
               Door4 = 1uy
               PIN = 999999u
-              FirstCard = true }
+              FirstCard1 = true
+              FirstCard2 = false
+              FirstCard3 = true
+              FirstCard4 = true }
 
         let packet = Encode.putCardRequest controller card
 

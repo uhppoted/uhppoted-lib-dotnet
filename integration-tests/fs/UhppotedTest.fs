@@ -490,14 +490,17 @@ type TestAPI(tt: string) =
     member this.TestGetCard() =
         let expected: Card =
             { Card = 10058400u
-              StartDate = Nullable(DateOnly(2024, 1, 1))
-              EndDate = Nullable(DateOnly(2024, 12, 31))
+              StartDate = Nullable(DateOnly(2026, 1, 1))
+              EndDate = Nullable(DateOnly(2026, 12, 31))
               Door1 = 1uy
               Door2 = 0uy
               Door3 = 17uy
               Door4 = 1uy
               PIN = 7531u
-              FirstCard = true }
+              FirstCard1 = true
+              FirstCard2 = true
+              FirstCard3 = false
+              FirstCard4 = true }
 
         match controllers[tt] with
         | Id controller ->
@@ -529,14 +532,17 @@ type TestAPI(tt: string) =
     member this.TestGetCardAtIndex() =
         let expected: Card =
             { Card = 10058400u
-              StartDate = Nullable(DateOnly(2024, 1, 1))
-              EndDate = Nullable(DateOnly(2024, 12, 31))
+              StartDate = Nullable(DateOnly(2026, 1, 1))
+              EndDate = Nullable(DateOnly(2026, 12, 31))
               Door1 = 1uy
               Door2 = 0uy
               Door3 = 17uy
               Door4 = 1uy
               PIN = 7531u
-              FirstCard = true }
+              FirstCard1 = true
+              FirstCard2 = false
+              FirstCard3 = true
+              FirstCard4 = true }
 
         match controllers[tt] with
         | Id controller ->
@@ -585,14 +591,17 @@ type TestAPI(tt: string) =
 
         let card: Card =
             { Card = CARD
-              StartDate = Nullable(DateOnly(2024, 1, 1))
-              EndDate = Nullable(DateOnly(2024, 12, 31))
+              StartDate = Nullable(DateOnly(2026, 1, 1))
+              EndDate = Nullable(DateOnly(2026, 12, 31))
               Door1 = 1uy
               Door2 = 0uy
               Door3 = 17uy
               Door4 = 1uy
               PIN = 7531u
-              FirstCard = true }
+              FirstCard1 = false
+              FirstCard2 = true
+              FirstCard3 = true
+              FirstCard4 = true }
 
         match controllers[tt] with
         | Id controller ->

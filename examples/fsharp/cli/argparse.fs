@@ -215,9 +215,10 @@ let (|Card|_|) (value: string) =
                 | true, v -> Nullable(v)
                 | _ -> Nullable()
 
-            let pattern = @"\[(.*)\](?:,([^,]*)(?:,([ynYN])))?"
+            let pattern = @"\[(.*?)\](?:,([^,]*)(?:,\[(.*)\]))?"
             let m = Regex.Match(rest[0], pattern)
             let permissions = m.Groups.[1].Value.Split(',')
+            let privileges = m.Groups.[3].Value.Split(',')
 
             let door d =
                 match permissions |> Array.tryFind (fun v -> v = string d) with
@@ -240,11 +241,10 @@ let (|Card|_|) (value: string) =
                 | (true, v) -> v
                 | _ -> 0u
 
-            let firstcard =
-                match m.Groups[3].Value with
-                | "Y"
-                | "y" -> true
-                | _ -> false
+            let firstcard d =
+                match privileges |> Array.tryFind (fun v -> v = string d) with
+                | Some _ -> true
+                | None -> false
 
             Some
                 { Card = card
@@ -255,7 +255,10 @@ let (|Card|_|) (value: string) =
                   Door3 = (door 3)
                   Door4 = (door 4)
                   PIN = PIN
-                  FirstCard = firstcard }
+                  FirstCard1 = (firstcard 1)
+                  FirstCard2 = (firstcard 2)
+                  FirstCard3 = (firstcard 3)
+                  FirstCard4 = (firstcard 4) }
 
         | _ -> None
 

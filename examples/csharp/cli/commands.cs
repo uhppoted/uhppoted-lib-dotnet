@@ -465,16 +465,19 @@ class Commands
             var record = result.ResultValue;
 
             WriteLine("get-card");
-            WriteLine("  controller {0}", controller);
-            WriteLine("        card {0}", record.Card);
-            WriteLine("  start date {0}", (YYYYMMDD(record.StartDate)));
-            WriteLine("    end date {0}", (YYYYMMDD(record.EndDate)));
-            WriteLine("      door 1 {0}", record.Door1);
-            WriteLine("      door 2 {0}", record.Door2);
-            WriteLine("      door 3 {0}", record.Door3);
-            WriteLine("      door 4 {0}", record.Door4);
-            WriteLine("         PIN {0}", record.PIN);
-            WriteLine("  first-card {0}", record.FirstCard);
+            WriteLine("    controller {0}", controller);
+            WriteLine("          card {0}", record.Card);
+            WriteLine("    start date {0}", (YYYYMMDD(record.StartDate)));
+            WriteLine("      end date {0}", (YYYYMMDD(record.EndDate)));
+            WriteLine("        door 1 {0}", record.Door1);
+            WriteLine("             2 {0}", record.Door2);
+            WriteLine("             3 {0}", record.Door3);
+            WriteLine("             4 {0}", record.Door4);
+            WriteLine("           PIN {0}", record.PIN);
+            WriteLine("  first-card 1 {0}", record.FirstCard1);
+            WriteLine("             2 {0}", record.FirstCard2);
+            WriteLine("             3 {0}", record.FirstCard3);
+            WriteLine("             4 {0}", record.FirstCard4);
             WriteLine();
         }
         else if (result.IsError && result.ErrorValue == CardNotFound)
@@ -502,16 +505,19 @@ class Commands
             var record = result.ResultValue.Value;
 
             WriteLine("get-card-at-index");
-            WriteLine("  controller {0}", controller);
-            WriteLine("        card {0}", record.Card);
-            WriteLine("  start date {0}", (YYYYMMDD(record.StartDate)));
-            WriteLine("    end date {0}", (YYYYMMDD(record.EndDate)));
-            WriteLine("      door 1 {0}", record.Door1);
-            WriteLine("      door 2 {0}", record.Door2);
-            WriteLine("      door 3 {0}", record.Door3);
-            WriteLine("      door 4 {0}", record.Door4);
-            WriteLine("         PIN {0}", record.PIN);
-            WriteLine("  first-card {0}", record.FirstCard);
+            WriteLine("    controller {0}", controller);
+            WriteLine("          card {0}", record.Card);
+            WriteLine("    start date {0}", (YYYYMMDD(record.StartDate)));
+            WriteLine("      end date {0}", (YYYYMMDD(record.EndDate)));
+            WriteLine("        door 1 {0}", record.Door1);
+            WriteLine("             2 {0}", record.Door2);
+            WriteLine("             3 {0}", record.Door3);
+            WriteLine("             4 {0}", record.Door4);
+            WriteLine("           PIN {0}", record.PIN);
+            WriteLine("  first-card 1 {0}", record.FirstCard1);
+            WriteLine("             2 {0}", record.FirstCard2);
+            WriteLine("             3 {0}", record.FirstCard3);
+            WriteLine("             4 {0}", record.FirstCard4);
             WriteLine();
         }
         else if (result.IsOk)
@@ -539,18 +545,22 @@ class Commands
             var ok = result.ResultValue;
 
             WriteLine("put-card");
-            WriteLine("  controller {0}", controller);
-            WriteLine("        card {0}", card.Card);
-            WriteLine("  start date {0}", (YYYYMMDD(card.StartDate)));
-            WriteLine("    end date {0}", (YYYYMMDD(card.EndDate)));
-            WriteLine("      door 1 {0}", card.Door1);
-            WriteLine("      door 2 {0}", card.Door2);
-            WriteLine("      door 3 {0}", card.Door3);
-            WriteLine("      door 4 {0}", card.Door4);
-            WriteLine("         PIN {0}", card.PIN);
-            WriteLine("  first-card {0}", card.FirstCard);
+            WriteLine("    controller {0}", controller);
+            WriteLine("          card {0}", card.Card);
+            WriteLine("    start date {0}", (YYYYMMDD(card.StartDate)));
+            WriteLine("      end date {0}", (YYYYMMDD(card.EndDate)));
+            WriteLine("        door 1 {0}", card.Door1);
+            WriteLine("             2 {0}", card.Door2);
+            WriteLine("             3 {0}", card.Door3);
+            WriteLine("             4 {0}", card.Door4);
+            WriteLine("           PIN {0}", card.PIN);
+            WriteLine("  first-card 1 {0}", card.FirstCard1);
+            WriteLine("             2 {0}", card.FirstCard2);
+            WriteLine("             3 {0}", card.FirstCard3);
+            WriteLine("             4 {0}", card.FirstCard4);
             WriteLine("          ok {0}", ok);
             WriteLine();
+
         }
         else if (result.IsError)
         {

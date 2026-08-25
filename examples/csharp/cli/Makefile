@@ -10,7 +10,8 @@ DOOR ?= 3
 
 CARD_NUMBER ?= 10058400
 MISSING_CARD ?= 10058399
-CARD ?= "10058400,2026-02-03,2026-12-29,[1,2,4:17],7531,Y"
+CARD ?= "10058400,2026-02-03,2026-12-29,[1,2,4:17],7531,[1,3,4]"
+CARD_INDEX ?= 1
 
 ADDRESS ?= 192.168.1.100
 NETMASK ?= 255.255.255.0
@@ -93,7 +94,7 @@ get-card: build
 	$(CLI) get-card --controller $(CONTROLLER) --card $(MISSING_CARD)
 
 get-card-at-index: build
-	$(CLI) get-card-at-index --controller $(CONTROLLER)
+	$(CLI) get-card-at-index --controller $(CONTROLLER) --index $(CARD_INDEX)
 
 put-card: build
 	$(CLI) put-card --controller $(CONTROLLER) --card $(CARD)

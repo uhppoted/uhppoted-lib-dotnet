@@ -287,6 +287,19 @@ module internal Encode =
 
     let putCardRequest (controller: uint32) (card: Card) =
         let packet: byte array = Array.zeroCreate 64
+        let mutable firstcard: byte = 0x00uy
+
+        if card.FirstCard1 then
+            firstcard <- firstcard ||| 0x01uy
+
+        if card.FirstCard2 then
+            firstcard <- firstcard ||| 0x02uy
+
+        if card.FirstCard3 then
+            firstcard <- firstcard ||| 0x04uy
+
+        if card.FirstCard4 then
+            firstcard <- firstcard ||| 0x08uy
 
         pack packet 0 (byte messages.SOM)
         pack packet 1 (byte messages.PUT_CARD)
@@ -299,7 +312,7 @@ module internal Encode =
         pack packet 22 card.Door3
         pack packet 23 card.Door4
         packU24 packet 24 card.PIN
-        pack packet 27 card.FirstCard
+        pack packet 27 firstcard
 
         packet
 
