@@ -1,6 +1,5 @@
-![build](https://github.com/uhppoted/uhppoted-lib-dotnet/workflows/build/badge.svg)
-![integration-tests](https://github.com/uhppoted/uhppoted-lib-dotnet/workflows/integration-tests/badge.svg)
-![nightly](https://github.com/uhppoted/uhppoted-lib-dotnet/workflows/nightly/badge.svg)
+![build](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/twystd/2609d9356470acaf904386ce4a74f54e/raw/uhppoted-lib-dotnet.json)
+![integration-tests](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/twystd/2609d9356470acaf904386ce4a74f54e/raw/uhppoted-lib-dotnet-integration-tests.json)
 
 # uhppoted-lib-dotnet
 
@@ -15,7 +14,6 @@ and [_VB.NET_](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/tree/main/examp
 - [Release Notes](#release-notes)
 - [Installation](#installation)
    - [Installing from nuget.org](#installing-from-the-nuget-registry)
-   - [Installing from Github Packages](#installing-from-github-packages)
    - [Building from source](#building-from-source)
    - [C#](#c)
    - [VB.NET](vbnet)
@@ -29,7 +27,7 @@ and [_VB.NET_](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/tree/main/examp
 
 #### Current Release
 
-**[v0.9.0](https://github.com/uhppoted/uhppoted-lib-dotnet/releases/tag/v0.9.0) - 2026-01-27**
+**[v0.9.0](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/releases/tag/v0.9.0) - 2026-01-27**
 
 1. Updated for .NET10
 
@@ -55,34 +53,6 @@ NuGet\Install-Package uhppoted -Version 0.9.0
 ```
 
 After installing the package it should be referenced in the _project_ file, e.g.:
-```
-  ...
-  <ItemGroup>
-    <PackageReference Include="uhppoted" Version="0.9.0" />
-  </ItemGroup>
-  ...
-```
-
-### Installing from Github Packages
-
-Installing from the _Github Packages_ _NuGet_ registry requires a [_Personal Access Token (classic)_](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic)
-with at least `package: read` permissions.
-
-- _dotnet CLI_:
-   ```
-   dotnet nuget add source --username <username> --password <personal-access-token> --store-password-in-clear-text --name uhppoted "https://nuget.pkg.codeberg.org/uhppoted/index.json"
-   dotnet nuget add source https://nuget.pkg.codeberg.org/uhppoted/index.json
-   dotnet add package uhppoted --version 0.9.0
-
-   ```
-
-- _Package Manager_ (console):
-   ```
-   NuGet\Set-Source -Name "uhppoted" -Source "https://nuget.pkg.codeberg.org/uhppoted/index.json" -Username "<username>" -Password "<personal-access-token>"
-   NuGet\Install-Package uhppoted -Version 0.9.0
-   ```
-
-After installing the package it should be referenced in the _project_ file, e.g:
 ```
   ...
   <ItemGroup>

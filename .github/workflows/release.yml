@@ -2,8 +2,8 @@ name: release
 
 on:
   workflow_dispatch:
-  release:
-    types: [published]
+  # release:
+  #   types: [published]
 
 jobs:
 
@@ -16,7 +16,7 @@ jobs:
     steps:
 
     - name: Set up .NET
-      uses: actions/setup-dotnet@v5
+      uses: actions/setup-dotnet@v7
 
     - name: Check out code
       uses: actions/checkout@v6
