@@ -1,5 +1,7 @@
 ![build](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/twystd/2609d9356470acaf904386ce4a74f54e/raw/uhppoted-lib-dotnet.json)
+<!--
 ![integration-tests](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/twystd/2609d9356470acaf904386ce4a74f54e/raw/uhppoted-lib-dotnet-integration-tests.json)
+-->
 
 # uhppoted-lib-dotnet
 
