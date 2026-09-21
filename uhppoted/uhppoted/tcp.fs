@@ -55,8 +55,8 @@ module internal TCP =
                 sockets <- socket :: sockets
 
                 socket.Client.SetSocketOption(SocketOptionLevel.Socket, SocketOptionName.ReuseAddress, true)
-                socket.Connect(dest)
 
+                // NTS: unlike Python/NodeJS, .NET assigns the port before socket.Connect(..).
                 let endpoint = socket.Client.LocalEndPoint :?> IPEndPoint
 
                 if endpoint = dest && src.Port <> 0 then
@@ -64,11 +64,15 @@ module internal TCP =
                 elif endpoint = dest && retries >= 5 then
                     failwithf "TCP bind address:port %A is the same as destination" endpoint
                 elif endpoint = dest then
+                    // NTS: close the write side only to signal the other side nothing is coming its way (otherwise you get
+                    //      weird timeout issues while it waits for a request that it is never going to get).
+                    socket.Client.Shutdown(SocketShutdown.Send)
                     loop (retries + 1)
                 else
+                    socket.Connect(dest)
                     socket
 
-            loop 0
+            loop 1
 
         try
             let socket = connect

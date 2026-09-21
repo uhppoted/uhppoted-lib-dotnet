@@ -4,6 +4,7 @@ BIND ?= 192.168.1.125
 BROADCAST ?= 192.168.1.255:60000
 LISTEN ?= 192.168.1.125:60001
 TIMEOUT?= 1.25 
+DEST ?= 192.168.1.125
 
 CLI = dotnet run --project ./examples/fsharp/cli --framework net10.0  --debug --bind $(BIND) --broadcast $(BROADCAST) --listen $(LISTEN) --timeout $(TIMEOUT)
 
@@ -83,6 +84,12 @@ find-controllers:
 
 get-controller:
 	$(CLI) get-controller --controller $(CONTROLLER)
+
+get-controller-udp:
+	$(CLI) get-controller --dest udp::$(DEST) --controller $(CONTROLLER)
+
+get-controller-tcp:
+	$(CLI) get-controller --dest tcp::$(DEST) --controller $(CONTROLLER)
 
 set-IPv4:
 	$(CLI) set-IPv4 --controller $(CONTROLLER) --address $(ADDRESS) --netmask $(NETMASK) --gateway $(GATEWAY)

@@ -102,7 +102,7 @@ module internal UDP =
                 else
                     socket
 
-            loop 0
+            loop 1
 
         try
             let socket = bind
@@ -161,7 +161,7 @@ module internal UDP =
                 else
                     socket
 
-            loop 0
+            loop 1
 
         try
             let socket = bind
@@ -237,7 +237,7 @@ module internal UDP =
                 else
                     socket
 
-            loop 0
+            loop 1
 
         try
             let socket = connect
