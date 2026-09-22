@@ -71,7 +71,7 @@ let exec options args =
 
 [<EntryPoint>]
 let main args =
-    printfn "** uhppoted-lib-dotnet F# CLI v0.9.1\n"
+    printfn "** uhppoted-lib-dotnet F# CLI v0.9.2\n"
 
     let options, cmd = parse defaults (List.ofSeq args)
 

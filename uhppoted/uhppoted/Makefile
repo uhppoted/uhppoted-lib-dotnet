@@ -1,3 +1,6 @@
+NUPKG ?= uhppoted.0.9.2.nupkg
+NUGET_API_KEY ?= abcedfghijklmnopqrstuvwxyz1234567890
+
 clean:
 	dotnet clean
 	rm -rf bin
@@ -28,6 +31,6 @@ publish-github:
 	dotnet nuget push dist --no-symbols --source "github" --api-key "${GITHUB_API_KEY}" --skip-duplicate
 
 publish-nuget: 
-	dotnet nuget push dist --source https://api.nuget.org/v3/index.json --api-key ${NUGET_API_KEY} --skip-duplicate
+	dotnet nuget push dist/$(NUPKG) --source https://api.nuget.org/v3/index.json --api-key ${NUGET_API_KEY} --skip-duplicate
 
 publish: publish-nuget
