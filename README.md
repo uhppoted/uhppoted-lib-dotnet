@@ -29,9 +29,15 @@ and [_VB.NET_](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/tree/main/examp
 
 #### Current Release
 
-**[v0.9.0](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/releases/tag/v0.9.0) - 2026-01-27**
+**[v0.9.1](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/releases/tag/v0.9.1) - 2026-09-22**
 
-1. Updated for .NET10
+1. Migrated from _github_ to _codeberg_.
+2. Removed support for .NET7 (end of life).
+3. Added `set-firstcard` API function to configure first-card mode for a controller managed door.
+4. Added _first card_ privileges to `get-card`, `get-card-at-index` and `put-card`.
+5. Added checks and retries for _connect to self_ in UDP and TCP transports.
+6. Reworked CLI examples to support `-bind`, `--broadcast` and `--listen` command line arguments.
+7. Reworked CLI examples to replace internal lookup list with `--dest` command line argument.
 
 
 ## Installation

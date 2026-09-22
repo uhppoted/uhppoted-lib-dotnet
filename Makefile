@@ -69,9 +69,9 @@ release:
 
 publish: release
 	@echo "Releasing version $(VERSION)"
-	gh release create "$(VERSION)" "./uhppoted/uhppoted/dist/uhppoted.$(NUPKG).nupkg"  \
-	                               "./uhppoted/uhppoted/dist/uhppoted.$(NUPKG).snupkg" \
-	                               --draft --prerelease --title "$(VERSION)-beta" --notes-file release-notes.md
+# 	gh release create "$(VERSION)" "./uhppoted/uhppoted/dist/uhppoted.$(NUPKG).nupkg"  \
+# 	                               "./uhppoted/uhppoted/dist/uhppoted.$(NUPKG).snupkg" \
+# 	                               --draft --prerelease --title "$(VERSION)-beta" --notes-file release-notes.md
 
 debug: build
 	$(CLI) get-controller --dest tcp::192.168.1.125 --controller 303986753

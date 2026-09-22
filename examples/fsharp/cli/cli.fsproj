@@ -13,10 +13,6 @@
     <TargetFrameworks>net8.0</TargetFrameworks>
   </PropertyGroup>
 
-  <PropertyGroup Condition="'$(NETCoreSdkVersion)' &lt; '8.0'">
-    <TargetFrameworks>net7.0</TargetFrameworks>
-  </PropertyGroup>
-
   <ItemGroup>
     <Compile Include="argparse.fs" />
     <Compile Include="commands.fs" />

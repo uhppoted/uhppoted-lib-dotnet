@@ -30,4 +30,4 @@ publish-github:
 publish-nuget: 
 	dotnet nuget push dist --source https://api.nuget.org/v3/index.json --api-key ${NUGET_API_KEY} --skip-duplicate
 
-publish: publish-github publish-nuget
+publish: publish-nuget

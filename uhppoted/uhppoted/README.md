@@ -1,16 +1,17 @@
 # uhppoted
+# uhppoted-lib-dotnet
 
 .NET package for the UHPPOTE UT0311-L0x* TCP/IP Wiegand access controller API.
 
 The API is described in detail in the [API](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/API.md) documentation and examples 
-in [_F#_](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/tree/main/examples/fsharp), [_C#_](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/tree/main/examples/csharp) 
+in [_F#_](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/tree/main/examples/fsharp), 
+[_C#_](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/tree/main/examples/csharp) 
 and [_VB.NET_](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/tree/main/examples/vb) are included to illustrate the use of the API.
 
 ---
 - [Release Notes](#release-notes)
 - [Installation](#installation)
    - [Installing from nuget.org](#installing-from-the-nuget-registry)
-   - [Installing from Github Packages](#installing-from-github-packages)
    - [Building from source](#building-from-source)
    - [C#](#c)
    - [VB.NET](vbnet)
@@ -24,15 +25,21 @@ and [_VB.NET_](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/tree/main/examp
 
 #### Current Release
 
-**[v0.9.0](https://github.com/uhppoted/uhppoted-lib-dotnet/releases/tag/v0.9.0) - 2026-01-27**
+**[v0.9.1](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/releases/tag/v0.9.1) - 2026-09-22**
 
-1. Updated for .NET10
+1. Migrated from _github_ to _codeberg_.
+2. Removed support for .NET7 (end of life).
+3. Added `set-firstcard` API function to configure first-card mode for a controller managed door.
+4. Added _first card_ privileges to `get-card`, `get-card-at-index` and `put-card`.
+5. Added checks and retries for _connect to self_ in UDP and TCP transports.
+6. Reworked CLI examples to support `-bind`, `--broadcast` and `--listen` command line arguments.
+7. Reworked CLI examples to replace internal lookup list with `--dest` command line argument.
 
 
 ## Installation
 
 The package can be installed from either the [_NuGet_](https://www.nuget.org/packages/uhppoted) registry or
-[_Github Packages_](https://github.com/uhppoted/uhppoted-lib-dotnet/pkgs/nuget/uhppoted):
+[_Github Packages_](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/pkgs/nuget/uhppoted):
 
 ### Installing from the NuGet Registry
 
@@ -50,34 +57,6 @@ NuGet\Install-Package uhppoted -Version 0.9.0
 ```
 
 After installing the package it should be referenced in the _project_ file, e.g.:
-```
-  ...
-  <ItemGroup>
-    <PackageReference Include="uhppoted" Version="0.9.0" />
-  </ItemGroup>
-  ...
-```
-
-### Installing from Github Packages
-
-Installing from the _Github Packages_ _NuGet_ registry requires a [_Personal Access Token (classic)_](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens#creating-a-personal-access-token-classic)
-with at least `package: read` permissions.
-
-- _dotnet CLI_:
-   ```
-   dotnet nuget add source --username <username> --password <personal-access-token> --store-password-in-clear-text --name uhppoted "https://nuget.pkg.codeberg.org/uhppoted/index.json"
-   dotnet nuget add source https://nuget.pkg.codeberg.org/uhppoted/index.json
-   dotnet add package uhppoted --version 0.9.0
-
-   ```
-
-- _Package Manager_ (console):
-   ```
-   NuGet\Set-Source -Name "uhppoted" -Source "https://nuget.pkg.codeberg.org/uhppoted/index.json" -Username "<username>" -Password "<personal-access-token>"
-   NuGet\Install-Package uhppoted -Version 0.9.0
-   ```
-
-After installing the package it should be referenced in the _project_ file, e.g:
 ```
   ...
   <ItemGroup>
@@ -220,6 +199,9 @@ Gets a controller anti-passback mode.
 #### [`SetAntiPassback`](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/set-antipassback.md)
 Sets a controller anti-passback mode.
 
+#### [`SetFirstCard`](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/set-firstcard.md)
+Sets the first card configuration for a controller managed door.
+
 #### [`RestoreDefaultSettings`](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/blob/main/documentation/API/restore-default-settings.md)
 Restores the manufacturer default settings.
 
@@ -284,8 +266,9 @@ get-all-controllers:
          date: 2018-11-05
 ```
 
-In general this doesn't seem to have been a problem (or at least nobody has raised it as an issue) and the implementation will
-return an error if the bind port for a UDP broadcast is 60000. It can be mitigated by:
+As of v0.9.1 the library includes a check for the condition and will retry up to 5 times before raising an error.
+
+Prior to v0.9.1 the implementation will simply return an error if the bind port for a UDP broadcast is 60000. It can be mitigated by:
 - Excluding port `60000` from the ephemeral range using whatever method is recommended for your platform of choice.
 - (OR) Reduce (or move) the ephemeral port range (again using whatever method is recommended for your platform of choice).
 - (OR) (**really not recommended except as a quick hack**) Bind a netcat listener to port `60000` before running the application:
