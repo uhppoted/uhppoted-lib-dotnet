@@ -3,7 +3,7 @@
 ## Unreleased
 
 
-## [0.9.1](https://github.com/uhppoted/uhppoted-lib-dotnet/releases/tag/v0.9.1) - 2026-09-22
+## [0.9.1](https://codeberg.org/uhppoted/uhppoted-lib-dotnet/releases/tag/v0.9.1) - 2026-09-22
 
 ### Added
 1. `set-firstcard` API function to configure first-card mode for a controller managed door.
